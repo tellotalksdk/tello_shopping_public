@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/shopsetting"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_baseline_arrow_back" />
+
+        <TextView
+            android:id="@+id/shopsetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/iv_back"
+            android:text="Shop Setting"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/subHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shopsetting"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="30dp"
+            android:text="Shop is created Successfully"
+            android:textColor="#32C8B3"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/setupShop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subHead"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="6dp"
+            android:text="Please Setup Your Shop"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/province"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/setupShop"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:entries="@array/province" />
+
+
+        <Spinner
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/province"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:entries="@array/city" />
+
+
+        <Spinner
+            android:id="@+id/area"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/city"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:entries="@array/area" />
+
+        <RelativeLayout
+            android:id="@+id/iv"
+            android:background="@drawable/edit_text_bg_color"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/area">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_baseline_camera" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/FL1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_bg_color"
+                android:hint="Set Your Shop Timings"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:textSize="15sp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:hint="Set Your Shop Timings"
+                    android:paddingLeft="10dp"
+                    android:textSize="15sp"
+                    android:visibility="gone"></EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_rounded_white_days_timings"
+                    android:gravity="center"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:text="Monday   9:00 A.M / 9:00 P.M"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_rounded_white_days_timings"
+                    android:gravity="center"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:text="Tuesday   9:00 A.M / 9:00 P.M"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_rounded_white_days_timings"
+                    android:gravity="center"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:text="Wednesday   9:00 A.M / 9:00 P.M"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_rounded_white_days_timings"
+                    android:gravity="center"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:text="Thrusday   9:00 A.M / 9:00 P.M"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_rounded_white_days_timings"
+                    android:gravity="center"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:text="Friday   9:00 A.M / 9:00 P.M"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_timings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_camera" />
+
+
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/colortheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/FL1"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:clickable="false"
+                android:paddingLeft="10dp"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_websitetheme"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="right|center"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_camera" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center|left"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/circle" />
+
+        </FrameLayout>
+
+
+
+
+
+
+        <Button
+            android:id="@+id/saveAccountbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="75dp"
+            android:paddingRight="75dp"
+            android:text="Save"
+            android:layout_below="@+id/colortheme"
+            android:textColor="@android:color/white" />
+
+
+    </RelativeLayout>
+</ScrollView>

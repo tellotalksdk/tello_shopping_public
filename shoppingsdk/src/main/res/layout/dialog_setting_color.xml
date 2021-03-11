@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:layout_marginTop="60dp"
+    android:background="@drawable/top_rounded_corners_40dp"
+    >
+
+    <TextView
+        android:id="@+id/mainHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Choose Color"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/subHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainHead"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="This will change the color of your website"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <LinearLayout
+        android:id="@+id/wholeLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subHead"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#F64137"/>
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#E42163" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#9B28B1" />
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#653BB7" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@android:color/white" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#2197F2" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#05A8F5"/>
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#02BCD4" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#009786" />
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#4CB050" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#89C348" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#CDDC37" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#FFE938"/>
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#FEC104" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#FB9702" />
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#FE5720" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#7A5448" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#9E9E9E" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lastLL"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#607D8B"/>
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@android:color/white" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@android:color/white" />
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@android:color/white" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@android:color/white" />
+
+
+            <ImageView
+                android:layout_marginStart="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="@android:color/white" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/confirmColor"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:layout_below="@+id/wholeLL"
+            android:text="Confirm"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

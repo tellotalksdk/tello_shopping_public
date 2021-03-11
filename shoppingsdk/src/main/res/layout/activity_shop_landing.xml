@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ShopRegistrationActivity">
+
+    <RelativeLayout
+        android:id="@+id/headerRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:id="@+id/LL1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/arrowback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_baseline_arrow_back" />
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/arrowback"
+                android:src="@drawable/circle" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Shop"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="'0 Products"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/LL1"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_baseline_settings" />
+
+
+        <ImageView
+            android:id="@+id/addProduct"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/LL1"
+            android:layout_gravity="end"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/setting"
+            android:src="@drawable/ic_baseline_add_circle_outline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/LL1"
+            android:layout_marginTop="15dp"
+            android:layout_toLeftOf="@+id/addProduct"
+            android:text="Add products"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+        // end header
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/tabbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/headerRL"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/bg_tab"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/productList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_text_left_rounded"
+            android:gravity="center"
+            android:text="Product List"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/orderList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Order List"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/chat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Chat"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabbar"
+        android:layout_marginTop="10dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph_two" />
+
+</RelativeLayout>

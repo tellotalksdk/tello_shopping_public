@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_two"
+    app:startDestination="@id/shopLandingFragment">
+
+    <fragment
+        android:id="@+id/shopLandingFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingFragment"
+        android:label="ShopLandingFragment"
+        tools:layout="@layout/fragment_shop_landing_page" />
+
+    <fragment
+        android:id="@+id/chat"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.chat.Chat"
+        android:label="Chat"
+        tools:layout="@layout/fragment_shop_chat_screen" />
+
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.OrderListFragment"
+        android:label="OrderListFragment"
+        tools:layout="@layout/fragment_shop_order_list" />
+
+</navigation>

@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?><!--<ScrollView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:scrollbars="vertical">-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/outerRL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/top_rounded_corners_40dp">
+
+        <TextView
+            android:id="@+id/storeTimingHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Set Store Timings"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/storeTimingHead">
+
+            <LinearLayout
+                android:id="@+id/daystimingsLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/storeTimingHead"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvMonday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Monday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvMonday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp"
+                        android:checked="true" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvTueday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Tuesday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvTueday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvTueday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvTueday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvWednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Wednesday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvWednesday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvThrusday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Thrusday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvThrusday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvFriday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Friday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvFriday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvSaturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Saturday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSaturday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvSunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Sunday"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvSunday"
+                        android:weightSum="2">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/opens_at" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/tvMonday"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:entries="@array/close_at" />
+
+                    </LinearLayout>
+
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/createAccountbtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/rounded_btn"
+                        android:paddingLeft="40dp"
+                        android:paddingRight="40dp"
+                        android:text="Create Account"
+                        android:textColor="@android:color/white" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+    <!--
+
+        </ScrollView>-->

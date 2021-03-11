@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_editing"
+    app:startDestination="@id/editingProfileFragment">
+
+    <fragment
+        android:id="@+id/editingProfileFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.EditingProfileFragment"
+        android:label="EditingProfileFragment"
+        tools:layout="@layout/fragment_store_setting_profile_info"/>
+    <fragment
+        android:id="@+id/bankSettingFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.banksetting.BankSettingFragment"
+        android:label="BankSettingFragment" />
+    <fragment
+        android:id="@+id/storeSettingFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.storesetting.StoreSettingFragment"
+        android:label="StoreSettingFragment"
+        />
+</navigation>
