@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ShopRegistrationActivity">
+    tools:context=".ui.shopregistration.ShopRegistrationActivity">
 
     <RelativeLayout
         android:id="@+id/headerRL"
@@ -67,7 +67,9 @@
             android:layout_alignTop="@+id/LL1"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
-            android:layout_margin="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/ic_baseline_settings" />
 
 
@@ -77,11 +79,14 @@
             android:layout_height="30dp"
             android:layout_alignTop="@+id/LL1"
             android:layout_gravity="end"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
             android:layout_toLeftOf="@+id/setting"
             android:src="@drawable/ic_baseline_add_circle_outline" />
 
         <TextView
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/LL1"
@@ -89,7 +94,7 @@
             android:layout_toLeftOf="@+id/addProduct"
             android:text="Add products"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
         // end header
 
     </RelativeLayout>

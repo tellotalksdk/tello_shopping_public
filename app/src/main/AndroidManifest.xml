@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.ShopRegistrationActivity"
+        <activity android:name=".ui.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.shoppingsdk.ui.shopRegistration.ShopRegistrationActivity" />

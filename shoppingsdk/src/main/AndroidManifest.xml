@@ -10,7 +10,7 @@
             android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.ShopRegistrationActivity"
+            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

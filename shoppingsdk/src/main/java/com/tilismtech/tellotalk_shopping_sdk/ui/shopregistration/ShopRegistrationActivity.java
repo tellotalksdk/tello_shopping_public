@@ -1,4 +1,4 @@
-package com.tilismtech.tellotalk_shopping_sdk.ui;
+package com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
