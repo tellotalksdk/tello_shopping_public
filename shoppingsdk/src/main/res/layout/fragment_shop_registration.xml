@@ -7,12 +7,12 @@
 
 
     <ImageView
-        android:layout_marginStart="5dp"
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/mainHead"
         android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:src="@drawable/ic_baseline_arrow_back" />
 
@@ -59,10 +59,10 @@
                 android:id="@+id/iv_user_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/ic_avatar"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="15dp" />
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_avatar" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,8 +102,8 @@
             android:layout_height="50dp"
             android:background="@drawable/edit_text_bg_color"
             android:hint="* Shop Name"
-            android:paddingLeft="10dp"
             android:maxLines="1"
+            android:paddingLeft="10dp"
             android:textSize="14sp" />
 
         <TextView
@@ -160,133 +160,148 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatSpinner
-                    android:entries="@array/network_options"
                     android:layout_width="80dp"
-                    android:paddingLeft="10dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:background="@drawable/edit_text_bg_color"
+                    android:entries="@array/network_options"
+                    android:paddingLeft="10dp" />
 
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
-                    android:gravity="center"
-                    android:inputType="number"
                     android:layout_marginStart="10dp"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:background="@drawable/edit_text_bg_color"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:nextFocusRight="@id/tl"
+                    android:nextFocusForward="@id/tl"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/tl"
+                    android:layout_width="30dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
                 <EditText
                     android:layout_width="30dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:maxLength="1"
+                    android:background="@drawable/edit_text_bg_color"
                     android:gravity="center"
+                    android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
-
-                <EditText
-                    android:layout_width="30dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="5dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
                     android:maxLength="1"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color" />
+                    android:maxLines="1"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
@@ -308,11 +323,11 @@
 
     <RelativeLayout
         android:id="@+id/RL"
-        android:visibility="visible"
-        android:layout_below="@+id/insertDigit"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/insertDigit"
         android:paddingBottom="10dp"
-        android:layout_height="match_parent">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/countDown"
@@ -336,100 +351,114 @@
             android:background="@drawable/edit_text_bg_color"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textAllCaps="false"
             android:text="Request Again"
+            android:textAllCaps="false"
             android:textSize="12sp" />
 
         <RelativeLayout
-            android:layout_above="@+id/done_btn"
-            android:layout_below="@+id/requestAgain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/enterPIIN"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="25dp"
-            android:fontFamily="sans-serif"
-            android:text="Enter PIN"
-            android:textAllCaps="false"
-            android:textColor="#4E4E4E"
-            android:textSize="18sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/providedNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/enterPIIN"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="20sp"
-            android:layout_marginTop="10sp"
-            android:text="just send on provided number"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-
-        <LinearLayout
-            android:id="@+id/LL3"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/providedNumber"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:layout_above="@+id/term"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="40dp"
-                android:layout_height="50dp" />
-
-            <EditText
-                android:layout_width="40dp"
-                android:layout_height="50dp" />
-
-            <EditText
-                android:layout_width="40dp"
-                android:layout_height="50dp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/term"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            >
+            android:layout_above="@+id/done_btn"
+            android:layout_below="@+id/requestAgain">
 
             <TextView
+                android:id="@+id/enterPIIN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="By Continuing , you agree to Tello Talk ,"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="sans-serif"
+                android:text="Enter PIN"
+                android:textAllCaps="false"
+                android:textColor="#4E4E4E"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/providedNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/enterPIIN"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="10sp"
+                android:text="just send on provided number"
                 android:textColor="@android:color/black"
-                android:textSize="10sp" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/LL3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="Term's of Use"
-                android:textColor="#6F90D9"
-                android:textSize="12sp" />
+                android:layout_above="@+id/term"
+                android:layout_below="@+id/providedNumber"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
+
+                <EditText
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
+
+                <EditText
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:maxLength="1"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
+
+            </LinearLayout>
 
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/term"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="By Continuing , you agree to Tello Talk ,"
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Term's of Use"
+                    android:textColor="#6F90D9"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
 
 
         </RelativeLayout>
@@ -438,9 +467,9 @@
             android:id="@+id/done_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rounded_btn"
             android:paddingLeft="75dp"
             android:paddingRight="75dp"
@@ -516,7 +545,6 @@
         </LinearLayout>-->
 
     <Button
-        android:visibility="gone"
         android:id="@+id/createAccountbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -528,7 +556,8 @@
         android:paddingLeft="13dp"
         android:paddingRight="13dp"
         android:text="Request For Pin"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:visibility="visible" />
 
 
 </RelativeLayout>

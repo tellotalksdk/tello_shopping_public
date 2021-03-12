@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="20dp"
     android:layout_marginTop="60dp"
-    android:background="@drawable/top_rounded_corners_40dp"
-    >
+    android:background="@drawable/top_rounded_corners_40dp">
 
     <TextView
         android:id="@+id/mainHead"
@@ -41,222 +41,13 @@
         android:layout_marginEnd="20dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:gravity="center"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_colors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#F64137"/>
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#E42163" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#9B28B1" />
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#653BB7" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="@android:color/white" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#2197F2" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#05A8F5"/>
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#02BCD4" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#009786" />
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#4CB050" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#89C348" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#CDDC37" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#FFE938"/>
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#FEC104" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#FB9702" />
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#FE5720" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#7A5448" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#9E9E9E" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lastLL"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="#607D8B"/>
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="@android:color/white" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="@android:color/white" />
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="@android:color/white" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="@android:color/white" />
-
-
-            <ImageView
-                android:layout_marginStart="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle"
-                android:backgroundTint="@android:color/white" />
-
-        </LinearLayout>
+            tools:listitem="@layout/rv_choose_color_item"
+            />
 
 
         <Button

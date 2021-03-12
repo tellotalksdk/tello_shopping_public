@@ -74,7 +74,7 @@ public class ShopRegistrationFragment extends Fragment {
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.popBackStack();
+                getActivity().finish();
             }
         });
 

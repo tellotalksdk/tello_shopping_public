@@ -26,7 +26,9 @@
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
     </style>
 
-
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
 
 
 </resources>

@@ -57,6 +57,21 @@
             android:paddingRight="20dp"
             android:text="Bank" />
 
+        <Button
+            android:id="@+id/continue_btn_RL1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="75dp"
+            android:paddingRight="75dp"
+            android:text="Continue"
+            android:textColor="@android:color/white" />
+
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -124,14 +139,28 @@
             android:text="* Account Number"
             android:textSize="15sp" />
 
+        <Button
+            android:id="@+id/continue_btn_RL2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="75dp"
+            android:paddingRight="75dp"
+            android:text="Continue"
+            android:textColor="@android:color/white" />
+
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/RL3"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/addressRL"
@@ -241,7 +270,6 @@
             </LinearLayout>
 
 
-
         </RelativeLayout>
 
         <LinearLayout
@@ -275,21 +303,38 @@
             </TextView>
         </LinearLayout>
 
+        <Button
+            android:id="@+id/continue_btn_RL3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="75dp"
+            android:paddingRight="75dp"
+            android:text="Continue"
+            android:textColor="@android:color/white" />
+
+
     </RelativeLayout>
 
+
     <Button
-        android:id="@+id/continue_btn"
-        android:layout_width="170dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/insertDigit"
+        android:id="@+id/continue_btn_final"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_btn"
-        android:paddingLeft="13dp"
-        android:paddingRight="13dp"
+        android:paddingLeft="75dp"
+        android:paddingRight="75dp"
         android:text="Continue"
-        android:textColor="#EAEFF3" />
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
 
 </RelativeLayout>

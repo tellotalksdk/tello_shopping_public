@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -93,18 +94,18 @@
 
         <RelativeLayout
             android:id="@+id/iv"
-            android:background="@drawable/edit_text_bg_color"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/area"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/area">
+            android:background="@drawable/edit_text_bg_color">
 
             <ImageView
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
@@ -123,7 +124,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:hint="Set Your Shop Timings"
                 android:orientation="vertical"
@@ -139,10 +140,18 @@
                     android:textSize="15sp"
                     android:visibility="gone"></EditText>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_timings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:listitem="@layout/rv_item_timings_layout" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_rounded_white_days_timings"
                     android:gravity="center"
                     android:paddingLeft="25dp"
@@ -150,7 +159,8 @@
                     android:text="Monday   9:00 A.M / 9:00 P.M"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="visible" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -163,8 +173,8 @@
                     android:text="Tuesday   9:00 A.M / 9:00 P.M"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
-
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -177,7 +187,8 @@
                     android:text="Wednesday   9:00 A.M / 9:00 P.M"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -190,7 +201,8 @@
                     android:text="Thrusday   9:00 A.M / 9:00 P.M"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -204,7 +216,8 @@
                     android:text="Friday   9:00 A.M / 9:00 P.M"
                     android:textColor="@android:color/black"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -258,22 +271,18 @@
         </FrameLayout>
 
 
-
-
-
-
         <Button
             android:id="@+id/saveAccountbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/colortheme"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rounded_btn"
             android:paddingLeft="75dp"
             android:paddingRight="75dp"
             android:text="Save"
-            android:layout_below="@+id/colortheme"
             android:textColor="@android:color/white" />
 
 

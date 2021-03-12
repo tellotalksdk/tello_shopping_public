@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
@@ -28,6 +29,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     Button getStarted_btn, uploadProduct;
     Dialog dialogCongratulation, dialogAddProduct;
     TextView productList, orderList, chat;
+    LinearLayout Lineartabbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
+        Lineartabbar = findViewById(R.id.tabbar);
 
         dialogCongratulation = new Dialog(ShopLandingActivity.this);
         dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -108,15 +111,16 @@ public class ShopLandingActivity extends AppCompatActivity {
         productList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             /*   productList.setTextColor(Color.WHITE);
+                productList.setTextColor(Color.WHITE);
                 productList.setBackground(getResources().getDrawable(R.drawable.bg_text_left_rounded));
 
                 orderList.setTextColor(Color.BLACK);
-                orderList.setBackgroundColor(Color.WHITE);
+                orderList.setBackgroundColor(Color.TRANSPARENT);
 
                 chat.setTextColor(Color.BLACK);
-                chat.setBackgroundColor(Color.WHITE);*/
+                chat.setBackgroundColor(Color.TRANSPARENT);
 
+                Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
                 navController.navigate(R.id.shopLandingFragment);
             }
         });
@@ -125,16 +129,16 @@ public class ShopLandingActivity extends AppCompatActivity {
         orderList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* productList.setTextColor(Color.WHITE);
-                productList.setBackground(getResources().getDrawable(R.drawable.bg_text_left_rounded));
+                productList.setTextColor(Color.BLACK);
+                productList.setBackgroundColor(Color.TRANSPARENT);
 
-                orderList.setTextColor(Color.BLACK);
-                orderList.setBackgroundColor(Color.WHITE);
+                orderList.setTextColor(Color.WHITE);
+                orderList.setBackground(getResources().getDrawable(R.drawable.bg_text_center_grey));
 
                 chat.setTextColor(Color.BLACK);
-                chat.setBackgroundColor(Color.WHITE);*/
+                chat.setBackgroundColor(Color.TRANSPARENT);
 
-
+                Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
                 navController.navigate(R.id.orderListFragment);
             }
         });
@@ -144,15 +148,16 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              /*  productList.setTextColor(Color.WHITE);
-                productList.setBackgroundColor(Color.WHITE);
+                productList.setTextColor(Color.BLACK);
+                productList.setBackgroundColor(Color.TRANSPARENT);
 
                 orderList.setTextColor(Color.BLACK);
-                orderList.setBackgroundColor(Color.WHITE);
+                orderList.setBackgroundColor(Color.TRANSPARENT);
 
-                chat.setTextColor(Color.BLACK);
+                chat.setTextColor(Color.WHITE);
                 chat.setBackground(getResources().getDrawable(R.drawable.bg_text_right_rounded));
-*/
+
+                Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
                 navController.navigate(R.id.chat);
             }
         });

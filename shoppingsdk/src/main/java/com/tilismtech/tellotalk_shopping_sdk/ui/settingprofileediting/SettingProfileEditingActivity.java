@@ -21,7 +21,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     NavController navController;
     View horizontalLine1, horizontalLine2, horizontalLine3;
     TextView tv_storesettings, tv_bank, tv_personal;
-    com.google.android.material.tabs.TabItem tab1 , tab2 , tab3;
+    com.google.android.material.tabs.TabLayout tab1;
 
 
     @Override
@@ -60,8 +60,39 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         storeSettingRL.setOnClickListener(this);
         bankRL.setOnClickListener(this);
 
-
         tab1 = findViewById(R.id.tab1);
+        tab1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    navController.navigate(R.id.editingProfileFragment);
+                } else if (tab.getPosition() == 1) {
+                    navController.navigate(R.id.storeSettingFragment);
+                } else if (tab.getPosition() == 2) {
+                    navController.navigate(R.id.bankSettingFragment);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+     /*   tab1 = findViewById(R.id.tab1);
         tab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +115,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                 navController.navigate(R.id.bankSettingFragment);
             }
         });
-
+*/
     }
 
     @Override

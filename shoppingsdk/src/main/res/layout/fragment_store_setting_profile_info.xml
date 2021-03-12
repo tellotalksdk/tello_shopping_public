@@ -5,10 +5,9 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:paddingBottom="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:id="@+id/LL1"
@@ -25,15 +24,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="shop : " />
+                android:paddingTop="4dp"
+                android:text="Shop : "
+                android:textSize="10.5sp" />
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="-5dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:text="Khan-store.tello.com" />
+                android:background="@android:color/transparent"
+                android:paddingBottom="5dp"
+                android:text="Khan-store.tello.com"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -53,15 +56,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Mobile #" />
+                android:paddingTop="4dp"
+                android:text="Mobile # "
+                android:textSize="10.5sp" />
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="-5dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:text="Khan-store.tello.com" />
+                android:background="@android:color/transparent"
+                android:paddingBottom="5dp"
+                android:text="+93 311 000 0000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -81,15 +88,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Language" />
+                android:paddingTop="4dp"
+                android:text="Language : "
+                android:textSize="10.5sp" />
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="-5dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:text="English" />
+                android:background="@android:color/transparent"
+                android:paddingBottom="5dp"
+                android:text="English"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
 
@@ -102,8 +114,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:background="@drawable/edit_text_bg_color"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
 
             <LinearLayout
                 android:id="@+id/leftLLlabel"
@@ -115,35 +127,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Address : " />
+                    android:text="Address : "
+                    android:textSize="10.5sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Street :" />
+                    android:text="Street :"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="City :" />
+                    android:text="City :"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Province :" />
+                    android:text="Province :"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Country :" />
+                    android:text="Country :"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -158,7 +175,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="" />
+                    android:text=""
+                    android:textSize="10.5sp" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,7 +185,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="11-E DHA street"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -174,7 +194,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="Karachi"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -182,7 +203,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="Sindh"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -190,7 +212,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="Pakistan"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -217,10 +240,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="10dp" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="10dp" />
+
 
                 <ImageView
                     android:id="@+id/ic_delete"

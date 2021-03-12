@@ -20,17 +20,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShopSettingFragment extends Fragment {
 
     Button saveAccountbtn;
     NavController navController;
-    ImageView iv_timings, iv_websitetheme , iv_back;
+    ImageView iv_timings, iv_websitetheme, iv_back;
     Spinner province, city, area;
     RelativeLayout outerRL;
+    RecyclerView recycler_colors;
+    ColorChooserAdapter colorChooserAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +118,31 @@ public class ShopSettingFragment extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.dialog_setting_color);
 
+                List<Integer> colorList = new ArrayList<>();
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+                colorList.add(R.drawable.circle);
+
+                recycler_colors = dialog.findViewById(R.id.recycler_colors);
+                colorChooserAdapter = new ColorChooserAdapter(colorList, getActivity());
+
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 6, LinearLayoutManager.VERTICAL, false);
+                recycler_colors.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+                recycler_colors.setAdapter(colorChooserAdapter);
+
                 Window window = dialog.getWindow();
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -131,4 +165,5 @@ public class ShopSettingFragment extends Fragment {
         });
 
     }
+
 }

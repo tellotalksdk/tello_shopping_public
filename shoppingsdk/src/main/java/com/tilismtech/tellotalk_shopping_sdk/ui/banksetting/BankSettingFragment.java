@@ -16,7 +16,7 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 public class BankSettingFragment extends Fragment {
     Button btn_bank;
     RelativeLayout RL1, RL2, RL3;
-    Button continue_btn;
+    Button continue_btn_1, continue_btn_2, continue_btn_3;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,20 +42,41 @@ public class BankSettingFragment extends Fragment {
         btn_bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_bank.setBackground(getResources().getDrawable(R.drawable.bg_rounded_black_bank_btn));
+
                 RL1.setVisibility(View.GONE);
                 RL2.setVisibility(View.VISIBLE);
+                RL3.setVisibility(View.GONE);
 
             }
         });
 
-        continue_btn = view.findViewById(R.id.continue_btn);
-        continue_btn.setOnClickListener(new View.OnClickListener() {
+        continue_btn_1 = view.findViewById(R.id.continue_btn_RL1);
+        continue_btn_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL1.setVisibility(View.GONE);
+                RL2.setVisibility(View.VISIBLE);
+                RL3.setVisibility(View.GONE);
+            }
+        });
+
+        continue_btn_2 = view.findViewById(R.id.continue_btn_RL2);
+        continue_btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RL1.setVisibility(View.GONE);
                 RL2.setVisibility(View.GONE);
                 RL3.setVisibility(View.VISIBLE);
+            }
+        });
+
+        continue_btn_3 = view.findViewById(R.id.continue_btn_RL3);
+        continue_btn_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL1.setVisibility(View.VISIBLE);
+                RL2.setVisibility(View.GONE);
+                RL3.setVisibility(View.GONE);
             }
         });
 
