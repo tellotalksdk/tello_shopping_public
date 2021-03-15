@@ -3,25 +3,36 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 
 public class ShopLandingFragment extends Fragment {
 
-    ImageView setting , open_edit_details;
+    NavController navController;
+    ImageView setting, open_edit_details, iv_back_addproduct;
     Dialog dialog_edit_details;
-    RelativeLayout outerRL;
+    LinearLayout outerRL;
+    Button addProduct_btn, uploadProduct;
+    Dialog dialogAddProduct;
+    HorizontalScrollView orderListtabbar;
+    LinearLayout productList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,31 +50,73 @@ public class ShopLandingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        open_edit_details = view.findViewById(R.id.open_edit_details);
-        open_edit_details.setOnClickListener(new View.OnClickListener() {
+        navController = Navigation.findNavController(view);
+       // orderListtabbar = view.findViewById(R.id.orderListtabbar);
+        productList = view.findViewById(R.id.productList);
+
+        addProduct_btn = view.findViewById(R.id.addProduct_btn);
+        addProduct_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog_edit_details = new Dialog(getActivity());
-                dialog_edit_details.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog_edit_details.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog_edit_details.setContentView(R.layout.dialog_edit_product);
+                dialogAddProduct = new Dialog(getActivity());
+                dialogAddProduct.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialogAddProduct.setContentView(R.layout.dialog_add_product);
 
-                outerRL = dialog_edit_details.findViewById(R.id.outerRL);
+                iv_back_addproduct = dialogAddProduct.findViewById(R.id.iv_back);
+                iv_back_addproduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogAddProduct.dismiss();
+                    }
+                });
 
-                Window window = dialog_edit_details.getWindow();
+                uploadProduct = dialogAddProduct.findViewById(R.id.uploadProduct);
+                uploadProduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogAddProduct.dismiss();
+                        //startActivity(new Intent(ShopLandingActivity.this,ShopLandingActivity.class));
+                        navController.navigate(R.id.shopLandingFragment);
+                    }
+                });
+
+                Window window = dialogAddProduct.getWindow();
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                 window.setAttributes(wlp);
-                dialog_edit_details.setCanceledOnTouchOutside(true);
-                dialog_edit_details.show();
+                dialogAddProduct.show();
+            }
+        });
+
+        open_edit_details = view.findViewById(R.id.open_edit_details);
+        open_edit_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(getActivity());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.dialog_edit_product);
+                outerRL = dialog.findViewById(R.id.outerRL);
 
                 outerRL.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog_edit_details.hide();
+                        dialog.dismiss();
                     }
                 });
+
+                Window window = dialog.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                wlp.gravity = Gravity.BOTTOM;
+               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                window.setAttributes(wlp);
+
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
             }
         });
     }

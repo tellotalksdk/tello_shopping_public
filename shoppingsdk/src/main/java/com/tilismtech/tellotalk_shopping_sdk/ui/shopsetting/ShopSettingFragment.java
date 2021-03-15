@@ -102,7 +102,7 @@ public class ShopSettingFragment extends Fragment {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 wlp.gravity = Gravity.BOTTOM;
-                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
                 dialog.setCanceledOnTouchOutside(true);
@@ -148,7 +148,7 @@ public class ShopSettingFragment extends Fragment {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 wlp.gravity = Gravity.BOTTOM;
-                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
                 dialog.setCanceledOnTouchOutside(true);

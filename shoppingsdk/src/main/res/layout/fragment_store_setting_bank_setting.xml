@@ -112,7 +112,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/edit_text_bg_color" />
+            android:background="@drawable/custom_spinner" />
 
         <EditText
             android:id="@+id/account_title"

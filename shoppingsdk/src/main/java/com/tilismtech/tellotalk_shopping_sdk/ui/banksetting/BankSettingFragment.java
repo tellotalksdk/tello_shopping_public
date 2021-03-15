@@ -38,6 +38,11 @@ public class BankSettingFragment extends Fragment {
         RL3 = view.findViewById(R.id.RL3);
 
 
+        RL1.setVisibility(View.VISIBLE);
+        RL2.setVisibility(View.GONE);
+        RL3.setVisibility(View.GONE);
+
+
         btn_bank = view.findViewById(R.id.btn_bank);
         btn_bank.setOnClickListener(new View.OnClickListener() {
             @Override

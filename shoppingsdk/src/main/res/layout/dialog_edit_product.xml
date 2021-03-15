@@ -1,182 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/outerRL"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
+    <LinearLayout
+        android:id="@+id/outerRL"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:alpha="0.5"
+        android:orientation="horizontal" />
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/top_rounded_corners_40dp"
-        android:paddingTop="12dp">
+        android:layout_below="@+id/outerRL"
+        android:background="@drawable/top_rounded_corners_40dp">
 
-        <LinearLayout
-            android:id="@+id/switch_opt"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="match_parent"
+            android:paddingTop="12dp"
 
-            <TextView
-                android:id="@+id/tv_deleteProduct"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:gravity="center"
-                android:text="Delete Product"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="12sp" />
+            android:paddingBottom="10dp">
 
-            <TextView
-                android:id="@+id/tv_editProduct"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/switch_opt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="Edit Product"
-                android:textColor="@android:color/black"
-                android:textSize="22sp" />
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
 
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tv_editProduct"
-                android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tv_deleteProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:gravity="center"
+                    android:text="Delete Product"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="12sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_editProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Edit Product"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/edittext1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/switch_opt"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edit_text_bg_color"
-            android:paddingLeft="15dp"
-            android:text="I want to sell my Orient AC Model A-35"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tv_editProduct"
+                    android:layout_weight="1" />
 
-        <EditText
-            android:id="@+id/edittext2"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/edittext1"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edit_text_bg_color"
-            android:paddingLeft="15dp"
-            android:text="Home Appliance"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/LinearImages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edittext2"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/edit_text_bg_color" />
-
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
+            <EditText
+                android:id="@+id/edittext1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/switch_opt"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:padding="40dp"
-                android:src="@drawable/ic_baseline_add_circle_outline" />
+                android:paddingLeft="15dp"
+                android:text="I want to sell my Orient AC Model A-35"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edittext2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/edittext1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:paddingLeft="15dp"
+                android:text="Home Appliance"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/LinearImages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edittext2"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/edit_text_bg_color" />
 
 
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/edittext3"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/LinearImages"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edit_text_bg_color"
-            android:paddingLeft="15dp"
-            android:text="50,000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/edittext4"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/edittext3"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edit_text_bg_color"
-            android:paddingLeft="15dp"
-            android:text="40,000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/skucodeoptional"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/edittext4"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edit_text_bg_color"
-            android:hint="SKU Code (optional)"
-            android:paddingLeft="15dp"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:padding="40dp"
+                    android:src="@drawable/ic_baseline_add_circle_outline" />
 
 
-        <EditText
-            android:id="@+id/product_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/post_product_btn"
-            android:layout_below="@+id/skucodeoptional"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edit_text_bg_color"
-            android:gravity="left|top"
-            android:hint="Description"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/post_product_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/rounded_btn"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-            android:text="Post Product"
-            android:textColor="@android:color/white" />
+            <EditText
+                android:id="@+id/edittext3"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/LinearImages"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:paddingLeft="15dp"
+                android:text="50,000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edittext4"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/edittext3"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:paddingLeft="15dp"
+                android:text="40,000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/skucodeoptional"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/edittext4"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:hint="SKU Code (optional)"
+                android:paddingLeft="15dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/product_description"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/skucodeoptional"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:gravity="left|top"
+                android:hint="Description"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/post_product_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/product_description"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_btn"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="Post Product"
+                android:textColor="@android:color/white" />
+
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
 

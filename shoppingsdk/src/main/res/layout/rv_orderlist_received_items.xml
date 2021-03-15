@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/orderNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:text="Order # AAB - 110"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/orderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:text="Accept"
+            android:textColor="#226EE8"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/customerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/orderNumber"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Shahbaz Jamote \n+923332263631"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/customerName"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Unit 304 3rd Unit Floor\nParsa Tower,PECHS sharah e faisal "
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/viewFull"
+            android:layout_below="@+id/orderNumber"
+            android:layout_alignParentEnd="true"
+            android:gravity="end|center"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/customerName"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Quantity : 5"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/customerName"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:text=" 5 jan , 2021 / 3:54 P.M "
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/rupees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/customerName"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:text="Rs : 750"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/addRiderInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/address"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:text="+ Add Rider Info"
+            android:textColor="#226EE8"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_moveto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/address"
+            android:layout_alignBottom="@+id/addRoderInfo"
+
+            android:layout_centerInParent="true" />
+
+
+        <TextView
+            android:id="@+id/viewFull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/address"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:text="View Full"
+            android:textColor="#226EE8"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

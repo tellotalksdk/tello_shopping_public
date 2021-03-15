@@ -2,6 +2,7 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.app.Dialog;
@@ -14,12 +15,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity;
+
+import java.sql.SQLInvalidAuthorizationSpecException;
 
 public class ShopLandingActivity extends AppCompatActivity {
 
@@ -30,6 +36,8 @@ public class ShopLandingActivity extends AppCompatActivity {
     Dialog dialogCongratulation, dialogAddProduct;
     TextView productList, orderList, chat;
     LinearLayout Lineartabbar;
+    HorizontalScrollView orderListtabbar;
+    RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
 
         Lineartabbar = findViewById(R.id.tabbar);
+        orderListtabbar = findViewById(R.id.orderListtabbar);
+        orderListtabbar.setVisibility(View.GONE);
 
         dialogCongratulation = new Dialog(ShopLandingActivity.this);
         dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -111,6 +121,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         productList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderListtabbar.setVisibility(View.GONE);
+
                 productList.setTextColor(Color.WHITE);
                 productList.setBackground(getResources().getDrawable(R.drawable.bg_text_left_rounded));
 
@@ -129,6 +141,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         orderList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderListtabbar.setVisibility(View.VISIBLE);
+
                 productList.setTextColor(Color.BLACK);
                 productList.setBackgroundColor(Color.TRANSPARENT);
 
@@ -139,7 +153,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 chat.setBackgroundColor(Color.TRANSPARENT);
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
-                navController.navigate(R.id.orderListFragment);
+
+                navController.navigate(R.id.receivedFragment);
             }
         });
 
@@ -147,6 +162,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderListtabbar.setVisibility(View.GONE);
 
                 productList.setTextColor(Color.BLACK);
                 productList.setBackgroundColor(Color.TRANSPARENT);
@@ -170,6 +186,77 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
         });
 
+        //received , accepted, dispatched, delivered, paid, cancel, all;
 
+        received = findViewById(R.id.received);
+        received.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toast.makeText(ShopLandingActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+
+                navController.navigate(R.id.receivedFragment);
+            }
+        });
+
+        accepted = findViewById(R.id.accepted);
+        accepted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                navController.navigate(R.id.acceptedFragment, null, new NavOptions.Builder()
+                        .setPopUpTo(R.id.received, true)
+                        .build());
+
+
+                //  navController.navigate(R.id.acceptedFragment);
+            }
+        });
+
+        dispatched = findViewById(R.id.dispatched);
+        dispatched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.dispatchedFragment);
+            }
+        });
+
+        delivered = findViewById(R.id.delivered);
+        delivered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.deliveredFragment);
+            }
+        });
+
+        paid = findViewById(R.id.paid);
+        paid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.paidFragment);
+            }
+        });
+
+        cancel = findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.cancelledFragment);
+            }
+        });
+
+        all = findViewById(R.id.all);
+        all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.allFragment);
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

@@ -84,25 +84,33 @@
             android:background="@drawable/edit_text_bg_color"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:paddingTop="4dp"
-                android:text="Language : "
-                android:textSize="10.5sp" />
-
-            <EditText
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:background="@android:color/transparent"
-                android:paddingBottom="5dp"
-                android:text="English"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tabbar"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:orientation="vertical">
 
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/custom_spinner"
+                    android:text="Khan-store.tello.com"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="17dp"
+                    android:paddingTop="3dp"
+                    android:text="Language : "
+                    android:textSize="10.5sp" />
+
+            </FrameLayout>
         </LinearLayout>
 
         <RelativeLayout
@@ -239,7 +247,6 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginRight="10dp" />
-
 
 
                 <ImageView

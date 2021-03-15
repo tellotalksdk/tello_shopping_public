@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:background="@android:color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -115,15 +117,14 @@
         <TextView
             android:id="@+id/productList"
             android:layout_width="0dp"
-            android:textStyle="bold"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_text_left_rounded"
             android:gravity="center"
             android:text="Product List"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
-
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/orderList"
@@ -153,12 +154,296 @@
 
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@+id/tabbar"
+        android:id="@+id/orderListtabbar"
+        android:visibility="visible"
+        android:layout_marginStart="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/received"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Received"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/accepted"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Accepted"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/dispatched"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Dispatched"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus2"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/delivered"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Delivered"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus3"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/paid"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Paid"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus4"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cancel"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Cancel"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus5"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/all"
+                android:layout_width="45dp"
+                android:layout_height="60dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/order_list_tabs"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deliveryStatus6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="All"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp" />
+
+
+                <TextView
+                    android:id="@+id/number6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deliveryStatus6"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:text="12"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tabbar"
+        android:layout_below="@+id/orderListtabbar"
         android:layout_marginTop="10dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph_two" />

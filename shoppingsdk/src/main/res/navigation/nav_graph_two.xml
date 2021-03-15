@@ -9,7 +9,8 @@
         android:id="@+id/shopLandingFragment"
         android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingFragment"
         android:label="ShopLandingFragment"
-        tools:layout="@layout/fragment_shop_landing_page" />
+        tools:layout="@layout/fragment_shop_landing_page"
+        />
 
     <fragment
         android:id="@+id/chat"
@@ -22,5 +23,47 @@
         android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.OrderListFragment"
         android:label="OrderListFragment"
         tools:layout="@layout/fragment_shop_order_list" />
+
+    <fragment
+        android:id="@+id/receivedFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.received.ReceivedFragment"
+        android:label="ReceivedFragment"
+        tools:layout="@layout/fragment_received_order_list" />
+
+    <fragment
+        android:id="@+id/acceptedFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.accepted.AcceptedFragment"
+        android:label="AcceptedFragment"
+        tools:layout="@layout/fragment_accepted_order_list"/>
+
+    <fragment
+        android:id="@+id/dispatchedFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.dispatched.DispatchedFragment"
+        android:label="DispatchedFragment"
+        tools:layout="@layout/fragment_dispatched_order_list"/>
+
+    <fragment
+        android:id="@+id/deliveredFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.delivered.DeliveredFragment"
+        android:label="DeliveredFragment"
+        tools:layout="@layout/fragment_delivered_order_list"/>
+
+    <fragment
+        android:id="@+id/paidFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.paid.PaidFragment"
+        android:label="PaidFragment"
+        tools:layout="@layout/fragment_paid_order_list"/>
+
+    <fragment
+        android:id="@+id/cancelledFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.cancelled.CancelledFragment"
+        android:label="CancelledFragment"
+        tools:layout="@layout/fragment_cancelled_order_list"/>
+
+    <fragment
+        android:id="@+id/allFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.all.AllFragment"
+        android:label="AllFragment"
+        tools:layout="@layout/fragment_all_order_list"/>
 
 </navigation>

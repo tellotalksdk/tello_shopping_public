@@ -160,11 +160,11 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatSpinner
-                    android:layout_width="80dp"
+                    android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/edit_text_bg_color"
+                    android:background="@drawable/custom_spinner"
                     android:entries="@array/network_options"
-                    android:paddingLeft="10dp" />
+                    />
 
 
                 <EditText
