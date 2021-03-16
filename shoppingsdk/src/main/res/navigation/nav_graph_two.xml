@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/chat"
-        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.chat.Chat"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui.chat.ChatFragment"
         android:label="Chat"
         tools:layout="@layout/fragment_shop_chat_screen" />
 

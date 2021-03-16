@@ -1,4 +1,4 @@
-package com.tilismtech.tellotalk_shopping_sdk.adapters;
+package com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -20,25 +20,25 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 
 import java.util.List;
 
-public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.ReceivedItemViewHolder> {
+public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.AcceptedItemViewHolder>{
 
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
 
-    public ReceivedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
+    public AcceptedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
     }
 
     @NonNull
     @Override
-    public ReceivedItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_orderlist_received_items, parent, false);
-        return new ReceivedItemViewHolder(v);
+    public AcceptedItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_orderlist_accepted_order, parent, false);
+        return new AcceptedItemViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReceivedItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AcceptedItemViewHolder holder, int position) {
         ReceivedItemPojo receivedItemPojo = receivedItemPojos.get(position);
 
         holder.orderNumber.setText(receivedItemPojo.getOrder_number());
@@ -58,7 +58,7 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 wlp.gravity = Gravity.BOTTOM;
-               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
                 dialog.setCanceledOnTouchOutside(true);
@@ -72,6 +72,14 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 Dialog dialog = new Dialog(myCtx);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.dialog_product_detail_order_list);
+
+                ImageView iv_back = dialog.findViewById(R.id.iv_back);
+                iv_back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 Window window = dialog.getWindow();
                 WindowManager.LayoutParams wlp = window.getAttributes();
@@ -93,11 +101,11 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         return receivedItemPojos.size();
     }
 
-    public class ReceivedItemViewHolder extends RecyclerView.ViewHolder {
+    public class AcceptedItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo , viewFull;
 
-        public ReceivedItemViewHolder(@NonNull View itemView) {
+        public AcceptedItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
             orderNumber = itemView.findViewById(R.id.orderNumber);
@@ -110,6 +118,5 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
             viewFull = itemView.findViewById(R.id.viewFull);
         }
     }
-
 
 }

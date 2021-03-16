@@ -30,8 +30,20 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"
-            android:text="Accept"
-            android:textColor="#226EE8"
+            android:text="Dispatch"
+            android:textColor="#5B5A58"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/orderCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/orderStatus"
+            android:layout_marginEnd="55dp"
+            android:text="Cancel"
+            android:textColor="#DC1A19"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -122,10 +134,8 @@
         <Spinner
             android:id="@+id/spinner_moveto"
             android:layout_width="wrap_content"
-            android:paddingEnd="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
-            android:entries="@array/move_to"
             android:layout_alignBottom="@+id/addRoderInfo"
             android:background="@drawable/custom_move_to_spinner"
             android:layout_centerInParent="true" />

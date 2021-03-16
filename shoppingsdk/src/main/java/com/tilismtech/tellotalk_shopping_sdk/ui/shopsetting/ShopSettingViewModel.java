@@ -1,4 +1,6 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.shopsetting;
 
-public class ShopSettingViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class ShopSettingViewModel extends ViewModel {
 }

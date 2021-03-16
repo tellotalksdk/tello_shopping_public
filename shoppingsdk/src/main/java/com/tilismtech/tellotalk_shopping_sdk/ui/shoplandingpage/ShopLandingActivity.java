@@ -38,6 +38,8 @@ public class ShopLandingActivity extends AppCompatActivity {
     LinearLayout Lineartabbar;
     HorizontalScrollView orderListtabbar;
     RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
+    TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
+    TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,22 @@ public class ShopLandingActivity extends AppCompatActivity {
         Lineartabbar = findViewById(R.id.tabbar);
         orderListtabbar = findViewById(R.id.orderListtabbar);
         orderListtabbar.setVisibility(View.GONE);
+
+        deliveryStatus = findViewById(R.id.deliveryStatus);
+        deliveryStatus1 = findViewById(R.id.deliveryStatus1);
+        deliveryStatus2 = findViewById(R.id.deliveryStatus2);
+        deliveryStatus3 = findViewById(R.id.deliveryStatus3);
+        deliveryStatus4 = findViewById(R.id.deliveryStatus4);
+        deliveryStatus5 = findViewById(R.id.deliveryStatus5);
+        deliveryStatus6 = findViewById(R.id.deliveryStatus6);
+
+        number = findViewById(R.id.number);
+        number1 = findViewById(R.id.number1);
+        number2 = findViewById(R.id.number2);
+        number3 = findViewById(R.id.number3);
+        number4 = findViewById(R.id.number4);
+        number5 = findViewById(R.id.number5);
+        number6 = findViewById(R.id.number6);
 
         dialogCongratulation = new Dialog(ShopLandingActivity.this);
         dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -195,6 +213,30 @@ public class ShopLandingActivity extends AppCompatActivity {
                 // Toast.makeText(ShopLandingActivity.this, "clicked", Toast.LENGTH_SHORT).show();
 
                 navController.navigate(R.id.receivedFragment);
+
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+
+                deliveryStatus.setTextColor(Color.WHITE);
+                deliveryStatus1.setTextColor(Color.BLACK);
+                deliveryStatus2.setTextColor(Color.BLACK);
+                deliveryStatus3.setTextColor(Color.BLACK);
+                deliveryStatus4.setTextColor(Color.BLACK);
+                deliveryStatus5.setTextColor(Color.BLACK);
+                deliveryStatus6.setTextColor(Color.BLACK);
+
+                number.setTextColor(Color.WHITE);
+                number1.setTextColor(Color.BLACK);
+                number2.setTextColor(Color.BLACK);
+                number3.setTextColor(Color.BLACK);
+                number4.setTextColor(Color.BLACK);
+                number5.setTextColor(Color.BLACK);
+                number6.setTextColor(Color.BLACK);
             }
         });
 
@@ -207,6 +249,30 @@ public class ShopLandingActivity extends AppCompatActivity {
                         .setPopUpTo(R.id.received, true)
                         .build());
 
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+
+                deliveryStatus.setTextColor(Color.BLACK);
+                deliveryStatus1.setTextColor(Color.WHITE);
+                deliveryStatus2.setTextColor(Color.BLACK);
+                deliveryStatus3.setTextColor(Color.BLACK);
+                deliveryStatus4.setTextColor(Color.BLACK);
+                deliveryStatus5.setTextColor(Color.BLACK);
+                deliveryStatus6.setTextColor(Color.BLACK);
+
+                number.setTextColor(Color.BLACK);
+                number1.setTextColor(Color.WHITE);
+                number2.setTextColor(Color.BLACK);
+                number3.setTextColor(Color.BLACK);
+                number4.setTextColor(Color.BLACK);
+                number5.setTextColor(Color.BLACK);
+                number6.setTextColor(Color.BLACK);
+
 
                 //  navController.navigate(R.id.acceptedFragment);
             }
@@ -217,6 +283,30 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.dispatchedFragment);
+
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+
+                deliveryStatus.setTextColor(Color.BLACK);
+                deliveryStatus1.setTextColor(Color.BLACK);
+                deliveryStatus2.setTextColor(Color.WHITE);
+                deliveryStatus3.setTextColor(Color.BLACK);
+                deliveryStatus4.setTextColor(Color.BLACK);
+                deliveryStatus5.setTextColor(Color.BLACK);
+                deliveryStatus6.setTextColor(Color.BLACK);
+
+                number.setTextColor(Color.BLACK);
+                number1.setTextColor(Color.BLACK);
+                number2.setTextColor(Color.WHITE);
+                number3.setTextColor(Color.BLACK);
+                number4.setTextColor(Color.BLACK);
+                number5.setTextColor(Color.BLACK);
+                number6.setTextColor(Color.BLACK);
             }
         });
 
@@ -225,6 +315,30 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.deliveredFragment);
+
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+
+                deliveryStatus.setTextColor(Color.BLACK);
+                deliveryStatus1.setTextColor(Color.BLACK);
+                deliveryStatus2.setTextColor(Color.BLACK);
+                deliveryStatus3.setTextColor(Color.WHITE);
+                deliveryStatus4.setTextColor(Color.BLACK);
+                deliveryStatus5.setTextColor(Color.BLACK);
+                deliveryStatus6.setTextColor(Color.BLACK);
+
+                number.setTextColor(Color.BLACK);
+                number1.setTextColor(Color.BLACK);
+                number2.setTextColor(Color.BLACK);
+                number3.setTextColor(Color.WHITE);
+                number4.setTextColor(Color.BLACK);
+                number5.setTextColor(Color.BLACK);
+                number6.setTextColor(Color.BLACK);
             }
         });
 
@@ -233,6 +347,30 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.paidFragment);
+
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+
+                deliveryStatus.setTextColor(Color.BLACK);
+                deliveryStatus1.setTextColor(Color.BLACK);
+                deliveryStatus2.setTextColor(Color.BLACK);
+                deliveryStatus3.setTextColor(Color.BLACK);
+                deliveryStatus4.setTextColor(Color.WHITE);
+                deliveryStatus5.setTextColor(Color.BLACK);
+                deliveryStatus6.setTextColor(Color.BLACK);
+
+                number.setTextColor(Color.BLACK);
+                number1.setTextColor(Color.BLACK);
+                number2.setTextColor(Color.BLACK);
+                number3.setTextColor(Color.BLACK);
+                number4.setTextColor(Color.WHITE);
+                number5.setTextColor(Color.BLACK);
+                number6.setTextColor(Color.BLACK);
             }
         });
 
@@ -241,6 +379,30 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.cancelledFragment);
+
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+
+                deliveryStatus.setTextColor(Color.BLACK);
+                deliveryStatus1.setTextColor(Color.BLACK);
+                deliveryStatus2.setTextColor(Color.BLACK);
+                deliveryStatus3.setTextColor(Color.BLACK);
+                deliveryStatus4.setTextColor(Color.BLACK);
+                deliveryStatus5.setTextColor(Color.WHITE);
+                deliveryStatus6.setTextColor(Color.BLACK);
+
+                number.setTextColor(Color.BLACK);
+                number1.setTextColor(Color.BLACK);
+                number2.setTextColor(Color.BLACK);
+                number3.setTextColor(Color.BLACK);
+                number4.setTextColor(Color.BLACK);
+                number5.setTextColor(Color.WHITE);
+                number6.setTextColor(Color.BLACK);
             }
         });
 
@@ -249,6 +411,30 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.allFragment);
+
+                received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                delivered.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                paid.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                cancel.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
+                all.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
+
+                deliveryStatus.setTextColor(Color.BLACK);
+                deliveryStatus1.setTextColor(Color.BLACK);
+                deliveryStatus2.setTextColor(Color.BLACK);
+                deliveryStatus3.setTextColor(Color.BLACK);
+                deliveryStatus4.setTextColor(Color.BLACK);
+                deliveryStatus5.setTextColor(Color.BLACK);
+                deliveryStatus6.setTextColor(Color.WHITE);
+
+                number.setTextColor(Color.BLACK);
+                number1.setTextColor(Color.BLACK);
+                number2.setTextColor(Color.BLACK);
+                number3.setTextColor(Color.BLACK);
+                number4.setTextColor(Color.BLACK);
+                number5.setTextColor(Color.BLACK);
+                number6.setTextColor(Color.WHITE);
             }
         });
 

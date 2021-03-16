@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 
-public class Chat extends Fragment {
+public class ChatFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
