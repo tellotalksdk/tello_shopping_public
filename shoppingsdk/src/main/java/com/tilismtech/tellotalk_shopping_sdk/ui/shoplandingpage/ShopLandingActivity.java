@@ -151,6 +151,10 @@ public class ShopLandingActivity extends AppCompatActivity {
                 chat.setBackgroundColor(Color.TRANSPARENT);
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+
+                addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_outline));
+                setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_settings));
+
                 navController.navigate(R.id.shopLandingFragment);
             }
         });
@@ -172,6 +176,9 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
 
+             //   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+             //   setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+
                 navController.navigate(R.id.receivedFragment);
             }
         });
@@ -192,6 +199,10 @@ public class ShopLandingActivity extends AppCompatActivity {
                 chat.setBackground(getResources().getDrawable(R.drawable.bg_text_right_rounded));
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+
+               // addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+               // setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+
                 navController.navigate(R.id.chat);
             }
         });

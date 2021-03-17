@@ -155,4 +155,12 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             horizontalLine3.setVisibility(View.VISIBLE);
         }
     }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
 }

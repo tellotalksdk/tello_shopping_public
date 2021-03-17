@@ -67,8 +67,7 @@
             android:layout_below="@+id/orderNumber"
             android:layout_alignParentEnd="true"
             android:gravity="end|center"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/quantity"
@@ -122,13 +121,13 @@
         <Spinner
             android:id="@+id/spinner_moveto"
             android:layout_width="wrap_content"
-            android:paddingEnd="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
-            android:entries="@array/move_to"
             android:layout_alignBottom="@+id/addRoderInfo"
+            android:layout_centerInParent="true"
             android:background="@drawable/custom_move_to_spinner"
-            android:layout_centerInParent="true" />
+            android:entries="@array/move_to"
+            android:paddingEnd="30dp" />
 
 
         <TextView

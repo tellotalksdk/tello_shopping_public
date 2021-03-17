@@ -2,6 +2,7 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shopsetting;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +28,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopSettingFragment extends Fragment {
+public class ShopSettingFragment extends Fragment implements ColorChooserAdapter.OnColorChooserListener {
 
     Button saveAccountbtn;
     NavController navController;
@@ -40,6 +43,8 @@ public class ShopSettingFragment extends Fragment {
     RelativeLayout outerRL;
     RecyclerView recycler_colors;
     ColorChooserAdapter colorChooserAdapter;
+    ColorChooserAdapter.OnColorChooserListener onColorChooserListener;
+    List<ColorChooserPojo> colorList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +107,7 @@ public class ShopSettingFragment extends Fragment {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 wlp.gravity = Gravity.BOTTOM;
-               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
                 dialog.setCanceledOnTouchOutside(true);
@@ -118,26 +123,24 @@ public class ShopSettingFragment extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.dialog_setting_color);
 
-                List<Integer> colorList = new ArrayList<>();
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
-                colorList.add(R.drawable.circle);
+                colorList = new ArrayList<>();
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
+
 
                 recycler_colors = dialog.findViewById(R.id.recycler_colors);
-                colorChooserAdapter = new ColorChooserAdapter(colorList, getActivity());
+                colorChooserAdapter = new ColorChooserAdapter(colorList, getActivity(), getReference());
 
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 6, LinearLayoutManager.VERTICAL, false);
                 recycler_colors.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
@@ -148,7 +151,7 @@ public class ShopSettingFragment extends Fragment {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 wlp.gravity = Gravity.BOTTOM;
-               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
                 dialog.setCanceledOnTouchOutside(true);
@@ -166,4 +169,26 @@ public class ShopSettingFragment extends Fragment {
 
     }
 
+    @Override
+    public void onColorClick(int position, ImageView circles) {
+        //Toast.makeText(getActivity(), " position : " + position, Toast.LENGTH_SHORT).show();
+
+        colorList.get(position).setSelected(true);
+
+        for (int i = 0; i < colorList.size(); i++) {
+            if (i == position) {
+                colorList.get(i).setSelected(true);
+                continue;
+            }
+            colorList.get(i).setSelected(false);
+        }
+
+        colorChooserAdapter.notifyDataSetChanged();
+
+
+    }
+
+    public ColorChooserAdapter.OnColorChooserListener getReference() {
+        return this;
+    }
 }

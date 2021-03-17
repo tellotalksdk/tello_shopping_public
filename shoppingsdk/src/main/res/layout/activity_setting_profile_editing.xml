@@ -155,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mainHead"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@android:color/darker_gray"
+        app:tabIndicatorColor="#64DCCF"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@android:color/darker_gray"
