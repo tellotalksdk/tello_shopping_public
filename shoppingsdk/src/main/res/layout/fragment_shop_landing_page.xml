@@ -295,6 +295,7 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:text="Add Product"
+        android:visibility="gone"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>
