@@ -64,7 +64,7 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 window.setAttributes(wlp);
 
 
-                done = dialog.findViewById(R.id.done_btn);
+                done = dialog.findViewById(R.id.confirmRiderbtn);
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

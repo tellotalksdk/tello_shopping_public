@@ -63,7 +63,7 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
                 // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
-                done = dialog.findViewById(R.id.done_btn);
+                done = dialog.findViewById(R.id.confirmRiderbtn);
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

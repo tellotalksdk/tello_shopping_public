@@ -6,12 +6,10 @@ import java.util.logging.Level;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 
-import static okhttp3.logging.HttpLoggingInterceptor.*;
 
 public class RetrofitClient {
 

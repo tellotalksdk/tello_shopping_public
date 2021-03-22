@@ -283,6 +283,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:gravity="right"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -325,6 +326,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:gravity="right"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -367,6 +369,7 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:gravity="right"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -409,18 +412,19 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:gravity="right"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:background="@android:color/transparent"
-                    android:text="5 Jan , 2021 / 3:54 P.M"
+                    android:text="Accept"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textColor="#0D62D1"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
 
@@ -450,18 +454,19 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:gravity="right"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:background="@android:color/transparent"
-                    android:text="5 Jan , 2021 / 3:54 P.M"
+                    android:text="Accept"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textColor="#0D62D1"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
 
