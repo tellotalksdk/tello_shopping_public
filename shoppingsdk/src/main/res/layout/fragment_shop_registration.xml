@@ -79,6 +79,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15sp"
                     android:layout_toRightOf="@+id/iv_user_image"
+                    android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:enabled="false"
                     android:maxLength="20"
@@ -196,11 +197,10 @@
             </RelativeLayout>
 
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+
 
                 <LinearLayout
+                    android:weightSum="14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -208,7 +208,9 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatSpinner
-                        android:layout_width="70dp"
+                        android:id="@+id/spinner_operator"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
                         android:layout_height="50dp"
                         android:background="@drawable/edit_text_bg_color"
                         android:entries="@array/network_options" />
@@ -216,9 +218,10 @@
 
                     <EditText
                         android:id="@+id/d1"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
                         android:enabled="true"
                         android:gravity="center"
@@ -226,11 +229,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d2"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -241,11 +246,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d3"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -255,11 +262,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d4"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -269,11 +278,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d5"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -283,11 +294,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d6"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -297,11 +310,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d7"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -311,11 +326,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d8"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -325,11 +342,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d9"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -339,11 +358,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d10"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -353,11 +374,13 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                     <EditText
                         android:id="@+id/d11"
-                        android:layout_width="17dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:background="@drawable/edit_text_bg_color"
@@ -367,11 +390,12 @@
                         android:inputType="number"
                         android:maxLength="1"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
-            </HorizontalScrollView>
+
 
         </LinearLayout>
 
@@ -544,27 +568,27 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_below="@+id/term"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    >
-                <Button
-                    android:id="@+id/done_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/term"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/rounded_btn_light"
-                    android:paddingLeft="75dp"
-                    android:paddingRight="75dp"
-                    android:text="Done"
-                    android:textColor="@android:color/black"
-                    android:visibility="visible" />
+                    android:layout_centerHorizontal="true">
+
+                    <Button
+                        android:id="@+id/done_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/term"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/rounded_btn_light"
+                        android:paddingLeft="75dp"
+                        android:paddingRight="75dp"
+                        android:text="Done"
+                        android:textColor="@android:color/black"
+                        android:visibility="visible" />
 
                 </LinearLayout>
 

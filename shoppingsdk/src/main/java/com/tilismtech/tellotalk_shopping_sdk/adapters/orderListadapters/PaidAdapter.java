@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
 
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
+    Button done;
 
     public PaidAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
@@ -60,6 +62,15 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
                 wlp.gravity = Gravity.BOTTOM;
                 // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
+
+
+                done = dialog.findViewById(R.id.done_btn);
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
 
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();

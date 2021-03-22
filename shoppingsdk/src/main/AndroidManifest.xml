@@ -2,10 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tilismtech.tellotalk_shopping_sdk">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
     <application>
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity"></activity>
+            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

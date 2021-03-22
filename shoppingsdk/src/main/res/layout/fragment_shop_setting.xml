@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 
@@ -94,7 +95,9 @@
                 android:background="@drawable/custom_spinner"
                 android:entries="@array/area" />
 
-            <RelativeLayout
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#EAEFF3"
                 android:id="@+id/iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,15 +108,14 @@
                 android:background="@drawable/edit_text_bg_color">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/bannerImage"
+                    android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_centerInParent="true"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_baseline_camera" />
 
-            </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
             <FrameLayout
                 android:id="@+id/FL1"

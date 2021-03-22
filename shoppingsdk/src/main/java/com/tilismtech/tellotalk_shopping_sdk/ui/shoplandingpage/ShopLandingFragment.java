@@ -20,8 +20,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+
+
 
 public class ShopLandingFragment extends Fragment {
 
@@ -33,6 +36,7 @@ public class ShopLandingFragment extends Fragment {
     Dialog dialogAddProduct;
     HorizontalScrollView orderListtabbar;
     LinearLayout productList;
+    RecyclerView recycler_add_product;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class ShopLandingFragment extends Fragment {
         navController = Navigation.findNavController(view);
        // orderListtabbar = view.findViewById(R.id.orderListtabbar);
         productList = view.findViewById(R.id.productList);
+        recycler_add_product = view.findViewById(R.id.recycler_add_product);
 
         addProduct_btn = view.findViewById(R.id.addProduct_btn);
         addProduct_btn.setOnClickListener(new View.OnClickListener() {

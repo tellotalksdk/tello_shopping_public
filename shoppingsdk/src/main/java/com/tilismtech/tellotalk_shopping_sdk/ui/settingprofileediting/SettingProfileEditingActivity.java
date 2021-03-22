@@ -64,11 +64,12 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         tab1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
+               /* if (tab.getPosition() == 0) {
                     navController.navigate(R.id.editingProfileFragment);
-                } else if (tab.getPosition() == 1) {
+                } else*/
+                if (tab.getPosition() == 0) {
                     navController.navigate(R.id.storeSettingFragment);
-                } else if (tab.getPosition() == 2) {
+                } else if (tab.getPosition() == 1) {
                     navController.navigate(R.id.bankSettingFragment);
                 }
             }

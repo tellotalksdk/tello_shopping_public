@@ -9,11 +9,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,11 +42,11 @@ public class ShopRegistrationFragment extends Fragment {
     ImageView iv_back, iv_editImage;
     TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown;
     EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
-    String[] mobileNumberArray = new String[12];
-    String mobileNumber = ""; //this will hold the number till last digit
-    String temp;
     boolean isEditable;
+    Spinner spinner_operator;
     String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$";
+    StringBuilder mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
+    ArrayList<String> mobileOpt = new ArrayList<>();
 
 
     @Override
@@ -126,6 +129,9 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+
+        insertDigitreflection.setText(mobileNumberReflection);
+
         d1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -162,6 +168,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d3.setCursorVisible(true);
                 }
 
+                if (TextUtils.isEmpty(d2.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(3, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d2.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(3, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
+                }
+
             }
 
             @Override
@@ -182,6 +198,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d3.clearFocus();
                     d4.requestFocus();
                     d4.setCursorVisible(true);
+                }
+
+                if (TextUtils.isEmpty(d3.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(4, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d3.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(4, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
                 }
 
 
@@ -207,6 +233,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d5.setCursorVisible(true);
                 }
 
+                if (TextUtils.isEmpty(d4.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(5, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d4.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(5, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
+                }
+
             }
 
             @Override
@@ -229,6 +265,17 @@ public class ShopRegistrationFragment extends Fragment {
                     d6.setCursorVisible(true);
                 }
 
+                if (TextUtils.isEmpty(d5.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(7, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d5.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(7, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
+                }
+
+
             }
 
             @Override
@@ -250,6 +297,17 @@ public class ShopRegistrationFragment extends Fragment {
                     d7.requestFocus();
                     d7.setCursorVisible(true);
                 }
+
+                if (TextUtils.isEmpty(d6.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(8, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d6.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(8, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
+                }
+
             }
 
             @Override
@@ -270,6 +328,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d7.clearFocus();
                     d8.requestFocus();
                     d8.setCursorVisible(true);
+                }
+
+                if (TextUtils.isEmpty(d7.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(9, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d7.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(9, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
                 }
             }
 
@@ -293,6 +361,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d9.requestFocus();
                     d9.setCursorVisible(true);
                 }
+
+                if (TextUtils.isEmpty(d8.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(11, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d8.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(11, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
+                }
             }
 
             @Override
@@ -313,6 +391,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d9.clearFocus();
                     d10.requestFocus();
                     d10.setCursorVisible(true);
+                }
+
+                if (TextUtils.isEmpty(d9.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(12, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d9.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(12, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
                 }
             }
 
@@ -335,6 +423,16 @@ public class ShopRegistrationFragment extends Fragment {
                     d11.requestFocus();
                     d11.setCursorVisible(true);
                 }
+
+                if (TextUtils.isEmpty(d10.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(13, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d10.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(13, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
+                }
             }
 
             @Override
@@ -356,72 +454,15 @@ public class ShopRegistrationFragment extends Fragment {
                     d1.requestFocus();
                     d1.setCursorVisible(true);
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        //to be review
-        /*d1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (!TextUtils.isEmpty(d1.getText().toString())) {
-                    temp = d1.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d1.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    insertDigitreflection.setText("Your Number : 92 " + mobileNumber);
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (!TextUtils.isEmpty(d2.getText().toString())) {
-                    temp = d2.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d2.getText().toString())) {
-                    // char charAtposition = mobileNumber.charAt(1);
-                    //   String strNew = mobileNumber.replace(String.valueOf(charAtposition), "");
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
+                if (TextUtils.isEmpty(d11.getText().toString())) { //add single space on zero index
+                    mobileNumberReflection.setCharAt(14, 'x');
+                    insertDigitreflection.setText(mobileNumberReflection);
+                } else { // add number on zero index
+                    String s1 = d11.getText().toString();
+                    char c = s1.charAt(0);//returns h
+                    mobileNumberReflection.setCharAt(14, c);
+                    insertDigitreflection.setText(mobileNumberReflection);
                 }
             }
 
@@ -430,296 +471,6 @@ public class ShopRegistrationFragment extends Fragment {
 
             }
         });
-
-        d3.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (!TextUtils.isEmpty(d3.getText().toString())) {
-                    temp = d3.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d3.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d4.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d4.getText().toString())) {
-                    temp = d4.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d4.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d5.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d5.getText().toString())) {
-                    temp = d5.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d5.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d6.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d6.getText().toString())) {
-                    temp = d6.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d6.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d7.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d7.getText().toString())) {
-                    temp = d7.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d7.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-        d8.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d8.getText().toString())) {
-                    temp = d8.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d8.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d9.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d9.getText().toString())) {
-                    temp = d9.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d9.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d10.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d10.getText().toString())) {
-                    temp = d10.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d10.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    your_number.setVisibility(View.GONE);
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        d11.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(d11.getText().toString())) {
-                    temp = d11.getText().toString();
-                }
-
-                if (TextUtils.isEmpty(d11.getText().toString())) {
-                    String strNew = mobileNumber.replace(temp, "");
-                    mobileNumber = strNew;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                    temp = "";
-                } else {
-                    mobileNumber += temp;
-                    insertDigitreflection.setText(" Your Number : 92 " + mobileNumber);
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
 
         otp_one.addTextChangedListener(new TextWatcher() {
             @Override
@@ -753,7 +504,6 @@ public class ShopRegistrationFragment extends Fragment {
 
             }
         });
-
 
         otp_two.addTextChangedListener(new TextWatcher() {
             @Override
@@ -838,6 +588,16 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        mobileOpt.add("Select");
+        mobileOpt.add("Ufone");
+        mobileOpt.add("Telenor");
+        mobileOpt.add("Jazz");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, mobileOpt);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        spinner_operator.setAdapter(spinnerArrayAdapter);
+
     }
 
     private boolean checkOTP() {
@@ -901,6 +661,7 @@ public class ShopRegistrationFragment extends Fragment {
         otp_three = view.findViewById(R.id.otp_three);
         iv_editImage = view.findViewById(R.id.iv_editImage);
         userShopname = view.findViewById(R.id.userShopname);
+        spinner_operator = view.findViewById(R.id.spinner_operator);
 
         d1 = view.findViewById(R.id.d1);
         d2 = view.findViewById(R.id.d2);
