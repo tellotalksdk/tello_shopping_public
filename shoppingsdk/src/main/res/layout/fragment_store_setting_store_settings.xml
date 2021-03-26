@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp">
 
-        <ImageView
-            android:id="@+id/iv_top_image"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card1"
+            app:cardCornerRadius="8dp"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:background="@drawable/edit_text_bg_color" />
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/iv_top_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_store_banner"
+                android:scaleType="fitXY"
+                android:background="@drawable/edit_text_bg_color" />
+
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:id="@+id/LL1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_top_image"
+            android:layout_below="@+id/card1"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
@@ -113,11 +124,17 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/addressRL"
+            android:layout_below="@+id/LL3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/addedAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/LL3"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
@@ -187,38 +204,46 @@
                     android:textSize="10.5sp" />
 
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_street"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
+                    android:background="@android:color/transparent"
                     android:text="11-E DHA street"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
+                    android:background="@android:color/transparent"
                     android:text="Karachi"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_province"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
+                    android:background="@android:color/transparent"
                     android:text="Sindh"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
-                <TextView
+                <EditText
+                    android:id="@+id/et_country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
+                    android:background="@android:color/transparent"
                     android:text="Pakistan"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
@@ -260,6 +285,8 @@
 
         </RelativeLayout>
 
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -271,6 +298,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/addnewaddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

@@ -152,9 +152,9 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
 
-                addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_outline));
+               /* addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_outline));
                 setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_settings));
-
+*/
                 navController.navigate(R.id.shopLandingFragment);
             }
         });
@@ -176,9 +176,9 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
 
-             //   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
-             //   setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
-
+            /*   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+               setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+*/
                 navController.navigate(R.id.receivedFragment);
             }
         });
@@ -200,9 +200,9 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
 
-               // addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
-               // setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
-
+             /*   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+                setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+*/
                 navController.navigate(R.id.chat);
             }
         });

@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +23,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 
 import java.util.List;
 
-public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.DispatchedItemViewHolder>{
+public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.DispatchedItemViewHolder> {
 
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
@@ -112,7 +114,9 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
 
     public class DispatchedItemViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo , viewFull;
+        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
+        private Spinner spinner_moveto;
+
 
         public DispatchedItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,6 +129,13 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
             rupees = itemView.findViewById(R.id.rupees);
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
+
+            spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.move_to));
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+            spinner_moveto.setAdapter(spinnerArrayAdapter);
+
         }
     }
 

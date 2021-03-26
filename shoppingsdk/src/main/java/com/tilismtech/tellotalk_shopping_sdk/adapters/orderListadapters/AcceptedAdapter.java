@@ -2,6 +2,7 @@ package com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,6 +70,8 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        holder.addRiderInfo.setTextColor(Color.BLACK);
+                        holder.addRiderInfo.setText("Rider : sharjeel/0334 1234567");
                         dialog.dismiss();
                     }
                 });
@@ -114,6 +119,8 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
     public class AcceptedItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo , viewFull;
+        private Spinner spinner_moveto;
+
 
         public AcceptedItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,6 +133,12 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
             rupees = itemView.findViewById(R.id.rupees);
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
+            spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.move_to));
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+            spinner_moveto.setAdapter(spinnerArrayAdapter);
+
         }
     }
 

@@ -61,17 +61,24 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         bankRL.setOnClickListener(this);
 
         tab1 = findViewById(R.id.tab1);
+        tab1.getTabAt(0).select();
         tab1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-               /* if (tab.getPosition() == 0) {
-                    navController.navigate(R.id.editingProfileFragment);
-                } else*/
-                if (tab.getPosition() == 0) {
+
+                switch (tab.getPosition()){
+                    case 0:
+                        navController.navigate(R.id.storeSettingFragment);
+                        break;
+                    case 1:
+                        navController.navigate(R.id.bankSettingFragment);
+                        break;
+                }
+              /*  if (tab.getPosition() == 0) {
                     navController.navigate(R.id.storeSettingFragment);
                 } else if (tab.getPosition() == 1) {
                     navController.navigate(R.id.bankSettingFragment);
-                }
+                }*/
             }
 
             @Override
@@ -92,37 +99,12 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             }
         });
 
-
-     /*   tab1 = findViewById(R.id.tab1);
-        tab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.editingProfileFragment);
-            }
-        });
-
-        tab2 = findViewById(R.id.tab2);
-        tab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.storeSettingFragment);
-            }
-        });
-
-        tab3 = findViewById(R.id.tab3);
-        tab3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.bankSettingFragment);
-            }
-        });
-*/
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.personalInfoRL) {
-            navController.navigate(R.id.editingProfileFragment);
+           // navController.navigate(R.id.editingProfileFragment);
 
             tv_personal.setTextColor(Color.parseColor("#50D4BF"));
             tv_storesettings.setTextColor(Color.parseColor("#000000"));

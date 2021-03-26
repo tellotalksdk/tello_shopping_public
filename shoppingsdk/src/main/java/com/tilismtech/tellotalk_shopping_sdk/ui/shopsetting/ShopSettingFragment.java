@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,16 +51,17 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     Button saveAccountbtn, upload, capture;
     NavController navController;
-    ImageView iv_timings, iv_websitetheme, iv_back, bannerImage;
+    ImageView iv_timings, iv_websitetheme, iv_back, bannerImage, clr_choose;
     Spinner province, city, area;
-    RelativeLayout outerRL ;
-    CardView iv ;
+    RelativeLayout outerRL;
+    CardView iv;
     RecyclerView recycler_colors;
     ColorChooserAdapter colorChooserAdapter;
     ColorChooserAdapter.OnColorChooserListener onColorChooserListener;
     List<ColorChooserPojo> colorList;
     Dialog dialogImage;
     Uri imageUri;
+    TextView setColortext;
 
 
     @Override
@@ -87,6 +89,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         iv_back = view.findViewById(R.id.iv_back);
         iv = view.findViewById(R.id.iv);
         bannerImage = view.findViewById(R.id.bannerImage);
+        setColortext = view.findViewById(R.id.setColortext);
+        clr_choose = view.findViewById(R.id.clr_choose);
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +244,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.dialog_setting_color);
 
+                Button btnConfirmColor = dialog.findViewById(R.id.confirmColor);
+                btnConfirmColor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
                 colorList = new ArrayList<>();
                 colorList.add(new ColorChooserPojo(R.drawable.circle, false));
                 colorList.add(new ColorChooserPojo(R.drawable.circle, false));
@@ -302,7 +314,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
         colorChooserAdapter.notifyDataSetChanged();
 
-
+        clr_choose.setVisibility(View.VISIBLE);
+        setColortext.setText("");
     }
 
     public ColorChooserAdapter.OnColorChooserListener getReference() {

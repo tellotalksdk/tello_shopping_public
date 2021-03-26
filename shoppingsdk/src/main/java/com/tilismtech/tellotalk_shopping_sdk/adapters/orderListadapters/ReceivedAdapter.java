@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.ReceivedItemViewHolder> {
@@ -26,6 +29,8 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
+    ArrayList<String> move_to_Opt = new ArrayList<>();
+
 
     public ReceivedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
@@ -115,6 +120,7 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
     public class ReceivedItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
+        private Spinner spinner_moveto;
 
         public ReceivedItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -127,7 +133,15 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
             rupees = itemView.findViewById(R.id.rupees);
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
+            spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.move_to));
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+            spinner_moveto.setAdapter(spinnerArrayAdapter);
         }
+
+
     }
 
 

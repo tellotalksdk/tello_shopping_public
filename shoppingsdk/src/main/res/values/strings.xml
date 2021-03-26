@@ -64,6 +64,7 @@
     </string-array>
 
     <string-array name="province">
+        <item>Select Province</item>
         <item>Sindh</item>
         <item>Punjab</item>
         <item>Balochistan</item>
@@ -71,12 +72,14 @@
     </string-array>
 
     <string-array name="city">
+        <item>Select City</item>
         <item>Karachi</item>
         <item>Lahore</item>
         <item>Islamabad</item>
     </string-array>
 
     <string-array name="area">
+        <item>Select Area</item>
         <item>Area 1</item>
         <item>Area 2</item>
         <item>Area 3</item>
@@ -92,6 +95,15 @@
         <item>All</item>
     </string-array>
 
+    <string-array name="countries">
+        <item>Select Country</item>
+        <item>Pakistan</item>
+        <item>Bangladesh</item>
+        <item>India</item>
+        <item>Afghanistan</item>
+        <item>Nepal</item>
+        <item>China</item>
+    </string-array>
 
 
 </resources>

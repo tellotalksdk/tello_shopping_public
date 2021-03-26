@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -113,6 +115,8 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
     public class DeliveredItemViewHolder extends RecyclerView.ViewHolder {
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
+        private Spinner spinner_moveto;
+
 
         public DeliveredItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,6 +129,13 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
             rupees = itemView.findViewById(R.id.rupees);
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
+
+            spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.move_to));
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+            spinner_moveto.setAdapter(spinnerArrayAdapter);
+
         }
     }
 }

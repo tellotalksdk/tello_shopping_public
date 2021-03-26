@@ -20,23 +20,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
 
+import java.util.ArrayList;
 
 
 public class ShopLandingFragment extends Fragment {
 
-    NavController navController;
-    ImageView setting, open_edit_details, iv_back_addproduct;
-    Dialog dialog_edit_details;
-    LinearLayout outerRL;
-    Button addProduct_btn, uploadProduct;
-    Dialog dialogAddProduct;
-    HorizontalScrollView orderListtabbar;
-    LinearLayout productList;
-    RecyclerView recycler_add_product;
+    private NavController navController;
+    private ImageView setting, open_edit_details, iv_back_addproduct;
+    private Dialog dialog_edit_details;
+    private LinearLayout outerRL;
+    private Button addProduct_btn, uploadProduct;
+    private Dialog dialogAddProduct;
+    private HorizontalScrollView orderListtabbar;
+    private LinearLayout productList;
+    private RecyclerView recycler_add_product;
+    private ProductListAdapter productListAdapter;
+    private ArrayList<ProductListpojo> productListpojos;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +64,11 @@ public class ShopLandingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-       // orderListtabbar = view.findViewById(R.id.orderListtabbar);
+        // orderListtabbar = view.findViewById(R.id.orderListtabbar);
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
+
+        initRV();
 
         addProduct_btn = view.findViewById(R.id.addProduct_btn);
         addProduct_btn.setOnClickListener(new View.OnClickListener() {
@@ -117,13 +128,32 @@ public class ShopLandingFragment extends Fragment {
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 wlp.gravity = Gravity.BOTTOM;
-               // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
                 window.setAttributes(wlp);
 
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
         });
+    }
+
+    private void initRV() {
+        initDummyData();
+
+        productListAdapter = new ProductListAdapter(productListpojos, getActivity());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
+        recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+        recycler_add_product.setAdapter(productListAdapter);
+
+    }
+
+    private void initDummyData() {
+        productListpojos = new ArrayList<>();
+        productListpojos.add(new ProductListpojo("Samsung Y10", "RS 10000", "RS 8500", "Mobile", true, R.drawable.ic_bbq));
+        productListpojos.add(new ProductListpojo("Samsung Y10", "RS 10000", "RS 8500", "Mobile", true, R.drawable.ic_bbq));
+        productListpojos.add(new ProductListpojo("Samsung Y10", "RS 10000", "RS 8500", "Mobile", true, R.drawable.ic_bbq));
+        productListpojos.add(new ProductListpojo("Samsung Y10", "RS 10000", "RS 8500", "Mobile", true, R.drawable.ic_bbq));
+        productListpojos.add(new ProductListpojo("Samsung Y10", "RS 10000", "RS 8500", "Mobile", true, R.drawable.ic_bbq));
     }
 
 
