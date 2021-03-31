@@ -135,7 +135,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
             viewFull = itemView.findViewById(R.id.viewFull);
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.move_to));
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.accepted));
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
             spinner_moveto.setAdapter(spinnerArrayAdapter);
 

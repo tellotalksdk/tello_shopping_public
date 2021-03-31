@@ -4,11 +4,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import org.w3c.dom.Text;
 
@@ -33,8 +36,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class ShopRegistrationFragment extends Fragment {
 
+    int counter = 0;
     Button btnCreateAccount;
     Button requestAgain, done_btn;
     NavController navController;
@@ -44,7 +51,7 @@ public class ShopRegistrationFragment extends Fragment {
     EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
     boolean isEditable;
     Spinner spinner_operator;
-    String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$";
+    String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$"; //regex for shop name must be in alphanumeric format...
     StringBuilder mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
     ArrayList<String> mobileOpt = new ArrayList<>();
 
@@ -76,6 +83,7 @@ public class ShopRegistrationFragment extends Fragment {
                     btnCreateAccount.setVisibility(View.GONE);
                     startCountDown();
                 }
+                Utility.hideKeyboard(getActivity(), v);
             }
         });
 
@@ -91,9 +99,18 @@ public class ShopRegistrationFragment extends Fragment {
         requestAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
-                requestAgain.setTextColor(Color.BLACK);
-                startCountDown();
+                if (counter < 2) {
+                    requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
+                    requestAgain.setTextColor(Color.BLACK);
+                    requestAgain.setClickable(false);
+                    startCountDown();
+                    counter++;
+                } else {
+                    requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_dark_selected));
+                    requestAgain.setTextColor(Color.WHITE);
+                    requestAgain.setClickable(true);
+                    requestAgain.setText("Request For Call");
+                }
             }
         });
 
@@ -103,6 +120,7 @@ public class ShopRegistrationFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
 
         et_shop_name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -633,6 +651,7 @@ public class ShopRegistrationFragment extends Fragment {
                     countDown.setText("done!");
                     requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_dark_selected));
                     requestAgain.setTextColor(Color.WHITE);
+                    requestAgain.setClickable(true);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -17,12 +17,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductItemVH> {
@@ -83,10 +87,37 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 });
 
 
-
                 Window window = dialog.getWindow();
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                wlp.gravity = Gravity.BOTTOM;
+                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                window.setAttributes(wlp);
+
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
+            }
+        });
+
+        holder.viewProductDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(myCtx);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.dialog_product_detail_new);
+
+                ImageView iv_back = dialog.findViewById(R.id.iv_back);
+                iv_back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Window window = dialog.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                 wlp.gravity = Gravity.BOTTOM;
                 // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
@@ -107,6 +138,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         TextView productTitle, originalprice, discountedprice, productcategory;
         Switch isActive;
         ImageView productImage, open_edit_details;
+        CardView viewProductDetail;
 
         public ProductItemVH(@NonNull View itemView) {
             super(itemView);
@@ -118,6 +150,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             isActive = itemView.findViewById(R.id.isActive);
             productImage = itemView.findViewById(R.id.productImage);
             open_edit_details = itemView.findViewById(R.id.open_edit_details);
+            viewProductDetail = itemView.findViewById(R.id.viewProductDetail);
         }
     }
 }

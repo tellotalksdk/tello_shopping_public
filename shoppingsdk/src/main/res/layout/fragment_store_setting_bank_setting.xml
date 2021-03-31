@@ -10,6 +10,8 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
+
+
         <TextView
             android:id="@+id/tv_setuppayment"
             android:layout_width="wrap_content"
@@ -79,6 +81,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toLeftOf="@+id/tv_addbankdetails"
+            android:layout_alignTop="@+id/tv_addbankdetails"
+            android:src="@drawable/ic_baseline_arrow_back"/>
 
         <TextView
             android:id="@+id/tv_addbankdetails"
@@ -305,6 +317,99 @@
 
         <Button
             android:id="@+id/continue_btn_RL3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="75dp"
+            android:paddingRight="75dp"
+            android:text="Continue"
+            android:textColor="@android:color/white" />
+
+
+    </RelativeLayout>
+
+    <!--wallet flow-->
+    <RelativeLayout
+        android:id="@+id/RL4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_back1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toLeftOf="@+id/tv_addwalletdetails"
+            android:layout_alignTop="@+id/tv_addwalletdetails"
+            android:src="@drawable/ic_baseline_arrow_back"/>
+
+        <TextView
+            android:id="@+id/tv_addwalletdetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Add Wallet Details"
+            android:textColor="#535353"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/you3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_addwalletdetails"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="Add wallet detail and link with us"
+            android:textColor="#9F9F9F"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <Spinner
+            android:id="@+id/spinner_wallet_names"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/you3"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/custom_spinner" />
+
+        <EditText
+            android:id="@+id/account_title1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/spinner_wallet_names"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:paddingLeft="10dp"
+            android:text="* Account Title"
+            android:textSize="15sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/account_title1"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:paddingLeft="10dp"
+            android:text="* Account Number"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/continue_btn_RL23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

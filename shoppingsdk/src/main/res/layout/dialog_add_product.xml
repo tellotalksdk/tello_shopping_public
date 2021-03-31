@@ -270,7 +270,7 @@
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp"
-                android:text="Add Product"
+                android:text="Upload"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

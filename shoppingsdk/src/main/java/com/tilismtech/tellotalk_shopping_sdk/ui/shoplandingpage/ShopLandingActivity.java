@@ -19,12 +19,14 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity;
 
+import java.security.cert.CertPathBuilderSpi;
 import java.sql.SQLInvalidAuthorizationSpecException;
 
 public class ShopLandingActivity extends AppCompatActivity {
@@ -40,6 +42,12 @@ public class ShopLandingActivity extends AppCompatActivity {
     RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
     TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
     TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
+    SearchView simpleSearchView;
+    CurrentTab currentTab; //bydefault
+
+    //these fields hide when onsearch is pressed
+    ImageView profileImage;
+    TextView shopName, totalProducts, tv_addproducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,9 @@ public class ShopLandingActivity extends AppCompatActivity {
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
+        currentTab = CurrentTab.RECEIVED;
+
+        simpleSearchView = findViewById(R.id.simpleSearchView);
         Lineartabbar = findViewById(R.id.tabbar);
         orderListtabbar = findViewById(R.id.orderListtabbar);
         orderListtabbar.setVisibility(View.GONE);
@@ -61,6 +72,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         deliveryStatus5 = findViewById(R.id.deliveryStatus5);
         deliveryStatus6 = findViewById(R.id.deliveryStatus6);
 
+
         number = findViewById(R.id.number);
         number1 = findViewById(R.id.number1);
         number2 = findViewById(R.id.number2);
@@ -68,6 +80,11 @@ public class ShopLandingActivity extends AppCompatActivity {
         number4 = findViewById(R.id.number4);
         number5 = findViewById(R.id.number5);
         number6 = findViewById(R.id.number6);
+
+        profileImage = findViewById(R.id.profileImage);
+        shopName = findViewById(R.id.shopName);
+        totalProducts = findViewById(R.id.totalProducts);
+        tv_addproducts = findViewById(R.id.tv_addproducts);
 
         dialogCongratulation = new Dialog(ShopLandingActivity.this);
         dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -155,6 +172,10 @@ public class ShopLandingActivity extends AppCompatActivity {
                /* addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_add_circle_outline));
                 setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_settings));
 */
+
+                addProduct.setVisibility(View.VISIBLE);
+                simpleSearchView.setVisibility(View.INVISIBLE);
+
                 navController.navigate(R.id.shopLandingFragment);
             }
         });
@@ -176,9 +197,12 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
 
-            /*   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
-               setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
-*/
+                //addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+                //setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+
+                addProduct.setVisibility(View.INVISIBLE);
+                simpleSearchView.setVisibility(View.VISIBLE);
+
                 navController.navigate(R.id.receivedFragment);
             }
         });
@@ -203,6 +227,10 @@ public class ShopLandingActivity extends AppCompatActivity {
              /*   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
                 setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
 */
+
+                addProduct.setVisibility(View.INVISIBLE);
+                simpleSearchView.setVisibility(View.VISIBLE);
+
                 navController.navigate(R.id.chat);
             }
         });
@@ -248,6 +276,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number4.setTextColor(Color.BLACK);
                 number5.setTextColor(Color.BLACK);
                 number6.setTextColor(Color.BLACK);
+
+                currentTab = CurrentTab.RECEIVED;
             }
         });
 
@@ -284,7 +314,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number5.setTextColor(Color.BLACK);
                 number6.setTextColor(Color.BLACK);
 
-
+                currentTab = CurrentTab.ACCEPTED;
                 //  navController.navigate(R.id.acceptedFragment);
             }
         });
@@ -318,6 +348,9 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number4.setTextColor(Color.BLACK);
                 number5.setTextColor(Color.BLACK);
                 number6.setTextColor(Color.BLACK);
+
+                currentTab = CurrentTab.DISPATCHED;
+
             }
         });
 
@@ -350,6 +383,9 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number4.setTextColor(Color.BLACK);
                 number5.setTextColor(Color.BLACK);
                 number6.setTextColor(Color.BLACK);
+
+                currentTab = CurrentTab.DELIVERED;
+
             }
         });
 
@@ -382,6 +418,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number4.setTextColor(Color.WHITE);
                 number5.setTextColor(Color.BLACK);
                 number6.setTextColor(Color.BLACK);
+
+                currentTab = CurrentTab.PAID;
             }
         });
 
@@ -414,6 +452,9 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number4.setTextColor(Color.BLACK);
                 number5.setTextColor(Color.WHITE);
                 number6.setTextColor(Color.BLACK);
+
+                currentTab = CurrentTab.CANCEL;
+
             }
         });
 
@@ -446,8 +487,88 @@ public class ShopLandingActivity extends AppCompatActivity {
                 number4.setTextColor(Color.BLACK);
                 number5.setTextColor(Color.BLACK);
                 number6.setTextColor(Color.WHITE);
+
+                currentTab = CurrentTab.ALL;
             }
         });
+
+        simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                profileImage.setVisibility(View.GONE);
+                shopName.setVisibility(View.GONE);
+                totalProducts.setVisibility(View.GONE);
+                tv_addproducts.setVisibility(View.GONE);
+
+                switch (currentTab) {
+                    case RECEIVED:
+                        Bundle bundle = new Bundle();
+                        bundle.putString("query", query);
+                        navController.navigate(R.id.receivedFragment, bundle);
+                        break;
+                    case ACCEPTED:
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("query", query);
+                        navController.navigate(R.id.acceptedFragment, bundle1);
+                        break;
+                    case DISPATCHED:
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putString("query", query);
+                        navController.navigate(R.id.dispatchedFragment, bundle2);
+                        break;
+                    case DELIVERED:
+                        Bundle bundle3 = new Bundle();
+                        bundle3.putString("query", query);
+                        navController.navigate(R.id.deliveredFragment, bundle3);
+                        break;
+                    case PAID:
+                        Bundle bundle4 = new Bundle();
+                        bundle4.putString("query", query);
+                        navController.navigate(R.id.paidFragment, bundle4);
+                        break;
+                    case CANCEL:
+                        Bundle bundle5 = new Bundle();
+                        bundle5.putString("query", query);
+                        navController.navigate(R.id.cancelledFragment, bundle5);
+                        break;
+                    case ALL:
+                        Bundle bundle6 = new Bundle();
+                        bundle6.putString("query", query);
+                        navController.navigate(R.id.allFragment, bundle6);
+                        break;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+
+        simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                profileImage.setVisibility(View.VISIBLE);
+                shopName.setVisibility(View.VISIBLE);
+                totalProducts.setVisibility(View.VISIBLE);
+                tv_addproducts.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
+        simpleSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileImage.setVisibility(View.GONE);
+                shopName.setVisibility(View.GONE);
+                totalProducts.setVisibility(View.GONE);
+                tv_addproducts.setVisibility(View.GONE);
+            }
+        });
+
 
     }
 
@@ -455,5 +576,15 @@ public class ShopLandingActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    enum CurrentTab {
+        RECEIVED,
+        ACCEPTED,
+        DISPATCHED,
+        DELIVERED,
+        PAID,
+        CANCEL,
+        ALL
     }
 }

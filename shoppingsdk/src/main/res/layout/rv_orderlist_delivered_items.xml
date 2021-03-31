@@ -31,7 +31,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"
             android:text="Paid"
-            android:textColor="#40C3EB"
+            android:textColor="#226EE8"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
                 android:layout_below="@+id/customerName"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="Quantity : 5"
+                android:text="Items : 5"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 

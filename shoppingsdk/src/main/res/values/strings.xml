@@ -85,14 +85,49 @@
         <item>Area 3</item>
     </string-array>
 
-    <string-array name="move_to">
+    <string-array name="received">
+        <item>Move to</item>
+    </string-array>
+
+    <string-array name="accepted">
+        <item>Move to</item>
+        <item>Receive</item>
+    </string-array>
+
+    <string-array name="dispatched">
+        <item>Move to</item>
+        <item>Accept</item>
+    </string-array>
+
+    <string-array name="delivered">
+        <item>Move to</item>
+        <item>Accept</item>
+        <item>Dispatch</item>
+    </string-array>
+
+    <string-array name="paid">
+        <item>Move to</item>
+        <item>Accept</item>
+        <item>Dispatch</item>
+        <item>Deliver</item>
+    </string-array>
+
+    <string-array name="cancel">
         <item>Move to</item>
         <item>Accept</item>
         <item>Dispatch</item>
         <item>Deliver</item>
         <item>Paid</item>
+    </string-array>
+
+    <string-array name="all">
+        <item>Move to</item>
+        <item>Receive</item>
+        <item>Accept</item>
+        <item>Dispatch</item>
+        <item>Deliver</item>
+        <item>Paid</item>
         <item>Cancel</item>
-        <item>All</item>
     </string-array>
 
     <string-array name="countries">

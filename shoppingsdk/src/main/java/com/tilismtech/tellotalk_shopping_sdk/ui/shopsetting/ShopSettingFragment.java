@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,9 +53,11 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     Button saveAccountbtn, upload, capture;
     NavController navController;
-    ImageView iv_timings, iv_websitetheme, iv_back, bannerImage, clr_choose;
+    ImageView  iv_websitetheme, iv_back, bannerImage, clr_choose;
     Spinner province, city, area;
     RelativeLayout outerRL;
+    LinearLayout iv_timings;
+    FrameLayout colortheme;
     CardView iv;
     RecyclerView recycler_colors;
     ColorChooserAdapter colorChooserAdapter;
@@ -91,6 +95,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         bannerImage = view.findViewById(R.id.bannerImage);
         setColortext = view.findViewById(R.id.setColortext);
         clr_choose = view.findViewById(R.id.clr_choose);
+        colortheme = view.findViewById(R.id.colortheme);
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,7 +241,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             }
         });
 
-        iv_websitetheme.setOnClickListener(new View.OnClickListener() {
+        colortheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Dialog dialog = new Dialog(getActivity(), R.style.DialogSlideAnim);

@@ -132,7 +132,7 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
 
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.move_to));
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.dispatched));
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
             spinner_moveto.setAdapter(spinnerArrayAdapter);
 

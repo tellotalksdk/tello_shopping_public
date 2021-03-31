@@ -43,7 +43,6 @@ public class StoreSettingFragment extends Fragment {
             public void onClick(View v) {
                 View inflater = getLayoutInflater().inflate(R.layout.add_address_layout, null);
                 addressRL.addView(inflater);
-
                 ic_delete = inflater.findViewById(R.id.ic_delete);
                 ic_delete.setOnClickListener(new View.OnClickListener() {
                     @Override

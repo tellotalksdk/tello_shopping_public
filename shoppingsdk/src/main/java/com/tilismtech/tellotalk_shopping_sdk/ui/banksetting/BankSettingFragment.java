@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,9 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 
 public class BankSettingFragment extends Fragment {
     Button btn_bank;
-    RelativeLayout RL1, RL2, RL3;
-    Button continue_btn_1, continue_btn_2, continue_btn_3;
+    RelativeLayout RL1, RL2, RL3, RL4;
+    Button continue_btn_1, continue_btn_2, continue_btn_3 , btn_wallet;
+    ImageView iv_back , iv_back1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +38,36 @@ public class BankSettingFragment extends Fragment {
         RL1 = view.findViewById(R.id.RL1);
         RL2 = view.findViewById(R.id.RL2);
         RL3 = view.findViewById(R.id.RL3);
+        RL4 = view.findViewById(R.id.RL4);
+        btn_wallet = view.findViewById(R.id.btn_wallet);
 
+        btn_wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL1.setVisibility(View.GONE);
+                RL2.setVisibility(View.GONE);
+                RL3.setVisibility(View.GONE);
+                RL4.setVisibility(View.VISIBLE);
+            }
+        });
 
+        iv_back = view.findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL2.setVisibility(View.GONE);
+                RL1.setVisibility(View.VISIBLE);
+            }
+        });
+
+        iv_back1 = view.findViewById(R.id.iv_back);
+        iv_back1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL4.setVisibility(View.GONE);
+                RL1.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         btn_bank = view.findViewById(R.id.btn_bank);
