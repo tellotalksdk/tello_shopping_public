@@ -1,5 +1,6 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.banksetting;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,9 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 public class BankSettingFragment extends Fragment {
     Button btn_bank;
     RelativeLayout RL1, RL2, RL3, RL4;
-    Button continue_btn_1, continue_btn_2, continue_btn_3 , btn_wallet;
-    ImageView iv_back , iv_back1;
+    Button continue_btn_1, continue_btn_2, continue_btn_3, continue_btn_4, btn_wallet;
+    ImageView iv_back, iv_back1;
+    boolean isbankClicked, iswalletClicked;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,10 +46,22 @@ public class BankSettingFragment extends Fragment {
         btn_wallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RL1.setVisibility(View.GONE);
-                RL2.setVisibility(View.GONE);
-                RL3.setVisibility(View.GONE);
-                RL4.setVisibility(View.VISIBLE);
+                if (iswalletClicked) {
+                    btn_wallet.setBackground(getResources().getDrawable(R.drawable.bg_rounded_wallet_button));
+                    btn_wallet.setTextColor(Color.BLACK);
+                    btn_bank.setBackground(getResources().getDrawable(R.drawable.bg_rounded_wallet_button));
+                    btn_bank.setTextColor(Color.BLACK);
+                    iswalletClicked = false;
+                    isbankClicked = false;
+                } else {
+                    btn_wallet.setBackground(getResources().getDrawable(R.drawable.bg_rounded_black_bank_btn));
+                    btn_wallet.setTextColor(Color.WHITE);
+                    btn_bank.setBackground(getResources().getDrawable(R.drawable.bg_rounded_wallet_button));
+                    btn_bank.setTextColor(Color.BLACK);
+                    iswalletClicked = true;
+                    isbankClicked = false;
+                }
+
             }
         });
 
@@ -60,7 +74,7 @@ public class BankSettingFragment extends Fragment {
             }
         });
 
-        iv_back1 = view.findViewById(R.id.iv_back);
+        iv_back1 = view.findViewById(R.id.iv_back1);
         iv_back1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,11 +88,24 @@ public class BankSettingFragment extends Fragment {
         btn_bank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                RL1.setVisibility(View.GONE);
+                if (isbankClicked) {
+                    btn_bank.setBackground(getResources().getDrawable(R.drawable.bg_rounded_wallet_button));
+                    btn_bank.setTextColor(Color.BLACK);
+                    btn_wallet.setBackground(getResources().getDrawable(R.drawable.bg_rounded_wallet_button));
+                    btn_wallet.setTextColor(Color.BLACK);
+                    isbankClicked = false;
+                    iswalletClicked = false;
+                } else {
+                    btn_bank.setBackground(getResources().getDrawable(R.drawable.bg_rounded_black_bank_btn));
+                    btn_bank.setTextColor(Color.WHITE);
+                    btn_wallet.setBackground(getResources().getDrawable(R.drawable.bg_rounded_wallet_button));
+                    btn_wallet.setTextColor(Color.BLACK);
+                    isbankClicked = true;
+                    iswalletClicked = false;
+                }
+               /* RL1.setVisibility(View.GONE);
                 RL2.setVisibility(View.VISIBLE);
-                RL3.setVisibility(View.GONE);
-
+                RL3.setVisibility(View.GONE);*/
             }
         });
 
@@ -86,9 +113,18 @@ public class BankSettingFragment extends Fragment {
         continue_btn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RL1.setVisibility(View.GONE);
-                RL2.setVisibility(View.VISIBLE);
-                RL3.setVisibility(View.GONE);
+                if (isbankClicked) {
+                    RL1.setVisibility(View.GONE);
+                    RL2.setVisibility(View.VISIBLE);
+                    RL3.setVisibility(View.GONE);
+                }
+
+                if (iswalletClicked) {
+                    RL1.setVisibility(View.GONE);
+                    RL2.setVisibility(View.GONE);
+                    RL3.setVisibility(View.GONE);
+                    RL4.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -104,6 +140,16 @@ public class BankSettingFragment extends Fragment {
 
         continue_btn_3 = view.findViewById(R.id.continue_btn_RL3);
         continue_btn_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL1.setVisibility(View.VISIBLE);
+                RL2.setVisibility(View.GONE);
+                RL3.setVisibility(View.GONE);
+            }
+        });
+
+        continue_btn_4 = view.findViewById(R.id.continue_btn_RL4);
+        continue_btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RL1.setVisibility(View.VISIBLE);

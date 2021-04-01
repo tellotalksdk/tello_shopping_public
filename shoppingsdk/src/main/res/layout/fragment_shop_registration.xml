@@ -147,9 +147,10 @@
                 android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:hint="* Shop Name"
-                android:maxLength="25"
-                android:maxLines="1"
                 android:inputType="textVisiblePassword"
+                android:maxLength="25"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
+                android:maxLines="1"
                 android:paddingLeft="10dp"
                 android:textSize="14sp" />
 
@@ -547,7 +548,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="By Continuing , you agree to TelloTalk's terms of use"
+                        android:text="By Continuing , you agree to "
                         android:textColor="@android:color/black"
                         android:textSize="10sp" />
 
@@ -556,7 +557,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="Term's of Use"
+                        android:text="TelloTalk's terms of use"
                         android:textColor="#6F90D9"
                         android:textSize="12sp" />
 

@@ -4,9 +4,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,6 +124,7 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        //et_shop_name.setKeyListener(DigitsKeyListener.getInstance("abcdefghijklmnopqrstuvwxyz1234567890 "));
 
         et_shop_name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -510,6 +514,7 @@ public class ShopRegistrationFragment extends Fragment {
 
                     done_btn.setTextColor(Color.WHITE);
                     done_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_btn));
+                    Utility.hideKeyboard(getActivity(), view);
 
                 } else {
                     done_btn.setTextColor(Color.BLACK);
@@ -541,6 +546,7 @@ public class ShopRegistrationFragment extends Fragment {
                         !TextUtils.isEmpty(otp_two.getText().toString()) &&
                         !TextUtils.isEmpty(otp_three.getText().toString())) {
 
+                    Utility.hideKeyboard(getActivity(), view);
                     done_btn.setTextColor(Color.WHITE);
                     done_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_btn));
 
@@ -574,8 +580,10 @@ public class ShopRegistrationFragment extends Fragment {
                         !TextUtils.isEmpty(otp_two.getText().toString()) &&
                         !TextUtils.isEmpty(otp_three.getText().toString())) {
 
+
                     done_btn.setTextColor(Color.WHITE);
                     done_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_btn));
+                    Utility.hideKeyboard(getActivity(), view);
 
                 } else {
                     done_btn.setTextColor(Color.BLACK);
@@ -695,7 +703,6 @@ public class ShopRegistrationFragment extends Fragment {
         d11 = view.findViewById(R.id.d11);
     }
 
-
     public boolean checkValidation() {
         if (TextUtils.isEmpty(et_shop_name.getText().toString())) {
             Toast.makeText(getActivity(), "Shop Name is required...", Toast.LENGTH_SHORT).show();
@@ -774,4 +781,5 @@ public class ShopRegistrationFragment extends Fragment {
 
         return true;
     }
+
 }

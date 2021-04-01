@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.api;
 
 import com.google.gson.GsonBuilder;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.logging.Level;
 
@@ -13,7 +14,7 @@ import retrofit2.http.Body;
 
 public class RetrofitClient {
 
-    public static final String BASE_URL = "";
+    public static final String BASE_URL = Constant.BASE_URL;
     public static Retrofit retrofit;
 
     public static Retrofit getInstance() {
