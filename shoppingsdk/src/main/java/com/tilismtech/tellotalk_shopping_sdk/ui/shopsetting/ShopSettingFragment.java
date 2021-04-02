@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +40,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -48,7 +50,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +65,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     private Button saveAccountbtn, upload, capture;
     private NavController navController;
+    private EditText area;
     private ImageView iv_websitetheme, iv_back, bannerImage, clr_choose;
-    private Spinner province, city, area;
+    private Spinner province, city, country;
     private RelativeLayout outerRL;
     private LinearLayout iv_timings;
     private FrameLayout colortheme;
@@ -80,6 +86,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private int isMondayOpen_ID, isTuedayOpen_ID, isWednesdayOpen_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
     //   private int isMondayClose_ID, isTuedayClose_ID, isWednesdayClose_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
     private Switch mondaySwitch, tuesdaySwitch, wednesdaySwitch, thrusdaySwitch, fridaySwitch, saturdaySwitch, sundaySwitch;
+    private ShopSettingViewModel shopSettingViewModel;
+    ShopBasicSetting shopBasicSetting;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +106,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         activity = getActivity();
+        shopSettingViewModel = new ViewModelProvider(this).get(ShopSettingViewModel.class);
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,13 +212,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             @Override
             public void onClick(View v) {
                 navController.popBackStack();
-            }
-        });
-
-        saveAccountbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // navController.navigate;
             }
         });
 
@@ -374,11 +376,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 dialog.show();
             }
         });
+
         saveAccountbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                shopBasicSetting.setProfileId(Constant.PROFILE_ID);
+                shopBasicSetting.setShop_Theme("#e31616");
+                shopSettingViewModel.postShopSettingDetails(shopBasicSetting);
                 startActivity(new Intent(getActivity(), ShopLandingActivity.class));
-                //navController.navigate(R.id.action_shopSettingFragment_to_shopLandingFragment);
             }
         });
     }
@@ -390,6 +395,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         iv_timings = view.findViewById(R.id.iv_timings);
         iv_websitetheme = view.findViewById(R.id.iv_websitetheme);
         province = view.findViewById(R.id.province);
+        country = view.findViewById(R.id.country);
         city = view.findViewById(R.id.city);
         area = view.findViewById(R.id.area);
         iv_back = view.findViewById(R.id.iv_back);
@@ -398,6 +404,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         setColortext = view.findViewById(R.id.setColortext);
         clr_choose = view.findViewById(R.id.clr_choose);
         colortheme = view.findViewById(R.id.colortheme);
+        shopBasicSetting = new ShopBasicSetting();
 
 
     }
@@ -456,14 +463,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(camera_intent, 456);
 
-        /*      *//*  String name = dateToString(new Date(), "yyyy-MM-dd-hh-mm-ss");
-        destination = new File(Environment
-                .getExternalStorageDirectory(), name + ".jpg");
-*//*
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        i*//*ntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                Uri.fromFile(destination));*//*
-        startActivityForResult(intent, PICK_Camera_IMAGE);*/
     }
 
     @Override
@@ -689,6 +688,37 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     sunday_CloseAt.setSelection(0);
                 }
             }
+
+            //spinner for country
+            if (parent.getId() == country.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+
+                shopBasicSetting.setCountry((String) parent.getItemAtPosition(position));
+            }
+
+            //spinner for province
+            if (parent.getId() == province.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+
+                shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
+
+            }
+
+            //spinner for city
+
+            if (parent.getId() == city.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+
+                shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
+            }
+
+
         }
 
         @Override
@@ -730,4 +760,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             }
         }
     };
+
+
 }

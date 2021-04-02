@@ -192,7 +192,7 @@
             android:entries="@array/city" />
 
 
-        <Spinner
+        <!--<Spinner
             android:id="@+id/area"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -201,7 +201,20 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/custom_spinner"
-            android:entries="@array/area" />
+            android:entries="@array/area" />-->
+
+        <EditText
+            android:id="@+id/area"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/city"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:paddingStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Enter your area..."
+            android:background="@drawable/edit_text_bg_color"
+            />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/iv"

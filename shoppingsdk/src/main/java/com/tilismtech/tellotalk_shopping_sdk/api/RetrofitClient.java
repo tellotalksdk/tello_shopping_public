@@ -28,7 +28,7 @@ public class RetrofitClient {
     }
 
     public static Iapi getRetrofitClient() {
-        return retrofit.create(Iapi.class);
+        return getInstance().create(Iapi.class);
     }
 
 }

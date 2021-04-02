@@ -27,10 +27,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import org.w3c.dom.Text;
@@ -47,6 +53,7 @@ public class ShopRegistrationFragment extends Fragment {
     int counter = 0;
     Button btnCreateAccount;
     Button requestAgain, done_btn;
+    String mobileNumber;
     NavController navController;
     RelativeLayout RL;
     ImageView iv_back, iv_editImage;
@@ -57,6 +64,7 @@ public class ShopRegistrationFragment extends Fragment {
     String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$"; //regex for shop name must be in alphanumeric format...
     StringBuilder mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
     ArrayList<String> mobileOpt = new ArrayList<>();
+    ShopRegistrationViewModel shopRegistrationViewModel;
 
 
     @Override
@@ -77,6 +85,8 @@ public class ShopRegistrationFragment extends Fragment {
         navController = Navigation.findNavController(view);
 
         initViews(view);
+        shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
+
 
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +95,32 @@ public class ShopRegistrationFragment extends Fragment {
                     RL.setVisibility(View.VISIBLE);
                     btnCreateAccount.setVisibility(View.GONE);
                     startCountDown();
+
+                   // mobileNumber = 0 + d2.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
+
+                    ShopRegister shopRegister = new ShopRegister();
+                    shopRegister.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43"); //for testing shop regoistration
+                    shopRegister.setShopURl("sharjeel.tello.pk");
+                    shopRegister.setRegisterPhone("03330347473");
+                    shopRegister.setEmail("sharjeel@gmail.com");
+                    shopRegister.setShopCategoryId("1");
+                    shopRegister.setShopDescription("shopTesting");
+
+                    // shopRegister.setShopURl(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
+                    //  shopRegister.setRegisterPhone(mobileNumber);
+
+                    shopRegistrationViewModel.postShopRegister(shopRegister);
+                    shopRegistrationViewModel.getShopResponse().observe(getActivity(), new Observer<ShopRegisterResponse>() {
+                        @Override
+                        public void onChanged(ShopRegisterResponse shopRegisterResponse) {
+                            if (shopRegisterResponse != null) {
+                                Toast.makeText(getActivity(), "Success..." + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getActivity(), "Failed Call please try again ...", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                 }
                 Utility.hideKeyboard(getActivity(), v);
             }
