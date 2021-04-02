@@ -99,10 +99,10 @@ public class ShopRegistrationFragment extends Fragment {
                    // mobileNumber = 0 + d2.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
 
                     ShopRegister shopRegister = new ShopRegister();
-                    shopRegister.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43"); //for testing shop regoistration
-                    shopRegister.setShopURl("sharjeel.tello.pk");
-                    shopRegister.setRegisterPhone("03330347473");
-                    shopRegister.setEmail("sharjeel@gmail.com");
+                    shopRegister.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A44"); //for testing shop regoistration
+                    shopRegister.setShopURl("aliahmad.tello.pk");
+                    shopRegister.setRegisterPhone("03343659018");
+                    shopRegister.setEmail("ali@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
 
