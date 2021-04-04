@@ -1,5 +1,6 @@
 package com.tilismtech.tellotalk_shopping_sdk.api;
 
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
@@ -11,6 +12,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYPare
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
@@ -33,7 +35,9 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -62,9 +66,13 @@ public interface Iapi {
 
 
     //shopsetting
+    @Headers({"Accept: */*",
+            "Content-Type: multipart/form-data"}
+    )
     @Multipart
     @POST("api/shop/ShopSettingwithImage")
     Call<ShopBasicSettingResponse> setShopBasicSetting(@Header("Authorization") String token,
+                                                       @Part MultipartBody.Part ShopProfile,
                                                        @Part("ShippingFee") RequestBody ShippingFee,
                                                        @Part("tax") RequestBody tax,
                                                        @Part("Province") RequestBody Province,
@@ -72,8 +80,8 @@ public interface Iapi {
                                                        @Part("City") RequestBody City,
                                                        @Part("Country") RequestBody Country,
                                                        @Part("Shop_Theme") RequestBody Shop_Theme,
-                                                       @Part("ProfileId") RequestBody ProfileId,
-                                                       @Part("ShopProfile") MultipartBody.Part ShopProfile);
+                                                       @Part("ProfileId") RequestBody ProfileId
+    );
 
 
     //get all product categories list
@@ -81,8 +89,30 @@ public interface Iapi {
     Call<ProductCategoryListResponse> getProductCategories(@Header("Authorization") String token);
 
     //get all parent categories list
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
     @GET("api/Product/ParentProductCategoryList")
-    Call<ParentCategoryListResponse> getParentCategories(@Header("Authorization") String token);
+    Call<ParentCategoryListResponse> getParentCategories(
+            @Header("Authorization") String token);
+
+    //addNewProductApi
+    @Headers({"Accept: */*",
+            "Content-Type: multipart/form-data"}
+    )
+    @Multipart
+    @POST("api/Product/AddNewProductwithImage")
+    Call<AddNewProductResponse> addNewProducts(@Header("Authorization") String token,
+                                               @Part MultipartBody.Part Product_Pic,
+                                               @Part("Product_Category_id") RequestBody Product_Category_id,
+                                               @Part("Title") RequestBody Title,
+                                               @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
+                                               @Part("Discount_Price") RequestBody Discount_Price,
+                                               @Part("Sku") RequestBody Sku,
+                                               @Part("Summary") RequestBody Summary,
+                                               @Part("ProfileId") RequestBody ProfileId,
+                                               @Part("ProductStatus") RequestBody ProductStatus,
+                                               @Part("Price") RequestBody Price);
 
     //getproductforedit
     @GET("api/Product/GetProductforedit")
@@ -109,7 +139,8 @@ public interface Iapi {
     @GET("api/Product/GetProductList")
     Call<ProductCategoryListResponse> getProductList(@Header("Authorization") String token, @Body ProductList productList);
 
-    //subcategory by parent id...
+    //subcategory by parent id.
+    //@HTTP(method = "GET", path = "api/Product/ProdCatLstbyparentid", hasBody = true)
     @GET("api/Product/ProdCatLstbyparentid")
     Call<SubCategoryBYParentCatIDResponse> getSubcategoryByParentID(@Header("Authorization") String token, @Body SubCategoryBYParentCatID subCategoryBYParentCatID);
 

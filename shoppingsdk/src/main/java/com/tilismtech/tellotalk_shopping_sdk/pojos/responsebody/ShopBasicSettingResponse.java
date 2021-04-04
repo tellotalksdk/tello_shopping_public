@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ShopBasicSettingResponse {
 
-    public class Example {
+
         @SerializedName("status")
         @Expose
         private String status;
@@ -51,5 +51,5 @@ public class ShopBasicSettingResponse {
             this.data = data;
         }
 
-    }
+
 }

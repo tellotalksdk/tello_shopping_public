@@ -33,6 +33,7 @@
                 android:textSize="17sp" />
 
             <Switch
+                android:id="@+id/isActiveproduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -61,6 +62,7 @@
                 android:orientation="vertical">
 
                 <Spinner
+                    android:id="@+id/parentSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -74,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
                     android:paddingTop="3dp"
-                    android:text="Shop : "
+                    android:text="Select Industry : "
                     android:textSize="10.5sp" />
 
             </FrameLayout>
@@ -93,6 +95,7 @@
 
 
                 <EditText
+                    android:id="@+id/et_ProductTitle"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
@@ -114,6 +117,7 @@
                 android:orientation="vertical">
 
                 <Spinner
+                    android:id="@+id/childSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -133,30 +137,32 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:orientation="horizontal">
+                android:fillViewport="true">
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/edit_text_bg_color" />
-
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/edit_text_bg_color"
-                    android:padding="38dp"
-                    android:src="@drawable/ic_baseline_add_circle_outline" />
+                <LinearLayout
+                    android:id="@+id/LLimages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="horizontal">
 
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/chooseMultipleProductsIV"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/edit_text_bg_color"
+                        android:padding="38dp"
+                        android:src="@drawable/ic_baseline_add_circle_outline" />
+
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <LinearLayout
                 android:id="@+id/LL4"
@@ -171,6 +177,7 @@
 
 
                 <EditText
+                    android:id="@+id/et_OriginalPrice"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
@@ -194,6 +201,7 @@
 
 
                 <EditText
+                    android:id="@+id/et_DiscountedPrice"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
@@ -214,12 +222,14 @@
                 android:background="@drawable/edit_text_bg_color"
                 android:orientation="vertical">
 
-                <Spinner
+                <EditText
+                    android:id="@+id/et_SKU"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/custom_spinner"
-                    android:text="Khan-store.tello.com"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:paddingLeft="20dp"
+                    android:text=""
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -247,6 +257,7 @@
 
 
                 <EditText
+                    android:id="@+id/et_Description"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginStart="10dp"

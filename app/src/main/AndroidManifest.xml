@@ -3,6 +3,7 @@
     package="com.tilismtech.tellotalk_shopping_sdk">
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:name=".TelloApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

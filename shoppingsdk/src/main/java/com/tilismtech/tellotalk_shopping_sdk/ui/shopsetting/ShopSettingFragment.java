@@ -3,15 +3,18 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shopsetting;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +43,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -48,21 +53,38 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.app.Activity.RESULT_OK;
+import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
 public class ShopSettingFragment extends Fragment implements ColorChooserAdapter.OnColorChooserListener {
 
+    private final static int UPLOAD_IMAGE = 123;
+    private final static int CAPTURE_IMAGE = 456;
     private Button saveAccountbtn, upload, capture;
     private NavController navController;
     private EditText area;
@@ -84,9 +106,10 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     public Activity activity;
     private boolean isMondayOpen, isTuedayOpen, isWednesdayOpen, isThrusdayOpen, isFridayOpen, isSaturdayOpen, isSundayOpen;
     private int isMondayOpen_ID, isTuedayOpen_ID, isWednesdayOpen_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
-    //   private int isMondayClose_ID, isTuedayClose_ID, isWednesdayClose_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
     private Switch mondaySwitch, tuesdaySwitch, wednesdaySwitch, thrusdaySwitch, fridaySwitch, saturdaySwitch, sundaySwitch;
     private ShopSettingViewModel shopSettingViewModel;
+    private String filePath = "", Country = "", Province = "", City = ""; //this file path either come from capture image or upload image
+
     ShopBasicSetting shopBasicSetting;
 
     @Override
@@ -107,6 +130,19 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         initViews(view);
         activity = getActivity();
         shopSettingViewModel = new ViewModelProvider(this).get(ShopSettingViewModel.class);
+
+
+        //get timings to show
+        GetTimings getTimings = new GetTimings();
+        getTimings.setProfileId(Constant.PROFILE_ID);
+        getTimings.setShopId("7");
+        shopSettingViewModel.posttogetTimings(getTimings);
+        shopSettingViewModel.gettimings().observe(getActivity(), new Observer<GetTimingsResponse>() {
+            @Override
+            public void onChanged(GetTimingsResponse getTimingsResponse) {
+                Toast.makeText(activity, "res" + getTimingsResponse.getData().getRequestList().get(0).getShopStatusDaywise(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -380,10 +416,36 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         saveAccountbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shopBasicSetting.setProfileId(Constant.PROFILE_ID);
+                shopBasicSetting.setProfileId(Constant.PROFILE_ID); //44 for testing
                 shopBasicSetting.setShop_Theme("#e31616");
+                shopBasicSetting.setShopProfile(filePath); //image
+                shopBasicSetting.setTax("0");
+                shopBasicSetting.setShippingFee("0");
+                shopBasicSetting.setArea("Gulberg Karachi");
+                shopBasicSetting.setCountry(Country);
+                shopBasicSetting.setProvince(Province);
+                shopBasicSetting.setCity(City);
+                shopBasicSetting.setArea(area.getText().toString());
+
+                //some time it hit some time not when hit it return 500 code
+
                 shopSettingViewModel.postShopSettingDetails(shopBasicSetting);
-                startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+
+                shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
+                    @Override
+                    public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
+                        if (shopBasicSettingResponse != null) {
+                            //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                        } else {
+                            Toast.makeText(activity, "Kindly fill properly", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+                // startActivity(new Intent(getActivity(), ShopLandingActivity.class));
             }
         });
     }
@@ -405,6 +467,25 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         clr_choose = view.findViewById(R.id.clr_choose);
         colortheme = view.findViewById(R.id.colortheme);
         shopBasicSetting = new ShopBasicSetting();
+
+
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.countries));
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        country.setAdapter(countryAdapter);
+
+        country.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.province));
+        provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        province.setAdapter(provinceAdapter);
+
+        province.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.city));
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        city.setAdapter(cityAdapter);
+
+        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
 
     }
@@ -455,31 +536,33 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     private void openGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, 123);
+        startActivityForResult(gallery, UPLOAD_IMAGE);
     }
 
     private void openCamera() {
-
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camera_intent, 456);
-
+        startActivityForResult(camera_intent, CAPTURE_IMAGE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == 123) {
+        if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
             imageUri = data.getData();
             bannerImage.setImageURI(imageUri);
-        } else if (resultCode == RESULT_OK && requestCode == 456) {
-            /*imageUri = data.getData();
-            bannerImage.setImageURI(imageUri);*/
+            filePath = getPath(getActivity(), imageUri);
+            Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
+        } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             bannerImage.setImageBitmap(photo);
+            imageUri = getImageUri(getActivity(), photo);
+            filePath = getRealPathFromURI(imageUri);
+            Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
         }
     }
 
+    //for spinner selection...
     AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -689,35 +772,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
             }
 
-            //spinner for country
-            if (parent.getId() == country.getId()) {
-                if (parent.getItemIdAtPosition(position) == 0) {
-                    return;
-                }
-
-                shopBasicSetting.setCountry((String) parent.getItemAtPosition(position));
-            }
-
-            //spinner for province
-            if (parent.getId() == province.getId()) {
-                if (parent.getItemIdAtPosition(position) == 0) {
-                    return;
-                }
-
-                shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
-
-            }
-
-            //spinner for city
-
-            if (parent.getId() == city.getId()) {
-                if (parent.getItemIdAtPosition(position) == 0) {
-                    return;
-                }
-
-                shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
-            }
-
 
         }
 
@@ -727,6 +781,47 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         }
     };
 
+    AdapterView.OnItemSelectedListener onItemSelectedListenerAddress = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            //spinner for country
+            if (parent.getId() == country.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+                Country = (String) parent.getItemAtPosition(position);
+                //shopBasicSetting.setCountry((String) parent.getItemAtPosition(position));
+            }
+
+            //spinner for province
+            if (parent.getId() == province.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+
+                Province = (String) parent.getItemAtPosition(position);
+                // shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
+
+            }
+
+            //spinner for city
+
+            if (parent.getId() == city.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+                City = (String) parent.getItemAtPosition(position);
+                // shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    //for switch button on timings dialog...
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -760,6 +855,48 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             }
         }
     };
+
+
+    //This method return file path when we choose image from gallery
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
+
+    //this method is used to get image uri , after capturing image from camera
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    //this method is used to get image path when user capture image from camera
+    public String getRealPathFromURI(Uri uri) {
+        String path = "";
+        if (getActivity().getContentResolver() != null) {
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
+    }
 
 
 }

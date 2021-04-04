@@ -1,6 +1,9 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
@@ -9,41 +12,66 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.security.cert.CertPathBuilderSpi;
 import java.sql.SQLInvalidAuthorizationSpecException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShopLandingActivity extends AppCompatActivity {
 
-    NavHostFragment navHostFragment;
-    ImageView setting, addProduct, arrowback;
-    ImageView iv_close, iv_back_addproduct;
-    Button getStarted_btn, uploadProduct;
-    Dialog dialogCongratulation, dialogAddProduct;
-    TextView productList, orderList, chat;
-    LinearLayout Lineartabbar;
-    HorizontalScrollView orderListtabbar;
-    RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
-    TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
-    TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
-    SearchView simpleSearchView;
-    CurrentTab currentTab; //bydefault
+    private static final int ALLOW_MULTIPLE_IMAGES = 1;
+    private NavHostFragment navHostFragment;
+    private ImageView setting, addProduct, arrowback, chooseMultipleProductsIV;
+    private ImageView iv_close, iv_back_addproduct;
+    private Button getStarted_btn, uploadProduct;
+    private Dialog dialogCongratulation, dialogAddProduct;
+    private TextView productList, orderList, chat;
+    private LinearLayout Lineartabbar;
+    private HorizontalScrollView orderListtabbar;
+    private RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
+    private TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
+    private TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
+    private SearchView simpleSearchView;
+    private CurrentTab currentTab; //bydefault
+    private ShopLandingPageViewModel shopLandingPageViewModel;
+    private Spinner parentSpinner, childSpinner;
+    private List<String> parentCategories, childCategories;
+    private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description , et_ProductTitle;
+    private String parentCategory, childCategory, productStatus = "N";
+    private LinearLayout LLimages;
+    private Switch isActiveproduct;
 
     //these fields hide when onsearch is pressed
     ImageView profileImage;
@@ -53,7 +81,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_landing);
-
+        shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
@@ -125,6 +153,37 @@ public class ShopLandingActivity extends AppCompatActivity {
                 dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialogAddProduct.setContentView(R.layout.dialog_add_product);
 
+                chooseMultipleProductsIV = dialogAddProduct.findViewById(R.id.chooseMultipleProductsIV);
+                LLimages = dialogAddProduct.findViewById(R.id.LLimages);
+
+                isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
+
+
+                chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);
+                    }
+                });
+
+                et_OriginalPrice = dialogAddProduct.findViewById(R.id.et_OriginalPrice);
+                et_DiscountedPrice = dialogAddProduct.findViewById(R.id.et_DiscountedPrice);
+                et_SKU = dialogAddProduct.findViewById(R.id.et_SKU);
+                et_Description = dialogAddProduct.findViewById(R.id.et_Description);
+                et_ProductTitle = dialogAddProduct.findViewById(R.id.et_ProductTitle);
+
+                parentSpinner = dialogAddProduct.findViewById(R.id.parentSpinner);
+                childSpinner = dialogAddProduct.findViewById(R.id.childSpinner);
+                parentSpinner.setOnItemSelectedListener(onItemSelectedListener);
+                childSpinner.setOnItemSelectedListener(onItemSelectedListener);
+
+                uploadParentCategory(parentSpinner, childSpinner);
+                //  uploadChildCategory();
+
                 iv_back_addproduct = dialogAddProduct.findViewById(R.id.iv_back);
                 iv_back_addproduct.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -137,9 +196,43 @@ public class ShopLandingActivity extends AppCompatActivity {
                 uploadProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialogAddProduct.dismiss();
-                        //startActivity(new Intent(ShopLandingActivity.this,ShopLandingActivity.class));
-                        navController.navigate(R.id.shopLandingFragment);
+
+                        if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
+                                TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
+                                TextUtils.isEmpty(et_SKU.getText().toString()) ||
+                                TextUtils.isEmpty(et_Description.getText().toString()) ||
+                                TextUtils.isEmpty(et_ProductTitle.getText().toString())
+                        ) {
+                            Toast.makeText(ShopLandingActivity.this, "Some Fields are missing...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            AddNewProduct addNewProduct = new AddNewProduct();
+                            addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
+                            addNewProduct.setPrice(et_OriginalPrice.getText().toString());
+                            addNewProduct.setProduct_Category_id("1"); //parentCategory
+                            addNewProduct.setSub_Product_Category_id("1"); //childCategory
+                            addNewProduct.setSku("12sku");
+                            addNewProduct.setSummary(et_Description.getText().toString());
+                            addNewProduct.setProfileId(Constant.PROFILE_ID);
+                            addNewProduct.setProductStatus(productStatus); //work with toggle on and off
+                            addNewProduct.setProduct_Pic(""); //here we send a picture path from device...
+                            addNewProduct.setTitle(et_ProductTitle.getText().toString());
+
+                            shopLandingPageViewModel.addNewProduct(addNewProduct);
+                            shopLandingPageViewModel.getNewProduct().observe(ShopLandingActivity.this, new Observer<AddNewProductResponse>() {
+                                @Override
+                                public void onChanged(AddNewProductResponse addNewProductResponse) {
+                                    if (addNewProductResponse != null) {
+                                        Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ShopLandingActivity.this, "Null...", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+
+                            dialogAddProduct.dismiss();
+                            navController.navigate(R.id.shopLandingFragment);
+                        }
                     }
                 });
 
@@ -572,6 +665,59 @@ public class ShopLandingActivity extends AppCompatActivity {
 
     }
 
+    private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {
+
+
+        shopLandingPageViewModel.parentCategories();
+        shopLandingPageViewModel.getParentCategoryListResponseLiveData().observe(ShopLandingActivity.this, new Observer<ParentCategoryListResponse>() {
+            @Override
+            public void onChanged(ParentCategoryListResponse parentCategoryListResponse) {
+                if (parentCategoryListResponse != null) {
+                    //populate spinner here...
+                    parentCategories = new ArrayList<>();
+
+                    for (int i = 0; i < parentCategoryListResponse.getData().getRequestList().size(); i++) {
+                        parentCategories.add(parentCategoryListResponse.getData().getRequestList().get(i).getColumn1());
+                    }
+
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, parentCategories);
+                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                    parentSpinner.setAdapter(spinnerArrayAdapter);
+
+                    //      uploadChildCategory("1",childSpinner);
+
+                    // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ShopLandingActivity.this, "Null", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void uploadChildCategory(String id, Spinner childSpinner) {
+        SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
+        subCategoryBYParentCatID.setParentCategoryId(id);
+        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID);
+        shopLandingPageViewModel.getChildCategories().observe(this, new Observer<SubCategoryBYParentCatIDResponse>() {
+            @Override
+            public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
+                if (subCategoryBYParentCatIDResponse != null) {
+                    childCategories = new ArrayList<>();
+
+                    for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
+                        parentCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getColumn1());
+                    }
+
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, childCategories);
+                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                    childSpinner.setAdapter(spinnerArrayAdapter);
+
+                }
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -586,5 +732,62 @@ public class ShopLandingActivity extends AppCompatActivity {
         PAID,
         CANCEL,
         ALL
+    }
+
+    //listener for selecting parent and child category items...
+    AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.getId() == parentSpinner.getId()) {
+                parentCategory = parentSpinner.getItemAtPosition(position).toString();
+            }
+
+            if (parent.getId() == childSpinner.getId()) {
+                childCategory = childSpinner.getItemAtPosition(position).toString();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    //for switch button on timings dialog...
+    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (buttonView.getId() == isActiveproduct.getId()) {
+                isActiveproduct.setChecked(isChecked);
+                productStatus = isActiveproduct.isChecked() ? "Y" : "N";
+                Toast.makeText(ShopLandingActivity.this, "" + isChecked, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    };
+
+    //here we set multiple images from gallery
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ALLOW_MULTIPLE_IMAGES && resultCode == RESULT_OK) {
+            if (data.getClipData() != null) {
+                Uri imageUri;
+                ImageView iv;
+                int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                for (int i = 0; i < count; i++) {
+                    View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                    iv = inflater.findViewById(R.id.iv);
+                    imageUri = data.getClipData().getItemAt(i).getUri();
+                    iv.setImageURI(imageUri);
+                    LLimages.addView(inflater);
+                }
+
+                //do something with the image (save it to some directory or whatever you need to do with it here)
+            }
+        } else if (data.getData() != null) {
+            String imagePath = data.getData().getPath();
+            //do something with the image (save it to some directory or whatever you need to do with it here)
+        }
     }
 }
