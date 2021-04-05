@@ -15,12 +15,12 @@
         android:orientation="horizontal" />
 
     <ScrollView
-        android:paddingTop="10dp"
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/outerRL"
-        android:background="@drawable/top_rounded_corners_40dp">
+        android:background="@drawable/top_rounded_corners_40dp"
+        android:paddingTop="10dp">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/edittext1"
+                android:id="@+id/productName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/switch_opt"
@@ -80,10 +80,10 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/edittext2"
+                android:id="@+id/productCategory"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/edittext1"
+                android:layout_below="@+id/productName"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -93,37 +93,41 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/LinearImages"
+            <HorizontalScrollView
+                android:layout_below="@+id/productCategory"
+                android:id="@+id/hor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/edittext2"
-                android:orientation="horizontal">
+                android:layout_marginStart="15dp"
+                android:fillViewport="true">
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/edit_text_bg_color" />
-
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/edit_text_bg_color"
-                    android:padding="40dp"
-                    android:src="@drawable/ic_baseline_add_circle_outline" />
+                <LinearLayout
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:id="@+id/LLimages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edittext2"
+                    android:orientation="horizontal">
 
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/chooseMultipleProducts"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/edit_text_bg_color"
+                        android:padding="40dp"
+                        android:src="@drawable/ic_baseline_add_circle_outline" />
+
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <EditText
-                android:id="@+id/edittext3"
+                android:id="@+id/originalPrice"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/LinearImages"
+                android:layout_below="@+id/hor"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
@@ -133,10 +137,10 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/edittext4"
+                android:id="@+id/discountedPrice"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/edittext3"
+                android:layout_below="@+id/originalPrice"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -150,7 +154,7 @@
                 android:id="@+id/skucodeoptional"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/edittext4"
+                android:layout_below="@+id/discountedPrice"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"

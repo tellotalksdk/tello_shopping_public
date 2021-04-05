@@ -1,32 +1,24 @@
 package com.tilismtech.tellotalk_shopping_sdk.adapters;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductItemVH> {
@@ -34,21 +26,31 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     List<ProductListpojo> productListpojos;
     Context myCtx;
-    ColorChooserAdapter.OnColorChooserListener onColorChooserListener;
+    OnProductEditorClickDialog onProductEditorClickDialog;
     LinearLayout outerRL;
     Button closeEditbtn;
+    //
+    List<ProductListResponse.Request> productList;
 
-    public ProductListAdapter(List<ProductListpojo> productListpojos, Context myCtx) {
+
+    public ProductListAdapter(List<ProductListpojo> productListpojos, Context myCtx, OnProductEditorClickDialog onProductEditorClickDialog) {
         this.productListpojos = productListpojos;
         this.myCtx = myCtx;
-        this.onColorChooserListener = onColorChooserListener;
+        this.onProductEditorClickDialog = onProductEditorClickDialog;
     }
+
+    public ProductListAdapter(List<ProductListResponse.Request> productList, FragmentActivity activity, OnProductEditorClickDialog reference) {
+        this.productList = productList;
+        this.myCtx = myCtx;
+        this.onProductEditorClickDialog = onProductEditorClickDialog;
+    }
+
 
     @NonNull
     @Override
     public ProductItemVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_product_items, parent, false);
-        return new ProductItemVH(v);
+        return new ProductItemVH(v, this.onProductEditorClickDialog);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.isActive.setChecked(productListpojo.isActive());
         holder.productImage.setImageDrawable(myCtx.getDrawable(productListpojo.getImage()));
 
-        holder.open_edit_details.setOnClickListener(new View.OnClickListener() {
+       /* holder.open_edit_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(myCtx);
@@ -98,9 +100,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
-        });
+        });*/
 
-        holder.viewProductDetail.setOnClickListener(new View.OnClickListener() {
+       /* holder.viewProductDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(myCtx);
@@ -126,7 +128,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -134,13 +136,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         return productListpojos.size();
     }
 
-    public class ProductItemVH extends RecyclerView.ViewHolder {
+    public class ProductItemVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView productTitle, originalprice, discountedprice, productcategory;
         Switch isActive;
         ImageView productImage, open_edit_details;
         CardView viewProductDetail;
+        OnProductEditorClickDialog onProductEditorClickDialog;
 
-        public ProductItemVH(@NonNull View itemView) {
+        public ProductItemVH(@NonNull View itemView, OnProductEditorClickDialog onProductEditorClickDialog) {
             super(itemView);
 
             productTitle = itemView.findViewById(R.id.productTitle);
@@ -151,6 +154,22 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productImage = itemView.findViewById(R.id.productImage);
             open_edit_details = itemView.findViewById(R.id.open_edit_details);
             viewProductDetail = itemView.findViewById(R.id.viewProductDetail);
+            this.onProductEditorClickDialog = onProductEditorClickDialog;
+
+            open_edit_details.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.open_edit_details) {
+                this.onProductEditorClickDialog.onOpenProductEditor(getAdapterPosition());
+            }
+        }
+    }
+
+
+    public interface OnProductEditorClickDialog {
+        void onOpenProductEditor(int position);
     }
 }

@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -85,6 +86,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
+    private ProgressBar progressBar;
     private Button saveAccountbtn, upload, capture;
     private NavController navController;
     private EditText area;
@@ -132,8 +134,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         shopSettingViewModel = new ViewModelProvider(this).get(ShopSettingViewModel.class);
 
 
-        //get timings to show
-        GetTimings getTimings = new GetTimings();
+        //get timings to show inside recycler view...
+       /* GetTimings getTimings = new GetTimings();
         getTimings.setProfileId(Constant.PROFILE_ID);
         getTimings.setShopId("7");
         shopSettingViewModel.posttogetTimings(getTimings);
@@ -142,7 +144,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             public void onChanged(GetTimingsResponse getTimingsResponse) {
                 Toast.makeText(activity, "res" + getTimingsResponse.getData().getRequestList().get(0).getShopStatusDaywise(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -430,16 +432,18 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 //some time it hit some time not when hit it return 500 code
 
                 shopSettingViewModel.postShopSettingDetails(shopBasicSetting);
-
+                progressBar.setVisibility(View.VISIBLE);
                 shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
                     @Override
                     public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
                         if (shopBasicSettingResponse != null) {
                             //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                             Toast.makeText(activity, shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                             startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                         } else {
-                            Toast.makeText(activity, "Kindly fill properly", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -466,6 +470,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         setColortext = view.findViewById(R.id.setColortext);
         clr_choose = view.findViewById(R.id.clr_choose);
         colortheme = view.findViewById(R.id.colortheme);
+        progressBar = view.findViewById(R.id.progressNBar);
         shopBasicSetting = new ShopBasicSetting();
 
 

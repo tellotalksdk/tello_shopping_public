@@ -1,30 +1,40 @@
 package com.tilismtech.tellotalk_shopping_sdk.repository;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
-import com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 
 import java.io.File;
 
@@ -34,7 +44,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Field;
 
 import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
@@ -132,28 +141,31 @@ public class Repository {
 
             @Override
             public void onFailure(Call<ShopBasicSettingResponse> call, Throwable t) {
-              t.printStackTrace();
+                t.printStackTrace();
             }
         });
         System.out.println();
     }
 
     public void getTimings(MutableLiveData<GetTimingsResponse> getTimingsResponseMutableLiveData, GetTimings getTimings) {
-       /* getRetrofitClient().getShopTiming("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), getTimings).enqueue(new Callback<GetTimingsResponse>() {
+        getRetrofitClient().getShopTiming("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), getTimings).enqueue(new Callback<GetTimingsResponse>() {
             @Override
             public void onResponse(Call<GetTimingsResponse> call, Response<GetTimingsResponse> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        System.out.println(response.body().getStatus());
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        GetTimingsResponse getTimingsResponse = response.body();
+                        getTimingsResponseMutableLiveData.setValue(getTimingsResponse);
                     }
+                } else {
+                    getTimingsResponseMutableLiveData.setValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<GetTimingsResponse> call, Throwable t) {
-                Log.i("TAG", "onFailure: ");
+                t.printStackTrace();
             }
-        });*/
+        });
     }
 
     public void postTogetParentCategories(MutableLiveData<ParentCategoryListResponse> parentCategoryListResponseMutableLiveData) {
@@ -246,4 +258,151 @@ public class Repository {
         });
     }
 
+    public void productForEdit(MutableLiveData<ProductForEditResponse> productForEditMutableLiveData, ProductForEdit productForEdit) {
+        getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit).enqueue(new Callback<ProductForEditResponse>() {
+            @Override
+            public void onResponse(Call<ProductForEditResponse> call, Response<ProductForEditResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ProductForEditResponse productForEditResponse = response.body();
+                        productForEditMutableLiveData.setValue(productForEditResponse);
+                    }
+                } else { //incase response is null
+                    productForEditMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductForEditResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void productList(MutableLiveData<ProductListResponse> productListResponseMutableLiveData, ProductList productList) {
+        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList).enqueue(new Callback<ProductListResponse>() {
+            @Override
+            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ProductListResponse productListResponse = response.body();
+                        productListResponseMutableLiveData.setValue(productListResponse);
+                    }
+                } else {
+                    productListResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductListResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
+    }
+
+    public void viewFullOrder(MutableLiveData<ViewFullOrderResponse> viewFullOrderMutableLiveData, ViewFullOrder viewFullOrder) {
+        getRetrofitClient().viewfullorder("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), viewFullOrder).enqueue(new Callback<ViewFullOrderResponse>() {
+            @Override
+            public void onResponse(Call<ViewFullOrderResponse> call, Response<ViewFullOrderResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ViewFullOrderResponse viewFullOrderResponse = response.body();
+                        viewFullOrderMutableLiveData.setValue(viewFullOrderResponse);
+                    }
+                } else {
+                    viewFullOrderMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ViewFullOrderResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void updateRiderInfo(MutableLiveData<UpdateRiderInfoResponse> updateRiderInfoMutableLiveData, UpdateRiderInfo updateRiderInfo) {
+        getRetrofitClient().updateRiderInformation("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), updateRiderInfo).enqueue(new Callback<UpdateRiderInfoResponse>() {
+            @Override
+            public void onResponse(Call<UpdateRiderInfoResponse> call, Response<UpdateRiderInfoResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        UpdateRiderInfoResponse updateRiderInfoResponse = response.body();
+                        updateRiderInfoMutableLiveData.setValue(updateRiderInfoResponse);
+                    }
+                } else {
+                    updateRiderInfoMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateRiderInfoResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getShopDetails(MutableLiveData<GetShopDetailResponse> getShopDetailResponseMutableLiveData, GetShopDetail shopDetail) {
+        getRetrofitClient().getShopDetail("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopDetail).enqueue(new Callback<GetShopDetailResponse>() {
+            @Override
+            public void onResponse(Call<GetShopDetailResponse> call, Response<GetShopDetailResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        GetShopDetailResponse getShopDetailResponse = response.body();
+                        getShopDetailResponseMutableLiveData.setValue(getShopDetailResponse);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetShopDetailResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+    public void updateOrderStatus(MutableLiveData<UpdateOrderStatusResponse> updateOrderStatusResponseMutableLiveData, UpdateOrderStatus updateOrderStatus) {
+        getRetrofitClient().updateOrderStatus("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), updateOrderStatus).enqueue(new Callback<UpdateOrderStatusResponse>() {
+            @Override
+            public void onResponse(Call<UpdateOrderStatusResponse> call, Response<UpdateOrderStatusResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        UpdateOrderStatusResponse updateOrderStatusResponse = response.body();
+                        updateOrderStatusResponseMutableLiveData.setValue(updateOrderStatusResponse);
+                    }
+                } else {
+                    updateOrderStatusResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateOrderStatusResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getOrderbyStatus(MutableLiveData<GetOrderByStatusResponse> getOrderByStatusResponseMutableLiveData, OrderByStatus orderByStatue) {
+        getRetrofitClient().getOrderbyStatus("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), orderByStatue).enqueue(new Callback<GetOrderByStatusResponse>() {
+            @Override
+            public void onResponse(Call<GetOrderByStatusResponse> call, Response<GetOrderByStatusResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        GetOrderByStatusResponse getOrderByStatusResponse = response.body();
+                        getOrderByStatusResponseMutableLiveData.setValue(getOrderByStatusResponse);
+                    }
+                } else {
+                    getOrderByStatusResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOrderByStatusResponse> call, Throwable t) {
+
+            }
+        });
+    }
 }

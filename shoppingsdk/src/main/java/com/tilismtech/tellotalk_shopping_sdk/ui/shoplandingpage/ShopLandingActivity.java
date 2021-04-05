@@ -68,7 +68,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private ShopLandingPageViewModel shopLandingPageViewModel;
     private Spinner parentSpinner, childSpinner;
     private List<String> parentCategories, childCategories;
-    private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description , et_ProductTitle;
+    private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
     private String parentCategory, childCategory, productStatus = "N";
     private LinearLayout LLimages;
     private Switch isActiveproduct;

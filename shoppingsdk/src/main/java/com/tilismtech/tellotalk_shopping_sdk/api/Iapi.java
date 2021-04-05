@@ -20,6 +20,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsRespon
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
@@ -137,7 +138,7 @@ public interface Iapi {
 
     //getproductList
     @GET("api/Product/GetProductList")
-    Call<ProductCategoryListResponse> getProductList(@Header("Authorization") String token, @Body ProductList productList);
+    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Body ProductList productList);
 
     //subcategory by parent id.
     //@HTTP(method = "GET", path = "api/Product/ProdCatLstbyparentid", hasBody = true)
