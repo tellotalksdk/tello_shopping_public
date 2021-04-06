@@ -58,6 +58,7 @@
                     android:textStyle="bold" />
 
                 <Switch
+                    android:id="@+id/edit_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_editProduct"
@@ -192,7 +193,7 @@
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
-                android:text="Post Product"
+                android:text="Update Product"
                 android:textColor="@android:color/white" />
 
 

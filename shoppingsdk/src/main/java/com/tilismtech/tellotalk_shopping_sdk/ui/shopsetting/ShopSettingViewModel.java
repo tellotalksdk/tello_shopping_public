@@ -1,5 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.shopsetting;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,8 +25,8 @@ public class ShopSettingViewModel extends ViewModel {
     }
 
     //shop setting
-    public void postShopSettingDetails(ShopBasicSetting shopBasicSetting) {
-        repository.setShopBasicSetting(shopBasicSettingResponseMutableLiveData, shopBasicSetting);
+    public void postShopSettingDetails(ShopBasicSetting shopBasicSetting, Context myContext) {
+        repository.setShopBasicSetting(shopBasicSettingResponseMutableLiveData, shopBasicSetting,myContext);
     }
 
     public MutableLiveData<ShopBasicSettingResponse> getShopSettingResponse() {

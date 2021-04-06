@@ -216,10 +216,10 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
-                android:textSize="12sp"
                 android:background="@drawable/edit_text_bg_color"
                 android:hint="Enter your area..."
-                android:paddingStart="20dp" />
+                android:paddingStart="20dp"
+                android:textSize="12sp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/iv"
@@ -268,11 +268,12 @@
                 <LinearLayout
                     android:id="@+id/iv_timings"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_bg_color"
                     android:hint="Set Your Shop Timings"
                     android:orientation="vertical"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="5dp"
                     android:textSize="15sp">
 
                     <EditText
@@ -289,6 +290,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/rv_item_timings_layout" />
 
                     <TextView
@@ -304,7 +306,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"

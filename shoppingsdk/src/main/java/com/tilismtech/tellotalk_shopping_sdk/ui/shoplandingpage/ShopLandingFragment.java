@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.ArrayList;
@@ -64,6 +66,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private LinearLayout LLimages, LLimages_edit;
     private EditText productName, productCategory, originalPrice, discountedPrice, skucodeoptional, product_description;
     private ShopLandingPageViewModel shopLandingPageViewModel;
+    private Switch edit_switch;
 
 
     @Override
@@ -174,28 +177,29 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     private void initRV() {
         initDummyData();
-        productListAdapter = new ProductListAdapter(productListpojos, getActivity(), getReference());
+ /*       productListAdapter = new ProductListAdapter(productListpojos, getActivity(), getReference());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
         recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
         recycler_add_product.setAdapter(productListAdapter);
+*/        //we populate recycler view here
 
-        //we populate recycler view here
-       /* ProductList productList = new ProductList();
+        ProductList productList = new ProductList();
         productList.setProfileId(Constant.PROFILE_ID);
         shopLandingPageViewModel.productList(productList);
         shopLandingPageViewModel.getProductList().observe(getActivity(), new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
-                if(productListResponse != null){
+                if (productListResponse != null) {
+                    // Toast.makeText(getActivity(), "" + productListResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
                     productListResponse.getData().getRequestList();
-                    productListAdapter = new ProductListAdapter(  productListResponse.getData().getRequestList(), getActivity(), getReference());
+                    productListAdapter = new ProductListAdapter(productListResponse.getData().getRequestList(), getActivity(), getReference());
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
                     recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
                     recycler_add_product.setAdapter(productListAdapter);
-
                 }
             }
-        });*/
+        });
+
     }
 
     private void initDummyData() {
@@ -258,7 +262,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     //rececler product view edit icons action
     @Override
-    public void onOpenProductEditor(int position) {
+    public void onOpenProductEditor(int productID) {
+
+        //Toast.makeText(getActivity(), "position " + position, Toast.LENGTH_SHORT).show();
+
 
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -274,6 +281,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         skucodeoptional = dialog.findViewById(R.id.skucodeoptional);
         product_description = dialog.findViewById(R.id.product_description);
         post_product_btn = dialog.findViewById(R.id.post_product_btn);
+        Switch edit_switch = dialog.findViewById(R.id.edit_switch);
 
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,6 +301,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
+        //this will trigger update api
         post_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,27 +315,16 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     Toast.makeText(getActivity(), "Some fields are missing...", Toast.LENGTH_SHORT).show();
                 } else {
                     //every thing fine post edit api
-                    ProductForEdit productForEdit = new ProductForEdit();
+                   /* ProductForEdit productForEdit = new ProductForEdit();
                     productForEdit.setProfileId(Constant.PROFILE_ID);
-                    productForEdit.setProductId("1"); //product Id comes from product list api
-
+                    productForEdit.setProductId(String.valueOf(productID)); //product Id comes from product list api
+*/
                     //same error Get must not have a body....
-                    // shopLandingPageViewModel.productForEdit(productForEdit);
-                    shopLandingPageViewModel.getProductForEdit().observe(getActivity(), new Observer<ProductForEditResponse>() {
+                    shopLandingPageViewModel.updateproduct(null);
+                    shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
                         @Override
-                        public void onChanged(ProductForEditResponse productForEditResponse) {
-                            if (productForEditResponse != null) {
-                                Toast.makeText(getActivity(), "" + productForEditResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                        public void onChanged(UpdateProductResponse updateProductResponse) {
 
-                                productName.setText(productForEditResponse.getData().getRequestList().getTitle());
-                                productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
-                                originalPrice.setText(productForEditResponse.getData().getRequestList().getPrice());
-                                discountedPrice.setText(productForEditResponse.getData().getRequestList().getDiscount());
-                                skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
-                                //product description key missing from getproductforedit api...
-                                //  product_description.setText(productForEditResponse.getData().getRequestList().getprod());
-
-                            }
                         }
                     });
 
@@ -343,6 +341,39 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         wlp.gravity = Gravity.BOTTOM;
         // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
+
+        ProductForEdit productForEdit = new ProductForEdit();
+        productForEdit.setProfileId(Constant.PROFILE_ID);
+        productForEdit.setProductId(String.valueOf(productID));
+
+        shopLandingPageViewModel.productForEdit(productForEdit);
+        shopLandingPageViewModel.getProductForEdit().observe(getActivity(), new Observer<ProductForEditResponse>() {
+            @Override
+            public void onChanged(ProductForEditResponse productForEditResponse) {
+                if (productForEditResponse != null) {
+                    //Toast.makeText(getActivity(), "" + productForEditResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+
+                    productName.setText(productForEditResponse.getData().getRequestList().getTitle());
+                    productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
+                    originalPrice.setText(productForEditResponse.getData().getRequestList().getPrice());
+                    discountedPrice.setText(productForEditResponse.getData().getRequestList().getDiscount());
+                    skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
+                    edit_switch.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
+                    if (productForEditResponse.getData().getRequestList().getProfilePic() != null) {
+                        for (int i = 0; i < productForEditResponse.getData().getRequestList().getProfilePic().size(); i++) {
+                            View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                            ImageView iv = inflater.findViewById(R.id.iv);
+                       /* imageUri = data.getClipData().getItemAt(i).getUri();
+                        iv.setImageURI(imageUri);*/
+                            LLimages.addView(inflater);
+                        }
+                    }
+                    //product description key missing from getproductforedit api...
+                    //  product_description.setText(productForEditResponse.getData().getRequestList().getprod());
+                }
+            }
+        });
+
 
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();

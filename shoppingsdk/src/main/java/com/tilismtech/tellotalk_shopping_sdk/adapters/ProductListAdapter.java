@@ -33,13 +33,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     List<ProductListResponse.Request> productList;
 
 
-    public ProductListAdapter(List<ProductListpojo> productListpojos, Context myCtx, OnProductEditorClickDialog onProductEditorClickDialog) {
+    /*public ProductListAdapter(List<ProductListpojo> productListpojos, Context myCtx, OnProductEditorClickDialog onProductEditorClickDialog) {
         this.productListpojos = productListpojos;
         this.myCtx = myCtx;
         this.onProductEditorClickDialog = onProductEditorClickDialog;
-    }
+    }*/
 
-    public ProductListAdapter(List<ProductListResponse.Request> productList, FragmentActivity activity, OnProductEditorClickDialog reference) {
+    public ProductListAdapter(List<ProductListResponse.Request> productList,  Context myCtx, OnProductEditorClickDialog onProductEditorClickDialog) {
         this.productList = productList;
         this.myCtx = myCtx;
         this.onProductEditorClickDialog = onProductEditorClickDialog;
@@ -55,14 +55,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ProductItemVH holder, int position) {
-        ProductListpojo productListpojo = productListpojos.get(position);
+        ProductListResponse.Request request = productList.get(position);
 
-        holder.discountedprice.setText(productListpojo.getDiscountedPrice());
-        holder.originalprice.setText(productListpojo.getOriginalPrice());
-        holder.productcategory.setText(productListpojo.getProductCategory());
-        holder.productTitle.setText(productListpojo.getProductTitle());
-        holder.isActive.setChecked(productListpojo.isActive());
-        holder.productImage.setImageDrawable(myCtx.getDrawable(productListpojo.getImage()));
+        holder.discountedprice.setText("Rs. " + String.valueOf(request.getDiscountPrice()));
+        holder.originalprice.setText("Rs. " + String.valueOf(request.getPrice()));
+        holder.productcategory.setText("N/A");
+        holder.productTitle.setText(request.getTitle());
+        holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
+        // holder.productImage.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_bbq));
 
        /* holder.open_edit_details.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +133,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public int getItemCount() {
-        return productListpojos.size();
+        return productList.size();
     }
 
     public class ProductItemVH extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -163,7 +163,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.open_edit_details) {
-                this.onProductEditorClickDialog.onOpenProductEditor(getAdapterPosition());
+                this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId());
             }
         }
     }

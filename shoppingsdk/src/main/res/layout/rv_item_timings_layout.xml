@@ -4,22 +4,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerVertical="true"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
     android:background="@drawable/bg_rounded_white_days_timings">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:background="@drawable/bg_rounded_white_days_timings"
+        android:weightSum="2"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/Day"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
             android:layout_height="match_parent"
             android:background="@drawable/bg_rounded_white_days_timings"
             android:gravity="center"
-            android:paddingLeft="25dp"
+            android:paddingLeft="10dp"
             android:paddingRight="25dp"
             android:text="Monday"
             android:textColor="@android:color/black"
@@ -28,12 +31,12 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/timings"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="35dp"
             android:background="@drawable/bg_rounded_white_days_timings"
-            android:gravity="center"
-            android:paddingLeft="25dp"
-            android:paddingRight="25dp"
+            android:gravity="start|center"
             android:text="9:00 A.M / 9:00 P.M"
             android:textColor="@android:color/black"
             android:textSize="12sp"

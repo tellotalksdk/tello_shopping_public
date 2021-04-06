@@ -8,12 +8,14 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.repository.Repository;
 
 public class ShopLandingPageViewModel extends ViewModel {
@@ -24,6 +26,7 @@ public class ShopLandingPageViewModel extends ViewModel {
 
     private MutableLiveData<ProductForEditResponse> productForEditMutableLiveData;
     private MutableLiveData<ProductListResponse> productListResponseMutableLiveData;
+    private MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData;
 
     private Repository repository;
 
@@ -33,6 +36,7 @@ public class ShopLandingPageViewModel extends ViewModel {
         this.addNewProductResponseMutableLiveData = new MutableLiveData<>();
         this.productForEditMutableLiveData = new MutableLiveData<>();
         this.productListResponseMutableLiveData = new MutableLiveData<>();
+        this.updateProductResponseMutableLiveData = new MutableLiveData<>();
         this.repository = Repository.getRepository();
     }
 
@@ -80,4 +84,15 @@ public class ShopLandingPageViewModel extends ViewModel {
     public LiveData<ProductListResponse> getProductList() {
         return this.productListResponseMutableLiveData;
     }
+
+    //update product
+    public void updateproduct(UpdateProduct updateProduct){
+        repository.updateProduct(updateProductResponseMutableLiveData,updateProduct);
+    }
+
+    public LiveData<UpdateProductResponse> getProductUpdateResponse(){
+        return this.updateProductResponseMutableLiveData;
+    }
+
+
 }

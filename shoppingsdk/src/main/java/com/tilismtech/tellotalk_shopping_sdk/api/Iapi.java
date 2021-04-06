@@ -30,6 +30,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderRes
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -42,6 +43,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface Iapi {
 
@@ -115,9 +117,28 @@ public interface Iapi {
                                                @Part("ProductStatus") RequestBody ProductStatus,
                                                @Part("Price") RequestBody Price);
 
+    //updateProductApi
+    @Headers({"Accept: */*",
+            "Content-Type: multipart/form-data"}
+    )
+    @Multipart
+    @POST("api/Product/AddNewProductwithImage")
+    Call<UpdateOrderStatusResponse> updateProduct(@Header("Authorization") String token,
+                                                  @Part MultipartBody.Part Product_Pic,
+                                                  @Part("Product_Category_id") RequestBody Product_Category_id,
+                                                  @Part("Title") RequestBody Title,
+                                                  @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
+                                                  @Part("Discount_Price") RequestBody Discount_Price,
+                                                  @Part("Sku") RequestBody Sku,
+                                                  @Part("Summary") RequestBody Summary,
+                                                  @Part("ProfileId") RequestBody ProfileId,
+                                                  @Part("ProductStatus") RequestBody ProductStatus,
+                                                  @Part("Price") RequestBody Price);
+
     //getproductforedit
     @GET("api/Product/GetProductforedit")
-    Call<ProductForEditResponse> getProductForEdit(@Header("Authorization") String token, @Body ProductForEdit productForEdit);
+    Call<ProductForEditResponse> getProductForEdit(@Header("Authorization") String token, @Query("ProfileId") String ProfileId,
+                                                   @Query("ProductId") String ProductId);
 
     //update rider information api
     @POST("/api/Order/UpdateRiderInfo")
@@ -138,12 +159,15 @@ public interface Iapi {
 
     //getproductList
     @GET("api/Product/GetProductList")
-    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Body ProductList productList);
+    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
     //subcategory by parent id.
-    //@HTTP(method = "GET", path = "api/Product/ProdCatLstbyparentid", hasBody = true)
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
     @GET("api/Product/ProdCatLstbyparentid")
-    Call<SubCategoryBYParentCatIDResponse> getSubcategoryByParentID(@Header("Authorization") String token, @Body SubCategoryBYParentCatID subCategoryBYParentCatID);
+    Call<SubCategoryBYParentCatIDResponse> getSubcategoryByParentID(@Header("Authorization") String token,
+                                                                    @Query("Parent_Category_Id") String Parent_Category_Id);
 
     //shop detain get...
     @GET("api/shop/getshopdetails")
@@ -151,7 +175,7 @@ public interface Iapi {
 
     //gettimings
     @GET("api/shop/getshopTimming")
-    Call<GetTimingsResponse> getShopTiming(@Header("Authorization") String token, @Body GetTimings timings);
+    Call<GetTimingsResponse> getShopTiming(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
     //posttiming remaining....
 

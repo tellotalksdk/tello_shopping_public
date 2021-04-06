@@ -95,13 +95,14 @@ public class ShopRegistrationFragment extends Fragment {
                     RL.setVisibility(View.VISIBLE);
                     btnCreateAccount.setVisibility(View.GONE);
                     startCountDown();
+                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
 
-                   // mobileNumber = 0 + d2.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
+                    // mobileNumber = 0 + d2.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
 
                     ShopRegister shopRegister = new ShopRegister();
-                    shopRegister.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A47"); //for testing shop regoistration
-                    shopRegister.setShopURl("alinew.tello.pk");
-                    shopRegister.setRegisterPhone("03039084899");
+                    shopRegister.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43"); //for testing shop regoistration
+                    shopRegister.setShopURl("Jeally123.tello.pk");
+                    shopRegister.setRegisterPhone("03330347473");
                     shopRegister.setEmail("ali@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
@@ -115,8 +116,8 @@ public class ShopRegistrationFragment extends Fragment {
                         public void onChanged(ShopRegisterResponse shopRegisterResponse) {
                             if (shopRegisterResponse != null) {
                                 Toast.makeText(getActivity(), "Success..." + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getActivity(), "Failed Call please try again ...", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "User Already Registered...", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

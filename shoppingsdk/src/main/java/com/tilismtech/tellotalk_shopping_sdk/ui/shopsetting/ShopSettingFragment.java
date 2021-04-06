@@ -3,6 +3,7 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shopsetting;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAssignedNumbers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -56,6 +58,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.TimingnAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
@@ -65,6 +68,8 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSetting
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -86,6 +91,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
+    private RecyclerView recycler_timings;
+    private TimingnAdapter timingnAdapter;
     private ProgressBar progressBar;
     private Button saveAccountbtn, upload, capture;
     private NavController navController;
@@ -110,7 +117,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private int isMondayOpen_ID, isTuedayOpen_ID, isWednesdayOpen_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
     private Switch mondaySwitch, tuesdaySwitch, wednesdaySwitch, thrusdaySwitch, fridaySwitch, saturdaySwitch, sundaySwitch;
     private ShopSettingViewModel shopSettingViewModel;
-    private String filePath = "", Country = "", Province = "", City = ""; //this file path either come from capture image or upload image
+    private String filePath, Country, Province, City; //this file path either come from capture image or upload image
 
     ShopBasicSetting shopBasicSetting;
 
@@ -134,17 +141,20 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         shopSettingViewModel = new ViewModelProvider(this).get(ShopSettingViewModel.class);
 
 
-        //get timings to show inside recycler view...
-       /* GetTimings getTimings = new GetTimings();
+        //by default timings to show inside recycler view...
+        GetTimings getTimings = new GetTimings();
         getTimings.setProfileId(Constant.PROFILE_ID);
         getTimings.setShopId("7");
         shopSettingViewModel.posttogetTimings(getTimings);
         shopSettingViewModel.gettimings().observe(getActivity(), new Observer<GetTimingsResponse>() {
             @Override
             public void onChanged(GetTimingsResponse getTimingsResponse) {
-                Toast.makeText(activity, "res" + getTimingsResponse.getData().getRequestList().get(0).getShopStatusDaywise(), Toast.LENGTH_SHORT).show();
+                if (getTimingsResponse != null) {
+                    timingnAdapter = new TimingnAdapter(getActivity(), getTimingsResponse.getData().getRequestList());
+                    recycler_timings.setAdapter(timingnAdapter);
+                }
             }
-        });*/
+        });
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -418,37 +428,45 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         saveAccountbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shopBasicSetting.setProfileId(Constant.PROFILE_ID); //44 for testing
-                shopBasicSetting.setShop_Theme("#e31616");
-                shopBasicSetting.setShopProfile(filePath); //image
-                shopBasicSetting.setTax("0");
-                shopBasicSetting.setShippingFee("0");
-                shopBasicSetting.setArea("Gulberg Karachi");
-                shopBasicSetting.setCountry(Country);
-                shopBasicSetting.setProvince(Province);
-                shopBasicSetting.setCity(City);
-                shopBasicSetting.setArea(area.getText().toString());
+                if (!TextUtils.isEmpty(area.getText().toString()) &&
+                        !TextUtils.isEmpty(Country) &&
+                        !TextUtils.isEmpty(Province) &&
+                        !TextUtils.isEmpty(City) &&
+                        !TextUtils.isEmpty(imageUri.toString())
+                ) {
 
-                //some time it hit some time not when hit it return 500 code
+                    shopBasicSetting.setProfileId(Constant.PROFILE_ID); //47 0for testing
+                    shopBasicSetting.setShop_Theme("#e31616");
+                    shopBasicSetting.setShopProfile(imageUri); //image
+                    shopBasicSetting.setTax("0");
+                    shopBasicSetting.setShippingFee("0");
+                    shopBasicSetting.setCountry(Country);
+                    shopBasicSetting.setProvince(Province);
+                    shopBasicSetting.setCity(City);
+                    shopBasicSetting.setArea(area.getText().toString());
 
-                shopSettingViewModel.postShopSettingDetails(shopBasicSetting);
-                progressBar.setVisibility(View.VISIBLE);
-                shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
-                    @Override
-                    public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
-                        if (shopBasicSettingResponse != null) {
-                            //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(activity, shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                            startActivity(new Intent(getActivity(), ShopLandingActivity.class));
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
+
+                    shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
+                    progressBar.setVisibility(View.VISIBLE);
+                    shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
+                        @Override
+                        public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
+                            if (shopBasicSettingResponse != null) {
+                                //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                                startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                            } else {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
 
-
+                } else {
+                    Toast.makeText(activity, "Some fields are missing...", Toast.LENGTH_SHORT).show();
+                    //startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                }
                 // startActivity(new Intent(getActivity(), ShopLandingActivity.class));
             }
         });
@@ -471,6 +489,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         clr_choose = view.findViewById(R.id.clr_choose);
         colortheme = view.findViewById(R.id.colortheme);
         progressBar = view.findViewById(R.id.progressNBar);
+        recycler_timings = view.findViewById(R.id.recycler_timings);
         shopBasicSetting = new ShopBasicSetting();
 
 
@@ -556,7 +575,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
             imageUri = data.getData();
             bannerImage.setImageURI(imageUri);
-            filePath = getPath(getActivity(), imageUri);
+            // filePath = getPath(getActivity(), imageUri);
             Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");

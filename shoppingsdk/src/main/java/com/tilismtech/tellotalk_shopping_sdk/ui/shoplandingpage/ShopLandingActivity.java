@@ -182,7 +182,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 childSpinner.setOnItemSelectedListener(onItemSelectedListener);
 
                 uploadParentCategory(parentSpinner, childSpinner);
-                //  uploadChildCategory();
+                //    uploadChildCategory("1", childSpinner);
+
 
                 iv_back_addproduct = dialogAddProduct.findViewById(R.id.iv_back);
                 iv_back_addproduct.setOnClickListener(new View.OnClickListener() {
@@ -684,7 +685,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                     parentSpinner.setAdapter(spinnerArrayAdapter);
 
-                    //      uploadChildCategory("1",childSpinner);
 
                     // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -698,6 +698,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private void uploadChildCategory(String id, Spinner childSpinner) {
         SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
         subCategoryBYParentCatID.setParentCategoryId(id);
+
         shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID);
         shopLandingPageViewModel.getChildCategories().observe(this, new Observer<SubCategoryBYParentCatIDResponse>() {
             @Override
@@ -705,14 +706,19 @@ public class ShopLandingActivity extends AppCompatActivity {
                 if (subCategoryBYParentCatIDResponse != null) {
                     childCategories = new ArrayList<>();
 
-                    for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
-                        parentCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getColumn1());
+                    //  Toast.makeText(ShopLandingActivity.this, "status : " + subCategoryBYParentCatIDResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
+
+                    if (subCategoryBYParentCatIDResponse.getData().getRequestList() != null && subCategoryBYParentCatIDResponse.getData().getRequestList().size() > 0) {
+
+                        for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
+                            childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getColumn1());
+                        }
+
+                        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, childCategories);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                        childSpinner.setAdapter(spinnerArrayAdapter);
+
                     }
-
-                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, childCategories);
-                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                    childSpinner.setAdapter(spinnerArrayAdapter);
-
                 }
             }
         });
@@ -739,7 +745,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == parentSpinner.getId()) {
-                parentCategory = parentSpinner.getItemAtPosition(position).toString();
+                parentCategory = String.valueOf(parentSpinner.getSelectedItemPosition() + 1);
+                uploadChildCategory(parentCategory, childSpinner);
             }
 
             if (parent.getId() == childSpinner.getId()) {
@@ -752,6 +759,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
         }
     };
+
 
     //for switch button on timings dialog...
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {

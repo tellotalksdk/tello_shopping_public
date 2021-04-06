@@ -3,7 +3,7 @@ package com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ShopBasicSettingResponse {
+public class UpdateProductResponse {
 
 
         @SerializedName("status")
@@ -14,10 +14,10 @@ public class ShopBasicSettingResponse {
         private String statusDetail;
         @SerializedName("OTP")
         @Expose
-        private String otp;
+        private Object otp;
         @SerializedName("data")
         @Expose
-        private String data;
+        private Object data;
 
         public String getStatus() {
             return status;
@@ -35,21 +35,20 @@ public class ShopBasicSettingResponse {
             this.statusDetail = statusDetail;
         }
 
-        public String getOtp() {
+        public Object getOtp() {
             return otp;
         }
 
-        public void setOtp(String otp) {
+        public void setOtp(Object otp) {
             this.otp = otp;
         }
 
-        public String getData() {
+        public Object getData() {
             return data;
         }
 
-        public void setData(String data) {
+        public void setData(Object data) {
             this.data = data;
         }
-
 
 }
