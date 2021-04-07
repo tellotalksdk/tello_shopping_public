@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -35,14 +36,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -67,6 +72,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private EditText productName, productCategory, originalPrice, discountedPrice, skucodeoptional, product_description;
     private ShopLandingPageViewModel shopLandingPageViewModel;
     private Switch edit_switch;
+    private List<Uri> uriList;
+    private Switch isActiveproduct;
+    private String productStatus = "N";
 
 
     @Override
@@ -91,6 +99,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         initRV();
+        uriList = new ArrayList<>();
 
         //this button show only first time when there is np product list
         addProduct_btn = view.findViewById(R.id.addProduct_btn);
@@ -247,6 +256,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     iv = inflater.findViewById(R.id.iv);
                     imageUri = data.getClipData().getItemAt(i).getUri();
                     iv.setImageURI(imageUri);
+                    uriList.add(imageUri);
                     LLimages_edit.addView(inflater);
                 }
 
@@ -264,8 +274,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     @Override
     public void onOpenProductEditor(int productID) {
 
-        //Toast.makeText(getActivity(), "position " + position, Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(getActivity(), "" + productID, Toast.LENGTH_SHORT).show();
 
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -281,7 +290,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         skucodeoptional = dialog.findViewById(R.id.skucodeoptional);
         product_description = dialog.findViewById(R.id.product_description);
         post_product_btn = dialog.findViewById(R.id.post_product_btn);
-        Switch edit_switch = dialog.findViewById(R.id.edit_switch);
+        isActiveproduct = dialog.findViewById(R.id.edit_switch);
+        isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
 
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,16 +325,28 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     Toast.makeText(getActivity(), "Some fields are missing...", Toast.LENGTH_SHORT).show();
                 } else {
                     //every thing fine post edit api
-                   /* ProductForEdit productForEdit = new ProductForEdit();
-                    productForEdit.setProfileId(Constant.PROFILE_ID);
-                    productForEdit.setProductId(String.valueOf(productID)); //product Id comes from product list api
-*/
-                    //same error Get must not have a body....
-                    shopLandingPageViewModel.updateproduct(null);
+
+                    UpdateProduct updateProduct = new UpdateProduct();
+                    updateProduct.setTitle(productName.getText().toString());
+                    updateProduct.setDiscount_Price(discountedPrice.getText().toString());
+                    updateProduct.setPrice(originalPrice.getText().toString());
+                    updateProduct.setProductId(String.valueOf(productID));
+                    updateProduct.setProfileId(Constant.PROFILE_ID);
+                    // updateProduct.setProduct_Category_id();
+                    // updateProduct.setSub_Product_Category_id();
+                    updateProduct.setProduct_Pic(uriList);
+                    updateProduct.setSku(skucodeoptional.getText().toString());
+                    updateProduct.setSummary(product_description.getText().toString());
+                    updateProduct.setProductStatus(productStatus);
+
+
+                    shopLandingPageViewModel.updateproduct(updateProduct);
                     shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
                         @Override
                         public void onChanged(UpdateProductResponse updateProductResponse) {
-
+                            if (updateProductResponse != null) {
+                                Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
 
@@ -351,23 +373,24 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(ProductForEditResponse productForEditResponse) {
                 if (productForEditResponse != null) {
-                    //Toast.makeText(getActivity(), "" + productForEditResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-
-                    productName.setText(productForEditResponse.getData().getRequestList().getTitle());
+                    Toast.makeText(getActivity(), "" + productForEditResponse.getData().getRequestList().getPrice(), Toast.LENGTH_SHORT).show();
+                   /* productName.setText(productForEditResponse.getData().getRequestList().getTitle());
                     productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
                     originalPrice.setText(productForEditResponse.getData().getRequestList().getPrice());
                     discountedPrice.setText(productForEditResponse.getData().getRequestList().getDiscount());
                     skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
-                    edit_switch.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
-                    if (productForEditResponse.getData().getRequestList().getProfilePic() != null) {
+                   */// edit_switch.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
+
+                    /*if (productForEditResponse.getData().getRequestList().getProfilePic() != null) {
                         for (int i = 0; i < productForEditResponse.getData().getRequestList().getProfilePic().size(); i++) {
                             View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                             ImageView iv = inflater.findViewById(R.id.iv);
-                       /* imageUri = data.getClipData().getItemAt(i).getUri();
-                        iv.setImageURI(imageUri);*/
+                       *//* imageUri = data.getClipData().getItemAt(i).getUri();
+                        iv.setImageURI(imageUri);*//*
                             LLimages.addView(inflater);
                         }
-                    }
+                    }*/
+
                     //product description key missing from getproductforedit api...
                     //  product_description.setText(productForEditResponse.getData().getRequestList().getprod());
                 }
@@ -379,10 +402,39 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         dialog.show();
     }
 
+    @Override
+    public void isActiveproduct(int position, boolean isActive) {
+        Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
+
+      /*  Update isProductActive = new IsProductActive();
+        isProductActive.setProductId(String.valueOf(position));
+        isProductActive.setProductStatus(isActive ? "Y" : "N");
+        isProductActive.setProfileId(Constant.PROFILE_ID);
+        shopLandingPageViewModel.isProductActive(isProductActive);
+        shopLandingPageViewModel.getProductActiveResponse().observe(getActivity(), new Observer<IsProductActiveResponse>() {
+            @Override
+            public void onChanged(IsProductActiveResponse isProductActiveResponse) {
+                if(isProductActiveResponse != null){
+                    Toast.makeText(getActivity(), " : " + isProductActiveResponse.getStatusDetail() , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });*/
+    }
+
     public ProductListAdapter.OnProductEditorClickDialog getReference() {
         return this;
     }
 
+    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (buttonView.getId() == isActiveproduct.getId()) {
+                isActiveproduct.setChecked(isChecked);
+                productStatus = isActiveproduct.isChecked() ? "Y" : "N";
+                Toast.makeText(getActivity(), "" + isChecked, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
 }
 

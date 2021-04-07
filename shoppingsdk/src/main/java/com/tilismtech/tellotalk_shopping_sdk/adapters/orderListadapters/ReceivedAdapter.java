@@ -30,18 +30,20 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
     Context myCtx;
     Button done;
     ArrayList<String> move_to_Opt = new ArrayList<>();
+    OnOrderClickListener onOrderClickListener;
 
 
-    public ReceivedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
+    public ReceivedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
     @Override
     public ReceivedItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_orderlist_received_items, parent, false);
-        return new ReceivedItemViewHolder(v);
+        return new ReceivedItemViewHolder(v, this.onOrderClickListener);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         holder.customerName.setText(receivedItemPojo.getCustomer_name_number());
         holder.address.setText(receivedItemPojo.getCustomer_address());
 
-        holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
+    /*    holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(myCtx);
@@ -80,9 +82,9 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
-        });
+        });*/
 
-        holder.viewFull.setOnClickListener(new View.OnClickListener() {
+  /*      holder.viewFull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(myCtx);
@@ -108,7 +110,7 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
-        });
+        });*/
 
     }
 
@@ -117,12 +119,13 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         return receivedItemPojos.size();
     }
 
-    public class ReceivedItemViewHolder extends RecyclerView.ViewHolder {
+    public class ReceivedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
         private Spinner spinner_moveto;
+        OnOrderClickListener onOrderClickListener;
 
-        public ReceivedItemViewHolder(@NonNull View itemView) {
+        public ReceivedItemViewHolder(@NonNull View itemView, OnOrderClickListener onOrderClickListener) {
             super(itemView);
 
             orderNumber = itemView.findViewById(R.id.orderNumber);
@@ -135,6 +138,11 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
             viewFull = itemView.findViewById(R.id.viewFull);
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
 
+            this.onOrderClickListener = onOrderClickListener;
+            viewFull.setOnClickListener(this);
+            addRiderInfo.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.received));
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
@@ -142,6 +150,19 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         }
 
 
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.viewFull) {
+                onOrderClickListener.OnViewFullOrderListener(getAdapterPosition());
+            } else if (v.getId() == R.id.addRiderInfo) {
+                onOrderClickListener.OnRiderInfoUpdateListener(getAdapterPosition());
+            }
+        }
+    }
+
+    public interface OnOrderClickListener {
+        void OnViewFullOrderListener(int position);
+        void OnRiderInfoUpdateListener(int position);
     }
 
 

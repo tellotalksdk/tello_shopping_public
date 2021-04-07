@@ -9,11 +9,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AllAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
+import com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.OrderListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class AllFragment extends Fragment {
     RecyclerView recycler_all_orders;
     AllAdapter allAdapter;
     List<ReceivedItemPojo> receivedItemPojos;
+    OrderListViewModel orderListViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class AllFragment extends Fragment {
         if (getArguments() != null) {
             Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
-
+        orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_all_orders = view.findViewById(R.id.recycler_all_orders);
         initReceivedItems();
         allAdapter = new AllAdapter(receivedItemPojos, getActivity());

@@ -3,6 +3,8 @@ package com.tilismtech.tellotalk_shopping_sdk.api;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
@@ -25,6 +27,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSetting
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 
@@ -69,9 +72,9 @@ public interface Iapi {
 
 
     //shopsetting
-    @Headers({"Accept: */*",
-            "Content-Type: multipart/form-data"}
-    )
+    @Headers({
+            "Accept: application/json"
+    })
     @Multipart
     @POST("api/shop/ShopSettingwithImage")
     Call<ShopBasicSettingResponse> setShopBasicSetting(@Header("Authorization") String token,
@@ -123,19 +126,21 @@ public interface Iapi {
     )
     @Multipart
     @POST("api/Product/AddNewProductwithImage")
-    Call<UpdateOrderStatusResponse> updateProduct(@Header("Authorization") String token,
-                                                  @Part MultipartBody.Part Product_Pic,
-                                                  @Part("Product_Category_id") RequestBody Product_Category_id,
-                                                  @Part("Title") RequestBody Title,
-                                                  @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
-                                                  @Part("Discount_Price") RequestBody Discount_Price,
-                                                  @Part("Sku") RequestBody Sku,
-                                                  @Part("Summary") RequestBody Summary,
-                                                  @Part("ProfileId") RequestBody ProfileId,
-                                                  @Part("ProductStatus") RequestBody ProductStatus,
-                                                  @Part("Price") RequestBody Price);
+    Call<UpdateProductResponse> updateProduct(@Header("Authorization") String token,
+                                              @Part MultipartBody.Part Product_Pic,
+                                              @Part("Title") RequestBody Title,
+                                              @Part("Discount_Price") RequestBody Discount_Price,
+                                              @Part("Sku") RequestBody Sku,
+                                              @Part("Summary") RequestBody Summary,
+                                              @Part("ProfileId") RequestBody ProfileId,
+                                              @Part("ProductStatus") RequestBody ProductStatus,
+                                              @Part("Price") RequestBody Price,
+                                              @Part("ProductId") RequestBody ProductId);
 
     //getproductforedit
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
     @GET("api/Product/GetProductforedit")
     Call<ProductForEditResponse> getProductForEdit(@Header("Authorization") String token, @Query("ProfileId") String ProfileId,
                                                    @Query("ProductId") String ProductId);
@@ -180,4 +185,7 @@ public interface Iapi {
     //posttiming remaining....
 
 
+    //product status is in order list screen where we have 6 status
+    @POST("api/Product/UpdateProductStatus")
+    Call<IsProductActiveResponse> updateProductStatus(@Header("Authorization") String token, @Body IsProductActive isProductActive);
 }

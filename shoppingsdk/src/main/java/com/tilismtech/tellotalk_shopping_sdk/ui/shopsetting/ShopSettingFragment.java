@@ -437,7 +437,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                     shopBasicSetting.setProfileId(Constant.PROFILE_ID); //47 0for testing
                     shopBasicSetting.setShop_Theme("#e31616");
-                    shopBasicSetting.setShopProfile(imageUri); //image
+                   // shopBasicSetting.setShopProfile(imageUri); //image
+                    shopBasicSetting.setShopProfile(filePath); //image
                     shopBasicSetting.setTax("0");
                     shopBasicSetting.setShippingFee("0");
                     shopBasicSetting.setCountry(Country);
@@ -575,7 +576,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
             imageUri = data.getData();
             bannerImage.setImageURI(imageUri);
-            // filePath = getPath(getActivity(), imageUri);
+            filePath = getPath(getActivity(), imageUri);
             Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");

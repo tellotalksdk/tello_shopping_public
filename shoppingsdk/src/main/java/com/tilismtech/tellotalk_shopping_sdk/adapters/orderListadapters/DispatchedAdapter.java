@@ -28,10 +28,13 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
+   OnOrderClickListener onOrderClickListener;
+
 
     public DispatchedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
@@ -116,6 +119,7 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
         private Spinner spinner_moveto;
+       OnOrderClickListener onOrderClickListener;
 
 
         public DispatchedItemViewHolder(@NonNull View itemView) {
@@ -138,5 +142,12 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
 
         }
     }
+
+
+    public interface OnOrderClickListener {
+        void OnViewFullOrderListener(int position);
+        void OnRiderInfoUpdateListener(int position);
+    }
+
 
 }

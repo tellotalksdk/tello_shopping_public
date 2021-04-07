@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
@@ -28,6 +30,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     private MutableLiveData<ProductListResponse> productListResponseMutableLiveData;
     private MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData;
 
+    private MutableLiveData<IsProductActiveResponse> isProductActiveResponseMutableLiveData;
+
     private Repository repository;
 
     public ShopLandingPageViewModel() {
@@ -37,6 +41,7 @@ public class ShopLandingPageViewModel extends ViewModel {
         this.productForEditMutableLiveData = new MutableLiveData<>();
         this.productListResponseMutableLiveData = new MutableLiveData<>();
         this.updateProductResponseMutableLiveData = new MutableLiveData<>();
+        isProductActiveResponseMutableLiveData = new MutableLiveData<>();
         this.repository = Repository.getRepository();
     }
 
@@ -86,13 +91,23 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //update product
-    public void updateproduct(UpdateProduct updateProduct){
-        repository.updateProduct(updateProductResponseMutableLiveData,updateProduct);
+    public void updateproduct(UpdateProduct updateProduct) {
+        repository.updateProduct(updateProductResponseMutableLiveData, updateProduct);
     }
 
-    public LiveData<UpdateProductResponse> getProductUpdateResponse(){
+    public LiveData<UpdateProductResponse> getProductUpdateResponse() {
         return this.updateProductResponseMutableLiveData;
     }
+
+    //toggle product activeness
+    public void isProductActive(IsProductActive isProductActive) {
+        repository.updateProductStatus(isProductActiveResponseMutableLiveData, isProductActive);
+    }
+
+    public LiveData<IsProductActiveResponse> getProductActiveResponse() {
+        return this.isProductActiveResponseMutableLiveData;
+    }
+
 
 
 }

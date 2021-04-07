@@ -1,6 +1,5 @@
 package com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody;
 
-import android.net.Uri;
 
 public class ShopBasicSetting {
 
@@ -12,9 +11,9 @@ public class ShopBasicSetting {
     private String Country;
     private String Shop_Theme;
     private String ProfileId;
-    private Uri ShopProfile;
+    private String ShopProfile;
 
-    public ShopBasicSetting(String shippingFee, String tax, String province, String area, String city, String country, String shop_Theme, String profileId, Uri shopProfile) {
+    public ShopBasicSetting(String shippingFee, String tax, String province, String area, String city, String country, String shop_Theme, String profileId, String shopProfile) {
         ShippingFee = shippingFee;
         this.tax = tax;
         Province = province;
@@ -93,11 +92,11 @@ public class ShopBasicSetting {
         ProfileId = profileId;
     }
 
-    public Uri getShopProfile() {
+    public String getShopProfile() {
         return ShopProfile;
     }
 
-    public void setShopProfile(Uri shopProfile) {
+    public void setShopProfile(String shopProfile) {
         ShopProfile = shopProfile;
     }
 }

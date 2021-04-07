@@ -11,6 +11,8 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
@@ -37,11 +39,13 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatu
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -50,6 +54,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Part;
 
 import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
@@ -57,6 +62,8 @@ public class Repository {
 
     public static Repository repository;
     public Context myCtx;
+
+    public String boundary;
 
 
     public static Repository getRepository() {
@@ -110,25 +117,24 @@ public class Repository {
 
     public void setShopBasicSetting(MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData, ShopBasicSetting shopBasicSetting, Context myContext) {
 
-        File file = new File(shopBasicSetting.getShopProfile().getPath());
-        RequestBody filePart = RequestBody.create(MediaType.parse(myContext.getContentResolver().getType(shopBasicSetting.getShopProfile())), file);
-        MultipartBody.Part f1 = MultipartBody.Part.createFormData("photo", file.getName(), filePart);
+        boundary = UUID.randomUUID().toString();
 
+        File file = new File(shopBasicSetting.getShopProfile());
 
-      /*  RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part ShopProfile = MultipartBody.Part.createFormData("ShopProfile", file.getName(), requestBody); //for send an image as multipart
-*/
-        RequestBody ShippingFee = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getShippingFee());
-        RequestBody tax = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getTax());
-        RequestBody Province = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getProvince());
-        RequestBody Area = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getArea());
-        RequestBody City = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getCity());
-        RequestBody Country = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getCountry());
-        RequestBody Shop_Theme = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getShop_Theme());
-        RequestBody ProfileId = RequestBody.create(MediaType.parse("multipart/form-data"), shopBasicSetting.getProfileId());
+
+        RequestBody ShippingFee = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShippingFee());
+        RequestBody tax = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getTax());
+        RequestBody Province = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getProvince());
+        RequestBody Area = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getArea());
+        RequestBody City = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getCity());
+        RequestBody Country = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getCountry());
+        RequestBody Shop_Theme = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShop_Theme());
+        RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getProfileId());
 
         getRetrofitClient().setShopBasicSetting("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
-                null, ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId
+                ShopProfile, ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId
         ).enqueue(new Callback<ShopBasicSettingResponse>() {
             @Override
             public void onResponse(Call<ShopBasicSettingResponse> call, Response<ShopBasicSettingResponse> response) {
@@ -275,7 +281,7 @@ public class Repository {
     }
 
     public void productForEdit(MutableLiveData<ProductForEditResponse> productForEditMutableLiveData, ProductForEdit productForEdit) {
-        getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit.getProfileId(),productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
+        getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
             @Override
             public void onResponse(Call<ProductForEditResponse> call, Response<ProductForEditResponse> response) {
                 if (response != null) {
@@ -295,7 +301,49 @@ public class Repository {
         });
     }
 
-    public void updateProduct(MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData, UpdateProduct updateProduct){
+    public void updateProduct(MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData, UpdateProduct updateProduct) {
+
+//        File file = new File(shopBasicSetting.getShopProfile());
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+//        MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("ShopProfile", file.getName(), requestBody); //for send an image as multipart
+
+        //  RequestBody Product_Category_id = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getProduct_Category_id());
+        RequestBody Title = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getTitle());
+        //   RequestBody Sub_Product_Category_id = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getSub_Product_Category_id());
+        RequestBody Discount_Price = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getDiscount_Price());
+        RequestBody Sku = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getSku());
+        RequestBody Summary = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getSummary());
+        RequestBody ProfileId = RequestBody.create(okhttp3.MultipartBody.FORM, Constant.PROFILE_ID);
+        RequestBody ProductStatus = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getProductStatus());
+        RequestBody Price = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getPrice());
+        RequestBody ProductId = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getProductId());
+
+
+        getRetrofitClient().updateProduct("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
+                null,
+                Title,
+                Discount_Price,
+                Sku,
+                Summary,
+                ProfileId,
+                ProductStatus,
+                Price,
+                ProductId).enqueue(new Callback<UpdateProductResponse>() {
+            @Override
+            public void onResponse(Call<UpdateProductResponse> call, Response<UpdateProductResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        updateProductResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateProductResponse> call, Throwable t) {
+
+            }
+        });
+
 
     }
 
@@ -425,4 +473,25 @@ public class Repository {
             }
         });
     }
+
+    public void updateProductStatus(MutableLiveData<IsProductActiveResponse> isProductActiveResponseMutableLiveData, IsProductActive isProductActive) {
+        getRetrofitClient().updateProductStatus("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), isProductActive).enqueue(new Callback<IsProductActiveResponse>() {
+            @Override
+            public void onResponse(Call<IsProductActiveResponse> call, Response<IsProductActiveResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        isProductActiveResponseMutableLiveData.setValue(response.body());
+                    } else {
+                        isProductActiveResponseMutableLiveData.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IsProductActiveResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 }

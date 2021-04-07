@@ -28,10 +28,13 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
+    OnOrderClickListener onOrderClickListener;
+
 
     public DeliveredAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
@@ -116,6 +119,7 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
         private Spinner spinner_moveto;
+       OnOrderClickListener onOrderClickListener;
 
 
         public DeliveredItemViewHolder(@NonNull View itemView) {
@@ -138,4 +142,11 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
 
         }
     }
+
+
+    public interface OnOrderClickListener {
+        void OnViewFullOrderListener(int position);
+        void OnRiderInfoUpdateListener(int position);
+    }
+
 }

@@ -29,10 +29,13 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
+    ReceivedAdapter.OnOrderClickListener onOrderClickListener;
+
 
     public AcceptedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
@@ -120,6 +123,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo , viewFull;
         private Spinner spinner_moveto;
+        ReceivedAdapter.OnOrderClickListener onOrderClickListener;
 
 
         public AcceptedItemViewHolder(@NonNull View itemView) {
@@ -141,5 +145,12 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
 
         }
     }
+
+
+    public interface OnOrderClickListener {
+        void OnViewFullOrderListener(int position);
+        void OnRiderInfoUpdateListener(int position);
+    }
+
 
 }

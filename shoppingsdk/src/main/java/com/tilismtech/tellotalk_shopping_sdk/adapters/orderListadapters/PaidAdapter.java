@@ -28,10 +28,13 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
+    OnOrderClickListener onOrderClickListener;
+
 
     public PaidAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
@@ -118,6 +121,7 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
         private Spinner spinner_moveto;
+        OnOrderClickListener onOrderClickListener;
 
 
         public PaidItemViewHolder(@NonNull View itemView) {
@@ -140,4 +144,11 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
 
         }
     }
+
+
+    public interface OnOrderClickListener {
+        void OnViewFullOrderListener(int position);
+        void OnRiderInfoUpdateListener(int position);
+    }
+
 }

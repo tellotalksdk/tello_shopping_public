@@ -28,10 +28,13 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
+     OnOrderClickListener onOrderClickListener;
+
 
     public CancelledAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
         this.receivedItemPojos = receivedItemPojos;
         this.myCtx = myCtx;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
@@ -116,6 +119,7 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
         private Spinner spinner_moveto;
+       OnOrderClickListener onOrderClickListener;
 
 
         public CancelledItemViewHolder(@NonNull View itemView) {
@@ -138,4 +142,11 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
 
         }
     }
+
+
+    public interface OnOrderClickListener {
+        void OnViewFullOrderListener(int position);
+        void OnRiderInfoUpdateListener(int position);
+    }
+
 }

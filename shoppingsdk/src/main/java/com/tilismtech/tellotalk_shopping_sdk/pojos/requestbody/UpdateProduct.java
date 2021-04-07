@@ -2,8 +2,10 @@ package com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody;
 
 import android.net.Uri;
 
+import java.util.List;
+
 public class UpdateProduct {
-    private Uri Product_Pic;
+    private List<Uri> Product_Pic;
     private String Product_Category_id;
     private String Title;
     private String Sub_Product_Category_id;
@@ -15,11 +17,12 @@ public class UpdateProduct {
     private String Price;
     private String ProductId;
 
-    public Uri getProduct_Pic() {
+
+    public List<Uri> getProduct_Pic() {
         return Product_Pic;
     }
 
-    public void setProduct_Pic(Uri product_Pic) {
+    public void setProduct_Pic(List<Uri> product_Pic) {
         Product_Pic = product_Pic;
     }
 
