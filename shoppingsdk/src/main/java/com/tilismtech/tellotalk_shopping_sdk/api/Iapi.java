@@ -16,6 +16,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
@@ -103,9 +104,9 @@ public interface Iapi {
             @Header("Authorization") String token);
 
     //addNewProductApi
-    @Headers({"Accept: */*",
-            "Content-Type: multipart/form-data"}
-    )
+    @Headers({
+            "Accept: application/json"
+    })
     @Multipart
     @POST("api/Product/AddNewProductwithImage")
     Call<AddNewProductResponse> addNewProducts(@Header("Authorization") String token,
@@ -125,7 +126,7 @@ public interface Iapi {
             "Content-Type: multipart/form-data"}
     )
     @Multipart
-    @POST("api/Product/AddNewProductwithImage")
+    @POST("api/Product/UpdateProductwithImage")
     Call<UpdateProductResponse> updateProduct(@Header("Authorization") String token,
                                               @Part MultipartBody.Part Product_Pic,
                                               @Part("Title") RequestBody Title,
@@ -146,21 +147,35 @@ public interface Iapi {
                                                    @Query("ProductId") String ProductId);
 
     //update rider information api
-    @POST("/api/Order/UpdateRiderInfo")
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
+    @POST("api/Order/UpdateRiderInfo")
     Call<UpdateRiderInfoResponse> updateRiderInformation(@Header("Authorization") String token, @Body UpdateRiderInfo updateRiderInfo);
 
     //getordersbystatus
-    @GET("api/Product/getOrderbyStatus")
-    Call<GetOrderByStatusResponse> getOrderbyStatus(@Header("Authorization") String token, @Body OrderByStatus orderByStatus);
+    @GET("api/Order/getOrderbyStatus")
+    Call<GetOrderByStatusResponse> getOrderbyStatus(@Header("Authorization") String token,
+                                                    @Query("ProfileId") String ProfileId,
+                                                    @Query("StatusId") String StatusId);
 
 
     //updateorderstatus
-    @GET("api/Order/UpdateOrderStatus")
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
+    @POST("api/Order/UpdateOrderStatus")
     Call<UpdateOrderStatusResponse> updateOrderStatus(@Header("Authorization") String token, @Body UpdateOrderStatus updateOrderStatus);
 
     //viewfullorder
-    @GET("api/Product/ViewFullOrder")
-    Call<ViewFullOrderResponse> viewfullorder(@Header("Authorization") String token, @Body ViewFullOrder viewFullOrder);
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
+    @GET("api/Order/ViewFullOrder")
+    Call<ViewFullOrderResponse> viewfullorder(@Header("Authorization") String token,
+                                              @Query("ProfileId") String ProfileId,
+                                              @Query("OrderId") String OrderId,
+                                              @Query("OrderStatus") String OrderStatus);
 
     //getproductList
     @GET("api/Product/GetProductList")
@@ -188,4 +203,11 @@ public interface Iapi {
     //product status is in order list screen where we have 6 status
     @POST("api/Product/UpdateProductStatus")
     Call<IsProductActiveResponse> updateProductStatus(@Header("Authorization") String token, @Body IsProductActive isProductActive);
+
+    //get all order to show inside order list All tab ...
+    @GET("api/Order/getAllOrders")
+    Call<GetAllOrderResponse> getAllOrderList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
+
+    //here we set get all stgatus call
+
 }

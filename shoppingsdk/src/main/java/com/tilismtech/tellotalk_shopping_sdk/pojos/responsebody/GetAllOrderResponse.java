@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GetOrderByStatusResponse {
+public class GetAllOrderResponse {
 
     public class Data {
 
@@ -217,5 +217,4 @@ public class GetOrderByStatusResponse {
         }
 
     }
-
 }

@@ -76,13 +76,15 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:paddingLeft="15dp"
-                android:text="I want to sell my Orient AC Model A-35"
+                android:text=""
+                android:hint="Product Title"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/productCategory"
                 android:layout_width="match_parent"
+                android:enabled="false"
                 android:layout_height="50dp"
                 android:layout_below="@+id/productName"
                 android:layout_marginStart="10dp"
@@ -90,7 +92,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:paddingLeft="15dp"
-                android:text="Home Appliance"
+                android:text=""
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -133,7 +135,8 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:paddingLeft="15dp"
-                android:text="50,000"
+                android:hint="Original Price"
+                android:text=""
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -147,7 +150,8 @@
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:paddingLeft="15dp"
-                android:text="40,000"
+                android:hint="Discounted Price"
+                android:text=""
                 android:textSize="14sp"
                 android:textStyle="bold" />
 

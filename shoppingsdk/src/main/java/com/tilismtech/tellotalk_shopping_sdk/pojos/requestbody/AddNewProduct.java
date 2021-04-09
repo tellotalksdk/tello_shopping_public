@@ -1,8 +1,10 @@
 package com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody;
 
+import java.util.List;
+
 public class AddNewProduct {
 
-    private String Product_Pic;
+    private List<String> Product_Pic;
     private String Product_Category_id;
     private String Title;
     private String Sub_Product_Category_id;
@@ -13,11 +15,11 @@ public class AddNewProduct {
     private String ProductStatus;
     private String Price;
 
-    public String getProduct_Pic() {
+    public List<String> getProduct_Pic() {
         return Product_Pic;
     }
 
-    public void setProduct_Pic(String product_Pic) {
+    public void setProduct_Pic(List<String> product_Pic) {
         Product_Pic = product_Pic;
     }
 

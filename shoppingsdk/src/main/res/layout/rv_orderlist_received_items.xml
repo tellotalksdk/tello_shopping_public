@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/address"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/customerName"
             android:layout_alignParentStart="true"
@@ -105,7 +105,6 @@
         </LinearLayout>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/addRiderInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,17 +116,18 @@
             android:text="+ Add Rider Info"
             android:textColor="#226EE8"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <Spinner
-            android:visibility="gone"
             android:id="@+id/spinner_moveto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
             android:layout_toLeftOf="@+id/viewFull"
             android:background="@drawable/custom_move_to_spinner"
-            android:paddingEnd="30dp" />
+            android:paddingEnd="30dp"
+            android:visibility="gone" />
 
 
         <TextView

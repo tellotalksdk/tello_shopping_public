@@ -24,6 +24,17 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/orderStat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
+            android:text="Cancelled"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+
+        <TextView
             android:visibility="gone"
             android:id="@+id/orderStatus"
             android:layout_width="wrap_content"
@@ -133,6 +144,32 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/addRiderInfo1"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/address"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:text="sharjeel / 0333-0347473"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/edit_rider_info"
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:layout_below="@+id/address"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/addRiderInfo1"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_location"/>
+
         <Spinner
             android:id="@+id/spinner_moveto"
             android:layout_width="wrap_content"
@@ -140,7 +177,8 @@
             android:layout_below="@+id/address"
             android:layout_toLeftOf="@+id/viewFull"
             android:background="@drawable/custom_move_to_spinner"
-            android:paddingEnd="30dp" />
+            android:paddingEnd="30dp"
+            android:visibility="gone" />
 
 
 

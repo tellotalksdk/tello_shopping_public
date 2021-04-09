@@ -16,10 +16,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +35,16 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
     Button done;
     ArrayList<String> move_to_Opt = new ArrayList<>();
     OnOrderClickListener onOrderClickListener;
+    //
+    List<GetOrderByStatusResponse.Request> requestList;
 
 
-    public ReceivedAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
-        this.receivedItemPojos = receivedItemPojos;
+    public ReceivedAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
+        this.requestList = receivedItemPojos;
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
+
 
     @NonNull
     @Override
@@ -48,80 +55,28 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
 
     @Override
     public void onBindViewHolder(@NonNull ReceivedItemViewHolder holder, int position) {
-        ReceivedItemPojo receivedItemPojo = receivedItemPojos.get(position);
+        GetOrderByStatusResponse.Request receivedItemPojo = requestList.get(position);
 
-        holder.orderNumber.setText(receivedItemPojo.getOrder_number());
-        holder.orderNumber.setText(receivedItemPojo.getOrder_number());
-        holder.customerName.setText(receivedItemPojo.getCustomer_name_number());
-        holder.address.setText(receivedItemPojo.getCustomer_address());
-
-    /*    holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_add_rider_info);
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-
-                done = dialog.findViewById(R.id.confirmRiderbtn);
-                done.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });*/
-
-  /*      holder.viewFull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_product_detail_order_list);
-
-                ImageView iv_back = dialog.findViewById(R.id.iv_back);
-                iv_back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });*/
+        holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
+        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        holder.address.setText(receivedItemPojo.getCompleteAddress());
+        holder.date.setText(Utility.parseDateToddMMyyyy(receivedItemPojo.getOrderdate()));
+        holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
 
     }
 
     @Override
     public int getItemCount() {
-        return receivedItemPojos.size();
+        if (requestList != null) {
+            return requestList.size();
+        } else {
+            return 0;
+        }
     }
 
     public class ReceivedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
+        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull, orderStatus;
         private Spinner spinner_moveto;
         OnOrderClickListener onOrderClickListener;
 
@@ -137,10 +92,12 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+            orderStatus = itemView.findViewById(R.id.orderStatus);
 
             this.onOrderClickListener = onOrderClickListener;
             viewFull.setOnClickListener(this);
             addRiderInfo.setOnClickListener(this);
+            orderStatus.setOnClickListener(this);
             itemView.setOnClickListener(this);
 
 
@@ -156,13 +113,19 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 onOrderClickListener.OnViewFullOrderListener(getAdapterPosition());
             } else if (v.getId() == R.id.addRiderInfo) {
                 onOrderClickListener.OnRiderInfoUpdateListener(getAdapterPosition());
+            } else if (v.getId() == R.id.orderStatus) {
+                onOrderClickListener.onOrderUpdateListener("1");
             }
         }
+
     }
 
     public interface OnOrderClickListener {
         void OnViewFullOrderListener(int position);
+
         void OnRiderInfoUpdateListener(int position);
+
+        void onOrderUpdateListener(String status);
     }
 
 

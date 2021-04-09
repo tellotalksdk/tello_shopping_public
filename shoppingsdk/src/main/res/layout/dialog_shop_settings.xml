@@ -505,7 +505,7 @@
                         android:background="@drawable/rounded_btn"
                         android:paddingLeft="40dp"
                         android:paddingRight="40dp"
-                        android:text="Create Account"
+                        android:text="Update Timing"
                         android:textColor="@android:color/white" />
 
 

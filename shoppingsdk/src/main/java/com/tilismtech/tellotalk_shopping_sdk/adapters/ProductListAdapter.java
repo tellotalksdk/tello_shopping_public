@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
@@ -62,6 +63,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.productcategory.setText("N/A");
         holder.productTitle.setText(request.getTitle());
         holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
+
+        Glide.with(myCtx).load(request.getProdpic()).into(holder.productImage);
         // holder.productImage.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_bbq));
 
        /* holder.open_edit_details.setOnClickListener(new View.OnClickListener() {

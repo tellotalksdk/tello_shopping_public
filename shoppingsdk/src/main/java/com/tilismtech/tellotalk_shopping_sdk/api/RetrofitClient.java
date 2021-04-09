@@ -26,7 +26,7 @@ public class RetrofitClient {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-            .addInterceptor(logging)
+           // .addInterceptor(logging)
             .build();
 
 

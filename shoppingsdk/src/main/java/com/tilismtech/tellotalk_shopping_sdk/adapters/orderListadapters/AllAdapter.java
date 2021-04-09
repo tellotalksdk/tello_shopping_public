@@ -1,14 +1,11 @@
 package com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
+import android.graphics.Color;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,19 +17,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
 import java.util.List;
 
 public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemViewHolder> {
 
-    List<ReceivedItemPojo> receivedItemPojos;
+    List<GetAllOrderResponse.Request> allItems;
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
 
 
-    public AllAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
-        this.receivedItemPojos = receivedItemPojos;
+    public AllAdapter(List<GetAllOrderResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
+        this.allItems = receivedItemPojos;
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -41,88 +40,72 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
     @Override
     public AllStatusItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_orderlist_all_items, parent, false);
-        return new AllStatusItemViewHolder(v);
+        return new AllStatusItemViewHolder(v, this.onOrderClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AllStatusItemViewHolder holder, int position) {
-        ReceivedItemPojo receivedItemPojo = receivedItemPojos.get(position);
+        GetAllOrderResponse.Request receivedItemPojo = allItems.get(position);
 
-        holder.orderNumber.setText(receivedItemPojo.getOrder_number());
-        holder.orderNumber.setText(receivedItemPojo.getOrder_number());
-        holder.customerName.setText(receivedItemPojo.getCustomer_name_number());
-        holder.address.setText(receivedItemPojo.getCustomer_address());
+        holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
+        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        holder.address.setText(receivedItemPojo.getCompleteAddress());
+        holder.date.setText(receivedItemPojo.getOrderdate());
+        holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
 
-        holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_add_rider_info);
+        if (receivedItemPojo.getRiderName() != null && receivedItemPojo.getRiderContact() != null) {
+            holder.addRiderInfo1.setVisibility(View.VISIBLE);
+            holder.addRiderInfo.setVisibility(View.GONE);
+            //  holder.edit_rider_info.setVisibility(View.VISIBLE);
+            holder.addRiderInfo1.setText(receivedItemPojo.getRiderName() + " / " + receivedItemPojo.getRiderContact());
+        } else {
+            holder.addRiderInfo1.setVisibility(View.GONE);
+            holder.addRiderInfo.setVisibility(View.VISIBLE);
+            // holder.edit_rider_info.setVisibility(View.GONE);
+        }
 
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
+        if (receivedItemPojo.getOrderStatus() == 1) {
+            holder.orderStat.setText("Received");
+            holder.orderStat.setTextColor(Color.BLUE);
+        } else if (receivedItemPojo.getOrderStatus() == 2) {
+            holder.orderStat.setText("Accepted");
+            holder.orderStat.setTextColor(Color.BLUE);
+        } else if (receivedItemPojo.getOrderStatus() == 3) {
+            holder.orderStat.setText("Dispatched");
+            holder.orderStat.setTextColor(Color.BLUE);
+        } else if (receivedItemPojo.getOrderStatus() == 4) {
+            holder.orderStat.setText("Delivered");
+            holder.orderStat.setTextColor(Color.BLUE);
+        } else if (receivedItemPojo.getOrderStatus() == 5) {
+            holder.orderStat.setText("Paid");
+            holder.orderStat.setTextColor(Color.BLUE);
+        } else if (receivedItemPojo.getOrderStatus() == 6) {
+            holder.orderStat.setText("Cancelled");
+            holder.orderStat.setTextColor(Color.RED);
+        }
 
-                done = dialog.findViewById(R.id.confirmRiderbtn);
-                done.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
 
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });
-
-        holder.viewFull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_product_detail_order_list);
-
-                ImageView iv_back = dialog.findViewById(R.id.iv_back);
-                iv_back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return receivedItemPojos.size();
+        if (allItems != null) {
+            return allItems.size();
+        } else {
+            return 0;
+        }
     }
 
-    public class AllStatusItemViewHolder extends RecyclerView.ViewHolder {
+    public class AllStatusItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
+        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull, orderStat, addRiderInfo1;
         private Spinner spinner_moveto;
-        ReceivedAdapter.OnOrderClickListener onOrderClickListener;
+        OnOrderClickListener onOrderClickListener;
+        ImageView edit_rider_info;
 
 
-        public AllStatusItemViewHolder(@NonNull View itemView) {
+        public AllStatusItemViewHolder(@NonNull View itemView, OnOrderClickListener onOrderClickListener) {
             super(itemView);
 
             orderNumber = itemView.findViewById(R.id.orderNumber);
@@ -133,19 +116,42 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
             rupees = itemView.findViewById(R.id.rupees);
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
-
+            orderStat = itemView.findViewById(R.id.orderStat);
+            addRiderInfo1 = itemView.findViewById(R.id.addRiderInfo1);
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+            edit_rider_info = itemView.findViewById(R.id.edit_rider_info);
+
+            this.onOrderClickListener = onOrderClickListener;
+            viewFull.setOnClickListener(this);
+            addRiderInfo.setOnClickListener(this);
+            edit_rider_info.setOnClickListener(this);
+            addRiderInfo1.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.all));
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
             spinner_moveto.setAdapter(spinnerArrayAdapter);
 
         }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.viewFull) {
+                onOrderClickListener.OnViewFullOrderListener(allItems.get(getAdapterPosition()).getOrderid(),allItems.get(getAdapterPosition()).getOrderStatus());
+            } else if (v.getId() == R.id.addRiderInfo) {
+                onOrderClickListener.OnRiderInfoUpdateListener(getAdapterPosition());
+            } else if (v.getId() == R.id.edit_rider_info) {
+                onOrderClickListener.OnRiderInfoUpdateListener(allItems.get(getAdapterPosition()).getOrderid());
+            }
+        }
+
     }
 
 
     public interface OnOrderClickListener {
-        void OnViewFullOrderListener(int position);
+        void OnViewFullOrderListener(int position , int orderStatus);
+
         void OnRiderInfoUpdateListener(int position);
     }
 

@@ -265,6 +265,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp">
 
+
                 <LinearLayout
                     android:id="@+id/iv_timings"
                     android:layout_width="match_parent"
@@ -290,84 +291,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="DuplicateIds"
                         tools:listitem="@layout/rv_item_timings_layout" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/bg_rounded_white_days_timings"
-                        android:gravity="center"
-                        android:paddingLeft="25dp"
-                        android:paddingRight="25dp"
-                        android:text="Monday   9:00 A.M / 9:00 P.M"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_white_days_timings"
-                        android:gravity="center"
-                        android:paddingLeft="25dp"
-                        android:paddingRight="25dp"
-                        android:text="Tuesday   9:00 A.M / 9:00 P.M"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_white_days_timings"
-                        android:gravity="center"
-                        android:paddingLeft="25dp"
-                        android:paddingRight="25dp"
-                        android:text="Wednesday   9:00 A.M / 9:00 P.M"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_rounded_white_days_timings"
-                        android:gravity="center"
-                        android:paddingLeft="25dp"
-                        android:paddingRight="25dp"
-                        android:text="Thrusday   9:00 A.M / 9:00 P.M"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/bg_rounded_white_days_timings"
-                        android:gravity="center"
-                        android:paddingLeft="25dp"
-                        android:paddingRight="25dp"
-                        android:text="Friday   9:00 A.M / 9:00 P.M"
-                        android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
 
                 </LinearLayout>
 
+
                 <ImageView
+
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_centerInParent="true"
@@ -375,6 +309,12 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/calender" />
+
+                <ImageView
+                    android:id="@+id/iv_tim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"/>
 
 
             </FrameLayout>
@@ -426,7 +366,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/colortheme"
-
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
@@ -446,6 +385,15 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:visibility="gone" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/loader"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/loading"/>
 
     </FrameLayout>
 

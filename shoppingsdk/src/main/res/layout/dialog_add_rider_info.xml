@@ -43,6 +43,7 @@
 
 
         <EditText
+            android:id="@+id/etRiderName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/edit_text_bg_color"
@@ -52,21 +53,25 @@
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/etRiderContact"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bg_color"
-            android:hint="* Contact #"
+            android:hint="Contact #"
+            android:inputType="number"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:textSize="14sp" />
 
         <EditText
+            android:id="@+id/etRiderTracking"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bg_color"
-            android:hint="* Tracking ID # "
+            android:hint="Tracking ID # "
+            android:inputType="number"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:textSize="14sp" />

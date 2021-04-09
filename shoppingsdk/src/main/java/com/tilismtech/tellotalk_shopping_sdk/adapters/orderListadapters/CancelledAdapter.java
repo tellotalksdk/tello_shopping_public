@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,19 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
 import java.util.List;
 
 public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.CancelledItemViewHolder> {
 
-    List<ReceivedItemPojo> receivedItemPojos;
+    List<GetOrderByStatusResponse.Request> cancelledItems;
     Context myCtx;
     Button done;
-     OnOrderClickListener onOrderClickListener;
+    OnOrderClickListener onOrderClickListener;
 
 
-    public CancelledAdapter(List<ReceivedItemPojo> receivedItemPojos, Context myCtx) {
-        this.receivedItemPojos = receivedItemPojos;
+    public CancelledAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
+        this.cancelledItems = receivedItemPojos;
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -41,19 +43,31 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
     @Override
     public CancelledItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_orderlist_cancelled_items, parent, false);
-        return new CancelledItemViewHolder(v);
+        return new CancelledItemViewHolder(v, this.onOrderClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CancelledItemViewHolder holder, int position) {
-        ReceivedItemPojo receivedItemPojo = receivedItemPojos.get(position);
+        GetOrderByStatusResponse.Request receivedItemPojo = cancelledItems.get(position);
 
-        holder.orderNumber.setText(receivedItemPojo.getOrder_number());
-        holder.orderNumber.setText(receivedItemPojo.getOrder_number());
-        holder.customerName.setText(receivedItemPojo.getCustomer_name_number());
-        holder.address.setText(receivedItemPojo.getCustomer_address());
+        holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
+        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        holder.address.setText(receivedItemPojo.getCompleteAddress());
+        holder.date.setText(receivedItemPojo.getOrderdate());
+        holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
 
-        holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
+        if (receivedItemPojo.getRiderName() != null && receivedItemPojo.getRiderContact() != null) {
+            holder.addRiderInfo1.setVisibility(View.VISIBLE);
+            holder.addRiderInfo.setVisibility(View.GONE);
+            holder.edit_rider_info.setVisibility(View.VISIBLE);
+            holder.addRiderInfo1.setText(receivedItemPojo.getRiderName() + " / " + receivedItemPojo.getRiderContact());
+        } else {
+            holder.addRiderInfo1.setVisibility(View.GONE);
+            holder.addRiderInfo.setVisibility(View.VISIBLE);
+            holder.edit_rider_info.setVisibility(View.GONE);
+        }
+
+       /* holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(myCtx);
@@ -107,22 +121,27 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
-        });
+        });*/
     }
 
     @Override
     public int getItemCount() {
-        return receivedItemPojos.size();
+        if (cancelledItems != null) {
+            return cancelledItems.size();
+        } else {
+            return 0;
+        }
     }
 
-    public class CancelledItemViewHolder extends RecyclerView.ViewHolder {
+    public class CancelledItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull;
+        private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull, orderStatus, addRiderInfo1;
         private Spinner spinner_moveto;
-       OnOrderClickListener onOrderClickListener;
+        OnOrderClickListener onOrderClickListener;
+        ImageView edit_rider_info;
 
 
-        public CancelledItemViewHolder(@NonNull View itemView) {
+        public CancelledItemViewHolder(@NonNull View itemView, OnOrderClickListener onOrderClickListener) {
             super(itemView);
 
             orderNumber = itemView.findViewById(R.id.orderNumber);
@@ -133,20 +152,72 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
             rupees = itemView.findViewById(R.id.rupees);
             addRiderInfo = itemView.findViewById(R.id.addRiderInfo);
             viewFull = itemView.findViewById(R.id.viewFull);
-
+            orderStatus = itemView.findViewById(R.id.orderStatus);
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
+            addRiderInfo1 = itemView.findViewById(R.id.addRiderInfo1);
+            edit_rider_info = itemView.findViewById(R.id.edit_rider_info);
+
+            this.onOrderClickListener = onOrderClickListener;
+            viewFull.setOnClickListener(this);
+            addRiderInfo.setOnClickListener(this);
+            orderStatus.setOnClickListener(this);
+            addRiderInfo1.setOnClickListener(this);
+            edit_rider_info.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.cancel));
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
             spinner_moveto.setAdapter(spinnerArrayAdapter);
 
+            spinner_moveto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    if (parent.getId() == spinner_moveto.getId()) {
+
+                        if (parent.getItemAtPosition(position).equals("Accept")) {
+                            onOrderClickListener.OnStatusChange(2, cancelledItems.get(getAdapterPosition()).getOrderid());
+                        } else if (parent.getItemAtPosition(position).equals("Dispatch")) {
+                            onOrderClickListener.OnStatusChange(3, cancelledItems.get(getAdapterPosition()).getOrderid());
+                        } else if (parent.getItemAtPosition(position).equals("Deliver")) {
+                            onOrderClickListener.OnStatusChange(4, cancelledItems.get(getAdapterPosition()).getOrderid());
+                        } else if (parent.getItemAtPosition(position).equals("Paid")) {
+                            onOrderClickListener.OnStatusChange(5, cancelledItems.get(getAdapterPosition()).getOrderid());
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.viewFull) {
+                onOrderClickListener.OnViewFullOrderListener(cancelledItems.get(getAdapterPosition()).getOrderid());
+            } else if (v.getId() == R.id.addRiderInfo) {
+                onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid());
+            } else if (v.getId() == R.id.orderStatus) {
+                onOrderClickListener.OnStatusChange(5, cancelledItems.get(getAdapterPosition()).getOrderid());
+            } else if (v.getId() == R.id.edit_rider_info) {
+                onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid());
+            }
         }
     }
 
 
     public interface OnOrderClickListener {
         void OnViewFullOrderListener(int position);
+
         void OnRiderInfoUpdateListener(int position);
+
+        void OnStatusChange(int status, int OrderID);
     }
 
 }

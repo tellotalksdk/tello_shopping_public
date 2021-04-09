@@ -2,10 +2,13 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +78,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private List<Uri> uriList;
     private Switch isActiveproduct;
     private String productStatus = "N";
+    private List<String> filePaths;
 
 
     @Override
@@ -100,6 +104,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         initRV();
         uriList = new ArrayList<>();
+        filePaths = new ArrayList<>();
 
         //this button show only first time when there is np product list
         addProduct_btn = view.findViewById(R.id.addProduct_btn);
@@ -251,12 +256,16 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 Uri imageUri;
                 ImageView iv;
                 int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+
                 for (int i = 0; i < count; i++) {
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     iv = inflater.findViewById(R.id.iv);
                     imageUri = data.getClipData().getItemAt(i).getUri();
+                    Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                    String filepath = getImagePath(imageUri);
+                    Log.i("TAG", "onActivityResult: " + filepath);
+                    filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
                     iv.setImageURI(imageUri);
-                    uriList.add(imageUri);
                     LLimages_edit.addView(inflater);
                 }
 
@@ -334,7 +343,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     updateProduct.setProfileId(Constant.PROFILE_ID);
                     // updateProduct.setProduct_Category_id();
                     // updateProduct.setSub_Product_Category_id();
-                    updateProduct.setProduct_Pic(uriList);
+                    updateProduct.setProduct_Pic(filePaths);
                     updateProduct.setSku(skucodeoptional.getText().toString());
                     updateProduct.setSummary(product_description.getText().toString());
                     updateProduct.setProductStatus(productStatus);
@@ -346,6 +355,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         public void onChanged(UpdateProductResponse updateProductResponse) {
                             if (updateProductResponse != null) {
                                 Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                filePaths.clear();
                             }
                         }
                     });
@@ -373,13 +383,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(ProductForEditResponse productForEditResponse) {
                 if (productForEditResponse != null) {
-                    Toast.makeText(getActivity(), "" + productForEditResponse.getData().getRequestList().getPrice(), Toast.LENGTH_SHORT).show();
-                   /* productName.setText(productForEditResponse.getData().getRequestList().getTitle());
+                    //  Toast.makeText(getActivity(), "" + productForEditResponse.getData().getRequestList().getPrice(), Toast.LENGTH_SHORT).show();
+                    productName.setText(productForEditResponse.getData().getRequestList().getTitle());
                     productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
                     originalPrice.setText(productForEditResponse.getData().getRequestList().getPrice());
                     discountedPrice.setText(productForEditResponse.getData().getRequestList().getDiscount());
                     skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
-                   */// edit_switch.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
+                    isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
 
                     /*if (productForEditResponse.getData().getRequestList().getProfilePic() != null) {
                         for (int i = 0; i < productForEditResponse.getData().getRequestList().getProfilePic().size(); i++) {
@@ -431,10 +441,27 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             if (buttonView.getId() == isActiveproduct.getId()) {
                 isActiveproduct.setChecked(isChecked);
                 productStatus = isActiveproduct.isChecked() ? "Y" : "N";
-                Toast.makeText(getActivity(), "" + isChecked, Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getActivity(), "" + isChecked, Toast.LENGTH_SHORT).show();
             }
         }
     };
+
+    public String getImagePath(Uri uri) {
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getActivity().getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
 
 }
 

@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -73,6 +75,7 @@ import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.security.cert.CertPathBuilderSpi;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,13 +94,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
+    private FrameLayout FL1;
     private RecyclerView recycler_timings;
     private TimingnAdapter timingnAdapter;
     private ProgressBar progressBar;
     private Button saveAccountbtn, upload, capture;
     private NavController navController;
     private EditText area;
-    private ImageView iv_websitetheme, iv_back, bannerImage, clr_choose;
+    private ImageView iv_websitetheme, iv_back, bannerImage, clr_choose, iv_tim, loader;
     private Spinner province, city, country;
     private RelativeLayout outerRL;
     private LinearLayout iv_timings;
@@ -117,7 +121,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private int isMondayOpen_ID, isTuedayOpen_ID, isWednesdayOpen_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
     private Switch mondaySwitch, tuesdaySwitch, wednesdaySwitch, thrusdaySwitch, fridaySwitch, saturdaySwitch, sundaySwitch;
     private ShopSettingViewModel shopSettingViewModel;
-    private String filePath, Country, Province, City; //this file path either come from capture image or upload image
+    private String filePath = "", Country, Province, City; //this file path either come from capture image or upload image
 
     ShopBasicSetting shopBasicSetting;
 
@@ -263,7 +267,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             }
         });
 
-        iv_timings.setOnClickListener(new View.OnClickListener() {
+        recycler_timings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(activity, "recu", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        iv_tim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(getActivity());
@@ -432,12 +443,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         !TextUtils.isEmpty(Country) &&
                         !TextUtils.isEmpty(Province) &&
                         !TextUtils.isEmpty(City) &&
-                        !TextUtils.isEmpty(imageUri.toString())
+                        !TextUtils.isEmpty(filePath.toString())
                 ) {
 
                     shopBasicSetting.setProfileId(Constant.PROFILE_ID); //47 0for testing
                     shopBasicSetting.setShop_Theme("#e31616");
-                   // shopBasicSetting.setShopProfile(imageUri); //image
+                    // shopBasicSetting.setShopProfile(imageUri); //image
                     shopBasicSetting.setShopProfile(filePath); //image
                     shopBasicSetting.setTax("0");
                     shopBasicSetting.setShippingFee("0");
@@ -446,7 +457,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     shopBasicSetting.setCity(City);
                     shopBasicSetting.setArea(area.getText().toString());
 
-
                     shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
                     progressBar.setVisibility(View.VISIBLE);
                     shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
@@ -454,9 +464,11 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
                             if (shopBasicSettingResponse != null) {
                                 //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(activity, shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
+                                getActivity().finish();
                                 startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+
                             } else {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
@@ -471,6 +483,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 // startActivity(new Intent(getActivity(), ShopLandingActivity.class));
             }
         });
+
+
     }
 
     private void initViews(View view) {
@@ -491,6 +505,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         colortheme = view.findViewById(R.id.colortheme);
         progressBar = view.findViewById(R.id.progressNBar);
         recycler_timings = view.findViewById(R.id.recycler_timings);
+        FL1 = view.findViewById(R.id.FL1);
+        iv_tim = view.findViewById(R.id.iv_tim);
+        loader = view.findViewById(R.id.loader);
         shopBasicSetting = new ShopBasicSetting();
 
 

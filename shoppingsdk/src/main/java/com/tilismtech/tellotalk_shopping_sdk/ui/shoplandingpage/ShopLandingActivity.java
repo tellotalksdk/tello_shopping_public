@@ -7,13 +7,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -36,10 +41,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
@@ -48,6 +56,7 @@ import java.security.cert.CertPathBuilderSpi;
 import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ShopLandingActivity extends AppCompatActivity {
 
@@ -72,6 +81,9 @@ public class ShopLandingActivity extends AppCompatActivity {
     private String parentCategory, childCategory, productStatus = "N";
     private LinearLayout LLimages;
     private Switch isActiveproduct;
+    private String filepath;
+    private Uri imageUri;
+    private List<String> filePaths;
 
     //these fields hide when onsearch is pressed
     ImageView profileImage;
@@ -84,6 +96,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
+        productList = findViewById(R.id.productList);
+        filePaths = new ArrayList<>();
 
         currentTab = CurrentTab.RECEIVED;
 
@@ -121,6 +135,21 @@ public class ShopLandingActivity extends AppCompatActivity {
 
         iv_close = dialogCongratulation.findViewById(R.id.iv_close);
         getStarted_btn = dialogCongratulation.findViewById(R.id.getStarted_btn);
+
+        ProductList productList1 = new ProductList();
+        productList1.setProfileId(Constant.PROFILE_ID);
+
+        shopLandingPageViewModel.productList(productList1);
+        shopLandingPageViewModel.getProductList().observe(ShopLandingActivity.this, new Observer<ProductListResponse>() {
+            @Override
+            public void onChanged(ProductListResponse productListResponse) {
+                if (productListResponse != null) {
+                    totalProducts.setText(productListResponse.getData().getRequestList().size() + " Product");
+                }
+            }
+        });
+
+
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,20 +231,21 @@ public class ShopLandingActivity extends AppCompatActivity {
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_SKU.getText().toString()) ||
                                 TextUtils.isEmpty(et_Description.getText().toString()) ||
-                                TextUtils.isEmpty(et_ProductTitle.getText().toString())
+                                TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
+                                TextUtils.isEmpty(imageUri.toString())
                         ) {
                             Toast.makeText(ShopLandingActivity.this, "Some Fields are missing...", Toast.LENGTH_SHORT).show();
                         } else {
                             AddNewProduct addNewProduct = new AddNewProduct();
                             addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
                             addNewProduct.setPrice(et_OriginalPrice.getText().toString());
-                            addNewProduct.setProduct_Category_id("1"); //parentCategory
-                            addNewProduct.setSub_Product_Category_id("1"); //childCategory
+                            addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
+                            addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
                             addNewProduct.setSku("12sku");
                             addNewProduct.setSummary(et_Description.getText().toString());
                             addNewProduct.setProfileId(Constant.PROFILE_ID);
                             addNewProduct.setProductStatus(productStatus); //work with toggle on and off
-                            addNewProduct.setProduct_Pic(""); //here we send a picture path from device...
+                            addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
                             addNewProduct.setTitle(et_ProductTitle.getText().toString());
 
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
@@ -224,12 +254,12 @@ public class ShopLandingActivity extends AppCompatActivity {
                                 public void onChanged(AddNewProductResponse addNewProductResponse) {
                                     if (addNewProductResponse != null) {
                                         Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        filePaths.clear();
                                     } else {
                                         Toast.makeText(ShopLandingActivity.this, "Null...", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-
 
                             dialogAddProduct.dismiss();
                             navController.navigate(R.id.shopLandingFragment);
@@ -246,7 +276,7 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
         });
 
-        productList = findViewById(R.id.productList);
+
         productList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -663,12 +693,9 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {
-
-
         shopLandingPageViewModel.parentCategories();
         shopLandingPageViewModel.getParentCategoryListResponseLiveData().observe(ShopLandingActivity.this, new Observer<ParentCategoryListResponse>() {
             @Override
@@ -684,7 +711,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, parentCategories);
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                     parentSpinner.setAdapter(spinnerArrayAdapter);
-
 
                     // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -778,24 +804,101 @@ public class ShopLandingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == ALLOW_MULTIPLE_IMAGES && resultCode == RESULT_OK) {
             if (data.getClipData() != null) {
-                Uri imageUri;
                 ImageView iv;
                 int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                 for (int i = 0; i < count; i++) {
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     iv = inflater.findViewById(R.id.iv);
                     imageUri = data.getClipData().getItemAt(i).getUri();
+                    Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                    filepath = getImagePath(imageUri);
+                    Log.i("TAG", "onActivityResult: " + filepath);
+                    filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
                     iv.setImageURI(imageUri);
                     LLimages.addView(inflater);
                 }
 
+                // filepath = getPath(ShopLandingActivity.this, imageUri);
+                // filepath = getFileNameByUri(ShopLandingActivity.this, imageUri);
+                // filepath = getRealPathFromURI(ShopLandingActivity.this, imageUri);
                 //do something with the image (save it to some directory or whatever you need to do with it here)
             }
         } else if (data.getData() != null) {
             String imagePath = data.getData().getPath();
             //do something with the image (save it to some directory or whatever you need to do with it here)
+        }
+    }
+
+    public String getImagePath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+
+    //This method return file path when we choose image from gallery
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
+
+    public static String getFileNameByUri(Context context, Uri uri) {
+        String fileName = "unknown";//default fileName
+        Uri filePathUri = uri;
+        if (uri.getScheme().toString().compareTo("content") == 0) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);//Instead of "MediaStore.Images.Media.DATA" can be used "_data"
+                filePathUri = Uri.parse(cursor.getString(column_index));
+                fileName = filePathUri.getLastPathSegment().toString();
+            }
+        } else if (uri.getScheme().compareTo("file") == 0) {
+            fileName = filePathUri.getLastPathSegment().toString();
+        } else {
+            fileName = fileName + "_" + filePathUri.getLastPathSegment();
+        }
+        return fileName;
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null,
+                    null, null);
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 }

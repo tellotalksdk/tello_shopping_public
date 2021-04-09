@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
@@ -21,6 +23,7 @@ public class OrderListViewModel extends ViewModel {
     private MutableLiveData<UpdateRiderInfoResponse> updateRiderInfoResponseMutableLiveData;
     private MutableLiveData<GetOrderByStatusResponse> getOrderByStatusResponseMutableLiveData;
     private MutableLiveData<UpdateOrderStatusResponse> updateOrderStatusResponseMutableLiveData;
+    private MutableLiveData<GetAllOrderResponse> getAllOrderResponseMutableLiveData;
 
 
     public OrderListViewModel() {
@@ -29,6 +32,7 @@ public class OrderListViewModel extends ViewModel {
         this.updateRiderInfoResponseMutableLiveData = new MutableLiveData<>();
         this.getOrderByStatusResponseMutableLiveData = new MutableLiveData<>();
         this.updateOrderStatusResponseMutableLiveData = new MutableLiveData<>();
+        this.getAllOrderResponseMutableLiveData = new MutableLiveData<>();
     }
 
     //viewFullOrder apis
@@ -59,12 +63,21 @@ public class OrderListViewModel extends ViewModel {
     }
 
     //update Order Status -- move to apis
-    public void updateOrderStatus(OrderByStatus order) {
-        repository.getOrderbyStatus(getOrderByStatusResponseMutableLiveData, order);
+    public void updateOrderStatus(UpdateOrderStatus order) {
+        repository.updateOrderStatus(updateOrderStatusResponseMutableLiveData, order);
     }
 
-    public MutableLiveData<GetOrderByStatusResponse> updateOrderStatusResponse() {
-        return this.getOrderByStatusResponseMutableLiveData;
+    public MutableLiveData<UpdateOrderStatusResponse> updateOrderStatusResponse() {
+        return this.updateOrderStatusResponseMutableLiveData;
+    }
+
+    //getAllOrder to inside order list All tabs
+    public void AllOrders(String profileId){
+        repository.getAllOrders(getAllOrderResponseMutableLiveData,profileId);
+    }
+
+    public MutableLiveData<GetAllOrderResponse> getOrders(){
+        return this.getAllOrderResponseMutableLiveData;
     }
 
 
