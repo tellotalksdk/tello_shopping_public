@@ -36,14 +36,9 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
                 TelloApiClient telloApiClient = TelloApiClient.getInstance();
-                telloApiClient.generateAccessToken(accessTokenPojo , MainActivity.this);
+                telloApiClient.generateAccessToken(accessTokenPojo, MainActivity.this);
                 startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
-
-
-            //    MyApplication.getInstance().getTelloApiClient().generateAccessToken(accessTokenPojo,MainActivity.this);
             }
         });
 

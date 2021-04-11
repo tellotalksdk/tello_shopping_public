@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class ShopRegistrationFragment extends Fragment {
     StringBuilder mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
     ArrayList<String> mobileOpt = new ArrayList<>();
     ShopRegistrationViewModel shopRegistrationViewModel;
+    boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11;
 
 
     @Override
@@ -205,13 +207,37 @@ public class ShopRegistrationFragment extends Fragment {
                     d2.requestFocus();
                     d2.setCursorVisible(true);
                 }
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
             }
+
         });
+
+        d1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD2) {
+                        isD2 = false;
+                    } else {
+                        d1.clearFocus();
+                        d11.requestFocus();
+                        d11.setCursorVisible(true);
+                        if (d11.getText().length() == 0) {
+                            d11.setSelection(0);
+                        } else {
+                            d11.setSelection(1);
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
 
         d2.addTextChangedListener(new TextWatcher() {
             @Override
@@ -242,6 +268,28 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        d2.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD3) {
+                        isD3 = false;
+                    } else {
+                        d2.clearFocus();
+                        d1.requestFocus();
+                        d1.setCursorVisible(true);
+                        if (d1.getText().length() == 0) {
+                            d1.setSelection(0);
+                        } else {
+                            d1.setSelection(1);
+                        }
+                        isD2 = true;
+                    }
+                }
+                return false;
             }
         });
 
@@ -278,6 +326,28 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        d3.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD4) {
+                        isD4 = false;
+                    } else {
+                        d3.clearFocus();
+                        d2.requestFocus();
+                        d2.setCursorVisible(true);
+                        if (d2.getText().length() == 0) {
+                            d2.setSelection(0);
+                        } else {
+                            d2.setSelection(1);
+                        }
+                        isD3 = true;
+                    }
+                }
+                return false;
+            }
+        });
+
         d4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -307,6 +377,28 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        d4.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD5) {
+                        isD5 = false;
+                    } else {
+                        d4.clearFocus();
+                        d3.requestFocus();
+                        d3.setCursorVisible(true);
+                        if (d3.getText().length() == 0) {
+                            d3.setSelection(0);
+                        } else {
+                            d3.setSelection(1);
+                        }
+                        isD4 = true;
+                    }
+                }
+                return false;
             }
         });
 
@@ -343,6 +435,28 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        d5.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD6) {
+                        isD6 = false;
+                    } else {
+                        d5.clearFocus();
+                        d4.requestFocus();
+                        d4.setCursorVisible(true);
+                        if (d4.getText().length() == 0) {
+                            d4.setSelection(0);
+                        } else {
+                            d4.setSelection(1);
+                        }
+                        isD5 = true;
+                    }
+                }
+                return false;
+            }
+        });
+
         d6.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -372,6 +486,28 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        d6.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD7) {
+                        isD7 = false;
+                    } else {
+                        d6.clearFocus();
+                        d5.requestFocus();
+                        d5.setCursorVisible(true);
+                        if (d5.getText().length() == 0) {
+                            d5.setSelection(0);
+                        } else {
+                            d5.setSelection(1);
+                        }
+                        isD6 = true;
+                    }
+                }
+                return false;
             }
         });
 
@@ -406,6 +542,27 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        d7.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD8) {
+                        isD8 = false;
+                    } else {
+                        d7.clearFocus();
+                        d6.requestFocus();
+                        d6.setCursorVisible(true);
+                        if (d6.getText().length() == 0) {
+                            d6.setSelection(0);
+                        } else {
+                            d6.setSelection(1);
+                        }
+                        isD7 = true;
+                    }
+                }
+                return false;
+            }
+        });
 
         d8.addTextChangedListener(new TextWatcher() {
             @Override
@@ -438,6 +595,29 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        d8.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD9) {
+                        isD9 = false;
+                    } else {
+                        d8.clearFocus();
+                        d7.requestFocus();
+                        d7.setCursorVisible(true);
+                        if (d7.getText().length() == 0) {
+                            d7.setSelection(0);
+                        } else {
+                            d7.setSelection(1);
+                        }
+                        isD8 = true;
+                    }
+                }
+                return false;
+            }
+        });
+
+
         d9.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -466,6 +646,28 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        d9.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD10) {
+                        isD10 = false;
+                    } else {
+                        d9.clearFocus();
+                        d8.requestFocus();
+                        d8.setCursorVisible(true);
+                        if (d8.getText().length() == 0) {
+                            d8.setSelection(0);
+                        } else {
+                            d8.setSelection(1);
+                        }
+                        isD9 = true;
+                    }
+                }
+                return false;
             }
         });
 
@@ -500,6 +702,27 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        d10.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isD11) {
+                        isD11 = false;
+                    } else {
+                        d10.clearFocus();
+                        d9.requestFocus();
+                        d9.setCursorVisible(true);
+                        if (d9.getText().length() == 0) {
+                            d9.setSelection(0);
+                        } else {
+                            d9.setSelection(1);
+                        }
+                        isD10 = true;
+                    }
+                }
+                return false;
+            }
+        });
         d11.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -528,6 +751,24 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        d11.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    d11.clearFocus();
+                    d10.requestFocus();
+                    d10.setCursorVisible(true);
+                    if (d10.getText().length() == 0) {
+                        d10.setSelection(0);
+                    } else {
+                        d10.setSelection(1);
+                    }
+                    isD11 = true;
+                }
+                return false;
             }
         });
 

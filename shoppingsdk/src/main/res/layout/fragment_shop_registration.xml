@@ -227,6 +227,7 @@
                     android:inputType="number"
                     android:maxLength="1"
                     android:maxLines="1"
+                    android:hint="x"
                     android:singleLine="true"
                     android:textSize="12sp" />
 
@@ -240,6 +241,7 @@
                     android:enabled="true"
                     android:focusable="true"
                     android:gravity="center"
+                    android:hint="x"
                     android:imeOptions="actionPrevious"
                     android:inputType="number"
                     android:maxLength="1"
@@ -256,6 +258,7 @@
                     android:background="@drawable/edit_text_bg_color"
                     android:enabled="true"
                     android:gravity="center"
+                    android:hint="x"
                     android:imeOptions="actionPrevious"
                     android:inputType="number"
                     android:maxLength="1"
@@ -272,6 +275,7 @@
                     android:background="@drawable/edit_text_bg_color"
                     android:enabled="true"
                     android:gravity="center"
+                    android:hint="x"
                     android:imeOptions="actionPrevious"
                     android:inputType="number"
                     android:maxLength="1"
@@ -288,6 +292,7 @@
                     android:background="@drawable/edit_text_bg_color"
                     android:enabled="true"
                     android:gravity="center"
+                    android:hint="x"
                     android:imeOptions="actionPrevious"
                     android:inputType="number"
                     android:maxLength="1"
@@ -308,6 +313,7 @@
                     android:inputType="number"
                     android:maxLength="1"
                     android:maxLines="1"
+                    android:hint="x"
                     android:singleLine="true"
                     android:textSize="12sp" />
 
@@ -324,6 +330,8 @@
                     android:inputType="number"
                     android:maxLength="1"
                     android:maxLines="1"
+                    android:hint="x"
+
                     android:singleLine="true"
                     android:textSize="12sp" />
 
@@ -340,6 +348,8 @@
                     android:inputType="number"
                     android:maxLength="1"
                     android:maxLines="1"
+                    android:hint="x"
+
                     android:singleLine="true"
                     android:textSize="12sp" />
 
@@ -356,6 +366,8 @@
                     android:inputType="number"
                     android:maxLength="1"
                     android:maxLines="1"
+                    android:hint="x"
+
                     android:singleLine="true"
                     android:textSize="12sp" />
 
@@ -372,6 +384,7 @@
                     android:inputType="number"
                     android:maxLength="1"
                     android:maxLines="1"
+                    android:hint="x"
                     android:singleLine="true"
                     android:textSize="12sp" />
 
@@ -387,6 +400,7 @@
                     android:imeOptions="actionPrevious"
                     android:inputType="number"
                     android:maxLength="1"
+                    android:hint="x"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textSize="12sp" />

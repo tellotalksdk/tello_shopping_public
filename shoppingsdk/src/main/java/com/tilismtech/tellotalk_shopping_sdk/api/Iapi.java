@@ -10,6 +10,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
@@ -27,6 +28,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListRespo
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
@@ -198,7 +200,8 @@ public interface Iapi {
     Call<GetTimingsResponse> getShopTiming(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
     //posttiming remaining....
-
+    @POST("api/shop/ShopTiming")
+    Call<TimingsResponse> postTiming(@Header("Authorization") String token, @Body ShopTiming shopTiming);
 
     //product status is in order list screen where we have 6 status
     @POST("api/Product/UpdateProductStatus")
