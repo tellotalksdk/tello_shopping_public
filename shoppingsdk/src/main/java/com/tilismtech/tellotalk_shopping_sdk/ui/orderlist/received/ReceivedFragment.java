@@ -202,7 +202,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
     @Override
     public void OnRiderInfoUpdateListener(int position) {
-        Toast.makeText(getActivity(), "position " + position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "position " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -224,6 +224,25 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
             }
         });
 
+    }
+
+    @Override
+    public void OnStatusChange(int status, int OrderID) {
+        UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
+        updateOrderStatus.setOrderId(String.valueOf(OrderID));
+        updateOrderStatus.setProfileId(Constant.PROFILE_ID);
+        updateOrderStatus.setStatus(String.valueOf(status));
+
+        orderListViewModel.updateOrderStatus(updateOrderStatus);
+        orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+            @Override
+            public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
+                if (updateOrderStatusResponse != null) {
+                    Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
+                    initReceivedItems();
+                }
+            }
+        });
     }
 
     public ReceivedAdapter.OnOrderClickListener getReference() {

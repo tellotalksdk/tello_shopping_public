@@ -11,6 +11,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
@@ -24,6 +25,7 @@ public class OrderListViewModel extends ViewModel {
     private MutableLiveData<GetOrderByStatusResponse> getOrderByStatusResponseMutableLiveData;
     private MutableLiveData<UpdateOrderStatusResponse> updateOrderStatusResponseMutableLiveData;
     private MutableLiveData<GetAllOrderResponse> getAllOrderResponseMutableLiveData;
+    private MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData;
 
 
     public OrderListViewModel() {
@@ -33,6 +35,7 @@ public class OrderListViewModel extends ViewModel {
         this.getOrderByStatusResponseMutableLiveData = new MutableLiveData<>();
         this.updateOrderStatusResponseMutableLiveData = new MutableLiveData<>();
         this.getAllOrderResponseMutableLiveData = new MutableLiveData<>();
+        this.getOrderStatusCountResponseMutableLiveData = new MutableLiveData<>();
     }
 
     //viewFullOrder apis
@@ -71,14 +74,15 @@ public class OrderListViewModel extends ViewModel {
         return this.updateOrderStatusResponseMutableLiveData;
     }
 
-    //getAllOrder to inside order list All tabs
-    public void AllOrders(String profileId){
-        repository.getAllOrders(getAllOrderResponseMutableLiveData,profileId);
+    //getAllOrder to inside order list (All) tabs
+    public void AllOrders(String profileId) {
+        repository.getAllOrders(getAllOrderResponseMutableLiveData, profileId);
     }
 
-    public MutableLiveData<GetAllOrderResponse> getOrders(){
+    public MutableLiveData<GetAllOrderResponse> getOrders() {
         return this.getAllOrderResponseMutableLiveData;
     }
+
 
 
 }

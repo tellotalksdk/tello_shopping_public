@@ -27,6 +27,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductRes
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
@@ -46,6 +47,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import okhttp3.MediaType;
@@ -118,7 +121,7 @@ public class Repository {
 
     public void setShopBasicSetting(MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData, ShopBasicSetting shopBasicSetting, Context myContext) {
 
-        boundary = UUID.randomUUID().toString();
+        //  boundary = UUID.randomUUID().toString();
 
         File file = new File(shopBasicSetting.getShopProfile());
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
@@ -218,9 +221,7 @@ public class Repository {
                         subCategoryBYParentCatIDResponseMutableLiveData.setValue(null);
                     }
                 } else {
-
                     response.code();
-
                 }
             }
 
@@ -233,14 +234,16 @@ public class Repository {
 
     public void addNewProducts(MutableLiveData<AddNewProductResponse> addNewProductResponseMutableLiveData, AddNewProduct addNewProduct) {
 
-
-        File file = new File(addNewProduct.getProduct_Pic().get(0));
+       /* File file = new File(addNewProduct.getProduct_Pic().get(0));
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
+*/
+
+        List<MultipartBody.Part> Product_Pic = getAllImages(addNewProduct.getProduct_Pic());
 
         RequestBody Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getProduct_Category_id());
-        RequestBody Title = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getTitle());
         RequestBody Sub_Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getSub_Product_Category_id());
+        RequestBody Title = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getTitle());
         RequestBody Discount_Price = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getDiscount_Price());
         RequestBody Sku = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getSku());
         RequestBody Summary = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getSummary());
@@ -279,6 +282,21 @@ public class Repository {
                 Log.i("TAG", "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    //this method will return list of images to send toward server either one or two both will work...
+    public List<MultipartBody.Part> getAllImages(List<String> product_pic) {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+
+        for (int i = 0; i < product_pic.size(); i++) {
+            File file = new File(product_pic.get(i));
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
+            parts.add(Product_Pic);
+        }
+
+
+        return parts;
     }
 
     public void productForEdit(MutableLiveData<ProductForEditResponse> productForEditMutableLiveData, ProductForEdit productForEdit) {
@@ -515,4 +533,26 @@ public class Repository {
             }
         });
     }
+
+    public void getAllStatusCount(MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData) {
+        getRetrofitClient().getOrderAllStatusCount("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<GetOrderStatusCountResponse>() {
+            @Override
+            public void onResponse(Call<GetOrderStatusCountResponse> call, Response<GetOrderStatusCountResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        GetOrderStatusCountResponse GetOrderStatusCountResponse = response.body();
+                        getOrderStatusCountResponseMutableLiveData.setValue(GetOrderStatusCountResponse);
+                    }
+                } else {
+                    getOrderStatusCountResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOrderStatusCountResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 }

@@ -5,7 +5,7 @@ public class AccessTokenPojo {
     private String username;
     private String password;
     private String grant_type;
-    private String profile;
+    private String profileId;
     private String firstname;
     private String middlename;
     private String lastname;
@@ -36,12 +36,12 @@ public class AccessTokenPojo {
         this.grant_type = grant_type;
     }
 
-    public String getProfile() {
-        return profile;
+    public String getprofileId() {
+        return profileId;
     }
 
-    public void setProfile(String profile) {
-        this.profile = profile;
+    public void setprofileId(String profileId) {
+        this.profileId = profileId;
     }
 
     public String getFirstname() {

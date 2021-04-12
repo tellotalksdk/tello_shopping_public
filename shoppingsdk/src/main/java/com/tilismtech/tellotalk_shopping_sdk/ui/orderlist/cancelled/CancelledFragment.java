@@ -35,10 +35,13 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.OrderListViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingPageViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     CancelledAdapter cancelledAdapter;
     List<ReceivedItemPojo> receivedItemPojos;
     OrderListViewModel orderListViewModel;
+    private ShopLandingPageViewModel shopLandingPageViewModel;
     ImageView screenShot;
     ScrollView scroller;
 
@@ -68,6 +72,17 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+            @Override
+            public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                if (getOrderStatusCountResponse != null) {
+                    //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                    ((ShopLandingActivity)getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                }
+            }
+        });
 
         if (getArguments() != null) {
             Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();

@@ -12,6 +12,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
@@ -32,6 +33,9 @@ public class ShopLandingPageViewModel extends ViewModel {
 
     private MutableLiveData<IsProductActiveResponse> isProductActiveResponseMutableLiveData;
 
+    private MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData;
+
+
     private Repository repository;
 
     public ShopLandingPageViewModel() {
@@ -42,6 +46,7 @@ public class ShopLandingPageViewModel extends ViewModel {
         this.productListResponseMutableLiveData = new MutableLiveData<>();
         this.updateProductResponseMutableLiveData = new MutableLiveData<>();
         isProductActiveResponseMutableLiveData = new MutableLiveData<>();
+        this.getOrderStatusCountResponseMutableLiveData = new MutableLiveData<>();
         this.repository = Repository.getRepository();
     }
 
@@ -108,6 +113,14 @@ public class ShopLandingPageViewModel extends ViewModel {
         return this.isProductActiveResponseMutableLiveData;
     }
 
+    //get All Status Count
+    public void allStatusCount() {
+        repository.getAllStatusCount(getOrderStatusCountResponseMutableLiveData);
+    }
+
+    public MutableLiveData<GetOrderStatusCountResponse> getAllStatusCount() {
+        return this.getOrderStatusCountResponseMutableLiveData;
+    }
 
 
 }

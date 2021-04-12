@@ -24,75 +24,86 @@ public class ParentCategoryListResponse {
     }
 
 
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("statusDetail")
-    @Expose
-    private String statusDetail;
-    @SerializedName("OTP")
-    @Expose
-    private Object otp;
-    @SerializedName("data")
-    @Expose
-    private Data data;
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("statusDetail")
+        @Expose
+        private String statusDetail;
+        @SerializedName("OTP")
+        @Expose
+        private Object otp;
+        @SerializedName("data")
+        @Expose
+        private Data data;
 
-    public String getStatus() {
-        return status;
-    }
+        public String getStatus() {
+            return status;
+        }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
-    public String getStatusDetail() {
-        return statusDetail;
-    }
+        public String getStatusDetail() {
+            return statusDetail;
+        }
 
-    public void setStatusDetail(String statusDetail) {
-        this.statusDetail = statusDetail;
-    }
+        public void setStatusDetail(String statusDetail) {
+            this.statusDetail = statusDetail;
+        }
 
-    public Object getOtp() {
-        return otp;
-    }
+        public Object getOtp() {
+            return otp;
+        }
 
-    public void setOtp(Object otp) {
-        this.otp = otp;
-    }
+        public void setOtp(Object otp) {
+            this.otp = otp;
+        }
 
-    public Data getData() {
-        return data;
-    }
+        public Data getData() {
+            return data;
+        }
 
-    public void setData(Data data) {
-        this.data = data;
-    }
+        public void setData(Data data) {
+            this.data = data;
+        }
 
 
     public class Request {
 
-        @SerializedName("Parent_Category_Id")
+        @SerializedName("id")
         @Expose
-        private Integer parentCategoryId;
-        @SerializedName("Column1")
+        private Integer id;
+        @SerializedName("title")
         @Expose
-        private String column1;
+        private String title;
+        @SerializedName("slug")
+        @Expose
+        private String slug;
 
-        public Integer getParentCategoryId() {
-            return parentCategoryId;
+        public Integer getId() {
+            return id;
         }
 
-        public void setParentCategoryId(Integer parentCategoryId) {
-            this.parentCategoryId = parentCategoryId;
+        public void setId(Integer id) {
+            this.id = id;
         }
 
-        public String getColumn1() {
-            return column1;
+        public String getTitle() {
+            return title;
         }
 
-        public void setColumn1(String column1) {
-            this.column1 = column1;
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getSlug() {
+            return slug;
+        }
+
+        public void setSlug(String slug) {
+            this.slug = slug;
         }
 
     }

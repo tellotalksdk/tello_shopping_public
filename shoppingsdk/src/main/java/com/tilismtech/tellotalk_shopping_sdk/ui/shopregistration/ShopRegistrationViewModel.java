@@ -28,7 +28,7 @@ public class ShopRegistrationViewModel extends ViewModel {
 
     //generateTokenCall
     public void postGenerateToken(AccessTokenPojo accessTokenPojo) {
-        repository.generateTokenresponse(generateTokenResponseLiveData, accessTokenPojo.getUsername(), accessTokenPojo.getPassword(), accessTokenPojo.getGrant_type(), accessTokenPojo.getProfile(), accessTokenPojo.getFirstname(), accessTokenPojo.getMiddlename(), accessTokenPojo.getLastname(), accessTokenPojo.getPhone(), accessTokenPojo.getEmail());
+        repository.generateTokenresponse(generateTokenResponseLiveData, accessTokenPojo.getUsername(), accessTokenPojo.getPassword(), accessTokenPojo.getGrant_type(), accessTokenPojo.getprofileId(), accessTokenPojo.getFirstname(), accessTokenPojo.getMiddlename(), accessTokenPojo.getLastname(), accessTokenPojo.getPhone(), accessTokenPojo.getEmail());
     }
 
     public LiveData<GenerateTokenResponse> getGenerateToken() {

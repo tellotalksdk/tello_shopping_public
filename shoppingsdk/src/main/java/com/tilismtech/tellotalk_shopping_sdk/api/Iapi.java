@@ -19,6 +19,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductRes
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
@@ -33,6 +34,8 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatu
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -58,7 +61,7 @@ public interface Iapi {
     Call<GenerateTokenResponse> generateToken(@Field("username") String username,
                                               @Field("password") String password,
                                               @Field("grant_type") String grant_type,
-                                              @Field("profile") String profile,
+                                              @Field("profileId") String profileId,
                                               @Field("firstname") String firstname,
                                               @Field("middlename") String middlename,
                                               @Field("lastname") String lastname,
@@ -112,7 +115,7 @@ public interface Iapi {
     @Multipart
     @POST("api/Product/AddNewProductwithImage")
     Call<AddNewProductResponse> addNewProducts(@Header("Authorization") String token,
-                                               @Part MultipartBody.Part Product_Pic,
+                                               @Part List<MultipartBody.Part> Product_Pic,
                                                @Part("Product_Category_id") RequestBody Product_Category_id,
                                                @Part("Title") RequestBody Title,
                                                @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
@@ -211,6 +214,10 @@ public interface Iapi {
     @GET("api/Order/getAllOrders")
     Call<GetAllOrderResponse> getAllOrderList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
-    //here we set get all stgatus call
+    //call to get all status count in order tabs
+    @GET("api/Order/getOrderStatusCount")
+    Call<GetOrderStatusCountResponse> getOrderAllStatusCount(@Header("Authorization") String token,
+                                                             @Query("ProfileId") String profileId);
+
 
 }

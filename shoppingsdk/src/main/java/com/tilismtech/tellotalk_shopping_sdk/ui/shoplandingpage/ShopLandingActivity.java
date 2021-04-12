@@ -46,6 +46,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
@@ -101,6 +102,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
         currentTab = CurrentTab.RECEIVED;
 
+
         simpleSearchView = findViewById(R.id.simpleSearchView);
         Lineartabbar = findViewById(R.id.tabbar);
         orderListtabbar = findViewById(R.id.orderListtabbar);
@@ -122,6 +124,24 @@ public class ShopLandingActivity extends AppCompatActivity {
         number4 = findViewById(R.id.number4);
         number5 = findViewById(R.id.number5);
         number6 = findViewById(R.id.number6);
+
+        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.getAllStatusCount().observe(this, new Observer<GetOrderStatusCountResponse>() {
+            @Override
+            public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                if (getOrderStatusCountResponse != null) {
+                    //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                    number.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved()));
+                    number1.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getAccept()));
+                    number2.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getDispatch()));
+                    number3.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getDelieverd()));
+                    number4.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getPaid()));
+                    number5.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getCancel()));
+                    number6.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getAll()));
+                }
+            }
+        });
+
 
         profileImage = findViewById(R.id.profileImage);
         shopName = findViewById(R.id.shopName);
@@ -184,7 +204,6 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 chooseMultipleProductsIV = dialogAddProduct.findViewById(R.id.chooseMultipleProductsIV);
                 LLimages = dialogAddProduct.findViewById(R.id.LLimages);
-
                 isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
 
 
@@ -226,6 +245,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 uploadProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
@@ -255,14 +275,15 @@ public class ShopLandingActivity extends AppCompatActivity {
                                     if (addNewProductResponse != null) {
                                         Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         filePaths.clear();
+                                        dialogAddProduct.dismiss();
                                     } else {
                                         Toast.makeText(ShopLandingActivity.this, "Null...", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
 
-                            dialogAddProduct.dismiss();
-                            navController.navigate(R.id.shopLandingFragment);
+
+                            // navController.navigate(R.id.shopLandingFragment);
                         }
                     }
                 });
@@ -705,7 +726,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     parentCategories = new ArrayList<>();
 
                     for (int i = 0; i < parentCategoryListResponse.getData().getRequestList().size(); i++) {
-                        parentCategories.add(parentCategoryListResponse.getData().getRequestList().get(i).getColumn1());
+                        parentCategories.add(parentCategoryListResponse.getData().getRequestList().get(i).getTitle());
                     }
 
                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, parentCategories);
@@ -737,7 +758,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     if (subCategoryBYParentCatIDResponse.getData().getRequestList() != null && subCategoryBYParentCatIDResponse.getData().getRequestList().size() > 0) {
 
                         for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
-                            childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getColumn1());
+                            childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle());
                         }
 
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, childCategories);
@@ -776,7 +797,7 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
 
             if (parent.getId() == childSpinner.getId()) {
-                childCategory = childSpinner.getItemAtPosition(position).toString();
+                childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
             }
         }
 
@@ -825,10 +846,16 @@ public class ShopLandingActivity extends AppCompatActivity {
                 // filepath = getFileNameByUri(ShopLandingActivity.this, imageUri);
                 // filepath = getRealPathFromURI(ShopLandingActivity.this, imageUri);
                 //do something with the image (save it to some directory or whatever you need to do with it here)
+            } else if (data.getData() != null) {
+                String imagePath = data.getData().getPath();
+                imageUri = data.getData();
+                View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                ImageView iv = inflater.findViewById(R.id.iv);
+                filepath = getImagePath(imageUri);
+                filePaths.add(filepath);
+                iv.setImageURI(imageUri);
+                LLimages.addView(inflater);
             }
-        } else if (data.getData() != null) {
-            String imagePath = data.getData().getPath();
-            //do something with the image (save it to some directory or whatever you need to do with it here)
         }
     }
 
@@ -901,4 +928,16 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void setOrderStatus(List<GetOrderStatusCountResponse.Request> requestList) {
+       // Toast.makeText(this, "" + requestList.get(0).getRecieved() , Toast.LENGTH_SHORT).show();
+        number.setText(String.valueOf(requestList.get(0).getRecieved()));
+        number1.setText(String.valueOf(requestList.get(0).getAccept()));
+        number2.setText(String.valueOf(requestList.get(0).getDispatch()));
+        number3.setText(String.valueOf(requestList.get(0).getDelieverd()));
+        number4.setText(String.valueOf(requestList.get(0).getPaid()));
+        number5.setText(String.valueOf(requestList.get(0).getCancel()));
+        number6.setText(String.valueOf(requestList.get(0).getAll()));
+    }
+
 }

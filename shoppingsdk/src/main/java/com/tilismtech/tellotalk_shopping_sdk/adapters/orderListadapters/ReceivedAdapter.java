@@ -110,11 +110,11 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.viewFull) {
-                onOrderClickListener.OnViewFullOrderListener(getAdapterPosition());
+                onOrderClickListener.OnViewFullOrderListener(requestList.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.addRiderInfo) {
                 onOrderClickListener.OnRiderInfoUpdateListener(getAdapterPosition());
             } else if (v.getId() == R.id.orderStatus) {
-                onOrderClickListener.onOrderUpdateListener("1");
+                onOrderClickListener.OnStatusChange(2, requestList.get(getAdapterPosition()).getOrderid());
             }
         }
 
@@ -126,6 +126,8 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         void OnRiderInfoUpdateListener(int position);
 
         void onOrderUpdateListener(String status);
+
+        void OnStatusChange(int status, int OrderID);
     }
 
 

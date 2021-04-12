@@ -191,12 +191,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     private void initRV() {
         initDummyData();
- /*       productListAdapter = new ProductListAdapter(productListpojos, getActivity(), getReference());
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
-        recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
-        recycler_add_product.setAdapter(productListAdapter);
-*/        //we populate recycler view here
-
         ProductList productList = new ProductList();
         productList.setProfileId(Constant.PROFILE_ID);
         shopLandingPageViewModel.productList(productList);
@@ -416,7 +410,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     public void isActiveproduct(int position, boolean isActive) {
         Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
 
-      /*  Update isProductActive = new IsProductActive();
+        IsProductActive isProductActive = new IsProductActive();
         isProductActive.setProductId(String.valueOf(position));
         isProductActive.setProductStatus(isActive ? "Y" : "N");
         isProductActive.setProfileId(Constant.PROFILE_ID);
@@ -424,11 +418,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         shopLandingPageViewModel.getProductActiveResponse().observe(getActivity(), new Observer<IsProductActiveResponse>() {
             @Override
             public void onChanged(IsProductActiveResponse isProductActiveResponse) {
-                if(isProductActiveResponse != null){
-                    Toast.makeText(getActivity(), " : " + isProductActiveResponse.getStatusDetail() , Toast.LENGTH_SHORT).show();
+                if (isProductActiveResponse != null) {
+                    Toast.makeText(getActivity(), " : " + isProductActiveResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 }
             }
-        });*/
+        });
+
     }
 
     public ProductListAdapter.OnProductEditorClickDialog getReference() {
