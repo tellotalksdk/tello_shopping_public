@@ -79,7 +79,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private Spinner parentSpinner, childSpinner;
     private List<String> parentCategories, childCategories;
     private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
-    private String parentCategory, childCategory, productStatus = "N";
+    private String parentCategory = "1", childCategory = "1", productStatus = "N"; //by default
     private LinearLayout LLimages;
     private Switch isActiveproduct;
     private String filepath;
@@ -930,7 +930,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     }
 
     public void setOrderStatus(List<GetOrderStatusCountResponse.Request> requestList) {
-       // Toast.makeText(this, "" + requestList.get(0).getRecieved() , Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "" + requestList.get(0).getRecieved() , Toast.LENGTH_SHORT).show();
         number.setText(String.valueOf(requestList.get(0).getRecieved()));
         number1.setText(String.valueOf(requestList.get(0).getAccept()));
         number2.setText(String.valueOf(requestList.get(0).getDispatch()));

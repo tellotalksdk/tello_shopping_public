@@ -3,8 +3,6 @@ package com.tilismtech.tellotalk_shopping_sdk.managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
-
 public class TelloPreferenceManager {
     private static TelloPreferenceManager instance;
     private static final String PREFRENSE_NAME = "Tello_Pref";
@@ -12,6 +10,7 @@ public class TelloPreferenceManager {
     public static final String REGISTER_NUMBER = "register_number";
     public static final String PROFILE_ID = "profile_id";
     public static final String SHOP_URI = "shop_uri";
+    public static final String OWNER_NAME = "owner_name";
     private final SharedPreferences.Editor editor;
     private final SharedPreferences sharedPreferences;
 
@@ -37,14 +36,26 @@ public class TelloPreferenceManager {
         return sharedPreferences.getString(ACCESS_TOKEN, "");
     }
 
-    //registernumber
-    public void saveRegisteredNumber(int registerNumber) {
-        editor.putInt(REGISTER_NUMBER, registerNumber);
+    //owner_name
+    public void saveOwnerName(String ownerName) {
+        editor.putString(OWNER_NAME, ownerName);
         editor.apply();
     }
 
-    public int getRegisteredNumber() {
-        return sharedPreferences.getInt(REGISTER_NUMBER, -1);
+    public String getOwnerName() {
+        return sharedPreferences.getString(OWNER_NAME, "");
+    }
+
+
+
+    //registernumber
+    public void saveRegisteredNumber(String registerNumber) {
+        editor.putString(REGISTER_NUMBER, registerNumber);
+        editor.apply();
+    }
+
+    public String getRegisteredNumber() {
+        return sharedPreferences.getString(REGISTER_NUMBER, "");
     }
 
     //shop url
@@ -57,10 +68,8 @@ public class TelloPreferenceManager {
         return sharedPreferences.getString(SHOP_URI, "");
     }
 
-
     void clearAll() {
         editor.clear().apply();
     }
-
 
 }

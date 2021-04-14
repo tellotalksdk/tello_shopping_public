@@ -95,7 +95,7 @@
 
 
                     <EditText
-                        android:id="@+id/et_street"
+                        android:id="@+id/et_OwnerName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -107,7 +107,7 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/et_city"
+                        android:id="@+id/et_OwnerNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -119,7 +119,7 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/et_province"
+                        android:id="@+id/et_OwnerShopUrl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

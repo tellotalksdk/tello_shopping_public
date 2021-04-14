@@ -2,12 +2,15 @@ package com.tilismtech.tellotalk_shopping_sdk.repository;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
@@ -18,12 +21,16 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
@@ -36,7 +43,10 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditRe
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
@@ -284,21 +294,6 @@ public class Repository {
         });
     }
 
-    //this method will return list of images to send toward server either one or two both will work...
-    public List<MultipartBody.Part> getAllImages(List<String> product_pic) {
-        List<MultipartBody.Part> parts = new ArrayList<>();
-
-        for (int i = 0; i < product_pic.size(); i++) {
-            File file = new File(product_pic.get(i));
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
-            parts.add(Product_Pic);
-        }
-
-
-        return parts;
-    }
-
     public void productForEdit(MutableLiveData<ProductForEditResponse> productForEditMutableLiveData, ProductForEdit productForEdit) {
         getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
             @Override
@@ -322,25 +317,28 @@ public class Repository {
 
     public void updateProduct(MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData, UpdateProduct updateProduct) {
 
-        File file = new File(updateProduct.getProduct_Pic().get(0));
+        List<MultipartBody.Part> Product_Pic = getAllImages(updateProduct.getProduct_Pic());
+
+    /*    File file = new File(updateProduct.getProduct_Pic().get(0));
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
-
-        //  RequestBody Product_Category_id = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getProduct_Category_id());
-        RequestBody Title = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getTitle());
-        //   RequestBody Sub_Product_Category_id = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getSub_Product_Category_id());
-        RequestBody Discount_Price = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getDiscount_Price());
-        RequestBody Sku = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getSku());
-        RequestBody Summary = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getSummary());
-        RequestBody ProfileId = RequestBody.create(okhttp3.MultipartBody.FORM, Constant.PROFILE_ID);
-        RequestBody ProductStatus = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getProductStatus());
-        RequestBody Price = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getPrice());
-        RequestBody ProductId = RequestBody.create(okhttp3.MultipartBody.FORM, updateProduct.getProductId());
-
+*/
+        RequestBody Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProduct_Category_id());
+        RequestBody Sub_Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSub_Product_Category_id());
+        RequestBody Title = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getTitle());
+        RequestBody Discount_Price = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getDiscount_Price());
+        RequestBody Sku = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getDiscount_Price());
+        RequestBody Summary = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSummary());
+        RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProfileId());
+        RequestBody ProductStatus = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductStatus());
+        RequestBody Price = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getPrice());
+        RequestBody ProductId = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductId());
 
         getRetrofitClient().updateProduct("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
                 Product_Pic,
+                Product_Category_id,
                 Title,
+                Sub_Product_Category_id,
                 Discount_Price,
                 Sku,
                 Summary,
@@ -352,18 +350,36 @@ public class Repository {
             public void onResponse(Call<UpdateProductResponse> call, Response<UpdateProductResponse> response) {
                 if (response != null) {
                     if (response.isSuccessful()) {
-                        updateProductResponseMutableLiveData.setValue(response.body());
+                        UpdateProductResponse updateProductResponse = response.body();
+                        updateProductResponseMutableLiveData.setValue(updateProductResponse);
                     }
+                } else {
+                    updateProductResponseMutableLiveData.setValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<UpdateProductResponse> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
 
 
+    }
+
+    //this method will return list of images to send toward server either one or two both will work...
+    public List<MultipartBody.Part> getAllImages(List<String> product_pic) {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+
+        for (int i = 0; i < product_pic.size(); i++) {
+            File file = new File(product_pic.get(i));
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
+            parts.add(Product_Pic);
+        }
+
+
+        return parts;
     }
 
     public void productList(MutableLiveData<ProductListResponse> productListResponseMutableLiveData, ProductList productList) {
@@ -433,7 +449,8 @@ public class Repository {
     }
 
     public void getShopDetails(MutableLiveData<GetShopDetailResponse> getShopDetailResponseMutableLiveData, GetShopDetail shopDetail) {
-        getRetrofitClient().getShopDetail("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopDetail).enqueue(new Callback<GetShopDetailResponse>() {
+
+        getRetrofitClient().getShopDetail("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopDetail.getProfileId()).enqueue(new Callback<GetShopDetailResponse>() {
             @Override
             public void onResponse(Call<GetShopDetailResponse> call, Response<GetShopDetailResponse> response) {
                 if (response != null) {
@@ -441,6 +458,8 @@ public class Repository {
                         GetShopDetailResponse getShopDetailResponse = response.body();
                         getShopDetailResponseMutableLiveData.setValue(getShopDetailResponse);
                     }
+                } else {
+                    getShopDetailResponseMutableLiveData.setValue(null);
                 }
             }
 
@@ -554,5 +573,89 @@ public class Repository {
             }
         });
     }
+
+    public void postTiming(MutableLiveData<ShopTimingResponse> shopTimingResponseMutableLiveData, ShopTiming shopTiming) {
+        getRetrofitClient().postTiming("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopTiming).enqueue(new Callback<ShopTimingResponse>() {
+            @Override
+            public void onResponse(Call<ShopTimingResponse> call, Response<ShopTimingResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ShopTimingResponse shopTimingResponse = response.body();
+                        shopTimingResponseMutableLiveData.setValue(shopTimingResponse);
+                    } else {
+                        ShopTimingResponse shopTimingResponse = new ShopTimingResponse();
+                        shopTimingResponse.setMessage("Some thing went wrong" + " : " + response.raw().networkResponse().code());
+                        shopTimingResponseMutableLiveData.setValue(shopTimingResponse);
+                    }
+                } else {
+                    shopTimingResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShopTimingResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void addBranchAddress(MutableLiveData<AddBranchAddressResponse> addBranchAddressResponseMutableLiveData, AddBranchAddress addBranchAddress) {
+        getRetrofitClient().addBranchAddress("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), addBranchAddress).enqueue(new Callback<AddBranchAddressResponse>() {
+            @Override
+            public void onResponse(Call<AddBranchAddressResponse> call, Response<AddBranchAddressResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        addBranchAddressResponseMutableLiveData.setValue(response.body());
+                    }
+                }else{
+                    addBranchAddressResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddBranchAddressResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void updateBranchAddress(MutableLiveData<UpdateBranchAddressResponse> updateBranchAddressResponseMutableLiveData, UpdateBranchAddress updateBranchAddress) {
+        getRetrofitClient().updateBranchAddress("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), updateBranchAddress).enqueue(new Callback<UpdateBranchAddressResponse>() {
+            @Override
+            public void onResponse(Call<UpdateBranchAddressResponse> call, Response<UpdateBranchAddressResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        updateBranchAddressResponseMutableLiveData.setValue(response.body());
+                    }
+                } else {
+                    updateBranchAddressResponseMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateBranchAddressResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void deleteBranchAddress(MutableLiveData<DeleteBranchAddressResponse> deleteBranchAddressMutableLiveData, DeleteBranchAddress deleteBranchAddress) {
+        getRetrofitClient().deleteBranchAddress("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteBranchAddress).enqueue(new Callback<DeleteBranchAddressResponse>() {
+            @Override
+            public void onResponse(Call<DeleteBranchAddressResponse> call, Response<DeleteBranchAddressResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        deleteBranchAddressMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeleteBranchAddressResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 
 }

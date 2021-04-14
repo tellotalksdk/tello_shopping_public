@@ -7,6 +7,7 @@ import java.util.List;
 
 public class ShopTiming {
 
+
     public class DaysSetting {
 
         @SerializedName("SettingId")
@@ -90,5 +91,7 @@ public class ShopTiming {
         public void setDaysSetting(List<DaysSetting> daysSetting) {
             this.daysSetting = daysSetting;
         }
+
+
 
 }

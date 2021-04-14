@@ -37,10 +37,13 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.OrderListViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingPageViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.ArrayList;
@@ -54,6 +57,8 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     OrderListViewModel orderListViewModel;
     ImageView screenShot;
     ScrollView scroller;
+    ShopLandingPageViewModel shopLandingPageViewModel;
+    EditText etRiderName, etRiderNumber, etRiderTracking;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +74,20 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        //this will update the order list all tabs status counts
+        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+            @Override
+            public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                if (getOrderStatusCountResponse != null) {
+                    //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                    ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                }
+            }
+        });
+
 
         if (getArguments() != null) {
             Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
@@ -225,7 +244,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
         // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
 
-        EditText etRiderName, etRiderNumber, etRiderTracking;
+
         etRiderName = dialog.findViewById(R.id.etRiderName);
         etRiderNumber = dialog.findViewById(R.id.etRiderContact);
         etRiderTracking = dialog.findViewById(R.id.etRiderTracking);
@@ -236,12 +255,8 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
             @Override
             public void onClick(View v) {
 
-                if (TextUtils.isEmpty(etRiderName.getText().toString()) &&
-                        TextUtils.isEmpty(etRiderNumber.getText().toString()) &&
-                        TextUtils.isEmpty(etRiderTracking.getText().toString())
+                if (checkValidation()
                 ) {
-                    Toast.makeText(getActivity(), "Some Fields are missing...", Toast.LENGTH_SHORT).show();
-                } else {
                     UpdateRiderInfo updateRiderInfo = new UpdateRiderInfo();
                     updateRiderInfo.setRiderName(etRiderName.getText().toString());
                     updateRiderInfo.setRiderContact(etRiderNumber.getText().toString());
@@ -285,6 +300,17 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
                 if (updateOrderStatusResponse != null) {
                     Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                     initReceivedItems();
+
+                    shopLandingPageViewModel.allStatusCount();
+                    shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                        @Override
+                        public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                            if (getOrderStatusCountResponse != null) {
+                                //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -297,5 +323,25 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
     public DispatchedAdapter.OnOrderClickListener getReference() {
         return this;
+    }
+
+    //validation for rider info dialog box fields.
+    public boolean checkValidation() {
+        if (etRiderName.getText().toString() == null || TextUtils.isEmpty(etRiderName.getText().toString())) {
+            Toast.makeText(getActivity(), "Rider Name is Required...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (etRiderNumber.getText().toString() == null || TextUtils.isEmpty(etRiderNumber.getText().toString())) {
+            Toast.makeText(getActivity(), "Rider Number is Required...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (etRiderTracking.getText().toString() == null || TextUtils.isEmpty(etRiderTracking.getText().toString())) {
+            Toast.makeText(getActivity(), "Tracking ID is Required...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }

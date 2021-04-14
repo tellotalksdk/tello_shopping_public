@@ -1,6 +1,8 @@
 package com.tilismtech.tellotalk_shopping_sdk.api;
 
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
@@ -12,10 +14,13 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
@@ -28,8 +33,10 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditRe
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
@@ -127,14 +134,16 @@ public interface Iapi {
                                                @Part("Price") RequestBody Price);
 
     //updateProductApi
-    @Headers({"Accept: */*",
-            "Content-Type: multipart/form-data"}
-    )
+    @Headers({
+            "Accept: application/json"
+    })
     @Multipart
     @POST("api/Product/UpdateProductwithImage")
     Call<UpdateProductResponse> updateProduct(@Header("Authorization") String token,
-                                              @Part MultipartBody.Part Product_Pic,
+                                              @Part List<MultipartBody.Part> Product_Pic,
+                                              @Part("Product_Category_id") RequestBody Product_Category_id,
                                               @Part("Title") RequestBody Title,
+                                              @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
                                               @Part("Discount_Price") RequestBody Discount_Price,
                                               @Part("Sku") RequestBody Sku,
                                               @Part("Summary") RequestBody Summary,
@@ -194,9 +203,12 @@ public interface Iapi {
     Call<SubCategoryBYParentCatIDResponse> getSubcategoryByParentID(@Header("Authorization") String token,
                                                                     @Query("Parent_Category_Id") String Parent_Category_Id);
 
-    //shop detain get...
+    //shop detail get...
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
     @GET("api/shop/getshopdetails")
-    Call<GetShopDetailResponse> getShopDetail(@Header("Authorization") String token, @Body GetShopDetail shopDetail);
+    Call<GetShopDetailResponse> getShopDetail(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
     //gettimings
     @GET("api/shop/getshopTimming")
@@ -204,7 +216,7 @@ public interface Iapi {
 
     //posttiming remaining....
     @POST("api/shop/ShopTiming")
-    Call<TimingsResponse> postTiming(@Header("Authorization") String token, @Body ShopTiming shopTiming);
+    Call<ShopTimingResponse> postTiming(@Header("Authorization") String token, @Body ShopTiming shopTiming);
 
     //product status is in order list screen where we have 6 status
     @POST("api/Product/UpdateProductStatus")
@@ -219,5 +231,14 @@ public interface Iapi {
     Call<GetOrderStatusCountResponse> getOrderAllStatusCount(@Header("Authorization") String token,
                                                              @Query("ProfileId") String profileId);
 
+    //Add | Update | Delete Shop Branch Address...
 
+    @POST("api/shop/AddShopBranchAddress")
+    Call<AddBranchAddressResponse> addBranchAddress(@Header("Authorization") String token,@Body AddBranchAddress addBranchAddress);
+
+    @POST("api/shop/UpdateShopBranchAddress")
+    Call<UpdateBranchAddressResponse> updateBranchAddress(@Header("Authorization") String token,@Body UpdateBranchAddress updateBranchAddress);
+
+    @POST("api/shop/DeleteShopBranchAddress")
+    Call<DeleteBranchAddressResponse> deleteBranchAddress(@Header("Authorization") String token,@Body DeleteBranchAddress deleteBranchAddress);
 }

@@ -7,77 +7,137 @@ import java.util.List;
 
 public class GetShopDetailResponse {
 
+    public class BranchAddress {
+
+        @SerializedName("AddressId")
+        @Expose
+        private String addressId;
+        @SerializedName("Line1")
+        @Expose
+        private String line1;
+        @SerializedName("City")
+        @Expose
+        private String city;
+        @SerializedName("Country")
+        @Expose
+        private String country;
+        @SerializedName("Province")
+        @Expose
+        private String province;
+
+        public String getAddressId() {
+            return addressId;
+        }
+
+        public void setAddressId(String addressId) {
+            this.addressId = addressId;
+        }
+
+        public String getLine1() {
+            return line1;
+        }
+
+        public void setLine1(String line1) {
+            this.line1 = line1;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getProvince() {
+            return province;
+        }
+
+        public void setProvince(String province) {
+            this.province = province;
+        }
+
+    }
+
     public class Data {
 
         @SerializedName("requestList")
         @Expose
-        private List<Request> requestList = null;
+        private RequestList requestList;
 
-        public List<Request> getRequestList() {
+        public RequestList getRequestList() {
             return requestList;
         }
 
-        public void setRequestList(List<Request> requestList) {
+        public void setRequestList(RequestList requestList) {
             this.requestList = requestList;
         }
 
     }
 
 
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("statusDetail")
-    @Expose
-    private String statusDetail;
-    @SerializedName("OTP")
-    @Expose
-    private Object otp;
-    @SerializedName("data")
-    @Expose
-    private Data data;
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("statusDetail")
+        @Expose
+        private String statusDetail;
+        @SerializedName("OTP")
+        @Expose
+        private Object otp;
+        @SerializedName("data")
+        @Expose
+        private Data data;
 
-    public String getStatus() {
-        return status;
-    }
+        public String getStatus() {
+            return status;
+        }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
-    public String getStatusDetail() {
-        return statusDetail;
-    }
+        public String getStatusDetail() {
+            return statusDetail;
+        }
 
-    public void setStatusDetail(String statusDetail) {
-        this.statusDetail = statusDetail;
-    }
+        public void setStatusDetail(String statusDetail) {
+            this.statusDetail = statusDetail;
+        }
 
-    public Object getOtp() {
-        return otp;
-    }
+        public Object getOtp() {
+            return otp;
+        }
 
-    public void setOtp(Object otp) {
-        this.otp = otp;
-    }
+        public void setOtp(Object otp) {
+            this.otp = otp;
+        }
 
-    public Data getData() {
-        return data;
-    }
+        public Data getData() {
+            return data;
+        }
 
-    public void setData(Data data) {
-        this.data = data;
-    }
+        public void setData(Data data) {
+            this.data = data;
+        }
 
 
-    public class Request {
+    public class RequestList {
 
         @SerializedName("ShopId")
         @Expose
-        private Integer shopId;
+        private String shopId;
         @SerializedName("ShopCategoryId")
         @Expose
-        private Integer shopCategoryId;
+        private String shopCategoryId;
         @SerializedName("ShopURl")
         @Expose
         private String shopURl;
@@ -102,29 +162,32 @@ public class GetShopDetailResponse {
         @SerializedName("Shop_Theme")
         @Expose
         private String shopTheme;
+        @SerializedName("tax")
+        @Expose
+        private String tax;
+        @SerializedName("shippingFee")
+        @Expose
+        private String shippingFee;
         @SerializedName("ShopProfile")
         @Expose
         private String shopProfile;
-        @SerializedName("tax")
+        @SerializedName("BranchAddress")
         @Expose
-        private Integer tax;
-        @SerializedName("shippingFee")
-        @Expose
-        private Integer shippingFee;
+        private List<BranchAddress> branchAddress = null;
 
-        public Integer getShopId() {
+        public String getShopId() {
             return shopId;
         }
 
-        public void setShopId(Integer shopId) {
+        public void setShopId(String shopId) {
             this.shopId = shopId;
         }
 
-        public Integer getShopCategoryId() {
+        public String getShopCategoryId() {
             return shopCategoryId;
         }
 
-        public void setShopCategoryId(Integer shopCategoryId) {
+        public void setShopCategoryId(String shopCategoryId) {
             this.shopCategoryId = shopCategoryId;
         }
 
@@ -192,6 +255,22 @@ public class GetShopDetailResponse {
             this.shopTheme = shopTheme;
         }
 
+        public String getTax() {
+            return tax;
+        }
+
+        public void setTax(String tax) {
+            this.tax = tax;
+        }
+
+        public String getShippingFee() {
+            return shippingFee;
+        }
+
+        public void setShippingFee(String shippingFee) {
+            this.shippingFee = shippingFee;
+        }
+
         public String getShopProfile() {
             return shopProfile;
         }
@@ -200,20 +279,12 @@ public class GetShopDetailResponse {
             this.shopProfile = shopProfile;
         }
 
-        public Integer getTax() {
-            return tax;
+        public List<BranchAddress> getBranchAddress() {
+            return branchAddress;
         }
 
-        public void setTax(Integer tax) {
-            this.tax = tax;
-        }
-
-        public Integer getShippingFee() {
-            return shippingFee;
-        }
-
-        public void setShippingFee(Integer shippingFee) {
-            this.shippingFee = shippingFee;
+        public void setBranchAddress(List<BranchAddress> branchAddress) {
+            this.branchAddress = branchAddress;
         }
 
     }

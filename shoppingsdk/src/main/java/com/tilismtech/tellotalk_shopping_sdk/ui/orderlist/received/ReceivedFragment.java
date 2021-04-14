@@ -32,9 +32,11 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.OrderListViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingPageViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
@@ -50,6 +52,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     OrderListViewModel orderListViewModel;
     ImageView screenShot;
     ScrollView scroller;
+    ShopLandingPageViewModel shopLandingPageViewModel;
 
 
     @Override
@@ -66,6 +69,20 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        //this will update the order list all tabs status counts
+        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+            @Override
+            public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                if (getOrderStatusCountResponse != null) {
+                    //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                    ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                }
+            }
+        });
+
 
         if (getArguments() != null) {
             Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
@@ -240,6 +257,17 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                 if (updateOrderStatusResponse != null) {
                     Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                     initReceivedItems();
+
+                    shopLandingPageViewModel.allStatusCount();
+                    shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                        @Override
+                        public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                            if (getOrderStatusCountResponse != null) {
+                                //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                            }
+                        }
+                    });
                 }
             }
         });

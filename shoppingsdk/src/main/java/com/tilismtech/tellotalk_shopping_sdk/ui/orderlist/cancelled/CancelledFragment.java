@@ -56,6 +56,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     private ShopLandingPageViewModel shopLandingPageViewModel;
     ImageView screenShot;
     ScrollView scroller;
+    EditText etRiderName, etRiderNumber, etRiderTracking;
 
 
     @Override
@@ -72,17 +73,20 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        //this will update the order list all tabs status counts
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
                 if (getOrderStatusCountResponse != null) {
                     //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
-                    ((ShopLandingActivity)getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                    ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
                 }
             }
         });
+
 
         if (getArguments() != null) {
             Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
@@ -236,7 +240,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
 
-        EditText etRiderName, etRiderNumber, etRiderTracking;
+
         etRiderName = dialog.findViewById(R.id.etRiderName);
         etRiderNumber = dialog.findViewById(R.id.etRiderContact);
         etRiderTracking = dialog.findViewById(R.id.etRiderTracking);
@@ -267,6 +271,16 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                             if (updateRiderInfoResponse != null) {
                                 dialog.dismiss();
                                 initReceivedItems();
+                                shopLandingPageViewModel.allStatusCount();
+                                shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                                    @Override
+                                    public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                                        if (getOrderStatusCountResponse != null) {
+                                            //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                            ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
@@ -293,6 +307,16 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                 if (updateOrderStatusResponse != null) {
                     Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                     initReceivedItems();
+                    shopLandingPageViewModel.allStatusCount();
+                    shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                        @Override
+                        public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                            if (getOrderStatusCountResponse != null) {
+                                //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -300,5 +324,26 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
 
     public CancelledAdapter.OnOrderClickListener getReference() {
         return this;
+    }
+
+
+    //validation for rider info dialog box fields.
+    public boolean checkValidation() {
+        if (etRiderName.getText().toString() == null || TextUtils.isEmpty(etRiderName.getText().toString())) {
+            Toast.makeText(getActivity(), "Rider Name is Required...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (etRiderNumber.getText().toString() == null || TextUtils.isEmpty(etRiderNumber.getText().toString())) {
+            Toast.makeText(getActivity(), "Rider Number is Required...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (etRiderTracking.getText().toString() == null || TextUtils.isEmpty(etRiderTracking.getText().toString())) {
+            Toast.makeText(getActivity(), "Tracking ID is Required...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }

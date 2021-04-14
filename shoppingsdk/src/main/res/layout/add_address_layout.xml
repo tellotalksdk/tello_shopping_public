@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -80,45 +79,45 @@
 
             <EditText
                 android:id="@+id/et_street"
-                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="11-E DHA street"
+                android:background="@android:color/transparent"
+                android:hint="11-E DHA street"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/et_city"
-                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Karachi"
+                android:background="@android:color/transparent"
+                android:hint="Karachi"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/et_province"
-                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Sindh"
+                android:background="@android:color/transparent"
+                android:hint="Sindh"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/et_country"
-                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Pakistan"
+                android:background="@android:color/transparent"
+                android:hint="Pakistan"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -139,12 +138,19 @@
 
             <ImageView
                 android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_height="15dp"
                 android:layout_marginRight="10dp" />
 
             <ImageView
+                android:id="@+id/addbranchaddress"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_baseline_add_circle_outline" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="15dp"
                 android:layout_marginRight="10dp" />
 
 

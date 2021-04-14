@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -21,6 +22,7 @@ public class BankSettingFragment extends Fragment {
     Button continue_btn_1, continue_btn_2, continue_btn_3, continue_btn_4, btn_wallet;
     ImageView iv_back, iv_back1;
     boolean isbankClicked, iswalletClicked;
+    EditText account_title, account_number, account_title_wallet, account_mobile_number;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,10 @@ public class BankSettingFragment extends Fragment {
         RL3 = view.findViewById(R.id.RL3);
         RL4 = view.findViewById(R.id.RL4);
         btn_wallet = view.findViewById(R.id.btn_wallet);
+        account_title = view.findViewById(R.id.account_title);
+        account_number = view.findViewById(R.id.account_number);
+        account_title_wallet = view.findViewById(R.id.account_title_wallet);
+
 
         btn_wallet.setOnClickListener(new View.OnClickListener() {
             @Override
