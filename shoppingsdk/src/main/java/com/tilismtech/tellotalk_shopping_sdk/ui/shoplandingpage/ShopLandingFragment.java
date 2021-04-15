@@ -35,9 +35,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.ViewPagerAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
@@ -411,7 +415,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     @Override
     public void isActiveproduct(int position, boolean isActive) {
-      //  Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
 
         IsProductActive isProductActive = new IsProductActive();
         isProductActive.setProductId(String.valueOf(position));
@@ -427,6 +431,74 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
+    }
+
+    @Override
+    public void onOpenProductDetailDialog(int productID) {
+        EditText et_ProductName, et_ProductID, et_OriginalPrice, et_DiscountedPrice;
+        androidx.viewpager.widget.ViewPager viewPager2;
+        DotsIndicator dotsIndicator;
+        // images array
+        int[] images = {R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq,
+                R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq};
+
+
+        Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_product_detail_new);
+
+        et_ProductName = dialog.findViewById(R.id.et_ProductName);
+        et_ProductID = dialog.findViewById(R.id.et_ProductID);
+        et_OriginalPrice = dialog.findViewById(R.id.et_OriginalPrice);
+        et_DiscountedPrice = dialog.findViewById(R.id.et_DiscountedPrice);
+        viewPager2 = dialog.findViewById(R.id.viewPager);
+
+
+        // Creating Object of ViewPagerAdapter
+        ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getActivity(), images);
+
+        // Adding the Adapter to the ViewPager
+        viewPager2.setAdapter(mViewPagerAdapter);
+        dotsIndicator = dialog.findViewById(R.id.dots_indicator);
+        dotsIndicator.setViewPager(viewPager2);
+
+
+        ImageView iv_back = dialog.findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        wlp.gravity = Gravity.BOTTOM;
+        // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+
+        ProductForEdit productForEdit = new ProductForEdit();
+        productForEdit.setProfileId(Constant.PROFILE_ID);
+        productForEdit.setProductId(String.valueOf(productID));
+
+        shopLandingPageViewModel.productForEdit(productForEdit);
+        shopLandingPageViewModel.getProductForEdit().observe(getActivity(), new Observer<ProductForEditResponse>() {
+            @Override
+            public void onChanged(ProductForEditResponse productForEditResponse) {
+                if (productForEditResponse != null) {
+                    et_ProductName.setText(String.valueOf(productForEditResponse.getData().getRequestList().getTitle()));
+                    et_ProductID.setText(String.valueOf(productForEditResponse.getData().getRequestList().getId()));
+                    et_OriginalPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getPrice()));
+                    et_DiscountedPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getDiscount()));
+                    // Toast.makeText(getActivity(), productForEditResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
     }
 
     public ProductListAdapter.OnProductEditorClickDialog getReference() {

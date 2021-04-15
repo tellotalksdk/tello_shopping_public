@@ -72,6 +72,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingRespon
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import org.w3c.dom.Text;
 
@@ -491,14 +492,17 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     shopBasicSetting.setArea(area.getText().toString());
 
                     shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
-                    progressBar.setVisibility(View.VISIBLE);
+                    LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                    loadingDialog.showDialog();
+                   // progressBar.setVisibility(View.VISIBLE);
                     shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
                         @Override
                         public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
                             if (shopBasicSettingResponse != null) {
                                 //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
+                               // progressBar.setVisibility(View.GONE);
+                                loadingDialog.dismissDialog();
                                 getActivity().finish();
                                 startActivity(new Intent(getActivity(), ShopLandingActivity.class));
 

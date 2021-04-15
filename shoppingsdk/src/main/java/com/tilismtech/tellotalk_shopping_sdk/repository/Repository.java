@@ -647,6 +647,8 @@ public class Repository {
                     if (response.isSuccessful()) {
                         deleteBranchAddressMutableLiveData.setValue(response.body());
                     }
+                }else{
+                    deleteBranchAddressMutableLiveData.setValue(null);
                 }
             }
 

@@ -162,6 +162,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             open_edit_details.setOnClickListener(this);
             itemView.setOnClickListener(this);
             isActive.setOnClickListener(this);
+            viewProductDetail.setOnClickListener(this);
         }
 
         @Override
@@ -170,6 +171,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId());
             } else if (v.getId() == R.id.isActive) {
                 this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(),isActive.isChecked());
+            } else if(v.getId() == R.id.viewProductDetail){
+                this.onProductEditorClickDialog.onOpenProductDetailDialog(productList.get(getAdapterPosition()).getProductId());
             }
         }
     }
@@ -178,5 +181,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public interface OnProductEditorClickDialog {
         void onOpenProductEditor(int position);
         void isActiveproduct(int position,boolean isActive);
+        void onOpenProductDetailDialog(int position);
     }
 }

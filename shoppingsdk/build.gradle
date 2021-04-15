@@ -55,6 +55,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
+    implementation 'com.tbuonomo:dotsindicator:4.2'
 
     /*//dexter permission
     implementation 'com.karumi:dexter:6.2.2'
