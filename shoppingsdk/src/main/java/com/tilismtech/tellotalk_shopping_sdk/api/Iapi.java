@@ -3,6 +3,7 @@ package com.tilismtech.tellotalk_shopping_sdk.api;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
@@ -21,6 +22,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
@@ -234,11 +236,16 @@ public interface Iapi {
     //Add | Update | Delete Shop Branch Address...
 
     @POST("api/shop/AddShopBranchAddress")
-    Call<AddBranchAddressResponse> addBranchAddress(@Header("Authorization") String token,@Body AddBranchAddress addBranchAddress);
+    Call<AddBranchAddressResponse> addBranchAddress(@Header("Authorization") String token, @Body AddBranchAddress addBranchAddress);
 
     @POST("api/shop/UpdateShopBranchAddress")
-    Call<UpdateBranchAddressResponse> updateBranchAddress(@Header("Authorization") String token,@Body UpdateBranchAddress updateBranchAddress);
+    Call<UpdateBranchAddressResponse> updateBranchAddress(@Header("Authorization") String token, @Body UpdateBranchAddress updateBranchAddress);
 
     @POST("api/shop/DeleteShopBranchAddress")
-    Call<DeleteBranchAddressResponse> deleteBranchAddress(@Header("Authorization") String token,@Body DeleteBranchAddress deleteBranchAddress);
+    Call<DeleteBranchAddressResponse> deleteBranchAddress(@Header("Authorization") String token, @Body DeleteBranchAddress deleteBranchAddress);
+
+    //Delete Product Api
+    @POST("api/Product/DeleteProduct")
+    Call<DeleteProductResponse> deleteProduct(@Header("Authorization") String token, @Body DeleteProduct deleteProduct);
+
 }

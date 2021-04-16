@@ -114,6 +114,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private ColorChooserAdapter colorChooserAdapter;
     private ColorChooserAdapter.OnColorChooserListener onColorChooserListener;
     private List<ColorChooserPojo> colorList;
+    private List<Integer> timingsID;
     private Dialog dialogImage;
     private Uri imageUri;
     private TextView setColortext;
@@ -156,6 +157,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
 
         //by default timings to show inside recycler view...
+        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.showDialog();
         GetTimings getTimings = new GetTimings();
         getTimings.setProfileId(Constant.PROFILE_ID);
         getTimings.setShopId("7");
@@ -166,6 +169,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 if (getTimingsResponse != null) {
                     timingnAdapter = new TimingnAdapter(getActivity(), getTimingsResponse.getData().getRequestList());
                     recycler_timings.setAdapter(timingnAdapter);
+                    timingsID = new ArrayList<>();
+                    for (int i = 0; i < getTimingsResponse.getData().getRequestList().size(); i++) {
+                        timingsID.add(getTimingsResponse.getData().getRequestList().get(i).getSettingId());
+                    }
+
+                    loadingDialog.dismissDialog();
                 }
             }
         });
@@ -494,14 +503,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
                     LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                     loadingDialog.showDialog();
-                   // progressBar.setVisibility(View.VISIBLE);
+                    // progressBar.setVisibility(View.VISIBLE);
                     shopSettingViewModel.getShopSettingResponse().observe(getActivity(), new Observer<ShopBasicSettingResponse>() {
                         @Override
                         public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
                             if (shopBasicSettingResponse != null) {
                                 //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
-                               // progressBar.setVisibility(View.GONE);
+                                // progressBar.setVisibility(View.GONE);
                                 loadingDialog.dismissDialog();
                                 getActivity().finish();
                                 startActivity(new Intent(getActivity(), ShopLandingActivity.class));
@@ -680,7 +689,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isMondayOpen_ID = (int) parent.getItemIdAtPosition(position);
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
-                mondaySetting.setSettingId(22);
+                mondaySetting.setSettingId(timingsID.get(0));
                 mondaySetting.setShopDayName("Monday");
                 mondaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
                 // mondaySetting.setShopEndTime(22);
@@ -718,7 +727,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isTuedayOpen_ID = (int) parent.getItemIdAtPosition(position);
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
-                tuesdaySetting.setSettingId(23);
+                tuesdaySetting.setSettingId(timingsID.get(1));
                 tuesdaySetting.setShopDayName("Tuesday");
                 tuesdaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
 
@@ -755,7 +764,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
 
-                wednesdaySetting.setSettingId(24);
+                wednesdaySetting.setSettingId(timingsID.get(2));
                 wednesdaySetting.setShopDayName("Wednesday");
                 wednesdaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
             }
@@ -792,7 +801,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isThrusdayOpen_ID = (int) parent.getItemIdAtPosition(position);
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
-                thrusdaySetting.setSettingId(25);
+                thrusdaySetting.setSettingId(timingsID.get(3));
                 thrusdaySetting.setShopDayName("Thursday");
                 thrusdaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
             }
@@ -826,7 +835,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isFridayOpen_ID = (int) parent.getItemIdAtPosition(position);
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
-                fridaySetting.setSettingId(26);
+                fridaySetting.setSettingId(timingsID.get(4));
                 fridaySetting.setShopDayName("Friday");
                 fridaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
             }
@@ -859,7 +868,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isSaturdayOpen_ID = (int) parent.getItemIdAtPosition(position);
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
-                saturdaySetting.setSettingId(27);
+                saturdaySetting.setSettingId(timingsID.get(5));
                 saturdaySetting.setShopDayName("Saturday");
                 saturdaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
             }
@@ -892,7 +901,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isSundayOpen_ID = (int) parent.getItemIdAtPosition(position);
                 Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
-                sundaySetting.setSettingId(28);
+                sundaySetting.setSettingId(timingsID.get(6));
                 sundaySetting.setShopDayName("Sunday");
                 sundaySetting.setShopStartTime(parent.getItemAtPosition(position).toString());
             }

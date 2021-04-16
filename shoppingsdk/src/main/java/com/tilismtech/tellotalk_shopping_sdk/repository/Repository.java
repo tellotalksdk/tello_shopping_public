@@ -11,6 +11,7 @@ import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
@@ -31,6 +32,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
@@ -86,7 +88,6 @@ public class Repository {
         }
         return repository;
     }
-
 
     public void generateTokenresponse(MutableLiveData<GenerateTokenResponse> generateTokenResponseLiveData, String UN, String Pass, String Grant_type, String profile, String firstName, String middleName, String lastName, String phone, String email) {
         getRetrofitClient().generateToken(UN, Pass, Grant_type, profile, firstName, middleName, lastName, phone, email).enqueue(new Callback<GenerateTokenResponse>() {
@@ -319,7 +320,7 @@ public class Repository {
 
         List<MultipartBody.Part> Product_Pic = getAllImages(updateProduct.getProduct_Pic());
 
-    /*    File file = new File(updateProduct.getProduct_Pic().get(0));
+        /*    File file = new File(updateProduct.getProduct_Pic().get(0));
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
 */
@@ -327,7 +328,7 @@ public class Repository {
         RequestBody Sub_Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSub_Product_Category_id());
         RequestBody Title = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getTitle());
         RequestBody Discount_Price = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getDiscount_Price());
-        RequestBody Sku = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getDiscount_Price());
+        RequestBody Sku = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSku());
         RequestBody Summary = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSummary());
         RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProfileId());
         RequestBody ProductStatus = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductStatus());
@@ -607,7 +608,7 @@ public class Repository {
                     if (response.isSuccessful()) {
                         addBranchAddressResponseMutableLiveData.setValue(response.body());
                     }
-                }else{
+                } else {
                     addBranchAddressResponseMutableLiveData.setValue(null);
                 }
             }
@@ -647,7 +648,7 @@ public class Repository {
                     if (response.isSuccessful()) {
                         deleteBranchAddressMutableLiveData.setValue(response.body());
                     }
-                }else{
+                } else {
                     deleteBranchAddressMutableLiveData.setValue(null);
                 }
             }
@@ -659,5 +660,22 @@ public class Repository {
         });
     }
 
+    public void deleteProduct(MutableLiveData<DeleteProductResponse> deleteProductResponseMutableLiveData, DeleteProduct deleteProduct) {
+        getRetrofitClient().deleteProduct("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteProduct).enqueue(new Callback<DeleteProductResponse>() {
+            @Override
+            public void onResponse(Call<DeleteProductResponse> call, Response<DeleteProductResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        DeleteProductResponse deleteProductResponse = response.body();
+                        deleteProductResponseMutableLiveData.setValue(deleteProductResponse);
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<DeleteProductResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
 }

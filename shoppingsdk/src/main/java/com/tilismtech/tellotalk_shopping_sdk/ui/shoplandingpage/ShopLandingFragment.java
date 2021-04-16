@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,15 +46,23 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ViewPagerAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,11 +90,16 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Switch edit_switch;
     private List<Uri> uriList;
     private Switch isActiveproduct;
-    private String productStatus = "N";
     private String parentCategoryId, childCategoryId;
     private Uri imageUri;
     private String filepath;
     private List<String> filePaths;
+    private TextView tv_deleteProduct;
+    private LoadingDialog loadingDialog;
+    private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
+    private Spinner parentSpinner, childSpinner;
+    private String parentCategory = "1", childCategory = "1", productStatus = "N"; //by default
+    private List<String> parentCategories, childCategories;
 
 
     @Override
@@ -104,6 +120,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
         navController = Navigation.findNavController(view);
         // orderListtabbar = view.findViewById(R.id.orderListtabbar);
+        loadingDialog = new LoadingDialog(getActivity());
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
@@ -121,6 +138,37 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialogAddProduct.setContentView(R.layout.dialog_add_product);
 
+                chooseMultipleProductsIV = dialogAddProduct.findViewById(R.id.chooseMultipleProductsIV);
+                LLimages = dialogAddProduct.findViewById(R.id.LLimages);
+                isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
+
+
+                chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);
+                    }
+                });
+
+                et_OriginalPrice = dialogAddProduct.findViewById(R.id.et_OriginalPrice);
+                et_DiscountedPrice = dialogAddProduct.findViewById(R.id.et_DiscountedPrice);
+                et_SKU = dialogAddProduct.findViewById(R.id.et_SKU);
+                et_Description = dialogAddProduct.findViewById(R.id.et_Description);
+                et_ProductTitle = dialogAddProduct.findViewById(R.id.et_ProductTitle);
+
+                parentSpinner = dialogAddProduct.findViewById(R.id.parentSpinner);
+                childSpinner = dialogAddProduct.findViewById(R.id.childSpinner);
+                parentSpinner.setOnItemSelectedListener(onItemSelectedListener);
+                childSpinner.setOnItemSelectedListener(onItemSelectedListener);
+
+                uploadParentCategory(parentSpinner, childSpinner);
+                //    uploadChildCategory("1", childSpinner);
+
+
                 iv_back_addproduct = dialogAddProduct.findViewById(R.id.iv_back);
                 iv_back_addproduct.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -133,9 +181,46 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 uploadProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialogAddProduct.dismiss();
-                        //startActivity(new Intent(ShopLandingActivity.this,ShopLandingActivity.class));
-                        navController.navigate(R.id.shopLandingFragment);
+                        //Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
+
+                        if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
+                                TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
+                                TextUtils.isEmpty(et_SKU.getText().toString()) ||
+                                TextUtils.isEmpty(et_Description.getText().toString()) ||
+                                TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
+                                TextUtils.isEmpty(imageUri.toString())
+                        ) {
+                            Toast.makeText(getActivity(), "Some Fields are missing...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            AddNewProduct addNewProduct = new AddNewProduct();
+                            addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
+                            addNewProduct.setPrice(et_OriginalPrice.getText().toString());
+                            addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
+                            addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
+                            addNewProduct.setSku("12sku");
+                            addNewProduct.setSummary(et_Description.getText().toString());
+                            addNewProduct.setProfileId(Constant.PROFILE_ID);
+                            addNewProduct.setProductStatus(productStatus); //work with toggle on and off
+                            addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
+                            addNewProduct.setTitle(et_ProductTitle.getText().toString());
+
+                            shopLandingPageViewModel.addNewProduct(addNewProduct);
+                            shopLandingPageViewModel.getNewProduct().observe(getActivity(), new Observer<AddNewProductResponse>() {
+                                @Override
+                                public void onChanged(AddNewProductResponse addNewProductResponse) {
+                                    if (addNewProductResponse != null) {
+                                        Toast.makeText(getActivity(), " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        filePaths.clear();
+                                        dialogAddProduct.dismiss();
+                                    } else {
+                                        Toast.makeText(getActivity(), "Null...", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+
+                            // navController.navigate(R.id.shopLandingFragment);
+                        }
                     }
                 });
 
@@ -203,17 +288,73 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
                     // Toast.makeText(getActivity(), "" + productListResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
-                    productListResponse.getData().getRequestList();
-                    productListAdapter = new ProductListAdapter(productListResponse.getData().getRequestList(), getActivity(), getReference());
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
-                    recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
-                    recycler_add_product.setAdapter(productListAdapter);
+                    if (productListResponse.getData().getRequestList() != null) {
+                        addProduct_btn.setVisibility(View.GONE);
+                        productListAdapter = new ProductListAdapter(productListResponse.getData().getRequestList(), getActivity(), getReference());
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
+                        recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+                        recycler_add_product.setAdapter(productListAdapter);
+                    }
                 }
             }
         });
 
     }
 
+    private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {
+        shopLandingPageViewModel.parentCategories();
+        shopLandingPageViewModel.getParentCategoryListResponseLiveData().observe(getActivity(), new Observer<ParentCategoryListResponse>() {
+            @Override
+            public void onChanged(ParentCategoryListResponse parentCategoryListResponse) {
+                if (parentCategoryListResponse != null) {
+                    //populate spinner here...
+                    parentCategories = new ArrayList<>();
+
+                    for (int i = 0; i < parentCategoryListResponse.getData().getRequestList().size(); i++) {
+                        parentCategories.add(parentCategoryListResponse.getData().getRequestList().get(i).getTitle());
+                    }
+
+                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, parentCategories);
+                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                    parentSpinner.setAdapter(spinnerArrayAdapter);
+
+                    // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Null", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void uploadChildCategory(String id, Spinner childSpinner) {
+        SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
+        subCategoryBYParentCatID.setParentCategoryId(id);
+
+        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID);
+        shopLandingPageViewModel.getChildCategories().observe(this, new Observer<SubCategoryBYParentCatIDResponse>() {
+            @Override
+            public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
+                if (subCategoryBYParentCatIDResponse != null) {
+                    childCategories = new ArrayList<>();
+
+                    //  Toast.makeText(ShopLandingActivity.this, "status : " + subCategoryBYParentCatIDResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
+
+                    if (subCategoryBYParentCatIDResponse.getData().getRequestList() != null && subCategoryBYParentCatIDResponse.getData().getRequestList().size() > 0) {
+
+                        for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
+                            childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle());
+                        }
+
+                        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                        childSpinner.setAdapter(spinnerArrayAdapter);
+
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -221,22 +362,34 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         //FOR ADD PRODUCT DIALOG this will run on a Add Product button when there is No product in shop
         if (requestCode == ALLOW_MULTIPLE_IMAGES && resultCode == RESULT_OK) {
             if (data.getClipData() != null) {
-                Uri imageUri;
                 ImageView iv;
                 int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                 for (int i = 0; i < count; i++) {
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     iv = inflater.findViewById(R.id.iv);
                     imageUri = data.getClipData().getItemAt(i).getUri();
+                    Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                    filepath = getImagePath(imageUri);
+                    Log.i("TAG", "onActivityResult: " + filepath);
+                    filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
                     iv.setImageURI(imageUri);
                     LLimages.addView(inflater);
                 }
 
+                // filepath = getPath(ShopLandingActivity.this, imageUri);
+                // filepath = getFileNameByUri(ShopLandingActivity.this, imageUri);
+                // filepath = getRealPathFromURI(ShopLandingActivity.this, imageUri);
                 //do something with the image (save it to some directory or whatever you need to do with it here)
+            } else if (data.getData() != null) {
+                String imagePath = data.getData().getPath();
+                imageUri = data.getData();
+                View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                ImageView iv = inflater.findViewById(R.id.iv);
+                filepath = getImagePath(imageUri);
+                filePaths.add(filepath);
+                iv.setImageURI(imageUri);
+                LLimages.addView(inflater);
             }
-        } else if (data.getData() != null) {
-            String imagePath = data.getData().getPath();
-            //do something with the image (save it to some directory or whatever you need to do with it here)
         }
 
         //FOR EDIT PRODUCT DIALOG
@@ -295,6 +448,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         product_description = dialog.findViewById(R.id.product_description);
         post_product_btn = dialog.findViewById(R.id.post_product_btn);
         isActiveproduct = dialog.findViewById(R.id.edit_switch);
+        tv_deleteProduct = dialog.findViewById(R.id.tv_deleteProduct);
         isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
 
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
@@ -319,12 +473,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         post_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(productName.getText().toString()) &&
-                        TextUtils.isEmpty(productCategory.getText().toString()) &&
-                        TextUtils.isEmpty(originalPrice.getText().toString()) &&
-                        TextUtils.isEmpty(discountedPrice.getText().toString()) &&
-                        TextUtils.isEmpty(skucodeoptional.getText().toString()) &&
-                        TextUtils.isEmpty(product_description.getText().toString())
+                if (TextUtils.isEmpty(productName.getText().toString()) ||
+                        TextUtils.isEmpty(productCategory.getText().toString()) ||
+                        TextUtils.isEmpty(originalPrice.getText().toString()) ||
+                        TextUtils.isEmpty(discountedPrice.getText().toString()) ||
+                        TextUtils.isEmpty(skucodeoptional.getText().toString()) ||
+                        TextUtils.isEmpty(product_description.getText().toString()) ||
+                        filePaths.size() > 0
                 ) {
                     Toast.makeText(getActivity(), "Some fields are missing...", Toast.LENGTH_SHORT).show();
                 } else {
@@ -344,21 +499,31 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     updateProduct.setProductStatus(productStatus);
                     updateProduct.setProfileId(Constant.PROFILE_ID);
 
+
+                    loadingDialog.showDialog();
                     shopLandingPageViewModel.updateproduct(updateProduct);
                     shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
                         @Override
                         public void onChanged(UpdateProductResponse updateProductResponse) {
                             if (updateProductResponse != null) {
-                                Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 filePaths.clear();
                                 if (dialog != null) {
                                     dialog.dismiss();
                                 }
+                                loadingDialog.dismissDialog();
                             }
                         }
                     });
 
                 }
+            }
+        });
+
+        tv_deleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteProduct(productID);
             }
         });
 
@@ -390,6 +555,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     discountedPrice.setText(productForEditResponse.getData().getRequestList().getDiscount());
                     skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
                     isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
+                    product_description.setText(productForEditResponse.getData().getRequestList().getSummary());
 
                     //when url provided this will work for sure...
                     /*if (productForEditResponse.getData().getRequestList().getProfilePic() != null) {
@@ -413,10 +579,26 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         dialog.show();
     }
 
+    private void deleteProduct(int productID) {
+        DeleteProduct deleteProduct = new DeleteProduct();
+        deleteProduct.setProductId(String.valueOf(productID));
+        deleteProduct.setProfileId(Constant.PROFILE_ID);
+        shopLandingPageViewModel.deleteProduct(deleteProduct);
+        shopLandingPageViewModel.deleteProductResponse().observe(getActivity(), new Observer<DeleteProductResponse>() {
+            @Override
+            public void onChanged(DeleteProductResponse deleteProductResponse) {
+                if (deleteProductResponse != null) {
+                    if (deleteProductResponse.getStatus().equals("0")) {
+                        Toast.makeText(getActivity(), "Product Has Been Deleted...", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public void isActiveproduct(int position, boolean isActive) {
         //  Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
-
         IsProductActive isProductActive = new IsProductActive();
         isProductActive.setProductId(String.valueOf(position));
         isProductActive.setProductStatus(isActive ? "Y" : "N");
@@ -430,7 +612,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 }
             }
         });
-
     }
 
     @Override
@@ -532,6 +713,26 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
         return path;
     }
+
+    //listener for selecting parent and child category items...
+    AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.getId() == parentSpinner.getId()) {
+                parentCategory = String.valueOf(parentSpinner.getSelectedItemPosition() + 1);
+                uploadChildCategory(parentCategory, childSpinner);
+            }
+
+            if (parent.getId() == childSpinner.getId()) {
+                childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
 }
 

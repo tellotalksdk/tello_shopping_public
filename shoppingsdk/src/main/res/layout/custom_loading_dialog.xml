@@ -1,24 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView android:layout_margin="20dp"
+    app:cardCornerRadius="12dp"
+    android:elevation="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ProgressBar
-        android:layout_margin="20dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Loading..."
-        android:textSize="18sp" />
+        >
 
-</LinearLayout>
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_close"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_close"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <ProgressBar
+            android:layout_centerHorizontal="true"
+            android:id="@+id/iv_congrats"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/iv_close"
+            android:layout_gravity="right"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_congrats" />
+
+        <TextView
+            android:id="@+id/setupShop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_congrats"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="1dp"
+            android:text="Loading. Please wait..."
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/getStarted_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/setupShop"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp"
+            android:text="Let's Get Started"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

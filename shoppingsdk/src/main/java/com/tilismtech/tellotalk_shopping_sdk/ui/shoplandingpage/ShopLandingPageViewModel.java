@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
@@ -12,6 +13,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
@@ -26,14 +28,12 @@ public class ShopLandingPageViewModel extends ViewModel {
     private MutableLiveData<ParentCategoryListResponse> parentCategoryListResponseMutableLiveData;
     private MutableLiveData<SubCategoryBYParentCatIDResponse> subCategoryBYParentCatIDResponseMutableLiveData;
     private MutableLiveData<AddNewProductResponse> addNewProductResponseMutableLiveData;
-
     private MutableLiveData<ProductForEditResponse> productForEditMutableLiveData;
     private MutableLiveData<ProductListResponse> productListResponseMutableLiveData;
     private MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData;
-
     private MutableLiveData<IsProductActiveResponse> isProductActiveResponseMutableLiveData;
-
     private MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData;
+    private MutableLiveData<DeleteProductResponse> deleteProductResponseMutableLiveData;
 
 
     private Repository repository;
@@ -47,6 +47,7 @@ public class ShopLandingPageViewModel extends ViewModel {
         this.updateProductResponseMutableLiveData = new MutableLiveData<>();
         isProductActiveResponseMutableLiveData = new MutableLiveData<>();
         this.getOrderStatusCountResponseMutableLiveData = new MutableLiveData<>();
+        this.deleteProductResponseMutableLiveData = new MutableLiveData<>();
         this.repository = Repository.getRepository();
     }
 
@@ -120,6 +121,15 @@ public class ShopLandingPageViewModel extends ViewModel {
 
     public MutableLiveData<GetOrderStatusCountResponse> getAllStatusCount() {
         return this.getOrderStatusCountResponseMutableLiveData;
+    }
+
+    //delete Product Api
+    public void deleteProduct(DeleteProduct deleteProduct) {
+        repository.deleteProduct(deleteProductResponseMutableLiveData, deleteProduct);
+    }
+
+    public MutableLiveData<DeleteProductResponse> deleteProductResponse() {
+        return this.deleteProductResponseMutableLiveData;
     }
 
 

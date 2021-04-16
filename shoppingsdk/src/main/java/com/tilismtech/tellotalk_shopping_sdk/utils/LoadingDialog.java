@@ -12,6 +12,7 @@ public class LoadingDialog {
     Activity activity;
     Dialog dialog;
 
+
     public LoadingDialog(Activity activity) {
         this.activity = activity;
         dialog = new Dialog(activity);
@@ -20,10 +21,12 @@ public class LoadingDialog {
     public void showDialog() {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.custom_loading_dialog);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
     public void dismissDialog() {
         dialog.dismiss();
     }
+
 }

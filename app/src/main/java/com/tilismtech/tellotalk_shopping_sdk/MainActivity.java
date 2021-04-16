@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         accessTokenPojo = new AccessTokenPojo();
 
+        //user name + password + grant type always remain same other will change...
         accessTokenPojo.setUsername("Basit@tilismtech.com");
         accessTokenPojo.setPassword("basit@1234");
         accessTokenPojo.setGrant_type("password");

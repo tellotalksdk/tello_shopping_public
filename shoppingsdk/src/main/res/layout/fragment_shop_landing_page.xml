@@ -290,8 +290,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
-        tools:listitem="@layout/rv_product_items" />
-
+        />
 
     <Button
         android:id="@+id/addProduct_btn"
@@ -306,6 +305,6 @@
         android:paddingRight="50dp"
         android:text="Add Product"
         android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>
