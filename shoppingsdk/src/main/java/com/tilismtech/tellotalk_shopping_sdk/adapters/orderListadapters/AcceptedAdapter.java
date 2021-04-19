@@ -12,6 +12,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,20 +25,23 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.AcceptedItemViewHolder> {
+public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.AcceptedItemViewHolder> implements Filterable {
 
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
     //
-    List<GetOrderByStatusResponse.Request> requests;
+    List<GetOrderByStatusResponse.Request> acceptedItems;
+    List<GetOrderByStatusResponse.Request> acceptedItemsFULL;
 
 
     public AcceptedAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
-        this.requests = receivedItemPojos;
+        this.acceptedItems = receivedItemPojos;
+        this.acceptedItemsFULL = new ArrayList<>(this.acceptedItems);
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -50,7 +55,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
 
     @Override
     public void onBindViewHolder(@NonNull AcceptedItemViewHolder holder, int position) {
-        GetOrderByStatusResponse.Request receivedItemPojo = requests.get(position);
+        GetOrderByStatusResponse.Request receivedItemPojo = acceptedItems.get(position);
 
         holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
         holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
@@ -63,12 +68,46 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
 
     @Override
     public int getItemCount() {
-        if (requests != null) {
-            return requests.size();
+        if (acceptedItems != null) {
+            return acceptedItems.size();
         } else {
             return 0;
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return acceptedItemFilter;
+    }
+
+    public Filter acceptedItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<GetOrderByStatusResponse.Request> filterlist = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterlist.addAll(acceptedItemsFULL);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetOrderByStatusResponse.Request item : acceptedItemsFULL) {
+                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterlist;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            acceptedItems.clear();
+            acceptedItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class AcceptedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -109,13 +148,13 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.viewFull) {
-                onOrderClickListener.OnViewFullOrderListener(requests.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnViewFullOrderListener(acceptedItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.addRiderInfo) {
                 onOrderClickListener.OnRiderInfoUpdateListener(getAdapterPosition());
             } else if (v.getId() == R.id.orderStatus) {
-                onOrderClickListener.OnStatusChange(3, requests.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnStatusChange(3, acceptedItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.orderCancel) {
-                onOrderClickListener.OnStatusChange(6, requests.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnStatusChange(6, acceptedItems.get(getAdapterPosition()).getOrderid());
             }
         }
     }

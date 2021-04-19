@@ -92,18 +92,9 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         });
 
 
-        if (getArguments() != null) {
-            Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
-        }
-
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_accepted_orders = view.findViewById(R.id.recycler_accepted_orders);
         initReceivedItems();
-
-    }
-
-
-    private void initReceivedItems() {
 
         OrderByStatus orderByStatus = new OrderByStatus();
         orderByStatus.setProfileId(Constant.PROFILE_ID);
@@ -117,9 +108,41 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                     // Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     acceptedAdapter = new AcceptedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_accepted_orders.setAdapter(acceptedAdapter);
+
+                    if (getArguments() != null) {
+                        if (acceptedAdapter != null) {
+                            acceptedAdapter.getFilter().filter(getArguments().getString("query"));
+                            Toast.makeText(getActivity(), " accepted fragment : " + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "accepted fragment is null ...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
                 }
             }
         });
+
+
+    }
+
+
+    private void initReceivedItems() {
+
+       /* OrderByStatus orderByStatus = new OrderByStatus();
+        orderByStatus.setProfileId(Constant.PROFILE_ID);
+        orderByStatus.setStatus("2"); //for received order list
+
+        orderListViewModel.orderByStatus(orderByStatus);
+        orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
+            @Override
+            public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
+                if (getOrderByStatusResponse != null) {
+                    // Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                    acceptedAdapter = new AcceptedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
+                    recycler_accepted_orders.setAdapter(acceptedAdapter);
+                }
+            }
+        });*/
     }
 
     @Override
