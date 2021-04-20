@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,20 +25,25 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.CancelledItemViewHolder> {
+public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.CancelledItemViewHolder> implements Filterable {
 
     List<GetOrderByStatusResponse.Request> cancelledItems;
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
+    List<GetOrderByStatusResponse.Request> cancelledItemsFull;
 
 
     public CancelledAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.cancelledItems = receivedItemPojos;
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
+        if (cancelledItems != null) {
+            this.cancelledItemsFull = new ArrayList<>(cancelledItems);
+        }
     }
 
     @NonNull
@@ -132,6 +139,38 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
             return 0;
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return cancelledItemFilter;
+    }
+
+    public Filter cancelledItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<GetOrderByStatusResponse.Request> filterList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterList.addAll(cancelledItemsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetOrderByStatusResponse.Request item : cancelledItemsFull) {
+                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                        filterList.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+        }
+    };
 
     public class CancelledItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

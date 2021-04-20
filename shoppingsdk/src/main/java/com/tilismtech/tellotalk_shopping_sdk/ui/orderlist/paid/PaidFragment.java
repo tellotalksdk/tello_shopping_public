@@ -169,7 +169,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
-                Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
@@ -219,7 +219,6 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
         view.draw(canvas);
         return bitmap;
     }
-
 
 
     @Override

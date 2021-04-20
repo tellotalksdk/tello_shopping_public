@@ -32,6 +32,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailRes
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,7 @@ public class StoreSettingFragment extends Fragment {
                                         if (addBranchAddressResponse.getStatus().equals("0")) {
                                             Toast.makeText(getActivity(), "Shop Address Has Been Added Successfully...", Toast.LENGTH_SHORT).show();
                                             navController.navigate(R.id.storeSettingFragment);
+                                            Utility.hideKeyboard(getActivity(),view);
                                         }
                                     }
                                 }
@@ -190,7 +192,7 @@ public class StoreSettingFragment extends Fragment {
                 ic_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "clicked" + branchIds.get(addressRL.indexOfChild(inflater) - 1), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), "clicked" + branchIds.get(addressRL.indexOfChild(inflater) - 1), Toast.LENGTH_SHORT).show();
 
                         DeleteBranchAddress deleteBranchAddress = new DeleteBranchAddress();
                         deleteBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 1));
@@ -201,7 +203,8 @@ public class StoreSettingFragment extends Fragment {
                             @Override
                             public void onChanged(DeleteBranchAddressResponse deleteBranchAddressResponse) {
                                 if (deleteBranchAddressResponse != null) {
-                                    Toast.makeText(getActivity(), " " + deleteBranchAddressResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    navController.navigate(R.id.storeSettingFragment);
+                                    //Toast.makeText(getActivity(), " " + deleteBranchAddressResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

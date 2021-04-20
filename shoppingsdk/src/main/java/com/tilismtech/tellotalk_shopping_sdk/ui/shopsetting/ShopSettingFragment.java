@@ -156,28 +156,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         et_OwnerShopUrl.setText(TelloPreferenceManager.getInstance(getActivity()).getShopUri());
 
 
-        //by default timings to show inside recycler view...
-        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
-        loadingDialog.showDialog();
-        GetTimings getTimings = new GetTimings();
-        getTimings.setProfileId(Constant.PROFILE_ID);
-        getTimings.setShopId("7");
-        shopSettingViewModel.posttogetTimings(getTimings);
-        shopSettingViewModel.gettimings().observe(getActivity(), new Observer<GetTimingsResponse>() {
-            @Override
-            public void onChanged(GetTimingsResponse getTimingsResponse) {
-                if (getTimingsResponse != null) {
-                    timingnAdapter = new TimingnAdapter(getActivity(), getTimingsResponse.getData().getRequestList());
-                    recycler_timings.setAdapter(timingnAdapter);
-                    timingsID = new ArrayList<>();
-                    for (int i = 0; i < getTimingsResponse.getData().getRequestList().size(); i++) {
-                        timingsID.add(getTimingsResponse.getData().getRequestList().get(i).getSettingId());
-                    }
-
-                    loadingDialog.dismissDialog();
-                }
-            }
-        });
+        showTimings();
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,7 +366,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 updateTimingbtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "clicked...", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "clicked...", Toast.LENGTH_SHORT).show();
 
                         daysSettingList.add(0, mondaySetting);
                         daysSettingList.add(1, tuesdaySetting);
@@ -405,8 +384,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                             @Override
                             public void onChanged(ShopTimingResponse shopTimingResponse) {
                                 if (shopTimingResponse != null) {
-                                    Toast.makeText(getActivity(), " " + shopTimingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getActivity(), " " + shopTimingResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getActivity(), " " + shopTimingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getActivity(), " " + shopTimingResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getActivity(), "Shop Timing has been set successfully...", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    daysSettingList.clear();
+                                    showTimings();
                                 }
                             }
                         });
@@ -530,6 +513,31 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             }
         });
 
+
+    }
+
+    private void showTimings() {
+        //by default timings to show inside recycler view...
+        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.showDialog();
+        GetTimings getTimings = new GetTimings();
+        getTimings.setProfileId(Constant.PROFILE_ID);
+        getTimings.setShopId("7");
+        shopSettingViewModel.posttogetTimings(getTimings);
+        shopSettingViewModel.gettimings().observe(getActivity(), new Observer<GetTimingsResponse>() {
+            @Override
+            public void onChanged(GetTimingsResponse getTimingsResponse) {
+                if (getTimingsResponse != null) {
+                    timingnAdapter = new TimingnAdapter(getActivity(), getTimingsResponse.getData().getRequestList());
+                    recycler_timings.setAdapter(timingnAdapter);
+                    timingsID = new ArrayList<>();
+                    for (int i = 0; i < getTimingsResponse.getData().getRequestList().size(); i++) {
+                        timingsID.add(getTimingsResponse.getData().getRequestList().get(i).getSettingId());
+                    }
+                    loadingDialog.dismissDialog();
+                }
+            }
+        });
 
     }
 
@@ -687,7 +695,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isMondayOpen = true;
 
                 isMondayOpen_ID = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
                 mondaySetting.setSettingId(timingsID.get(0));
                 mondaySetting.setShopDayName("Monday");
@@ -703,7 +711,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isMondayOpen) {
                     if (parent.getItemIdAtPosition(position) > isMondayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         mondaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
@@ -725,7 +733,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isTuedayOpen = true;
 
                 isTuedayOpen_ID = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
                 tuesdaySetting.setSettingId(timingsID.get(1));
                 tuesdaySetting.setShopDayName("Tuesday");
@@ -740,7 +748,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isTuedayOpen) {
                     if (parent.getItemIdAtPosition(position) > isTuedayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         tuesdaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
@@ -761,7 +769,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 isWednesdayOpen = true;
 
                 isWednesdayOpen_ID = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
 
                 wednesdaySetting.setSettingId(timingsID.get(2));
@@ -776,7 +784,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isWednesdayOpen) {
                     if (parent.getItemIdAtPosition(position) > isWednesdayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         wednesdaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
@@ -799,7 +807,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
 
                 isThrusdayOpen_ID = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
                 thrusdaySetting.setSettingId(timingsID.get(3));
                 thrusdaySetting.setShopDayName("Thursday");
@@ -813,7 +821,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isThrusdayOpen) {
                     if (parent.getItemIdAtPosition(position) > isThrusdayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         thrusdaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
@@ -847,7 +855,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isFridayOpen) {
                     if (parent.getItemIdAtPosition(position) > isFridayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         fridaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
@@ -866,7 +874,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
                 isSaturdayOpen = true;
                 isSaturdayOpen_ID = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
                 saturdaySetting.setSettingId(timingsID.get(5));
                 saturdaySetting.setShopDayName("Saturday");
@@ -880,7 +888,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isSaturdayOpen) {
                     if (parent.getItemIdAtPosition(position) > isSaturdayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         saturdaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
@@ -899,7 +907,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
                 isSundayOpen = true;
                 isSundayOpen_ID = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
 
                 sundaySetting.setSettingId(timingsID.get(6));
                 sundaySetting.setShopDayName("Sunday");
@@ -913,7 +921,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 if (isSundayOpen) {
                     if (parent.getItemIdAtPosition(position) > isSundayOpen_ID) {
-                        Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(activity, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        sundaySetting.setShopEndTime(parent.getItemAtPosition(position).toString());
                     } else {
                         Toast.makeText(activity, "Shop Closing time must be ahead of shop opening time...", Toast.LENGTH_LONG).show();
                     }
@@ -979,43 +988,43 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             if (buttonView.getId() == mondaySwitch.getId()) {
                 mondaySwitch.setChecked(isChecked);
                 mondaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
             if (buttonView.getId() == tuesdaySwitch.getId()) {
                 tuesdaySwitch.setChecked(isChecked);
                 tuesdaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
             if (buttonView.getId() == wednesdaySwitch.getId()) {
                 wednesdaySwitch.setChecked(isChecked);
                 wednesdaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
             if (buttonView.getId() == thrusdaySwitch.getId()) {
                 thrusdaySwitch.setChecked(isChecked);
                 thrusdaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
             if (buttonView.getId() == fridaySwitch.getId()) {
                 fridaySwitch.setChecked(isChecked);
                 fridaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
             if (buttonView.getId() == saturdaySwitch.getId()) {
                 saturdaySwitch.setChecked(isChecked);
                 saturdaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
             if (buttonView.getId() == sundaySwitch.getId()) {
                 sundaySwitch.setChecked(isChecked);
                 sundaySetting.setShopStatusDaywise(isChecked ? "Y" : "N");
-                Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
         }
     };

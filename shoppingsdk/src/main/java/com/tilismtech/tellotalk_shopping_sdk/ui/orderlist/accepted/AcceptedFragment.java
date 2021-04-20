@@ -96,6 +96,12 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         recycler_accepted_orders = view.findViewById(R.id.recycler_accepted_orders);
         initReceivedItems();
 
+
+    }
+
+
+    private void initReceivedItems() {
+
         OrderByStatus orderByStatus = new OrderByStatus();
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("2"); //for received order list
@@ -121,28 +127,6 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 }
             }
         });
-
-
-    }
-
-
-    private void initReceivedItems() {
-
-       /* OrderByStatus orderByStatus = new OrderByStatus();
-        orderByStatus.setProfileId(Constant.PROFILE_ID);
-        orderByStatus.setStatus("2"); //for received order list
-
-        orderListViewModel.orderByStatus(orderByStatus);
-        orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
-            @Override
-            public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
-                if (getOrderByStatusResponse != null) {
-                    // Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                    acceptedAdapter = new AcceptedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
-                    recycler_accepted_orders.setAdapter(acceptedAdapter);
-                }
-            }
-        });*/
     }
 
     @Override

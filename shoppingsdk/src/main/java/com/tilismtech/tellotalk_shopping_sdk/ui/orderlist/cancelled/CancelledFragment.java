@@ -88,10 +88,10 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         });
 
 
-        if (getArguments() != null) {
+       /* if (getArguments() != null) {
             Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
-
+*/
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_cancelled_orders = view.findViewById(R.id.recycler_cancelled_orders);
         initReceivedItems();
@@ -114,6 +114,15 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     //  Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     cancelledAdapter = new CancelledAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_cancelled_orders.setAdapter(cancelledAdapter);
+
+                    if (getArguments() != null) {
+                        if (cancelledAdapter != null) {
+                            cancelledAdapter.getFilter().filter(getArguments().getString("query"));
+                            Toast.makeText(getActivity(), " cancelled fragment  : " + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "cancelled fragment is null ...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });
@@ -160,7 +169,6 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
-
             }
         });
 
@@ -174,7 +182,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
-                Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());

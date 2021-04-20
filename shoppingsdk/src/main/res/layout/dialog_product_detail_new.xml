@@ -76,19 +76,19 @@
 
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-                android:visibility="gone"
                 android:id="@+id/dots_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:visibility="visible"
                 app:dotsColor="@android:color/holo_blue_dark"
                 app:dotsCornerRadius="8dp"
                 app:dotsSize="10dp"
                 app:dotsSpacing="2.5dp"
                 app:dotsWidthFactor="2.5"
                 app:progressMode="true"
-                app:selectedDotColor="@android:color/holo_orange_light" />
+                app:selectedDotColor="@android:color/darker_gray" />
 
 
             <TextView

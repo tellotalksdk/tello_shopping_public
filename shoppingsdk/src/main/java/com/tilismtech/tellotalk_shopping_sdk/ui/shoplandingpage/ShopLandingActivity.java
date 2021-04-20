@@ -52,6 +52,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListRespo
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import java.security.cert.CertPathBuilderSpi;
 import java.sql.SQLInvalidAuthorizationSpecException;
@@ -184,7 +185,6 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
         });
 
-
         setting = findViewById(R.id.setting);
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +245,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 uploadProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
@@ -268,15 +268,20 @@ public class ShopLandingActivity extends AppCompatActivity {
                             addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
                             addNewProduct.setTitle(et_ProductTitle.getText().toString());
 
+                            LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
+                            loadingDialog.showDialog();
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
                             shopLandingPageViewModel.getNewProduct().observe(ShopLandingActivity.this, new Observer<AddNewProductResponse>() {
                                 @Override
                                 public void onChanged(AddNewProductResponse addNewProductResponse) {
                                     if (addNewProductResponse != null) {
-                                        Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         filePaths.clear();
+                                        loadingDialog.dismissDialog();
                                         dialogAddProduct.dismiss();
+                                        navController.navigate(R.id.shopLandingFragment);
                                     } else {
+                                        loadingDialog.dismissDialog();
                                         Toast.makeText(ShopLandingActivity.this, "Null...", Toast.LENGTH_SHORT).show();
                                     }
                                 }

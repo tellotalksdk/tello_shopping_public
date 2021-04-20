@@ -41,7 +41,9 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
 
     public AcceptedAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.acceptedItems = receivedItemPojos;
-        this.acceptedItemsFULL = new ArrayList<>(this.acceptedItems);
+        if (acceptedItems != null) {
+            this.acceptedItemsFULL = new ArrayList<>(this.acceptedItems);
+        }
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }

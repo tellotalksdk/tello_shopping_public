@@ -119,8 +119,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
+
         // orderListtabbar = view.findViewById(R.id.orderListtabbar);
         loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.dismissDialog();
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
@@ -473,7 +475,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         post_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(productName.getText().toString()) ||
+                /*if (TextUtils.isEmpty(productName.getText().toString()) ||
                         TextUtils.isEmpty(productCategory.getText().toString()) ||
                         TextUtils.isEmpty(originalPrice.getText().toString()) ||
                         TextUtils.isEmpty(discountedPrice.getText().toString()) ||
@@ -482,7 +484,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         filePaths.size() > 0
                 ) {
                     Toast.makeText(getActivity(), "Some fields are missing...", Toast.LENGTH_SHORT).show();
-                } else {
+                } else*/
+                {
                     //every thing fine post edit api
 
                     UpdateProduct updateProduct = new UpdateProduct();
@@ -500,7 +503,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     updateProduct.setProfileId(Constant.PROFILE_ID);
 
 
-                    loadingDialog.showDialog();
+                    // loadingDialog.showDialog();
                     shopLandingPageViewModel.updateproduct(updateProduct);
                     shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
                         @Override
@@ -508,13 +511,15 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             if (updateProductResponse != null) {
                                 //Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 filePaths.clear();
+
                                 if (dialog != null) {
                                     dialog.dismiss();
                                 }
-                                loadingDialog.dismissDialog();
+                                navController.navigate(R.id.shopLandingFragment);
                             }
                         }
                     });
+
 
                 }
             }
@@ -642,7 +647,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         viewPager2.setAdapter(mViewPagerAdapter);
         dotsIndicator = dialog.findViewById(R.id.dots_indicator);
         dotsIndicator.setViewPager(viewPager2);
-
 
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {

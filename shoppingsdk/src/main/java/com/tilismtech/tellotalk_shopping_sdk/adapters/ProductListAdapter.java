@@ -64,7 +64,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.productTitle.setText(request.getTitle());
         holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
 
-        Glide.with(myCtx).load(request.getProdpic()).into(holder.productImage);
+        Glide.with(myCtx).load(request.getProdpic()).placeholder(R.drawable.ic_dummy).centerCrop().into(holder.productImage);
         // holder.productImage.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_bbq));
 
        /* holder.open_edit_details.setOnClickListener(new View.OnClickListener() {

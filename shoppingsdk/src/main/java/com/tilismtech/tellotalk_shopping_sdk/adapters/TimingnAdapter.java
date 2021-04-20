@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,12 @@ public class TimingnAdapter extends RecyclerView.Adapter<TimingnAdapter.TimingVH
         GetTimingsResponse.Request request = timings.get(position);
         holder.Day.setText(request.getShopDayName());
         holder.timings.setText(request.getShopStartTime() + " / " + request.getShopEndTime());
+
+        if (request.getShopStatusDaywise().equals("Y")) {
+            holder.relativeLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.relativeLayout.setAlpha(0.5f);
+        }
     }
 
     @Override
@@ -45,11 +52,13 @@ public class TimingnAdapter extends RecyclerView.Adapter<TimingnAdapter.TimingVH
 
     public class TimingVH extends RecyclerView.ViewHolder {
         public TextView Day, timings;
+        public RelativeLayout relativeLayout;
 
         public TimingVH(@NonNull View itemView) {
             super(itemView);
             Day = itemView.findViewById(R.id.Day);
             timings = itemView.findViewById(R.id.timings);
+            this.relativeLayout = itemView.findViewById(R.id.RLouter);
         }
     }
 }
