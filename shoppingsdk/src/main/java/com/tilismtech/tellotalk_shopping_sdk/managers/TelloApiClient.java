@@ -46,8 +46,11 @@ public class TelloApiClient {
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(response.body().getAccessToken());
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(accessTokenPojo.getPhone());
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(accessTokenPojo.getFirstname() + " " + accessTokenPojo.getMiddlename());
+                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(accessTokenPojo.getprofileId());
                  //   TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(accessTokenPojo.g);
                     Log.i("TAG", "onResponse: " + TelloPreferenceManager.getInstance(myCtx).getAccessToken());
+                    Log.i("TAG", "onResponse: " + TelloPreferenceManager.getInstance(myCtx).getProfileId());
+
                 }
             }
 

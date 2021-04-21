@@ -173,7 +173,8 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                    et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+                   // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+                    et_orderStatus.setText("Paid");
                     et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
                     // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
 

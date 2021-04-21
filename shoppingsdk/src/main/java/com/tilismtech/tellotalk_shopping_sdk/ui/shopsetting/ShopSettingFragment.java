@@ -173,21 +173,24 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     @Override
                     public void onClick(View v) {
                         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) +
-                                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) +
+                                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 != PackageManager.PERMISSION_GRANTED) {
 
                             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+                                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA) ||
+                                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle("Grant those permissions...");
-                                builder.setMessage("Camera External Storage Permission Required...");
+                                builder.setMessage("Camera and External Storage Permission Required...");
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         requestPermissions(new String[]{
                                                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                Manifest.permission.CAMERA
+                                                Manifest.permission.CAMERA,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE
                                         }, 1);
 
                                     }
@@ -199,7 +202,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                             } else { //ye lines for the very first time chalein gy jab app start hongy
                                 requestPermissions(new String[]{
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.CAMERA
+                                        Manifest.permission.CAMERA,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                                 }, 1);
                             }
                         } else {
@@ -212,11 +216,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     @Override
                     public void onClick(View v) {
                         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) +
-                                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) +
+                                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 != PackageManager.PERMISSION_GRANTED) {
 
                             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+                                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA) ||
+                                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            ) {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle("Grant those permissions...");
@@ -226,7 +233,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         requestPermissions(new String[]{
                                                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                Manifest.permission.CAMERA
+                                                Manifest.permission.CAMERA,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE
                                         }, 2);
 
                                     }
@@ -238,7 +246,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                             } else { //ye lines for the very first time chalein gy jab app start hongy
                                 requestPermissions(new String[]{
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.CAMERA
+                                        Manifest.permission.CAMERA,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                                 }, 2);
                             }
                         } else {

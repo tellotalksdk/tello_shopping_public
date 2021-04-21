@@ -145,7 +145,6 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
-
             }
         });
 
@@ -159,11 +158,26 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
-              //  Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                    et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+
+                    if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("1")) {
+                        et_orderStatus.setText("Received");
+                    } else if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("2")) {
+                        et_orderStatus.setText("Accepted");
+                    } else if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("3")) {
+                        et_orderStatus.setText("Dispatched");
+                    } else if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("4")) {
+                        et_orderStatus.setText("Delivered");
+                    } else if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("5")) {
+                        et_orderStatus.setText("Paid");
+                    } else if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("6")) {
+                        et_orderStatus.setText("Cancel");
+                    }
+
+                    // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
                     et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
                     // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
 

@@ -47,7 +47,6 @@ public class TelloPreferenceManager {
     }
 
 
-
     //registernumber
     public void saveRegisteredNumber(String registerNumber) {
         editor.putString(REGISTER_NUMBER, registerNumber);
@@ -66,6 +65,16 @@ public class TelloPreferenceManager {
 
     public String getShopUri() {
         return sharedPreferences.getString(SHOP_URI, "");
+    }
+
+    //tello user profile id
+    public void saveProfileId(String profileID) {
+        editor.putString(PROFILE_ID, profileID);
+        editor.apply();
+    }
+
+    public String getProfileId() {
+        return sharedPreferences.getString(PROFILE_ID, "");
     }
 
     void clearAll() {

@@ -170,7 +170,8 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                    et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+                   // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+                    et_orderStatus.setText("Received");
                     et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
                     // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
 

@@ -1,21 +1,28 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.cancelled;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -44,8 +51,13 @@ import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActiv
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingPageViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static android.content.ContentValues.TAG;
 
 public class CancelledFragment extends Fragment implements CancelledAdapter.OnOrderClickListener {
 
@@ -132,7 +144,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     @Override
     public void OnViewFullOrderListener(int orderId) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
-
+        FrameLayout flash;
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
@@ -156,6 +168,8 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
         et_BuyerAddress = dialog.findViewById(R.id.et_BuyerAddress);
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
+        // flash = dialog.findViewById(R.id.flash);
+
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +183,50 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
+                String root = Environment.getExternalStorageDirectory().toString();
+              /*  File myDir = new File(root + "/TelloShopping");
+                myDir.mkdirs();*/
+                Random generator = new Random();
+                int n = 10000;
+                n = generator.nextInt(n);
+                String fname = "Image-" + n + ".jpg";
+                File file = new File(root, fname);
+                Log.i("TAG", "" + file);
+                if (file.exists())
+                    file.delete();
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    out.flush();
+                    out.close();
+                    Toast.makeText(getActivity(), "Screen Shot Captured...", Toast.LENGTH_SHORT).show();
+
+                   /* //animation
+                    flash.setVisibility(View.VISIBLE);
+                    AlphaAnimation fade = new AlphaAnimation(1, 0);
+                    fade.setDuration(50);
+                    fade.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            flash.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    flash.startAnimation(fade);*/
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -182,11 +240,12 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
-               // Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                    et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+                    et_orderStatus.setText("Cancelled");
+                    // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
                     et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
                     // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
 
