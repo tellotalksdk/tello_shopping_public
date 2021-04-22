@@ -528,7 +528,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         tv_deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteProduct(productID);
+                deleteProduct(productID, dialog);
             }
         });
 
@@ -584,7 +584,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         dialog.show();
     }
 
-    private void deleteProduct(int productID) {
+    private void deleteProduct(int productID, Dialog dialog) {
         DeleteProduct deleteProduct = new DeleteProduct();
         deleteProduct.setProductId(String.valueOf(productID));
         deleteProduct.setProfileId(Constant.PROFILE_ID);
@@ -595,6 +595,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 if (deleteProductResponse != null) {
                     if (deleteProductResponse.getStatus().equals("0")) {
                         Toast.makeText(getActivity(), "Product Has Been Deleted...", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     }
                 }
             }

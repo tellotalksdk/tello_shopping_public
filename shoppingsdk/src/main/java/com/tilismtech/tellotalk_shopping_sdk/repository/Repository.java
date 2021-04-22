@@ -63,6 +63,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -114,7 +116,20 @@ public class Repository {
                     if (response.isSuccessful()) {
                         ShopRegisterResponse shopRegisterResponse = response.body();
                         shopRegisterResponseMutableLiveData.setValue(response.body());
-                    } else {
+                    } else if (response.code() == HttpsURLConnection.HTTP_UNAUTHORIZED) {
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("Token Expired.Please Try Again...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_UNAUTHORIZED));
+                        shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
+                    } else if (response.code() == HttpsURLConnection.HTTP_FORBIDDEN) {
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("User Already Register.Please Try Again...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN));
+                        shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
+                    } else if (response.code() == HttpsURLConnection.HTTP_INTERNAL_ERROR){
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("Internal Server Error...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
                         shopRegisterResponseMutableLiveData.setValue(null);
                     }
                 }
@@ -125,6 +140,7 @@ public class Repository {
             @Override
             public void onFailure(Call<ShopRegisterResponse> call, Throwable t) {
                 Log.i("TAG", "onFailure: " + t.getMessage());
+                t.printStackTrace();
             }
         });
 
@@ -281,6 +297,8 @@ public class Repository {
                         AddNewProductResponse addNewProductResponse = new AddNewProductResponse();
                         addNewProductResponseMutableLiveData.setValue(addNewProductResponse);
                         response.code();
+                    } else {
+                        addNewProductResponseMutableLiveData.setValue(null);
                     }
                 } else {
                     addNewProductResponseMutableLiveData.setValue(null);
@@ -291,6 +309,8 @@ public class Repository {
             @Override
             public void onFailure(Call<AddNewProductResponse> call, Throwable t) {
                 Log.i("TAG", "onFailure: " + t.getMessage());
+                addNewProductResponseMutableLiveData.setValue(null);
+                t.printStackTrace();
             }
         });
     }

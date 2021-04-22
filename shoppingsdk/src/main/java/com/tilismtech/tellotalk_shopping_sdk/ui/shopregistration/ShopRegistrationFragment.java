@@ -42,6 +42,7 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import org.w3c.dom.Text;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +53,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 public class ShopRegistrationFragment extends Fragment {
 
     int counter = 0;
-    Button btnCreateAccount;
+    Button requestforPin;
     Button requestAgain, done_btn;
     String mobileNumber;
     NavController navController;
@@ -90,12 +91,12 @@ public class ShopRegistrationFragment extends Fragment {
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
 
 
-        btnCreateAccount.setOnClickListener(new View.OnClickListener() {
+        requestforPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
                     RL.setVisibility(View.VISIBLE);
-                    btnCreateAccount.setVisibility(View.GONE);
+                    requestforPin.setVisibility(View.GONE);
                     startCountDown();
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
 
@@ -108,6 +109,7 @@ public class ShopRegistrationFragment extends Fragment {
                     shopRegister.setEmail("ali@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
+                    shopRegister.setShopName(et_shop_name.getText().toString());
 
                     // shopRegister.setShopURl(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
                     //  shopRegister.setRegisterPhone(mobileNumber);
@@ -117,9 +119,16 @@ public class ShopRegistrationFragment extends Fragment {
                         @Override
                         public void onChanged(ShopRegisterResponse shopRegisterResponse) {
                             if (shopRegisterResponse != null) {
-                                Toast.makeText(getActivity(), "Success..." + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_UNAUTHORIZED))) {
+                                    Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_FORBIDDEN))) {
+                                    Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR))) {
+                                    Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(getActivity(), "User Already Registered...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -949,7 +958,7 @@ public class ShopRegistrationFragment extends Fragment {
     }
 
     public void initViews(View view) {
-        btnCreateAccount = view.findViewById(R.id.requestforPin);
+        requestforPin = view.findViewById(R.id.requestforPin);
         requestAgain = view.findViewById(R.id.requestAgain);
         done_btn = view.findViewById(R.id.done_btn);
         RL = view.findViewById(R.id.RL);

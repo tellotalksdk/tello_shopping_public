@@ -23,6 +23,17 @@ public class ShopRegister {
     @SerializedName("Email")
     @Expose
     private String email;
+    @SerializedName("ShopName")
+    @Expose
+    private String ShopName;
+
+    public String getShopName() {
+        return ShopName;
+    }
+
+    public void setShopName(String shopName) {
+        ShopName = shopName;
+    }
 
     public String getProfileId() {
         return profileId;

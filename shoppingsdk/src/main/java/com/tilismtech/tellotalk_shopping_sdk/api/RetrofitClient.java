@@ -26,7 +26,8 @@ public class RetrofitClient {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-           // .addInterceptor(logging)
+            .authenticator(new TokenRefreshAuthenthicator()) //this will refresh token
+            //.addInterceptor(logging)
             .build();
 
 

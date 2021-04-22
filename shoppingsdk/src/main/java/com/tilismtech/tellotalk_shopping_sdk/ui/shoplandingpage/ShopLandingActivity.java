@@ -2,6 +2,7 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -41,7 +42,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
@@ -160,7 +163,9 @@ public class ShopLandingActivity extends AppCompatActivity {
         ProductList productList1 = new ProductList();
         productList1.setProfileId(Constant.PROFILE_ID);
 
-        shopLandingPageViewModel.productList(productList1);
+        setTotalProductOnActionBar();
+
+        /* shopLandingPageViewModel.productList(productList1);
         shopLandingPageViewModel.getProductList().observe(ShopLandingActivity.this, new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
@@ -168,7 +173,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     totalProducts.setText(productListResponse.getData().getRequestList().size() + " Product");
                 }
             }
-        });
+        });*/
 
 
         iv_close.setOnClickListener(new View.OnClickListener() {
@@ -271,22 +276,25 @@ public class ShopLandingActivity extends AppCompatActivity {
                             LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
                             loadingDialog.showDialog();
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
+                            shopLandingPageViewModel.getNewProduct().removeObservers(ShopLandingActivity.this);
                             shopLandingPageViewModel.getNewProduct().observe(ShopLandingActivity.this, new Observer<AddNewProductResponse>() {
                                 @Override
                                 public void onChanged(AddNewProductResponse addNewProductResponse) {
+                                    shopLandingPageViewModel.getNewProduct().removeObservers(ShopLandingActivity.this);
                                     if (addNewProductResponse != null) {
                                         //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         filePaths.clear();
                                         loadingDialog.dismissDialog();
                                         dialogAddProduct.dismiss();
+                                        setTotalProductOnActionBar();
                                         navController.navigate(R.id.shopLandingFragment);
                                     } else {
                                         loadingDialog.dismissDialog();
-                                        Toast.makeText(ShopLandingActivity.this, "Null...", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ShopLandingActivity.this, "Some thing went wrong...", Toast.LENGTH_SHORT).show();
                                     }
+                                    loadingDialog.dismissDialog();
                                 }
                             });
-
 
                             // navController.navigate(R.id.shopLandingFragment);
                         }
@@ -716,6 +724,21 @@ public class ShopLandingActivity extends AppCompatActivity {
                 shopName.setVisibility(View.GONE);
                 totalProducts.setVisibility(View.GONE);
                 tv_addproducts.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void setTotalProductOnActionBar() {
+        ProductList productList1 = new ProductList();
+        productList1.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
+        shopLandingPageViewModel.productList(productList1);
+        shopLandingPageViewModel.getProductList().observe(ShopLandingActivity.this, new Observer<ProductListResponse>() {
+            @Override
+            public void onChanged(ProductListResponse productListResponse) {
+                if (productListResponse != null) {
+                    totalProducts.setText(productListResponse.getData().getRequestList().size() + " Product");
+                }
             }
         });
 

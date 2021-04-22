@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -144,7 +145,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     @Override
     public void OnViewFullOrderListener(int orderId) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
-        FrameLayout flash;
+        LinearLayout flash;
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
@@ -168,7 +169,8 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
         et_BuyerAddress = dialog.findViewById(R.id.et_BuyerAddress);
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
-        // flash = dialog.findViewById(R.id.flash);
+        flash = dialog.findViewById(R.id.linear);
+        flash.setVisibility(View.GONE);
 
 
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -184,13 +186,13 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
                 String root = Environment.getExternalStorageDirectory().toString();
-              /*  File myDir = new File(root + "/TelloShopping");
-                myDir.mkdirs();*/
+                File myDir = new File(root + "/TelloShopping");
+                myDir.mkdirs();
                 Random generator = new Random();
                 int n = 10000;
                 n = generator.nextInt(n);
                 String fname = "Image-" + n + ".jpg";
-                File file = new File(root, fname);
+                File file = new File(myDir, fname);
                 Log.i("TAG", "" + file);
                 if (file.exists())
                     file.delete();
@@ -201,28 +203,13 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     out.close();
                     Toast.makeText(getActivity(), "Screen Shot Captured...", Toast.LENGTH_SHORT).show();
 
-                   /* //animation
                     flash.setVisibility(View.VISIBLE);
-                    AlphaAnimation fade = new AlphaAnimation(1, 0);
-                    fade.setDuration(50);
-                    fade.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
+                    AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+                    animation1.setDuration(500);
+                    //  animation1.setStartOffset(5000);
+                    animation1.setFillAfter(true);
+                    flash.startAnimation(animation1);
 
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            flash.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-
-                    flash.startAnimation(fade);*/
 
                 } catch (Exception e) {
                     e.printStackTrace();
