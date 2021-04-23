@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         //user name + password + grant type always remain same other will change...
         accessTokenPojo.setUsername("Basit@tilismtech.com");
-        accessTokenPojo.setPassword("basit@1234");
+        accessTokenPojo.setPassword("apbarklazm3Q9gKNfYYi0w==");
         accessTokenPojo.setGrant_type("password");
         accessTokenPojo.setprofileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43");
         accessTokenPojo.setFirstname("Hasan");

@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -115,7 +116,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     @Override
     public void OnViewFullOrderListener(int orderId) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
-
+        LinearLayout flash;
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
@@ -139,6 +140,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
         et_BuyerAddress = dialog.findViewById(R.id.et_BuyerAddress);
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
+        flash = dialog.findViewById(R.id.linear);
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +154,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
-
+                captureScreenShot(bitmap, flash);
             }
         });
 
@@ -160,7 +162,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         ViewFullOrder viewFullOrder = new ViewFullOrder();
         viewFullOrder.setOrderId(String.valueOf(orderId));
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
-        viewFullOrder.setOrderStatus("2");
+        viewFullOrder.setOrderStatus("1");
 
         orderListViewModel.viewFullOrder(viewFullOrder);
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
@@ -170,20 +172,21 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                   // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+                    // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
                     et_orderStatus.setText("Received");
                     et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
-                    // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
 
-                    /*   et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList());
-                         et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList());
-                         et_qty.setText(viewFullOrderResponse.getData().getRequestList());
-                 et_payableAmount.setText(viewFullOrderResponse.getData().getRequestList());
+                    Toast.makeText(getActivity(), "" + viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(), Toast.LENGTH_SHORT).show();
 
-                et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
-                et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList());
-                et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList());
-                et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());*/
+                  /*  et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_qty.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_payableAmount.setText(viewFullOrderResponse.getData().getRequestList());
+
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());*/
 
                     et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getFirstname() + viewFullOrderResponse.getData().getRequestList().getMiddlename());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
@@ -203,6 +206,9 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+    }
+
+    private void captureScreenShot(Bitmap bitmap, LinearLayout flash) {
     }
 
     //screen shot whole receipt...

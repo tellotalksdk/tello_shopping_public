@@ -16,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -136,7 +138,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
-
+        LinearLayout flash, productDetailLL;
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
         screenShot = dialog.findViewById(R.id.screenShot);
         scroller = dialog.findViewById(R.id.scroller);
@@ -156,6 +158,10 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
         et_BuyerAddress = dialog.findViewById(R.id.et_BuyerAddress);
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
+        productDetailLL = dialog.findViewById(R.id.productDetailLL);
+
+        flash = dialog.findViewById(R.id.linear);
+        flash.setVisibility(View.GONE);
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +175,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
-
+                captureScreenShot(bitmap, flash);
             }
         });
 
@@ -187,24 +193,46 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                    //   et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
-                    //   et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
-                    // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
+                    et_orderStatus.setText("Accepted");
+                    et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
 
-                    /*   et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList());
-                         et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList());
-                         et_qty.setText(viewFullOrderResponse.getData().getRequestList());
-                 et_payableAmount.setText(viewFullOrderResponse.getData().getRequestList());
+                    productDetailLL.removeAllViews();
+                    if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
+                        for (int i = 0; i < viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(); i++) {
+                            //productDetailLL.addView();
+                            View inflater = getLayoutInflater().inflate(R.layout.product_detail, null);
 
-                et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
-                et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList());
-                et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList());
-                et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());*/
+                            EditText et_ProductName = inflater.findViewById(R.id.et_ProductName);
+                            EditText et_ProductPrice = inflater.findViewById(R.id.et_ProductPrice);
+                            EditText et_ProductDiscountedPrice = inflater.findViewById(R.id.et_ProductDiscountedPrice);
+                            EditText et_qty = inflater.findViewById(R.id.et_qty);
+                            EditText et_payableAmount = inflater.findViewById(R.id.et_payableAmount);
 
-                   /* et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getFirstname() + viewFullOrderResponse.getData().getRequestList().getMiddlename());
+
+                            et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getTitle());
+                            et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getPrice());
+                            et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount());
+                            et_qty.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getQuantity());
+
+                            //payabale amount = discount * qty of product
+                            int payableAmount = Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount()) * Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getQuantity());
+                            et_payableAmount.setText(String.valueOf(payableAmount));
+                            productDetailLL.addView(inflater);
+                        }
+                    }
+
+
+                    /*
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());*/
+
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getFirstname() + viewFullOrderResponse.getData().getRequestList().getMiddlename());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
-                    et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getCompleteAddress());*/
+                    et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getCompleteAddress());
                     // et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
+
                 }
             }
         });
@@ -219,6 +247,38 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
 
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+    }
+
+    private void captureScreenShot(Bitmap bitmap, LinearLayout flash) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/TelloShopping");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        Log.i("TAG", "" + file);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Toast.makeText(getActivity(), "Screen Shot Captured...", Toast.LENGTH_SHORT).show();
+
+            flash.setVisibility(View.VISIBLE);
+            AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+            animation1.setDuration(500);
+            //  animation1.setStartOffset(5000);
+            animation1.setFillAfter(true);
+            flash.startAnimation(animation1);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //screen shot whole receipt...

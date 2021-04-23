@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -112,7 +113,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
-
+        LinearLayout productDetailLL;
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
         screenShot = dialog.findViewById(R.id.screenShot);
         scroller = dialog.findViewById(R.id.scroller);
@@ -132,6 +133,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
         et_BuyerAddress = dialog.findViewById(R.id.et_BuyerAddress);
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
+        productDetailLL = dialog.findViewById(R.id.productDetailLL);
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,16 +179,35 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                         et_orderStatus.setText("Cancel");
                     }
 
-                    // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
+
                     et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
-                    // et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getPro);
 
-                    /*   et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList());
-                         et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList());
-                         et_qty.setText(viewFullOrderResponse.getData().getRequestList());
-                 et_payableAmount.setText(viewFullOrderResponse.getData().getRequestList());
+                    productDetailLL.removeAllViews();
+                    if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
+                        for (int i = 0; i < viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(); i++) {
+                            //productDetailLL.addView();
+                            View inflater = getLayoutInflater().inflate(R.layout.product_detail, null);
 
-                et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
+                            EditText et_ProductName = inflater.findViewById(R.id.et_ProductName);
+                            EditText et_ProductPrice = inflater.findViewById(R.id.et_ProductPrice);
+                            EditText et_ProductDiscountedPrice = inflater.findViewById(R.id.et_ProductDiscountedPrice);
+                            EditText et_qty = inflater.findViewById(R.id.et_qty);
+                            EditText et_payableAmount = inflater.findViewById(R.id.et_payableAmount);
+
+
+                            et_ProductName.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getTitle());
+                            et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getPrice());
+                            et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount());
+                            et_qty.setText(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getQuantity());
+
+                            //payabale amount = discount * qty of product
+                            int payableAmount = Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount()) * Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getQuantity());
+                            et_payableAmount.setText(String.valueOf(payableAmount));
+                            productDetailLL.addView(inflater);
+                        }
+                    }
+
+               /* et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
                 et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList());
                 et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList());
                 et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());*/
