@@ -100,6 +100,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Spinner parentSpinner, childSpinner;
     private String parentCategory = "1", childCategory = "1", productStatus = "N"; //by default
     private List<String> parentCategories, childCategories;
+    private Dialog dialog;
 
 
     @Override
@@ -187,7 +188,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
                         if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
-                                TextUtils.isEmpty(et_SKU.getText().toString()) ||
                                 TextUtils.isEmpty(et_Description.getText().toString()) ||
                                 TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
                                 TextUtils.isEmpty(imageUri.toString())
@@ -199,21 +199,28 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             addNewProduct.setPrice(et_OriginalPrice.getText().toString());
                             addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
                             addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
-                            addNewProduct.setSku("12sku");
+                            addNewProduct.setSku(et_SKU.getText().toString());
                             addNewProduct.setSummary(et_Description.getText().toString());
                             addNewProduct.setProfileId(Constant.PROFILE_ID);
                             addNewProduct.setProductStatus(productStatus); //work with toggle on and off
                             addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
                             addNewProduct.setTitle(et_ProductTitle.getText().toString());
 
+                            LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                            loadingDialog.showDialog();
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
                             shopLandingPageViewModel.getNewProduct().observe(getActivity(), new Observer<AddNewProductResponse>() {
                                 @Override
                                 public void onChanged(AddNewProductResponse addNewProductResponse) {
                                     if (addNewProductResponse != null) {
-                                        Toast.makeText(getActivity(), " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        // Toast.makeText(getActivity(), " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         filePaths.clear();
                                         dialogAddProduct.dismiss();
+                                        filePaths.clear();
+                                        loadingDialog.dismissDialog();
+                                        dialogAddProduct.dismiss();
+                                        ((ShopLandingActivity) getActivity()).setTotalProductOnActionBar();
+                                        navController.navigate(R.id.shopLandingFragment);
                                     } else {
                                         Toast.makeText(getActivity(), "Null...", Toast.LENGTH_SHORT).show();
                                     }
@@ -596,6 +603,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (deleteProductResponse.getStatus().equals("0")) {
                         Toast.makeText(getActivity(), "Product Has Been Deleted...", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        ((ShopLandingActivity) getActivity()).setTotalProductOnActionBar();
+                        navController.navigate(R.id.shopLandingFragment);
                     }
                 }
             }
@@ -622,7 +631,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     @Override
     public void onOpenProductDetailDialog(int productID) {
-        EditText et_ProductName, et_ProductID, et_OriginalPrice, et_DiscountedPrice;
+        TextView et_ProductName, et_ProductID, et_OriginalPrice, et_DiscountedPrice;
         androidx.viewpager.widget.ViewPager viewPager2;
         DotsIndicator dotsIndicator;
         // images array
@@ -630,7 +639,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq};
 
 
-        Dialog dialog = new Dialog(getActivity());
+
+
+        dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_new);
 

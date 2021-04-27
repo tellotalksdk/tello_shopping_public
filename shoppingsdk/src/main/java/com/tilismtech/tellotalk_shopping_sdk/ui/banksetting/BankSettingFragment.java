@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,10 +40,10 @@ public class BankSettingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RL1 = view.findViewById(R.id.RL1);
-        RL2 = view.findViewById(R.id.RL2);
-        RL3 = view.findViewById(R.id.RL3);
-        RL4 = view.findViewById(R.id.RL4);
+        RL1 = view.findViewById(R.id.RL1); //this is the first screen having 2 option wallet and bank...
+        RL2 = view.findViewById(R.id.RL2); // this is the  flow for bank selection...
+        RL3 = view.findViewById(R.id.RL3); //this is the flow for add branch address...
+        RL4 = view.findViewById(R.id.RL4); //this is the flow for wallet selection...
         btn_wallet = view.findViewById(R.id.btn_wallet);
         account_title = view.findViewById(R.id.account_title);
         account_number = view.findViewById(R.id.account_number);
@@ -88,7 +89,6 @@ public class BankSettingFragment extends Fragment {
                 RL1.setVisibility(View.VISIBLE);
             }
         });
-
 
         btn_bank = view.findViewById(R.id.btn_bank);
         btn_bank.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +141,7 @@ public class BankSettingFragment extends Fragment {
                 RL1.setVisibility(View.GONE);
                 RL2.setVisibility(View.GONE);
                 RL3.setVisibility(View.VISIBLE);
+                RL4.setVisibility(View.GONE);
             }
         });
 
@@ -158,9 +159,10 @@ public class BankSettingFragment extends Fragment {
         continue_btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RL1.setVisibility(View.VISIBLE);
+                RL1.setVisibility(View.GONE);
                 RL2.setVisibility(View.GONE);
-                RL3.setVisibility(View.GONE);
+                RL3.setVisibility(View.VISIBLE);
+                RL4.setVisibility(View.GONE);
             }
         });
 

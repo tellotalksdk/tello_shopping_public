@@ -148,11 +148,11 @@
 
         <ImageView
             android:id="@+id/edit_rider_info"
-            android:layout_width="20dp"
-            android:layout_height="18dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_below="@+id/address"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="18dp"
             android:layout_toLeftOf="@+id/spinner_moveto"
             android:layout_toRightOf="@+id/addRiderInfo1"
             android:src="@drawable/ic_edit"
@@ -163,8 +163,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
+            android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/viewFull"
-            android:background="@drawable/custom_move_to_spinner"
+            android:background="@drawable/bg_spinner_order_status"
             android:paddingEnd="30dp" />
 
 

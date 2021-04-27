@@ -94,6 +94,17 @@ public class GetProductListResponse {
         @SerializedName("prodpic")
         @Expose
         private String prodpic;
+        @SerializedName("Product_Category_Name")
+        @Expose
+        private String  Product_Category_Name;
+
+        public String getProduct_Category_Name() {
+            return Product_Category_Name;
+        }
+
+        public void setProduct_Category_Name(String product_Category_Name) {
+            Product_Category_Name = product_Category_Name;
+        }
 
         public Integer getProductId() {
             return productId;

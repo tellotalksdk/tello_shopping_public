@@ -31,6 +31,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
@@ -123,10 +124,10 @@ public class Repository {
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
                     } else if (response.code() == HttpsURLConnection.HTTP_FORBIDDEN) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("User Already Register.Please Try Again...");
+                        shopRegisterResponse.setMessage("User Already Register...");
                         shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN));
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
-                    } else if (response.code() == HttpsURLConnection.HTTP_INTERNAL_ERROR){
+                    } else if (response.code() == HttpsURLConnection.HTTP_INTERNAL_ERROR) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
                         shopRegisterResponse.setMessage("Internal Server Error...");
                         shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
@@ -694,6 +695,27 @@ public class Repository {
 
             @Override
             public void onFailure(Call<DeleteProductResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getColorTheme(MutableLiveData<ColorThemeResponse> colorThemeResponseMutableLiveData) {
+        getRetrofitClient().getColorThemes().enqueue(new Callback<ColorThemeResponse>() {
+            @Override
+            public void onResponse(Call<ColorThemeResponse> call, Response<ColorThemeResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ColorThemeResponse colorThemeResponse = response.body();
+                        colorThemeResponseMutableLiveData.setValue(colorThemeResponse);
+                    } else {
+                        Log.i("TAG", "onResponse: " + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ColorThemeResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });

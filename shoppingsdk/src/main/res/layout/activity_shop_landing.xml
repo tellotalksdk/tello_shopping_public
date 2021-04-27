@@ -74,10 +74,11 @@
                 android:layout_height="24dp"
                 android:layout_alignTop="@+id/LL1"
                 android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
                 android:layout_centerVertical="true"
-                android:backgroundTint="@android:color/black"
+                android:layout_gravity="end"
                 android:layout_marginBottom="10dp"
+                android:visibility="visible"
+                android:backgroundTint="@android:color/black"
                 android:src="@drawable/ic_baseline_settings"
                 app:tint="@android:color/black" />
 
@@ -86,15 +87,12 @@
                 android:id="@+id/addProduct"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-
-
+                android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_toLeftOf="@+id/setting"
-                android:layout_centerVertical="true"
                 android:src="@drawable/ic_baseline_add_circle_outline"
                 android:visibility="visible"
                 app:tint="@android:color/black" />
-
 
 
             <TextView
@@ -112,16 +110,34 @@
 
         </RelativeLayout>
 
-        <SearchView
-            android:id="@+id/simpleSearchView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/linearTopsearch"
+            android:visibility="gone"
             android:layout_alignTop="@+id/LL1"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="20dp"
-            android:queryHint="Search order by name or number or order id"
             android:layout_toLeftOf="@+id/setting"
-            android:visibility="gone"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/simpleSearchView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:queryHint="Search order by name or number or order id"
+                />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/menuDots"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_menu"
+                app:tint="@android:color/black" />
+
+        </LinearLayout>
+
 
     </FrameLayout>
 

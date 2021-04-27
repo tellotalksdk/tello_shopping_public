@@ -123,10 +123,14 @@ public class ShopRegistrationFragment extends Fragment {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_FORBIDDEN))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
                                 }else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
+
+                               /* if(shopRegisterResponse.getStatus().equals("-6")){
+                                    Toast.makeText(getActivity(), "Shop already Exist on this Profile.", Toast.LENGTH_SHORT).show();
+                                }*/
+
                             } else {
                                 Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
                             }

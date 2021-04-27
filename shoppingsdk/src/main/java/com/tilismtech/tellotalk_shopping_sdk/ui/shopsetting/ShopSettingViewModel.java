@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
@@ -19,6 +20,7 @@ public class ShopSettingViewModel extends ViewModel {
     private MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData;
     private MutableLiveData<GetTimingsResponse> getTimingsResponseMutableLiveData;
     private MutableLiveData<ShopTimingResponse> shopTimingResponseMutableLiveData;
+    private MutableLiveData<ColorThemeResponse> colorThemeResponseMutableLiveData;
 
 
     public ShopSettingViewModel() {
@@ -26,6 +28,7 @@ public class ShopSettingViewModel extends ViewModel {
         this.shopBasicSettingResponseMutableLiveData = new MutableLiveData<>();
         this.getTimingsResponseMutableLiveData = new MutableLiveData<>();
         this.shopTimingResponseMutableLiveData = new MutableLiveData<>();
+        this.colorThemeResponseMutableLiveData = new MutableLiveData<>();
     }
 
     //shop setting
@@ -49,11 +52,20 @@ public class ShopSettingViewModel extends ViewModel {
 
     //post timing
     public void postTiming(ShopTiming shopTiming) {
-        repository.postTiming(shopTimingResponseMutableLiveData,shopTiming);
+        repository.postTiming(shopTimingResponseMutableLiveData, shopTiming);
     }
 
-    public MutableLiveData<ShopTimingResponse> getUpdateTiming(){
+    public MutableLiveData<ShopTimingResponse> getUpdateTiming() {
         return this.shopTimingResponseMutableLiveData;
+    }
+
+    //color themes
+    public void ColorThemes() {
+        repository.getColorTheme(colorThemeResponseMutableLiveData);
+    }
+
+    public MutableLiveData<ColorThemeResponse> getColorTheme() {
+        return this.colorThemeResponseMutableLiveData;
     }
 
 }

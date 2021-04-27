@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/orderStatus"
             android:layout_marginEnd="55dp"
+            android:layout_toLeftOf="@+id/orderStatus"
             android:text="Cancel"
             android:textColor="#DC1A19"
             android:textSize="15sp"
@@ -80,8 +80,7 @@
             android:layout_below="@+id/orderNumber"
             android:layout_alignParentEnd="true"
             android:gravity="end|center"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/quantity"
@@ -119,7 +118,6 @@
         </LinearLayout>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/addRiderInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,17 +129,18 @@
             android:text="+ Add Rider Info"
             android:textColor="#226EE8"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <Spinner
-            android:visibility="gone"
             android:id="@+id/spinner_moveto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
             android:layout_toLeftOf="@+id/viewFull"
             android:background="@drawable/custom_move_to_spinner"
-            android:paddingEnd="30dp" />
+            android:paddingEnd="30dp"
+            android:visibility="gone" />
 
 
         <TextView

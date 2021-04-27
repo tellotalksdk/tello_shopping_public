@@ -60,7 +60,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         holder.discountedprice.setText("Rs. " + String.valueOf(request.getDiscountPrice()));
         holder.originalprice.setText("Rs. " + String.valueOf(request.getPrice()));
-        holder.productcategory.setText("N/A");
+        holder.productcategory.setText(request.getProduct_Category_Name());
         holder.productTitle.setText(request.getTitle());
         holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
 

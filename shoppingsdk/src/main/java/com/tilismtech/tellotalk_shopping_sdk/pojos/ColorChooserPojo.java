@@ -1,19 +1,19 @@
 package com.tilismtech.tellotalk_shopping_sdk.pojos;
 
 public class ColorChooserPojo {
-    private Integer color ;
+    private String color ;
     private boolean isSelected ;
 
-    public ColorChooserPojo(Integer color, boolean isSelected) {
+    public ColorChooserPojo(String color, boolean isSelected) {
         this.color = color;
         this.isSelected = isSelected;
     }
 
-    public Integer getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Integer color) {
+    public void setColor(String color) {
         this.color = color;
     }
 

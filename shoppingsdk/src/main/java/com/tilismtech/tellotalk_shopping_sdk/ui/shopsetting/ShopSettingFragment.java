@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.shopsetting;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAssignedNumbers;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,15 +59,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.TimingnAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.Citiespojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.CountriesPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.StatePojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
@@ -78,6 +85,9 @@ import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.security.cert.CertPathBuilderSpi;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,9 +138,16 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private String filePath = "", Country, Province, City; //this file path either come from capture image or upload image
     private ShopTiming shopTiming; // request body for shop timing dialog and its related api...
     private List<ShopTiming.DaysSetting> daysSettingList;
+    private List<String> ColorList;
     public ShopTiming.DaysSetting mondaySetting, tuesdaySetting, wednesdaySetting, thrusdaySetting, fridaySetting, saturdaySetting, sundaySetting;
-
+    private String colorTheme = "";
     ShopBasicSetting shopBasicSetting;
+    private LinearLayout cardView;
+    private List<String> Countries, States, Cities;
+    private int CountryId, StateId, CityId;
+    StatePojo statePojo;
+    CountriesPojo countriesPojo;
+    Citiespojo citiespojo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,13 +167,50 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         initViews(view);
         activity = getActivity();
         shopSettingViewModel = new ViewModelProvider(this).get(ShopSettingViewModel.class);
-
+        Gson gson = new Gson();
         et_OwnerName.setText(TelloPreferenceManager.getInstance(getActivity()).getOwnerName());
         et_OwnerNumber.setText(TelloPreferenceManager.getInstance(getActivity()).getRegisteredNumber());
         et_OwnerShopUrl.setText(TelloPreferenceManager.getInstance(getActivity()).getShopUri());
 
-
         showTimings();
+        setThemeColors();
+
+        String countriesFileString = getJsonFromAssets(getActivity(), "countries.json");
+        String stateFileString = getJsonFromAssets(getActivity(), "states.json");
+        String cityFileString = getJsonFromAssets(getActivity(), "cities.json");
+
+        countriesPojo = gson.fromJson(countriesFileString, CountriesPojo.class);
+        statePojo = gson.fromJson(stateFileString, StatePojo.class);
+        citiespojo = gson.fromJson(cityFileString, Citiespojo.class);
+
+        for (int i = 0; i < countriesPojo.getCountries().size(); i++) {
+            Countries.add(countriesPojo.getCountries().get(i).getName());
+        }
+
+        for (int i = 0; i < statePojo.getStates().size(); i++) {
+            States.add(statePojo.getStates().get(i).getName());
+        }
+
+        for (int i = 0; i < citiespojo.getCities().size(); i++) {
+            Cities.add(citiespojo.getCities().get(i).getName());
+        }
+
+
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Countries);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        country.setAdapter(countryAdapter);
+        country.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, States);
+        provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        province.setAdapter(provinceAdapter);
+        province.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        city.setAdapter(cityAdapter);
+        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
 
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -436,20 +490,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 });
 
                 colorList = new ArrayList<>();
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-                colorList.add(new ColorChooserPojo(R.drawable.circle, false));
-
+                for (int i = 0; i < ColorList.size(); i++) {
+                    colorList.add(new ColorChooserPojo(ColorList.get(i), false));
+                }
 
                 recycler_colors = dialog.findViewById(R.id.recycler_colors);
                 colorChooserAdapter = new ColorChooserAdapter(colorList, getActivity(), getReference());
@@ -478,11 +521,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         !TextUtils.isEmpty(Country) &&
                         !TextUtils.isEmpty(Province) &&
                         !TextUtils.isEmpty(City) &&
-                        !TextUtils.isEmpty(filePath.toString())
+                        !TextUtils.isEmpty(filePath.toString()) &&
+                        !TextUtils.isEmpty(colorTheme.toString())
                 ) {
 
                     shopBasicSetting.setProfileId(Constant.PROFILE_ID); //47 0for testing
-                    shopBasicSetting.setShop_Theme("#e31616");
+                    shopBasicSetting.setShop_Theme(colorTheme);
                     // shopBasicSetting.setShopProfile(imageUri); //image
                     shopBasicSetting.setShopProfile(filePath); //image
                     shopBasicSetting.setTax("0");
@@ -516,13 +560,46 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 } else {
                     Toast.makeText(activity, "Some fields are missing...", Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                 }
-                // startActivity(new Intent(getActivity(), ShopLandingActivity.class));
             }
         });
 
 
+    }
+
+    static String getJsonFromAssets(Context context, String fileName) {
+        String jsonString;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            jsonString = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return jsonString;
+    }
+
+    private void setThemeColors() {
+        shopSettingViewModel.ColorThemes();
+        shopSettingViewModel.getColorTheme().observe(getActivity(), new Observer<ColorThemeResponse>() {
+                    @Override
+                    public void onChanged(ColorThemeResponse colorThemeResponse) {
+                        if (colorThemeResponse != null) {
+                            //Toast.makeText(activity, "" + colorThemeResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                            for (ColorThemeResponse.Request color : colorThemeResponse.getData().getRequestList()) {
+                                ColorList.add(color.getColor());
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     private void showTimings() {
@@ -578,6 +655,11 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         shopTiming = new ShopTiming();
         shopTiming.setProfileId(Constant.PROFILE_ID);
         daysSettingList = new ArrayList<>();
+        ColorList = new ArrayList<>();
+        cardView = view.findViewById(R.id.cardColor);
+        Countries = new ArrayList<>();
+        States = new ArrayList<>();
+        Cities = new ArrayList<>();
 
         mondaySetting = new ShopTiming().new DaysSetting();
         tuesdaySetting = new ShopTiming().new DaysSetting();
@@ -597,31 +679,13 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         sundaySetting.setShopStatusDaywise("N");
 
 
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.countries));
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-        country.setAdapter(countryAdapter);
-
-        country.setOnItemSelectedListener(onItemSelectedListenerAddress);
-
-        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.province));
-        provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-        province.setAdapter(provinceAdapter);
-
-        province.setOnItemSelectedListener(onItemSelectedListenerAddress);
-
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.city));
-        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-        city.setAdapter(cityAdapter);
-
-        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
-
-
     }
 
 
+    @SuppressLint("ResourceType")
     @Override
     public void onColorClick(int position, ImageView circles) {
-        //Toast.makeText(getActivity(), " position : " + position, Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(getActivity(), " color : " + colorList.get(position).getColor().toString(), Toast.LENGTH_SHORT).show();
 
         colorList.get(position).setSelected(true);
 
@@ -636,7 +700,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         colorChooserAdapter.notifyDataSetChanged();
 
         clr_choose.setVisibility(View.VISIBLE);
+        //  clr_choose.setBackgroundColor(Color.parseColor(colorList.get(position).getColor()));
+        clr_choose.setColorFilter(Color.parseColor(colorList.get(position).getColor()), PorterDuff.Mode.SRC_OVER);
+        cardView.setVisibility(View.VISIBLE);
+        cardView.getBackground().setColorFilter(Color.parseColor(colorList.get(position).getColor().toString()), PorterDuff.Mode.SRC_ATOP);
         setColortext.setText("");
+        colorTheme = colorList.get(position).getColor().toString();
     }
 
     public ColorChooserAdapter.OnColorChooserListener getReference() {
@@ -959,6 +1028,23 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     return;
                 }
                 Country = (String) parent.getItemAtPosition(position);
+                CountryId = (int) parent.getItemIdAtPosition(position);
+
+                //here we set updated states
+                States.clear();
+                States.add(0, "Select State");
+                for (int i = 1; i < statePojo.getStates().size(); i++) {
+                    if (Integer.parseInt(statePojo.getStates().get(i).getCountryId()) == CountryId) {
+                        States.add(statePojo.getStates().get(i).getName());
+                    }
+                }
+
+                ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, States);
+                provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                province.setAdapter(provinceAdapter);
+                province.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+                //Toast.makeText(activity, "" + CountryId, Toast.LENGTH_SHORT).show();
                 //shopBasicSetting.setCountry((String) parent.getItemAtPosition(position));
             }
 
@@ -969,8 +1055,29 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
 
                 Province = (String) parent.getItemAtPosition(position);
-                // shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
+                StateId = (int) parent.getItemIdAtPosition(position);
 
+                Cities.clear();
+                Cities.add(0, "Select Cities");
+                Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
+                for (int i = 1; i < citiespojo.getCities().size(); i++) {
+
+                    if (Integer.parseInt(citiespojo.getCities().get(i).getState_id()) == StateId) {
+                        Cities.add(citiespojo.getCities().get(i).getName());
+                    }
+
+                    // Log.i("TAG", "cities : " + citiespojo.getCities().get(i).getName());
+                    // Cities.add(citiespojo.getCities().get(i).getName());
+                }
+
+                ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
+                cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                city.setAdapter(cityAdapter);
+                city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+
+                //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
+                // shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
             }
 
             //spinner for city
@@ -980,6 +1087,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     return;
                 }
                 City = (String) parent.getItemAtPosition(position);
+                CityId = (int) parent.getItemIdAtPosition(position);
+                Toast.makeText(activity, "" + CityId, Toast.LENGTH_SHORT).show();
                 // shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
             }
         }

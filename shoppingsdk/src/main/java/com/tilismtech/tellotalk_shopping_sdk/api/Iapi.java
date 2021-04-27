@@ -21,6 +21,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
@@ -247,5 +248,9 @@ public interface Iapi {
     //Delete Product Api
     @POST("api/Product/DeleteProduct")
     Call<DeleteProductResponse> deleteProduct(@Header("Authorization") String token, @Body DeleteProduct deleteProduct);
+
+    //Get Color Themes
+    @GET("api/shop/GetShopTColor")
+    Call<ColorThemeResponse> getColorThemes();
 
 }

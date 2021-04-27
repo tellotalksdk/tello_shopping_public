@@ -64,9 +64,9 @@
                 <Spinner
                     android:id="@+id/parentSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/custom_spinner"
+                    android:background="@drawable/bg_spinner"
                     android:text="Khan-store.tello.com"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -119,9 +119,9 @@
                 <Spinner
                     android:id="@+id/childSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/custom_spinner"
+                    android:background="@drawable/bg_spinner"
                     android:text="Khan-store.tello.com"
                     android:textSize="14sp"
                     android:textStyle="bold" />

@@ -110,7 +110,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
     public void OnViewFullOrderListener(int orderId, int orderStatus) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
 
-        Dialog dialog = new Dialog(getActivity());
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
         LinearLayout productDetailLL;

@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
-    android:id="@+id/colorChooser"
-    android:layout_margin="10dp"
+
+<!--
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
     android:layout_width="40dp"
     android:layout_height="40dp"
-    android:padding="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:layout_centerHorizontal="true"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="30dp">
+-->
+<LinearLayout
+    android:layout_margin="5dp"
+    android:id="@+id/linearLL"
+    android:backgroundTint="@android:color/darker_gray"
+    android:background="@drawable/rounded_corner_linear_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="40dp"
+    android:layout_height="40dp">
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/colorChooser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:scaleType="fitXY" />
+
+</LinearLayout><!--
+</androidx.cardview.widget.CardView>-->

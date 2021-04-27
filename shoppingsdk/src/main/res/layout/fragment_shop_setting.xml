@@ -170,7 +170,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_spinner"
+                android:background="@drawable/bg_spinner"
                 android:entries="@array/countries" />
 
             <Spinner
@@ -181,7 +181,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_spinner"
+                android:background="@drawable/bg_spinner"
                 android:entries="@array/province" />
 
 
@@ -193,7 +193,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_spinner"
+                android:background="@drawable/bg_spinner"
                 android:entries="@array/city" />
 
 
@@ -314,7 +314,7 @@
                     android:id="@+id/iv_tim"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent" />
 
 
             </FrameLayout>
@@ -349,14 +349,22 @@
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_choosecolor" />
 
-                <ImageView
-                    android:id="@+id/clr_choose"
+                <LinearLayout
+                    android:id="@+id/cardColor"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center|left"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/circle"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:background="@drawable/rounded_corner_linear_layout">
+
+                    <ImageView
+                        android:id="@+id/clr_choose"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
 
             </FrameLayout>
 
@@ -387,13 +395,13 @@
             android:visibility="gone" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/loader"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/loading"/>
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:src="@drawable/loading"
+            android:visibility="gone" />
 
     </FrameLayout>
 

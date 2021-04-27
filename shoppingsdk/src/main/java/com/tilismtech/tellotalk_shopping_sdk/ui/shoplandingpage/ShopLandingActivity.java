@@ -84,7 +84,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private List<String> parentCategories, childCategories;
     private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
     private String parentCategory = "1", childCategory = "1", productStatus = "N"; //by default
-    private LinearLayout LLimages;
+    private LinearLayout LLimages, LL1;
     private Switch isActiveproduct;
     private String filepath;
     private Uri imageUri;
@@ -128,6 +128,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         number4 = findViewById(R.id.number4);
         number5 = findViewById(R.id.number5);
         number6 = findViewById(R.id.number6);
+        LL1 = findViewById(R.id.linearTopsearch);
 
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(this, new Observer<GetOrderStatusCountResponse>() {
@@ -254,7 +255,6 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                         if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
-                                TextUtils.isEmpty(et_SKU.getText().toString()) ||
                                 TextUtils.isEmpty(et_Description.getText().toString()) ||
                                 TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
                                 TextUtils.isEmpty(imageUri.toString())
@@ -266,7 +266,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                             addNewProduct.setPrice(et_OriginalPrice.getText().toString());
                             addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
                             addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
-                            addNewProduct.setSku("12sku");
+                            addNewProduct.setSku(et_SKU.getText().toString());
                             addNewProduct.setSummary(et_Description.getText().toString());
                             addNewProduct.setProfileId(Constant.PROFILE_ID);
                             addNewProduct.setProductStatus(productStatus); //work with toggle on and off
@@ -332,7 +332,9 @@ public class ShopLandingActivity extends AppCompatActivity {
 */
 
                 addProduct.setVisibility(View.VISIBLE);
-                simpleSearchView.setVisibility(View.INVISIBLE);
+                setting.setVisibility(View.VISIBLE);
+                LL1.setVisibility(View.GONE);
+                tv_addproducts.setVisibility(View.VISIBLE);
 
                 navController.navigate(R.id.shopLandingFragment);
             }
@@ -358,8 +360,10 @@ public class ShopLandingActivity extends AppCompatActivity {
                 //addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
                 //setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
 
-                addProduct.setVisibility(View.INVISIBLE);
-                simpleSearchView.setVisibility(View.VISIBLE);
+                addProduct.setVisibility(View.GONE);
+                setting.setVisibility(View.GONE);
+                LL1.setVisibility(View.VISIBLE);
+                tv_addproducts.setVisibility(View.GONE);
 
                 navController.navigate(R.id.receivedFragment);
             }
@@ -386,8 +390,10 @@ public class ShopLandingActivity extends AppCompatActivity {
                 setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
 */
 
-                addProduct.setVisibility(View.INVISIBLE);
-                simpleSearchView.setVisibility(View.VISIBLE);
+                addProduct.setVisibility(View.GONE);
+                setting.setVisibility(View.GONE);
+                LL1.setVisibility(View.VISIBLE);
+                tv_addproducts.setVisibility(View.GONE);
 
                 navController.navigate(R.id.chat);
             }
@@ -712,7 +718,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 profileImage.setVisibility(View.VISIBLE);
                 shopName.setVisibility(View.VISIBLE);
                 totalProducts.setVisibility(View.VISIBLE);
-                tv_addproducts.setVisibility(View.VISIBLE);
+                //tv_addproducts.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -729,7 +735,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
     }
 
-    private void setTotalProductOnActionBar() {
+    public void setTotalProductOnActionBar() {
         ProductList productList1 = new ProductList();
         productList1.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
         shopLandingPageViewModel.productList(productList1);
@@ -737,7 +743,11 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
-                    totalProducts.setText(productListResponse.getData().getRequestList().size() + " Product");
+                    if (productListResponse.getData().getRequestList() != null) {
+                        totalProducts.setText(productListResponse.getData().getRequestList().size() + " Products");
+                    } else {
+                        totalProducts.setText("0" + " Product");
+                    }
                 }
             }
         });
