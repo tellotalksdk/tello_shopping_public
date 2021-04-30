@@ -1,18 +1,24 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.all;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,8 +44,11 @@ import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActiv
 import com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingPageViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class AllFragment extends Fragment implements AllAdapter.OnOrderClickListener {
 
@@ -113,7 +122,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
-        LinearLayout productDetailLL;
+        LinearLayout productDetailLL, flash;
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
         screenShot = dialog.findViewById(R.id.screenShot);
         scroller = dialog.findViewById(R.id.scroller);
@@ -134,6 +143,9 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         et_BuyerAddress = dialog.findViewById(R.id.et_BuyerAddress);
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
         productDetailLL = dialog.findViewById(R.id.productDetailLL);
+        flash = dialog.findViewById(R.id.linear);
+        flash.setVisibility(View.GONE);
+
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +159,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
+                captureScreenShot(bitmap, flash);
             }
         });
 
@@ -231,6 +244,49 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
 
+    }
+
+    private void captureScreenShot(Bitmap bitmap, LinearLayout flash) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/TelloShopping");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        Log.i("TAG", "" + file);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Toast.makeText(getActivity(), "Screen Shot Captured...", Toast.LENGTH_SHORT).show();
+
+            flash.setVisibility(View.VISIBLE);
+            AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+            animation1.setDuration(500);
+            //  animation1.setStartOffset(5000);
+            animation1.setFillAfter(true);
+            flash.startAnimation(animation1);
+
+            //this code refresh gallery
+            MediaScannerConnection.scanFile(getActivity(), new String[]{file.getPath()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("TAG", "Scanned " + path);
+                        }
+                    });
+
+            getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getAbsolutePath()))));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -692,11 +693,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         for (int i = 0; i < colorList.size(); i++) {
             if (i == position) {
                 colorList.get(i).setSelected(true);
+                colorList.get(i).setPosition(position);
+                colorList.get(i).setFirstTimeOpen(true);
                 continue;
             }
             colorList.get(i).setSelected(false);
         }
 
+        colorChooserAdapter.notifyDataSetChanged();
         colorChooserAdapter.notifyDataSetChanged();
 
         clr_choose.setVisibility(View.VISIBLE);
@@ -750,12 +754,43 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             bannerImage.setImageURI(imageUri);
             filePath = getPath(getActivity(), imageUri);
             Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                Uri selectedImage = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                bannerImage.setImageBitmap(resized);
+            }
+
+
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            bannerImage.setImageBitmap(photo);
-            imageUri = getImageUri(getActivity(), photo);
-            filePath = getRealPathFromURI(imageUri);
-            Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                Uri selectedImage = data.getData();
+                bannerImage.setImageURI(selectedImage);
+                filePath = getRealPathFromURI(selectedImage);
+                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                bannerImage.setImageBitmap(resized);
+            } else { //other than marshmallow
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                bannerImage.setImageBitmap(photo);
+                imageUri = getImageUri(getActivity(), photo);
+                filePath = getRealPathFromURI(imageUri);
+                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+            }
+
         }
     }
 
@@ -1028,7 +1063,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     return;
                 }
                 Country = (String) parent.getItemAtPosition(position);
-                CountryId = (int) parent.getItemIdAtPosition(position);
+                //CountryId = (int) parent.getItemIdAtPosition(position);
+                CountryId = Integer.parseInt(countriesPojo.getCountries().get(position).getId());
+                //Toast.makeText(activity, "" + CountryId, Toast.LENGTH_SHORT).show();
 
                 //here we set updated states
                 States.clear();
@@ -1044,8 +1081,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 province.setAdapter(provinceAdapter);
                 province.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
-                //Toast.makeText(activity, "" + CountryId, Toast.LENGTH_SHORT).show();
-                //shopBasicSetting.setCountry((String) parent.getItemAtPosition(position));
+
             }
 
             //spinner for province
@@ -1055,19 +1091,19 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
 
                 Province = (String) parent.getItemAtPosition(position);
-                StateId = (int) parent.getItemIdAtPosition(position);
-
+                 StateId = (int) parent.getItemIdAtPosition(position);
+                //  StateId = Integer.parseInt(statePojo.getStates().get(position).getId());
+                //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
                 Cities.clear();
-                Cities.add(0, "Select Cities");
-                Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
+                Cities.add(0, "Select City");
+                //  Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
                 for (int i = 1; i < citiespojo.getCities().size(); i++) {
 
                     if (Integer.parseInt(citiespojo.getCities().get(i).getState_id()) == StateId) {
                         Cities.add(citiespojo.getCities().get(i).getName());
+                        Log.i("TAG", "onItemSelected: " + citiespojo.getCities().get(i).getName());
                     }
 
-                    // Log.i("TAG", "cities : " + citiespojo.getCities().get(i).getName());
-                    // Cities.add(citiespojo.getCities().get(i).getName());
                 }
 
                 ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
@@ -1088,7 +1124,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
                 City = (String) parent.getItemAtPosition(position);
                 CityId = (int) parent.getItemIdAtPosition(position);
-                Toast.makeText(activity, "" + CityId, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(activity, "" + CityId, Toast.LENGTH_SHORT).show();
                 // shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
             }
         }

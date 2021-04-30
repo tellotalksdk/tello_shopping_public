@@ -1,6 +1,10 @@
 {
   "cities": [
-
+    {
+      "id": "0",
+      "name": "Select City",
+      "state_id": "0"
+    },
     {
       "id": "42594",
       "name": "Alabaster",
@@ -28609,6 +28613,256 @@
       "id": "48314",
       "name": "Summersville",
       "state_id": "3976"
+    },
+    {
+      "id": "48314",
+      "name": "Summersville",
+      "state_id": "3976"
+    },
+    {
+      "id": "1",
+      "name": "Karachi",
+      "state_id": "1"
+    },
+    {
+      "id": "2",
+      "name": "Hyderabad",
+      "state_id": "1"
+    },
+    {
+      "id": "3",
+      "name": "Sukkur",
+      "state_id": "1"
+    },
+    {
+      "id": "4",
+      "name": "Larkana",
+      "state_id": "1"
+    },
+    {
+      "id": "5",
+      "name": "Mirpur Khas",
+      "state_id": "1"
+    },
+    {
+      "id": "6",
+      "name": "Nawabshah",
+      "state_id": "1"
+    },
+    {
+      "id": "7",
+      "name": "Jacobabad",
+      "state_id": "1"
+    },
+    {
+      "id": "8",
+      "name": "Khairpur",
+      "state_id": "1"
+    },
+    {
+      "id": "9",
+      "name": "Shikarpur",
+      "state_id": "1"
+    },
+    {
+      "id": "10",
+      "name": "Lahore",
+      "state_id": "2"
+    },
+    {
+      "id": "11",
+      "name": "Faislabad",
+      "state_id": "2"
+    },
+    {
+      "id": "12",
+      "name": "Rawalpindi",
+      "state_id": "2"
+    },
+    {
+      "id": "13",
+      "name": "Sialkot",
+      "state_id": "2"
+    },
+    {
+      "id": "14",
+      "name": "Bahawalpur",
+      "state_id": "2"
+    },
+    {
+      "id": "15",
+      "name": "Multan",
+      "state_id": "2"
+    },
+    {
+      "id": "16",
+      "name": "Gujranwala",
+      "state_id": "2"
+    },
+    {
+      "id": "17",
+      "name": "Sargodha",
+      "state_id": "2"
+    },
+    {
+      "id": "18",
+      "name": "Turbat",
+      "state_id": "3"
+    },
+    {
+      "id": "19",
+      "name": "Quetta",
+      "state_id": "3"
+    },
+    {
+      "id": "20",
+      "name": "Khuzdar",
+      "state_id": "3"
+    },
+    {
+      "id": "21",
+      "name": "Chaman",
+      "state_id": "3"
+    },
+    {
+      "id": "22",
+      "name": "Gwadar",
+      "state_id": "3"
+    },
+    {
+      "id": "23",
+      "name": "Hub",
+      "state_id": "3"
+    },
+    {
+      "id": "24",
+      "name": "Peshawar",
+      "state_id": "4"
+    },
+    {
+      "id": "25",
+      "name": "Abbottabad",
+      "state_id": "4"
+    },
+    {
+      "id": "26",
+      "name": "Kohat",
+      "state_id": "4"
+    },
+    {
+      "id": "27",
+      "name": "Mardan",
+      "state_id": "4"
+    },
+    {
+      "id": "28",
+      "name": "Charsadda",
+      "state_id": "4"
+    },
+    {
+      "id": "29",
+      "name": "Dera Ismail Khan",
+      "state_id": "4"
+    },
+    {
+      "id": "30",
+      "name": "Swat",
+      "state_id": "4"
+    },
+    {
+      "id": "31",
+      "name": "Nowshera",
+      "state_id": "4"
+    },
+    {
+      "id": "32",
+      "name": "Mansehra",
+      "state_id": "4"
+    },
+    {
+      "id": "33",
+      "name": "Muzaffarabad",
+      "state_id": "5"
+    },
+    {
+      "id": "34",
+      "name": "Mirpur",
+      "state_id": "5"
+    },
+    {
+      "id": "35",
+      "name": "Rawala Kot",
+      "state_id": "5"
+    },
+    {
+      "id": "36",
+      "name": "Kotli",
+      "state_id": "5"
+    },
+    {
+      "id": "37",
+      "name": "Dhirkot",
+      "state_id": "5"
+    },
+    {
+      "id": "38",
+      "name": "Bagh",
+      "state_id": "5"
+    },
+    {
+      "id": "39",
+      "name": "Hajra",
+      "state_id": "5"
+    },
+    {
+      "id": "40",
+      "name": "Gilgit",
+      "state_id": "6"
+    },
+    {
+      "id": "41",
+      "name": "Skardu",
+      "state_id": "6"
+    },
+    {
+      "id": "42",
+      "name": "Khaplu",
+      "state_id": "6"
+    },
+    {
+      "id": "43",
+      "name": "Dambudas",
+      "state_id": "6"
+    },
+    {
+      "id": "44",
+      "name": "Tolti",
+      "state_id": "6"
+    },
+    {
+      "id": "45",
+      "name": "Eidghah",
+      "state_id": "6"
+    },
+    {
+      "id": "46",
+      "name": "Shigar",
+      "state_id": "6"
+    },
+    {
+      "id": "47",
+      "name": "Karimabad",
+      "state_id": "6"
+    },
+    {
+      "id": "48",
+      "name": "Islamabad",
+      "state_id": "7"
+    },
+    {
+      "id": "49",
+      "name": "FATA",
+      "state_id": "7"
     }
   ]
 }

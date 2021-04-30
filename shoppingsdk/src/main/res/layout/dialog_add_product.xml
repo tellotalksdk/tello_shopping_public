@@ -230,12 +230,14 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_bg_color"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="10dp"
                     android:text=""
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textSize="12sp"
+                    android:hint="SKU code"
+                    android:textStyle="normal" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="17dp"
@@ -266,8 +268,7 @@
                     android:background="@drawable/edit_text_bg_color"
                     android:gravity="left|top"
                     android:hint="Description"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
+                    android:paddingTop="10dp"
                     android:textSize="12sp" />
             </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -68,7 +70,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private static final int ALLOW_MULTIPLE_IMAGES = 1;
     private NavHostFragment navHostFragment;
     private ImageView setting, addProduct, arrowback, chooseMultipleProductsIV;
-    private ImageView iv_close, iv_back_addproduct;
+    private ImageView iv_close, iv_back_addproduct, menuDots;
     private Button getStarted_btn, uploadProduct;
     private Dialog dialogCongratulation, dialogAddProduct;
     private TextView productList, orderList, chat;
@@ -129,6 +131,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         number5 = findViewById(R.id.number5);
         number6 = findViewById(R.id.number6);
         LL1 = findViewById(R.id.linearTopsearch);
+        menuDots = findViewById(R.id.menuDots);
 
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(this, new Observer<GetOrderStatusCountResponse>() {
@@ -175,6 +178,26 @@ public class ShopLandingActivity extends AppCompatActivity {
                 }
             }
         });*/
+
+        menuDots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(ShopLandingActivity.this, menuDots);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
+            }
+        });
 
 
         iv_close.setOnClickListener(new View.OnClickListener() {
@@ -257,6 +280,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_Description.getText().toString()) ||
                                 TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
+                                TextUtils.isEmpty(et_SKU.getText().toString()) ||
                                 TextUtils.isEmpty(imageUri.toString())
                         ) {
                             Toast.makeText(ShopLandingActivity.this, "Some Fields are missing...", Toast.LENGTH_SHORT).show();

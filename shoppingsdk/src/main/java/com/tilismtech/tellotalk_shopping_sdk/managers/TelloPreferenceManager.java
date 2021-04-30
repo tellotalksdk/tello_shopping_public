@@ -11,6 +11,7 @@ public class TelloPreferenceManager {
     public static final String PROFILE_ID = "profile_id";
     public static final String SHOP_URI = "shop_uri";
     public static final String OWNER_NAME = "owner_name";
+
     private final SharedPreferences.Editor editor;
     private final SharedPreferences sharedPreferences;
 

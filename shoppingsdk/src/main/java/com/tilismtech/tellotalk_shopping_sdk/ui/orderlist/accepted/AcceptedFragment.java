@@ -1,11 +1,14 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.orderlist.accepted;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -274,6 +277,18 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
             //  animation1.setStartOffset(5000);
             animation1.setFillAfter(true);
             flash.startAnimation(animation1);
+
+            //this code refresh gallery
+            MediaScannerConnection.scanFile(getActivity(), new String[]{file.getPath()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("TAG", "Scanned " + path);
+                        }
+                    });
+
+            getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getAbsolutePath()))));
+
 
 
         } catch (Exception e) {

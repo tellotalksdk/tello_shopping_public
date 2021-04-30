@@ -3,6 +3,7 @@ package com.tilismtech.tellotalk_shopping_sdk.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class ColorChooserAdapter extends RecyclerView.Adapter<ColorChooserAdapte
     List<ColorChooserPojo> colorList;
     Context myCtx;
     OnColorChooserListener onColorChooserListener;
+    static int posSelected = -1;
+    static boolean isalreadySelected;
 
     public ColorChooserAdapter(List<ColorChooserPojo> colorList, Context myCtx, OnColorChooserListener onColorChooserListener) {
         this.colorList = colorList;
@@ -47,16 +50,25 @@ public class ColorChooserAdapter extends RecyclerView.Adapter<ColorChooserAdapte
     public void onBindViewHolder(@NonNull ColorViewHolder holder, int position) {
         ColorChooserPojo colorChooserPojo = colorList.get(position);
 
+
         if (colorChooserPojo.isSelected()) {
             holder.circles.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_tick));
+            posSelected = colorChooserPojo.getPosition();
         } else {
-            //holder.circles.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.circle));
             holder.circles.setImageResource(android.R.color.transparent);
         }
 
+     /*   if (position == posSelected) {
+            holder.circles.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_tick));
+            Log.i("TAG", "onBindViewHolder: set " + position + ":" + posSelected);
+            //here we need to handle less than and greater than condition...
 
-         // holder.circles.setBackgroundColor(Color.parseColor(colorChooserPojo.getColor()));
-       // holder.card.setCardBackgroundColor(Color.parseColor(colorChooserPojo.getColor()));
+        } else {
+            Log.i("TAG", "onBindViewHolder: ! set " + position);
+        }
+*/
+        // holder.circles.setBackgroundColor(Color.parseColor(colorChooserPojo.getColor()));
+        // holder.card.setCardBackgroundColor(Color.parseColor(colorChooserPojo.getColor()));
 
         holder.linearLayout.getBackground().setColorFilter(Color.parseColor(colorChooserPojo.getColor()), PorterDuff.Mode.SRC_ATOP);
     }
@@ -76,7 +88,7 @@ public class ColorChooserAdapter extends RecyclerView.Adapter<ColorChooserAdapte
         public ColorViewHolder(@NonNull View itemView, OnColorChooserListener onColorChooserListener) {
             super(itemView);
             circles = itemView.findViewById(R.id.colorChooser);
-          //  card = itemView.findViewById(R.id.card);
+            //card = itemView.findViewById(R.id.card);
             linearLayout = itemView.findViewById(R.id.linearLL);
             this.onColorChooserListener = onColorChooserListener;
             circles.setOnClickListener(this);
