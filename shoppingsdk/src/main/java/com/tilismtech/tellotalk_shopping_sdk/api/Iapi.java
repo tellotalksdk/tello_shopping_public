@@ -2,7 +2,9 @@ package com.tilismtech.tellotalk_shopping_sdk.api;
 
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
@@ -21,6 +23,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
@@ -252,5 +255,15 @@ public interface Iapi {
     //Get Color Themes
     @GET("api/shop/GetShopTColor")
     Call<ColorThemeResponse> getColorThemes();
+
+    // ===================== wallet and bank screen apis start from here =------------------
+
+    @POST("api/user/AddUserWallet")
+    Call<ResponseBody> addWallet(@Header("Authorization") String token, @Body AddWallet addWallet);
+
+    @POST("api/user/DeleteuserCardsorwallet")
+    Call<ResponseBody> deleteWalletorCard(@Header("Authorization") String token, @Body DeleteCardorWallet deleteCardorWallet);
+
+    Call<ClientWalletDetailResponse> getClientWalletDetails(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
 }

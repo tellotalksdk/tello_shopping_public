@@ -136,8 +136,11 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
     public void OnViewFullOrderListener(int orderId) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
         LinearLayout flash, productDetailLL;
-        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        //  Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
 
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
@@ -223,11 +226,10 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                     }
 
 
-                    /*
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList());
-                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList());
-                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList());
-                    et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());*/
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSeller_firstname() + " " + viewFullOrderResponse.getData().getRequestList().getSeller_lastname());
+                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSeller_mobile());
+                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSeller_Address());
+                    //  et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
 
                     et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getFirstname() + viewFullOrderResponse.getData().getRequestList().getMiddlename());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
@@ -286,7 +288,6 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                     });
 
             getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getAbsolutePath()))));
-
 
 
         } catch (Exception e) {

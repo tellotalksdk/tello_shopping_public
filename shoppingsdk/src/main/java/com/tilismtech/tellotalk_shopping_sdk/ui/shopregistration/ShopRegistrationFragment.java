@@ -1,8 +1,20 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -10,10 +22,13 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,6 +42,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -42,23 +60,28 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 public class ShopRegistrationFragment extends Fragment {
 
+    private final static int UPLOAD_IMAGE = 123;
+    private final static int CAPTURE_IMAGE = 456;
     int counter = 0;
     Button requestforPin;
     Button requestAgain, done_btn;
     String mobileNumber;
     NavController navController;
     RelativeLayout RL;
-    ImageView iv_back, iv_editImage;
+    ImageView iv_back, iv_editImage, iv_user_image;
     TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown;
     EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
     boolean isEditable;
@@ -68,6 +91,9 @@ public class ShopRegistrationFragment extends Fragment {
     ArrayList<String> mobileOpt = new ArrayList<>();
     ShopRegistrationViewModel shopRegistrationViewModel;
     boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11;
+    Dialog dialogImage;
+    Uri imageUri;
+    String filePath = "";
 
 
     @Override
@@ -123,7 +149,7 @@ public class ShopRegistrationFragment extends Fragment {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_FORBIDDEN))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                }else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR))) {
+                                } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
 
@@ -895,13 +921,17 @@ public class ShopRegistrationFragment extends Fragment {
         iv_editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEditable) {
+                //here we call api for set user name and image ...
+                Toast.makeText(getActivity(), "call api here...", Toast.LENGTH_SHORT).show();
+
+
+                /*if (isEditable) {
                     userShopname.setEnabled(false);
                     isEditable = false;
                 } else {
                     userShopname.setEnabled(true);
                     isEditable = true;
-                }
+                }*/
             }
         });
 
@@ -909,12 +939,122 @@ public class ShopRegistrationFragment extends Fragment {
         mobileOpt.add("Ufone");
         mobileOpt.add("Telenor");
         mobileOpt.add("Jazz");
-
-
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, mobileOpt);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_text); // The drop down vieww
         spinner_operator.setAdapter(spinnerArrayAdapter);
 
+        iv_user_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissions();
+            }
+        });
+
+    }
+
+    private void checkPermissions() {
+        dialogImage = new Dialog(getActivity());
+        dialogImage.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogImage.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogImage.setContentView(R.layout.dialog_upload_capture);
+
+        Button upload = dialogImage.findViewById(R.id.uploadImage);
+        Button capture = dialogImage.findViewById(R.id.captureImage);
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) +
+                        ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) +
+                        ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                            ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA) ||
+                            ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Grant those permissions...");
+                        builder.setMessage("Camera and External Storage Permission Required...");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermissions(new String[]{
+                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.CAMERA,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                }, 1);
+
+                            }
+                        });
+
+                        builder.setNegativeButton("Cancel", null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else { //ye lines for the very first time chalein gy jab app start hongy
+                        requestPermissions(new String[]{
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        }, 1);
+                    }
+                } else {
+                    dialogImage.dismiss();
+                    openGallery();
+                }
+            }
+        });
+        capture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) +
+                        ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) +
+                        ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                            ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA) ||
+                            ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Grant those permissions...");
+                        builder.setMessage("Camera External Storage Permission Required...");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermissions(new String[]{
+                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.CAMERA,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                }, 2);
+
+                            }
+                        });
+
+                        builder.setNegativeButton("Cancel", null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else { //ye lines for the very first time chalein gy jab app start hongy
+                        requestPermissions(new String[]{
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        }, 2);
+                    }
+                } else {
+                    dialogImage.dismiss();
+                    openCamera();
+                }
+            }
+        });
+
+        Window window = dialogImage.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        window.setAttributes(wlp);
+        dialogImage.show();
     }
 
     private boolean checkOTP() {
@@ -980,6 +1120,7 @@ public class ShopRegistrationFragment extends Fragment {
         iv_editImage = view.findViewById(R.id.iv_editImage);
         userShopname = view.findViewById(R.id.userShopname);
         spinner_operator = view.findViewById(R.id.spinner_operator);
+        iv_user_image = view.findViewById(R.id.iv_user_image);
 
         d1 = view.findViewById(R.id.d1);
         d2 = view.findViewById(R.id.d2);
@@ -1071,6 +1212,123 @@ public class ShopRegistrationFragment extends Fragment {
         }
 
         return true;
+    }
+
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, UPLOAD_IMAGE);
+    }
+
+    private void openCamera() {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camera_intent, CAPTURE_IMAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: //pick and set image from gallery
+                if (grantResults.length > 0 && grantResults[0] + grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    dialogImage.dismiss();
+                    openGallery();
+                }
+                break;
+            case 2: //capture image and set from camera
+                if (grantResults.length > 0 && grantResults[0] + grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    dialogImage.dismiss();
+                    openCamera();
+                }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
+            imageUri = data.getData();
+            iv_user_image.setImageURI(imageUri);
+            filePath = getPath(getActivity(), imageUri);
+            Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                Uri selectedImage = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                iv_user_image.setImageBitmap(resized);
+            }
+
+
+        } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                Uri selectedImage = data.getData();
+                iv_user_image.setImageURI(selectedImage);
+                filePath = getRealPathFromURI(selectedImage);
+                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                iv_user_image.setImageBitmap(resized);
+            } else { //other than marshmallow
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                iv_user_image.setImageBitmap(photo);
+                imageUri = getImageUri(getActivity(), photo);
+                filePath = getRealPathFromURI(imageUri);
+                Log.i("TAG", "onActivityResult: Capture Path : " + filePath);
+            }
+        }
+
+    }
+
+    //This method return file path when we choose image from gallery
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
+
+    //this method is used to get image uri , after capturing image from camera
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    //this method is used to get image path when user capture image from camera
+    public String getRealPathFromURI(Uri uri) {
+        String path = "";
+        if (getActivity().getContentResolver() != null) {
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
     }
 
 }

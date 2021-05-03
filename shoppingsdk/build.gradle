@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.tbuonomo:dotsindicator:4.2'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+
     /*//dexter permission
     implementation 'com.karumi:dexter:6.2.2'
 */

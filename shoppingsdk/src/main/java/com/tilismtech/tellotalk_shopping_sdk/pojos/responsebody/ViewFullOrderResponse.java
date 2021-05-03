@@ -253,6 +253,61 @@ public class ViewFullOrderResponse {
         @SerializedName("ProductsDetails")
         @Expose
         private List<ProductsDetail> productsDetails = null;
+        @SerializedName("Seller_firstname")
+        @Expose
+        private String Seller_firstname;
+        @SerializedName("Seller_middlename")
+        @Expose
+        private String Seller_middlename;
+        @SerializedName("Seller_lastname")
+        @Expose
+        private String Seller_lastname;
+        @SerializedName("Seller_mobile")
+        @Expose
+        private String Seller_mobile;
+        @SerializedName("Seller_Address")
+        @Expose
+        private String Seller_Address;
+
+        public String getSeller_firstname() {
+            return Seller_firstname;
+        }
+
+        public void setSeller_firstname(String seller_firstname) {
+            Seller_firstname = seller_firstname;
+        }
+
+        public String getSeller_middlename() {
+            return Seller_middlename;
+        }
+
+        public void setSeller_middlename(String seller_middlename) {
+            Seller_middlename = seller_middlename;
+        }
+
+        public String getSeller_lastname() {
+            return Seller_lastname;
+        }
+
+        public void setSeller_lastname(String seller_lastname) {
+            Seller_lastname = seller_lastname;
+        }
+
+        public String getSeller_mobile() {
+            return Seller_mobile;
+        }
+
+        public void setSeller_mobile(String seller_mobile) {
+            Seller_mobile = seller_mobile;
+        }
+
+        public String getSeller_Address() {
+            return Seller_Address;
+        }
+
+        public void setSeller_Address(String seller_Address) {
+            Seller_Address = seller_Address;
+        }
 
         public String getOrderId() {
             return orderId;

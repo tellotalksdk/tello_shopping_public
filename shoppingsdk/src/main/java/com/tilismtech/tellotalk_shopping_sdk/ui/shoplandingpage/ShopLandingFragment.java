@@ -1,10 +1,14 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -64,6 +68,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductRes
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -298,6 +303,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 if (productListResponse != null) {
                     // Toast.makeText(getActivity(), "" + productListResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
                     if (productListResponse.getData().getRequestList() != null) {
+                        // ((ShopLandingActivity)getActivity()).hidecongratsdialog();
                         addProduct_btn.setVisibility(View.GONE);
                         productListAdapter = new ProductListAdapter(productListResponse.getData().getRequestList(), getActivity(), getReference());
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
@@ -404,7 +410,85 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         //FOR EDIT PRODUCT DIALOG
 
         if (requestCode == ALLOW_MULTIPLE_IMAGES_EDIT && resultCode == RESULT_OK) {
+            //===
             if (data.getClipData() != null) {
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for (int i = 0; i < count; i++) {
+                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = inflater.inflate(R.layout.image_item_for_multiple_images, null);
+                        //  View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                        ImageView iv = view.findViewById(R.id.iv);
+                        Uri selectedImage = data.getClipData().getItemAt(i).getUri();
+                        Log.i("TAG", "onActivityResult: " + selectedImage.getPath());
+                        filepath = getImagePath(selectedImage);
+                        Log.i("TAG", "onActivityResult: " + filepath);
+                        filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                        iv.setImageBitmap(resized);
+                        LLimages_edit.addView(view);
+                    }
+                } else {
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for (int i = 0; i < count; i++) {
+                        View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                        ImageView iv = inflater.findViewById(R.id.iv);
+                        imageUri = data.getClipData().getItemAt(i).getUri();
+                        Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                        filepath = getImagePath(imageUri);
+                        Log.i("TAG", "onActivityResult: " + filepath);
+                        filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+                        iv.setImageURI(imageUri);
+                        LLimages_edit.addView(inflater);
+                    }
+                }
+
+
+            } else if (data.getData() != null) {
+
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                    Uri selectedImage = data.getData();
+                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.image_item_for_multiple_images, null);
+
+                    // View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images,null);
+                    // ImageView iv = inflater.findViewById(R.id.iv);
+                    ImageView iv = view.findViewById(R.id.iv);
+                    filepath = getImagePath(selectedImage);
+                    filePaths.add(filepath);
+
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                    iv.setImageBitmap(resized);
+                    LLimages_edit.addView(view);
+                } else {
+                    String imagePath = data.getData().getPath();
+                    imageUri = data.getData();
+                    View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                    ImageView iv = inflater.findViewById(R.id.iv);
+                    filepath = getImagePath(imageUri);
+                    filePaths.add(filepath);
+                    iv.setImageURI(imageUri);
+                    LLimages_edit.addView(inflater);
+                }
+
+            }
+            //===
+
+            //old
+            /*      if (data.getClipData() != null) {
 
                 ImageView iv;
                 int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
@@ -431,7 +515,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 filePaths.add(filepath);
                 iv.setImageURI(imageUri);
                 LLimages_edit.addView(inflater);
-            }
+            }*/
         }
 
 
@@ -637,8 +721,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         // images array
         int[] images = {R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq,
                 R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq};
-
-
 
 
         dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);

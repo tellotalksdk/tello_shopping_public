@@ -10,7 +10,9 @@ import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
@@ -31,6 +33,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
@@ -717,6 +720,48 @@ public class Repository {
             @Override
             public void onFailure(Call<ColorThemeResponse> call, Throwable t) {
                 t.printStackTrace();
+            }
+        });
+    }
+
+    public void addWallet(AddWallet addWallet) {
+        getRetrofitClient().addWallet("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), addWallet).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteCardorWallet(DeleteCardorWallet deleteCardorWallet) {
+        getRetrofitClient().deleteWalletorCard("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteCardorWallet).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getClientWalletDetails() {
+        getRetrofitClient().getClientWalletDetails("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<ClientWalletDetailResponse>() {
+            @Override
+            public void onResponse(Call<ClientWalletDetailResponse> call, Response<ClientWalletDetailResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ClientWalletDetailResponse> call, Throwable t) {
+
             }
         });
     }
