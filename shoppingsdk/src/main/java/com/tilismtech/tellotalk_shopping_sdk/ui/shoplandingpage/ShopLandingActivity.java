@@ -51,6 +51,7 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
@@ -96,6 +97,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private String filepath;
     private Uri imageUri;
     private List<String> filePaths;
+    private List<ChildCategory> childCategoryList;
 
     //these fields hide when onsearch is pressed
     ImageView profileImage;
@@ -288,6 +290,16 @@ public class ShopLandingActivity extends AppCompatActivity {
                         ) {
                             Toast.makeText(ShopLandingActivity.this, "Some Fields are missing...", Toast.LENGTH_SHORT).show();
                         } else {
+
+                            if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                Toast.makeText(ShopLandingActivity.this, "Discounted price must be less than original price...", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else if (Integer.parseInt(et_DiscountedPrice.getText().toString()) == Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                Toast.makeText(ShopLandingActivity.this, "Discounted price can not be same as original price...", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+
                             AddNewProduct addNewProduct = new AddNewProduct();
                             addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
                             addNewProduct.setPrice(et_OriginalPrice.getText().toString());
@@ -311,9 +323,12 @@ public class ShopLandingActivity extends AppCompatActivity {
                                     if (addNewProductResponse != null) {
                                         //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         filePaths.clear();
+                                        loadingDialog.dismissDialog();
+                                        dialogAddProduct.dismiss();
+                                        setTotalProductOnActionBar();
+                                        navController.navigate(R.id.shopLandingFragment);
 
-
-                                        new CountDownTimer(5000, 1000) {
+                                       /* new CountDownTimer(5000, 1000) {
                                             public void onTick(long millisUntilFinished) {
                                             }
 
@@ -327,7 +342,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                                                     ex.printStackTrace();
                                                 }
                                             }
-                                        }.start();
+                                        }.start();*/
 
                                     } else {
                                         loadingDialog.dismissDialog();
@@ -835,12 +850,13 @@ public class ShopLandingActivity extends AppCompatActivity {
             public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
                 if (subCategoryBYParentCatIDResponse != null) {
                     childCategories = new ArrayList<>();
-
+                    childCategoryList = new ArrayList<>();
                     //  Toast.makeText(ShopLandingActivity.this, "status : " + subCategoryBYParentCatIDResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
-
+                    childCategoryList.clear();
                     if (subCategoryBYParentCatIDResponse.getData().getRequestList() != null && subCategoryBYParentCatIDResponse.getData().getRequestList().size() > 0) {
 
                         for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
+                            childCategoryList.add(new ChildCategory(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getId(), subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle()));
                             childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle());
                         }
 
@@ -880,7 +896,9 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
 
             if (parent.getId() == childSpinner.getId()) {
-                childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+                // childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+                childCategory = String.valueOf(childCategoryList.get(childSpinner.getSelectedItemPosition()).getSubCategoryNumber());
+                //  Toast.makeText(ShopLandingActivity.this, "" + childCategory, Toast.LENGTH_SHORT).show();
             }
         }
 

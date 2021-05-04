@@ -59,6 +59,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bg_color"
             android:hint="Contact #"
+            android:maxLength="11"
             android:inputType="number"
             android:maxLines="1"
             android:paddingLeft="10dp"
@@ -71,7 +72,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bg_color"
             android:hint="Tracking ID # "
-            android:inputType="number"
+            android:inputType="text"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:textSize="14sp" />

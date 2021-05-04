@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         accessTokenPojo.setUsername("Basit@tilismtech.com");
         accessTokenPojo.setPassword("basit@1234");
         accessTokenPojo.setGrant_type("password");
+
         accessTokenPojo.setprofileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43");
         accessTokenPojo.setFirstname("Hasan");
         accessTokenPojo.setMiddlename("Muddassir");
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TelloApiClient.initiateSDK();
                 TelloApiClient telloApiClient = TelloApiClient.getInstance();
                 telloApiClient.generateAccessToken(accessTokenPojo, MainActivity.this);
                 startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));

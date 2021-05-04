@@ -49,6 +49,7 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ViewPagerAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ProductListpojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
@@ -102,9 +103,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private TextView tv_deleteProduct;
     private LoadingDialog loadingDialog;
     private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
-    private Spinner parentSpinner, childSpinner;
+    private Spinner parentSpinner, childSpinner, parentSpinneredit, childSpinneredit;
     private String parentCategory = "1", childCategory = "1", productStatus = "N"; //by default
     private List<String> parentCategories, childCategories;
+    private List<ChildCategory> childCategoryList;
     private Dialog dialog;
 
 
@@ -132,7 +134,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
-        initRV();
+        initRV(); // this recycler view set product list on screen
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
 
@@ -247,7 +249,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
-        open_edit_details = view.findViewById(R.id.open_edit_details);
+        /*open_edit_details = view.findViewById(R.id.open_edit_details);
         open_edit_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,11 +264,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 LLimages.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       /* Intent intent = new Intent();
+                       *//* Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                         intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);*/
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);*//*
                     }
                 });
 
@@ -289,11 +291,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
-        });
+        });*/
     }
 
     private void initRV() {
-
         ProductList productList = new ProductList();
         productList.setProfileId(Constant.PROFILE_ID);
         shopLandingPageViewModel.productList(productList);
@@ -332,6 +333,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, parentCategories);
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                     parentSpinner.setAdapter(spinnerArrayAdapter);
+                    parentSpinneredit.setAdapter(spinnerArrayAdapter);
 
                     // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -342,7 +344,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     }
 
-    private void uploadChildCategory(String id, Spinner childSpinner) {
+    private void uploadChildCategory(String id, Spinner childSpinner, boolean isForEdit) {
         SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
         subCategoryBYParentCatID.setParentCategoryId(id);
 
@@ -352,19 +354,24 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
                 if (subCategoryBYParentCatIDResponse != null) {
                     childCategories = new ArrayList<>();
+                    childCategoryList = new ArrayList<>();
 
                     //  Toast.makeText(ShopLandingActivity.this, "status : " + subCategoryBYParentCatIDResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
-
+                    childCategoryList.clear();
                     if (subCategoryBYParentCatIDResponse.getData().getRequestList() != null && subCategoryBYParentCatIDResponse.getData().getRequestList().size() > 0) {
 
                         for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
+                            childCategoryList.add(new ChildCategory(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getId(), subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle()));
                             childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle());
                         }
 
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                        childSpinner.setAdapter(spinnerArrayAdapter);
-
+                        if (isForEdit) {
+                            childSpinneredit.setAdapter(spinnerArrayAdapter);
+                        } else {
+                            childSpinner.setAdapter(spinnerArrayAdapter);
+                        }
                     }
                 }
             }
@@ -543,6 +550,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         isActiveproduct = dialog.findViewById(R.id.edit_switch);
         tv_deleteProduct = dialog.findViewById(R.id.tv_deleteProduct);
         isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
+        parentSpinneredit = dialog.findViewById(R.id.parentSpinner);
+        childSpinneredit = dialog.findViewById(R.id.childSpinner);
+        parentSpinneredit.setOnItemSelectedListener(onItemSelectedListenerEDit);
+        childSpinneredit.setOnItemSelectedListener(onItemSelectedListenerEDit);
+
+        uploadParentCategory(parentSpinneredit, childSpinneredit);
 
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -818,11 +831,35 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == parentSpinner.getId()) {
                 parentCategory = String.valueOf(parentSpinner.getSelectedItemPosition() + 1);
-                uploadChildCategory(parentCategory, childSpinner);
+                uploadChildCategory(parentCategory, childSpinner, false);
             }
 
             if (parent.getId() == childSpinner.getId()) {
-                childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+                // childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+                childCategory = String.valueOf(childCategoryList.get(childSpinner.getSelectedItemPosition()).getSubCategoryNumber());
+                //Toast.makeText(getActivity(), "" + childCategory, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+
+    AdapterView.OnItemSelectedListener onItemSelectedListenerEDit = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.getId() == parentSpinneredit.getId()) {
+                parentCategory = String.valueOf(parentSpinneredit.getSelectedItemPosition() + 1);
+                uploadChildCategory(parentCategory, childSpinner, true);
+            }
+
+            if (parent.getId() == childSpinneredit.getId()) {
+                // childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+                childCategory = String.valueOf(childCategoryList.get(childSpinneredit.getSelectedItemPosition()).getSubCategoryNumber());
+                //Toast.makeText(getActivity(), "" + childCategory, Toast.LENGTH_SHORT).show();
             }
         }
 

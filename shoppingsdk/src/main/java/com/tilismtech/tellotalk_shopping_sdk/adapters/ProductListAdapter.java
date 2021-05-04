@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
 
         Glide.with(myCtx).load(request.getProdpic()).placeholder(R.drawable.ic_dummy).centerCrop().into(holder.productImage);
+        holder.originalprice.setPaintFlags(holder.originalprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         // holder.productImage.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_bbq));
 
        /* holder.open_edit_details.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +107,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 dialog.show();
             }
         });*/
-
        /* holder.viewProductDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,8 +172,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             if (v.getId() == R.id.open_edit_details) {
                 this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId());
             } else if (v.getId() == R.id.isActive) {
-                this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(),isActive.isChecked());
-            } else if(v.getId() == R.id.viewProductDetail){
+                this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(), isActive.isChecked());
+            } else if (v.getId() == R.id.viewProductDetail) {
                 this.onProductEditorClickDialog.onOpenProductDetailDialog(productList.get(getAdapterPosition()).getProductId());
             }
         }
@@ -180,7 +182,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public interface OnProductEditorClickDialog {
         void onOpenProductEditor(int position);
-        void isActiveproduct(int position,boolean isActive);
+
+        void isActiveproduct(int position, boolean isActive);
+
         void onOpenProductDetailDialog(int position);
     }
 }

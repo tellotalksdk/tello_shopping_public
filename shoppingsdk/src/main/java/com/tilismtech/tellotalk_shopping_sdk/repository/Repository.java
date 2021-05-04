@@ -14,6 +14,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
@@ -37,6 +38,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDeta
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
@@ -108,6 +110,29 @@ public class Repository {
             @Override
             public void onFailure(Call<GenerateTokenResponse> call, Throwable t) {
                 Log.d("TAG", "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    //second api
+    public void generateTokenResponse(MutableLiveData<GTResponse> gtResponseMutableLiveData, GenerateToken generateToken) {
+        getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
+            @Override
+            public void onResponse(Call<GTResponse> call, Response<GTResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        GTResponse gtResponse = response.body();
+                        gtResponseMutableLiveData.setValue(gtResponse);
+                    } else {
+                        Log.i("TAG", "onResponse: " + response.code()); //500 code occur but run
+                        gtResponseMutableLiveData.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GTResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

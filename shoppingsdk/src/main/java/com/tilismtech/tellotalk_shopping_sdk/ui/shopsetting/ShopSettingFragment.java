@@ -514,7 +514,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 dialog.show();
             }
         });
-
+        colorTheme = "#FFFFFF";
         saveAccountbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,6 +6,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
@@ -27,6 +28,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDeta
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
@@ -69,6 +71,7 @@ import retrofit2.http.Query;
 
 public interface Iapi {
 
+    //First Api for token
     @FormUrlEncoded
     @POST("generatetoken")
     Call<GenerateTokenResponse> generateToken(@Field("username") String username,
@@ -81,6 +84,11 @@ public interface Iapi {
                                               @Field("phone") String phone,
                                               @Field("email") String email
     );
+
+    //Second Api for token
+    @POST("/api/user/Generatetoken")
+    Call<GTResponse> generateToken(@Body GenerateToken generateToken);
+
 
 
     // returning null right now ...
