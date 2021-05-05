@@ -1,29 +1,21 @@
 package com.tilismtech.tellotalk_shopping_sdk.api;
 
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.BankListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
@@ -43,25 +35,23 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSetting
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
-import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 
 import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -273,5 +263,12 @@ public interface Iapi {
     Call<ResponseBody> deleteWalletorCard(@Header("Authorization") String token, @Body DeleteCardorWallet deleteCardorWallet);
 
     Call<ClientWalletDetailResponse> getClientWalletDetails(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
+
+    @GET("api/user/getBankList")
+    Call<BankListResponse> getBankDetailList();
+
+    @GET("api/user/getBankList")
+    Call<WalletListResponse> getWalletDetailList();
+
 
 }

@@ -34,6 +34,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.BankListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
@@ -59,6 +60,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatu
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import org.json.JSONException;
@@ -787,6 +789,42 @@ public class Repository {
             @Override
             public void onFailure(Call<ClientWalletDetailResponse> call, Throwable t) {
 
+            }
+        });
+    }
+
+    public void bankList(MutableLiveData<BankListResponse> bankListResponseMutableLiveData) {
+        getRetrofitClient().getBankDetailList().enqueue(new Callback<BankListResponse>() {
+            @Override
+            public void onResponse(Call<BankListResponse> call, Response<BankListResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        bankListResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BankListResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void walletList(MutableLiveData<WalletListResponse> walletListResponseMutableLiveData) {
+        getRetrofitClient().getWalletDetailList().enqueue(new Callback<WalletListResponse>() {
+            @Override
+            public void onResponse(Call<WalletListResponse> call, Response<WalletListResponse> response) {
+                if(response != null){
+                    if(response.isSuccessful()){
+                        walletListResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WalletListResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

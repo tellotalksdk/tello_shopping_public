@@ -70,6 +70,8 @@ import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.*;
+
 
 public class ShopLandingActivity extends AppCompatActivity {
 
@@ -322,6 +324,11 @@ public class ShopLandingActivity extends AppCompatActivity {
                                     shopLandingPageViewModel.getNewProduct().removeObservers(ShopLandingActivity.this);
                                     if (addNewProductResponse != null) {
                                         //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
                                         filePaths.clear();
                                         loadingDialog.dismissDialog();
                                         dialogAddProduct.dismiss();

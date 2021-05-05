@@ -96,7 +96,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Switch edit_switch;
     private List<Uri> uriList;
     private Switch isActiveproduct;
-    private String parentCategoryId, childCategoryId;
+    private String parentCategoryId = "1", childCategoryId = "1";
     private Uri imageUri;
     private String filepath;
     private List<String> filePaths;
@@ -249,49 +249,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
-        /*open_edit_details = view.findViewById(R.id.open_edit_details);
-        open_edit_details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(getActivity());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_edit_product);
-                outerRL = dialog.findViewById(R.id.outerRL);
-                ImageView choose = dialog.findViewById(R.id.chooseMultipleProducts);
-                LLimages = dialog.findViewById(R.id.LLimages);
-
-                LLimages.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                       *//* Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);*//*
-                    }
-                });
-
-
-                outerRL.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });*/
     }
 
     private void initRV() {
@@ -302,9 +259,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
-                    // Toast.makeText(getActivity(), "" + productListResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
                     if (productListResponse.getData().getRequestList() != null) {
-                        // ((ShopLandingActivity)getActivity()).hidecongratsdialog();
                         addProduct_btn.setVisibility(View.GONE);
                         productListAdapter = new ProductListAdapter(productListResponse.getData().getRequestList(), getActivity(), getReference());
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
@@ -367,9 +322,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                        if (isForEdit) {
+                        if (isForEdit) { // load child categories when edit dialog open
                             childSpinneredit.setAdapter(spinnerArrayAdapter);
-                        } else {
+                        } else {   // load child category when add new product diualog is open
                             childSpinner.setAdapter(spinnerArrayAdapter);
                         }
                     }
@@ -591,6 +546,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 } else*/
                 {
                     //every thing fine post edit api
+
+                    if (Integer.parseInt(discountedPrice.getText().toString()) > Integer.parseInt(originalPrice.getText().toString())) {
+                        Toast.makeText(getActivity(), "Discounted Price must be less than original price...", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     UpdateProduct updateProduct = new UpdateProduct();
                     updateProduct.setTitle(productName.getText().toString());
@@ -852,13 +812,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == parentSpinneredit.getId()) {
-                parentCategory = String.valueOf(parentSpinneredit.getSelectedItemPosition() + 1);
+                parentCategoryId = String.valueOf(parentSpinneredit.getSelectedItemPosition() + 1);
                 uploadChildCategory(parentCategory, childSpinner, true);
             }
 
             if (parent.getId() == childSpinneredit.getId()) {
                 // childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
-                childCategory = String.valueOf(childCategoryList.get(childSpinneredit.getSelectedItemPosition()).getSubCategoryNumber());
+                childCategoryId = String.valueOf(childCategoryList.get(childSpinneredit.getSelectedItemPosition()).getSubCategoryNumber());
                 //Toast.makeText(getActivity(), "" + childCategory, Toast.LENGTH_SHORT).show();
             }
         }

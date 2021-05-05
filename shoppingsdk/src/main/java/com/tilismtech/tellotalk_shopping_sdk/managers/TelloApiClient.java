@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.managers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
+import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import retrofit2.Call;
@@ -38,7 +40,26 @@ public class TelloApiClient {
         return instance;
     }
 
-    public void generateAccessToken(AccessTokenPojo accessTokenPojo, Context myCtx) {
+
+    public static boolean initializeShoppingSDK(){
+        AccessTokenPojo accessTokenPojo = new AccessTokenPojo();
+
+        //user name + password + grant type always remain same other will change...
+        accessTokenPojo.setUsername("Basit@tilismtech.com");
+        accessTokenPojo.setPassword("basit@1234");
+        accessTokenPojo.setGrant_type("password");
+
+        accessTokenPojo.setprofileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43");
+        accessTokenPojo.setFirstname("Hasan");
+        accessTokenPojo.setMiddlename("Muddassir");
+        accessTokenPojo.setLastname("Naqvi");
+        accessTokenPojo.setPhone("03330347473");
+        accessTokenPojo.setEmail("emai@gmail.com");
+
+        return generateAccessToken(accessTokenPojo, TelloApplication.getContext());
+    }
+
+    public static boolean generateAccessToken(AccessTokenPojo accessTokenPojo, Context myCtx) {
         getRetrofitClient().generateToken(accessTokenPojo.getUsername(), accessTokenPojo.getPassword(), accessTokenPojo.getGrant_type(), accessTokenPojo.getprofileId(), accessTokenPojo.getFirstname(), accessTokenPojo.getMiddlename(), accessTokenPojo.getLastname(), accessTokenPojo.getPhone(), accessTokenPojo.getEmail()).enqueue(new Callback<GenerateTokenResponse>() {
             @Override
             public void onResponse(Call<GenerateTokenResponse> call, Response<GenerateTokenResponse> response) {
@@ -52,6 +73,7 @@ public class TelloApiClient {
                     Log.i("TAG", "onResponse: " + TelloPreferenceManager.getInstance(myCtx).getAccessToken());
                     Log.i("TAG", "onResponse: " + TelloPreferenceManager.getInstance(myCtx).getProfileId());
                     Log.i("TAG", "onResponse: " + Constant.PROFILE_ID);
+
                 }
             }
 
@@ -60,6 +82,7 @@ public class TelloApiClient {
                 Log.d("TAG", "onFailure: " + t.getMessage());
             }
         });
+        return true;
     }
 
 

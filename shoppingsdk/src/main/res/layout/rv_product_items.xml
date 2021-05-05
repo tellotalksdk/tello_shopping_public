@@ -1,7 +1,6 @@
-<androidx.cardview.widget.CardView
-    android:id="@+id/viewProductDetail"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewProductDetail"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -84,14 +83,25 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/ruppe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Rs."
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <TextView
                     android:id="@+id/discountedprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/ruppe"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Rs. 780"
+                    android:text="780"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp"
                     android:textStyle="bold" />

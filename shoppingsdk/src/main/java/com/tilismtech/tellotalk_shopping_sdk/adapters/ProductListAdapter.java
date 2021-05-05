@@ -59,7 +59,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(@NonNull ProductItemVH holder, int position) {
         ProductListResponse.Request request = productList.get(position);
 
-        holder.discountedprice.setText("Rs. " + String.valueOf(request.getDiscountPrice()));
+        holder.discountedprice.setText(String.valueOf(request.getDiscountPrice()));
         holder.originalprice.setText("Rs. " + String.valueOf(request.getPrice()));
         holder.productcategory.setText(request.getProduct_Category_Name());
         holder.productTitle.setText(request.getTitle());

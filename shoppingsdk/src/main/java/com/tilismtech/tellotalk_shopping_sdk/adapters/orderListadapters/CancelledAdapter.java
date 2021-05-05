@@ -73,62 +73,6 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
             holder.addRiderInfo.setVisibility(View.VISIBLE);
             holder.edit_rider_info.setVisibility(View.GONE);
         }
-
-       /* holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_add_rider_info);
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                done = dialog.findViewById(R.id.confirmRiderbtn);
-                done.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });
-
-        holder.viewFull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_product_detail_order_list);
-
-                ImageView iv_back = dialog.findViewById(R.id.iv_back);
-                iv_back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });*/
     }
 
     @Override
