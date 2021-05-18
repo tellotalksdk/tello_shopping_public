@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@android:color/white"
-    tools:context=".ui.shopregistration.ShopRegistrationActivity">
+    tools:context=".ui_seller.shopregistration.ShopRegistrationActivity">
 
     <FrameLayout
         android:id="@+id/headerRL"

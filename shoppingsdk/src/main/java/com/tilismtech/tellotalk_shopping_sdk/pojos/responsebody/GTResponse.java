@@ -22,15 +22,13 @@ public class GTResponse {
     }
 
 
+
         @SerializedName("status")
         @Expose
         private String status;
         @SerializedName("statusDetail")
         @Expose
         private String statusDetail;
-        @SerializedName("ProfileId")
-        @Expose
-        private String profileId;
         @SerializedName("OTP")
         @Expose
         private Object otp;
@@ -54,14 +52,6 @@ public class GTResponse {
             this.statusDetail = statusDetail;
         }
 
-        public String getProfileId() {
-            return profileId;
-        }
-
-        public void setProfileId(String profileId) {
-            this.profileId = profileId;
-        }
-
         public Object getOtp() {
             return otp;
         }
@@ -77,6 +67,7 @@ public class GTResponse {
         public void setData(Data data) {
             this.data = data;
         }
+
 
     public class RequestList {
 

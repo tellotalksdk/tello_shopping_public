@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:background="@android:color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:fillViewport="true">
 
     <FrameLayout
@@ -220,7 +219,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:hint="Enter your area..."
-                android:paddingStart="20dp"
+                android:paddingStart="15dp"
                 android:textSize="12sp" />
 
             <androidx.cardview.widget.CardView
@@ -303,7 +302,7 @@
 
 
                 <ImageView
-
+                    android:id="@+id/iv_image"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_centerInParent="true"
@@ -316,21 +315,22 @@
                     android:id="@+id/iv_tim"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    android:visibility="gone" />
 
 
             </FrameLayout>
 
 
             <FrameLayout
-                android:visibility="gone"
                 android:id="@+id/colortheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/FL1"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp">
+                android:layout_marginEnd="20dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/setColortext"
@@ -358,8 +358,8 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center|left"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
-                    android:background="@drawable/rounded_corner_linear_layout">
+                    android:background="@drawable/rounded_corner_linear_layout"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/clr_choose"

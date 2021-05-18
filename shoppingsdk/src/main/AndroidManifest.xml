@@ -8,18 +8,18 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
-    <application
-        android:requestLegacyExternalStorage="true"
-        >
+    <application android:requestLegacyExternalStorage="true">
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.settingprofileediting.SettingProfileEditingActivity"
+            android:name=".ui_client.homescreen.ClientHomeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shoplandingpage.ShopLandingActivity"
+            android:name=".ui_seller.settingprofileediting.SettingProfileEditingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationActivity"
+            android:name=".ui_seller.shoplandingpage.ShopLandingActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui_seller.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

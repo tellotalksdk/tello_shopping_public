@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="15dp">
+
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/four_corner_rounded_image"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_bbq" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/subCategoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/cardview"
+            android:text="Apple Macbook i7"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/subCategoryDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subCategoryTitle"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/cardview"
+            android:ellipsize="end"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:text="Lorum ipsum lorum ipsum adsadsadadsada"
+            android:textColor="@android:color/black"
+            android:textSize="11sp"
+            android:textStyle="normal" />
+
+        <LinearLayout
+            android:id="@+id/LL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subCategoryDescription"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/cardview"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category : "
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Electronics"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LL1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/LL"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/cardview"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rs. 125,000"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Rs. 150,000"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

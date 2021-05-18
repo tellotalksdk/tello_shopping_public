@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/computer"
+        android:icon="@drawable/ic_camera"
+        android:title="Computer" />
+
+    <item
+        android:id="@+id/tv_smart_box"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/tv_smart_box" />
+
+    <item
+        android:id="@+id/camera_photography"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/camera_photography" />
+
+    <item
+        android:id="@+id/headphones"
+        android:icon="@drawable/ic_camera"
+        android:title="Headphones" />
+
+    <item
+        android:id="@+id/musical_instrument"
+        android:icon="@drawable/ic_camera"
+        android:title="Musical Instrument" />
+
+    <item
+        android:id="@+id/smart_phone_and_tablets"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/smart_phone_tablets" />
+
+    <item
+        android:id="@+id/accessories"
+        android:icon="@drawable/ic_camera"
+        android:title="Accesories" />
+
+    <item
+        android:id="@+id/home_audio_theatre"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/home_audio_theater" />
+
+    <item
+        android:id="@+id/printer"
+        android:icon="@drawable/ic_camera"
+        android:title="Printer" />
+
+    <item
+        android:id="@+id/faxmachine"
+        android:icon="@drawable/ic_camera"
+        android:title="Fax Machine" />
+
+    <item
+        android:id="@+id/household_goods"
+        android:icon="@drawable/ic_camera"
+        android:title="Household goods" />
+
+    <item
+        android:id="@+id/watch"
+        android:icon="@drawable/ic_camera"
+        android:title="Watch" />
+
+    <item
+        android:id="@+id/others"
+        android:icon="@drawable/ic_camera"
+        android:title="Others" />
+
+</menu>

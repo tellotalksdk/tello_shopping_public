@@ -1,17 +1,13 @@
 package com.tilismtech.tellotalk_shopping_sdk.managers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.lifecycle.MutableLiveData;
 
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
-import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
-import com.tilismtech.tellotalk_shopping_sdk.ui.shopregistration.ShopRegistrationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import retrofit2.Call;
@@ -41,7 +37,7 @@ public class TelloApiClient {
     }
 
 
-    public static boolean initializeShoppingSDK(){
+    public static boolean initializeShoppingSDK() {
         AccessTokenPojo accessTokenPojo = new AccessTokenPojo();
 
         //user name + password + grant type always remain same other will change...
@@ -85,6 +81,27 @@ public class TelloApiClient {
         return true;
     }
 
+    public static void generateTokenResponse(GenerateToken generateToken, Context myCtx) {
+        getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
+            @Override
+            public void onResponse(Call<GTResponse> call, Response<GTResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        GTResponse gtResponse = response.body();
+
+                    } else {
+                        Log.i("TAG", "onResponse: " + response.code()); //500 code occur but run
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GTResponse> call, Throwable t) {
+
+                t.printStackTrace();
+            }
+        });
+    }
 
     public static final class Builder {
         private String accessKey;

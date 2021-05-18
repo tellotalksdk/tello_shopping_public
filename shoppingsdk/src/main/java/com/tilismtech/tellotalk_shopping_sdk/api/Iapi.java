@@ -76,9 +76,11 @@ public interface Iapi {
     );
 
     //Second Api for token
+    @Headers({
+            "Accept: application/json"
+    })
     @POST("/api/user/Generatetoken")
     Call<GTResponse> generateToken(@Body GenerateToken generateToken);
-
 
 
     // returning null right now ...
@@ -267,7 +269,7 @@ public interface Iapi {
     @GET("api/user/getBankList")
     Call<BankListResponse> getBankDetailList();
 
-    @GET("api/user/getBankList")
+    @GET("api/user/getWalletList")
     Call<WalletListResponse> getWalletDetailList();
 
 

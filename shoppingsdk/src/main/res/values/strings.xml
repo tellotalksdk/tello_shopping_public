@@ -140,5 +140,13 @@
         <item>China</item>
     </string-array>
 
+    <string name="tv_smart_box">TV  &amp; Smart Box</string>
+    <string name="camera_photography">Camera &amp; Photography</string>
+    <string name="smart_phone_tablets">Smart phones &amp; tablets</string>
+    <string name="home_audio_theater">Home Audio &amp; Theater</string>
+
+    <string name="navigation_drawer_open">OPEN</string>
+    <string name="navigation_drawer_close">CLOSE</string>
+
 
 </resources>
