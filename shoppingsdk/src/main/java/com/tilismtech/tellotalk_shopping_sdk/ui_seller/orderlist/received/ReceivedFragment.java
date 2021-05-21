@@ -104,8 +104,10 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
                     //Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                    receivedAdapter = new ReceivedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
-                    recycler_received_orders.setAdapter(receivedAdapter);
+                    if(getOrderByStatusResponse.getData() != null) {
+                        receivedAdapter = new ReceivedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
+                        recycler_received_orders.setAdapter(receivedAdapter);
+                    }
                 }
             }
         });

@@ -30,7 +30,7 @@ public class TokenRefreshAuthenthicator implements Authenticator {
         String updatedToken = getUpdatedToken();
 
         return response.request().newBuilder()
-                .header("Header", updatedToken)
+                .header("Authorization", "Bearer" + updatedToken)
                 .build();
     }
 

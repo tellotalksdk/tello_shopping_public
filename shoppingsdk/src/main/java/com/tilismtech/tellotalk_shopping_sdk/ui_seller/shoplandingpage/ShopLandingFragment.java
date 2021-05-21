@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -43,8 +44,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ViewPagerAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
@@ -67,8 +70,14 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
 
 public class ShopLandingFragment extends Fragment implements ProductListAdapter.OnProductEditorClickDialog {
@@ -87,7 +96,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private ProductListAdapter productListAdapter;
     private LinearLayout LLimages, LLimages_edit;
     private EditText productName, productCategory, originalPrice, discountedPrice, skucodeoptional, product_description;
-    private ShopLandingPageViewModel shopLandingPageViewModel;
+    private ShopLandingPageViewModel shopLandingPageViewModel, shopLandingPageViewModel1;
     private Switch edit_switch;
     private List<Uri> uriList;
     private Switch isActiveproduct;
@@ -103,6 +112,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private List<String> parentCategories, childCategories;
     private List<ChildCategory> childCategoryList;
     private Dialog dialog;
+    private String lastProductId = "0";
+    List<ProductListResponse.Request> productListAppend, dummy;
 
 
     @Override
@@ -122,13 +133,15 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-
+        productListAppend = new ArrayList<>();
+        dummy = new ArrayList<>();
         // orderListtabbar = view.findViewById(R.id.orderListtabbar);
         loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.dismissDialog();
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        // shopLandingPageViewModel1 = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         initRV(); // this recycler view set product list on screen
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
@@ -244,30 +257,80 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
+        recycler_add_product.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                   // Toast.makeText(getActivity(), "end of recycler ...", Toast.LENGTH_SHORT).show();
+                    //initRV();
+                    updateRecyclerView();
+                }
+            }
+        });
+
+    }
+
+    private void updateRecyclerView() {
+        ProductList productList = new ProductList();
+        productList.setProfileId(Constant.PROFILE_ID);
+        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId(), lastProductId).enqueue(new Callback<ProductListResponse>() {
+            @Override
+            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
+                if (response != null) {
+                    if (response.body() != null) {
+                        ProductListResponse productListResponse = response.body();
+                        addProduct_btn.setVisibility(View.GONE);
+                        if(productListResponse.getData().getRequestList() != null) {
+                            productListAppend.addAll(productListResponse.getData().getRequestList());
+                            productListAdapter.notifyDataSetChanged();
+                            lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductListResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initRV() {
         ProductList productList = new ProductList();
         productList.setProfileId(Constant.PROFILE_ID);
-        shopLandingPageViewModel.productList(productList);
         LoadingDialog loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.showDialog();
+        shopLandingPageViewModel.productList(productList, lastProductId); //initially first set of product will be fecthed
         shopLandingPageViewModel.getProductList().observe(getActivity(), new Observer<ProductListResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
                     if (productListResponse.getData().getRequestList() != null) {
                         addProduct_btn.setVisibility(View.GONE);
-                        productListAdapter = new ProductListAdapter(productListResponse.getData().getRequestList(), getActivity(), getReference());
+                        productListAppend.addAll(productListResponse.getData().getRequestList());
+                        //productListAppend.clear();
+                       /* for (ProductListResponse.Request request : productListResponse.getData().getRequestList()) {
+                            productListAppend.add(request);
+                        }*/
+
+
+                        productListAdapter = new ProductListAdapter(productListAppend, getActivity(), getReference());
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
                         recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
                         recycler_add_product.setAdapter(productListAdapter);
+                        lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
                         loadingDialog.dismissDialog();
                     }
                     loadingDialog.dismissDialog();
+
                 }
             }
         });
+
 
     }
 

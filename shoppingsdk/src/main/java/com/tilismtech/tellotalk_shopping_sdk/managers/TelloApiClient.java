@@ -88,6 +88,12 @@ public class TelloApiClient {
                 if (response != null) {
                     if (response.isSuccessful()) {
                         GTResponse gtResponse = response.body();
+                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
+                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(generateToken.getPhone());
+                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
+                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(gtResponse.getProfileId());
+
+                        Log.i("TAG", "onResponse: " + gtResponse.getData().getRequestList().getAccessToken());
 
                     } else {
                         Log.i("TAG", "onResponse: " + response.code()); //500 code occur but run

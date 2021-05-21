@@ -111,6 +111,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
                     // Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+
                     acceptedAdapter = new AcceptedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_accepted_orders.setAdapter(acceptedAdapter);
 

@@ -22,51 +22,61 @@ public class GTResponse {
     }
 
 
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("statusDetail")
+    @Expose
+    private String statusDetail;
+    @SerializedName("ProfileId")
+    @Expose
+    private String profileId;
+    @SerializedName("OTP")
+    @Expose
+    private Object otp;
+    @SerializedName("data")
+    @Expose
+    private Data data;
 
-        @SerializedName("status")
-        @Expose
-        private String status;
-        @SerializedName("statusDetail")
-        @Expose
-        private String statusDetail;
-        @SerializedName("OTP")
-        @Expose
-        private Object otp;
-        @SerializedName("data")
-        @Expose
-        private Data data;
+    public String getStatus() {
+        return status;
+    }
 
-        public String getStatus() {
-            return status;
-        }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
+    public String getStatusDetail() {
+        return statusDetail;
+    }
 
-        public String getStatusDetail() {
-            return statusDetail;
-        }
+    public void setStatusDetail(String statusDetail) {
+        this.statusDetail = statusDetail;
+    }
 
-        public void setStatusDetail(String statusDetail) {
-            this.statusDetail = statusDetail;
-        }
+    public String getProfileId() {
+        return profileId;
+    }
 
-        public Object getOtp() {
-            return otp;
-        }
+    public void setProfileId(String profileId) {
+        this.profileId = profileId;
+    }
 
-        public void setOtp(Object otp) {
-            this.otp = otp;
-        }
+    public Object getOtp() {
+        return otp;
+    }
 
-        public Data getData() {
-            return data;
-        }
+    public void setOtp(Object otp) {
+        this.otp = otp;
+    }
 
-        public void setData(Data data) {
-            this.data = data;
-        }
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
 
 
     public class RequestList {

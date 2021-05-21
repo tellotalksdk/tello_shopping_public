@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloApiClient;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.ui_client.homescreen.ClientHomeActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity;
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  //TelloApiClient.initiateSDK();
+                //TelloApiClient.initiateSDK();
                 TelloApiClient telloApiClient = TelloApiClient.getInstance();
                 GenerateToken generateToken = new GenerateToken();
                 generateToken.setGrantUsername("Basit@tilismtech.com");
@@ -55,13 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 generateToken.setEmail("Mehdi2399@gmail.com");
 
 
-                telloApiClient.generateTokenResponse(generateToken, MainActivity.this);
-               // startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));*/
 
-                boolean gettingAhead = TelloApiClient.initializeShoppingSDK();
+                telloApiClient.generateTokenResponse(generateToken, MainActivity.this);
+                startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
+
+                /*boolean gettingAhead = TelloApiClient.initializeShoppingSDK();
                 if (gettingAhead) {
                     startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
-                }
+                }*/
             }
         });
 

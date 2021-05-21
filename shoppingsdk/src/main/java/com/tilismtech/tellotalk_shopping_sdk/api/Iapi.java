@@ -79,7 +79,7 @@ public interface Iapi {
     @Headers({
             "Accept: application/json"
     })
-    @POST("/api/user/Generatetoken")
+    @POST("api/user/Generatetoken")
     Call<GTResponse> generateToken(@Body GenerateToken generateToken);
 
 
@@ -199,7 +199,7 @@ public interface Iapi {
 
     //getproductList
     @GET("api/Product/GetProductList")
-    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
+    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId,@Query("ProductId") String productID);
 
     //subcategory by parent id.
     @Headers({"Accept: */*",

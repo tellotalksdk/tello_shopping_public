@@ -87,8 +87,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get product list to show on product landing  page ...
-    public void productList(ProductList productList) {
-        repository.productList(productListResponseMutableLiveData, productList);
+    public void productList(ProductList productList,String lastProductId) {
+        repository.productList(productListResponseMutableLiveData, productList , lastProductId);
     }
 
     public LiveData<ProductListResponse> getProductList() {

@@ -811,7 +811,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     public void setTotalProductOnActionBar() {
         ProductList productList1 = new ProductList();
         productList1.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
-        shopLandingPageViewModel.productList(productList1);
+        shopLandingPageViewModel.productList(productList1,"0");
         shopLandingPageViewModel.getProductList().observe(ShopLandingActivity.this, new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {

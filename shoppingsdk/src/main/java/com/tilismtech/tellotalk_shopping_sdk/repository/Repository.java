@@ -434,8 +434,8 @@ public class Repository {
         return parts;
     }
 
-    public void productList(MutableLiveData<ProductListResponse> productListResponseMutableLiveData, ProductList productList) {
-        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId()).enqueue(new Callback<ProductListResponse>() {
+    public void productList(MutableLiveData<ProductListResponse> productListResponseMutableLiveData, ProductList productList, String lastProductId) {
+        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId() , lastProductId).enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
                 if (response != null) {
