@@ -12,7 +12,7 @@ public class ShopBasicSettingResponse {
         @SerializedName("statusDetail")
         @Expose
         private String statusDetail;
-        @SerializedName("OTP")
+        @SerializedName("oTP")
         @Expose
         private String otp;
         @SerializedName("data")

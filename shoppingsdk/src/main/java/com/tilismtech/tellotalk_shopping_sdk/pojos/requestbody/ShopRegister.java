@@ -5,34 +5,34 @@ import com.google.gson.annotations.SerializedName;
 
 public class ShopRegister {
 
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("ShopURl")
+    @SerializedName("shopURl")
     @Expose
     private String shopURl;
-    @SerializedName("RegisterPhone")
+    @SerializedName("registerPhone")
     @Expose
     private String registerPhone;
-    @SerializedName("ShopCategoryId")
+    @SerializedName("shopCategoryId")
     @Expose
     private String shopCategoryId;
-    @SerializedName("Shop_Description")
+    @SerializedName("shopDescription")
     @Expose
     private String shopDescription;
-    @SerializedName("Email")
+    @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("ShopName")
+    @SerializedName("shopName")
     @Expose
-    private String ShopName;
+    private String shopName;
 
     public String getShopName() {
-        return ShopName;
+        return shopName;
     }
 
     public void setShopName(String shopName) {
-        ShopName = shopName;
+        this.shopName = shopName;
     }
 
     public String getProfileId() {

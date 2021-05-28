@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class DeleteProduct {
 
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("ProductId")
+    @SerializedName("productId")
     @Expose
     private String productId;
 

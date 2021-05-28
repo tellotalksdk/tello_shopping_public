@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class IsProductActive {
 
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("ProductStatus")
+    @SerializedName("productStatus")
     @Expose
     private String productStatus;
-    @SerializedName("ProductId")
+    @SerializedName("productId")
     @Expose
     private String productId;
 

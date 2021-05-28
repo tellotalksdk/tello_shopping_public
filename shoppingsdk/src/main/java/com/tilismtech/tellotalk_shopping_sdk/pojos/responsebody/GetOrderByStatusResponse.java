@@ -30,7 +30,7 @@ public class GetOrderByStatusResponse {
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
-    @SerializedName("OTP")
+    @SerializedName("oTP")
     @Expose
     private Object otp;
     @SerializedName("data")
@@ -72,34 +72,34 @@ public class GetOrderByStatusResponse {
 
     public class Request {
 
-        @SerializedName("orderid")
+        @SerializedName("orderId")
         @Expose
         private Integer orderid;
-        @SerializedName("orderno")
+        @SerializedName("orderNo")
         @Expose
         private String orderno;
-        @SerializedName("Order_status")
+        @SerializedName("orderStatus")
         @Expose
         private Integer orderStatus;
-        @SerializedName("grandtotal")
+        @SerializedName("grandTotal")
         @Expose
         private Double grandtotal;
-        @SerializedName("firstname")
+        @SerializedName("firstName")
         @Expose
         private String firstname;
-        @SerializedName("middlename")
+        @SerializedName("middleName")
         @Expose
         private String middlename;
-        @SerializedName("lastname")
+        @SerializedName("lastName")
         @Expose
         private String lastname;
         @SerializedName("mobile")
         @Expose
         private String mobile;
-        @SerializedName("orderdate")
+        @SerializedName("orderDate")
         @Expose
         private String orderdate;
-        @SerializedName("BuyerProfileId")
+        @SerializedName("buyerProfileId")
         @Expose
         private String buyerProfileId;
         @SerializedName("riderName")
@@ -108,9 +108,20 @@ public class GetOrderByStatusResponse {
         @SerializedName("riderContact")
         @Expose
         private Object riderContact;
-        @SerializedName("CompleteAddress")
+        @SerializedName("completeAddress")
         @Expose
         private String completeAddress;
+        @SerializedName("qty")
+        @Expose
+        private String quantity;
+
+        public String getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(String quantity) {
+            this.quantity = quantity;
+        }
 
         public Integer getOrderid() {
             return orderid;

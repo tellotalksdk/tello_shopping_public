@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class AddBranchAddress {
 
-    @SerializedName("Province")
+    @SerializedName("province")
     @Expose
     private String province;
-    @SerializedName("Line1")
+    @SerializedName("line1")
     @Expose
     private String line1;
-    @SerializedName("City")
+    @SerializedName("city")
     @Expose
     private String city;
-    @SerializedName("Country")
+    @SerializedName("country")
     @Expose
     private String country;
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
 

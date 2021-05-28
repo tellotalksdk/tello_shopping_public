@@ -24,15 +24,19 @@ public class ShopRegisterResponse {
         this.message = message;
     }
 
+
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
-    @SerializedName("OTP")
+    @SerializedName("profileId")
     @Expose
-    private Object otp;
+    private Object profileId;
+    @SerializedName("oTP")
+    @Expose
+    private Object oTP;
     @SerializedName("data")
     @Expose
     private Object data;
@@ -53,12 +57,20 @@ public class ShopRegisterResponse {
         this.statusDetail = statusDetail;
     }
 
-    public Object getOtp() {
-        return otp;
+    public Object getProfileId() {
+        return profileId;
     }
 
-    public void setOtp(Object otp) {
-        this.otp = otp;
+    public void setProfileId(Object profileId) {
+        this.profileId = profileId;
+    }
+
+    public Object getoTP() {
+        return oTP;
+    }
+
+    public void setoTP(Object oTP) {
+        this.oTP = oTP;
     }
 
     public Object getData() {
@@ -68,5 +80,4 @@ public class ShopRegisterResponse {
     public void setData(Object data) {
         this.data = data;
     }
-
 }

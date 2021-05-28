@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 telloApiClient.generateTokenResponse(generateToken, MainActivity.this);
                 startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
 
-                /*boolean gettingAhead = TelloApiClient.initializeShoppingSDK();
+                /* boolean gettingAhead = TelloApiClient.initializeShoppingSDK();
                 if (gettingAhead) {
                     startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
                 }*/

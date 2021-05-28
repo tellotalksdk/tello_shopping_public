@@ -175,7 +175,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
                 //  Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-
+/*
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
 
@@ -230,7 +230,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
                     et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getCompleteAddress());
                     // et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
-                }
+                }*/
             }
         });
 

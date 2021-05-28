@@ -39,6 +39,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddr
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 
@@ -82,6 +83,19 @@ public interface Iapi {
     @POST("api/user/Generatetoken")
     Call<GTResponse> generateToken(@Body GenerateToken generateToken);
 
+    //update shopOwnerImage and shopOwnerName
+    @Headers({
+            "Accept: application/json"
+    })
+    @Multipart
+    @POST("api/user/UpdateUserNameAndImage")
+    Call<UpdateUserAndImageResponse> updateUserImageAndName(@Header("Authorization") String token,
+                                                            @Part("firstName") RequestBody firstName,
+                                                            @Part("middleName") RequestBody middleName,
+                                                            @Part("lastName") RequestBody lastName,
+                                                            @Part("profileId") RequestBody profileId,
+                                                            @Part MultipartBody.Part profilePic);
+
 
     // returning null right now ...
     @POST("api/shop/RegisterShop")
@@ -97,15 +111,15 @@ public interface Iapi {
     @Multipart
     @POST("api/shop/ShopSettingwithImage")
     Call<ShopBasicSettingResponse> setShopBasicSetting(@Header("Authorization") String token,
-                                                       @Part MultipartBody.Part ShopProfile,
-                                                       @Part("ShippingFee") RequestBody ShippingFee,
+                                                       @Part MultipartBody.Part shopProfile,
+                                                       @Part("shippingFee") RequestBody ShippingFee,
                                                        @Part("tax") RequestBody tax,
-                                                       @Part("Province") RequestBody Province,
-                                                       @Part("Area") RequestBody Area,
-                                                       @Part("City") RequestBody City,
-                                                       @Part("Country") RequestBody Country,
-                                                       @Part("Shop_Theme") RequestBody Shop_Theme,
-                                                       @Part("ProfileId") RequestBody ProfileId
+                                                       @Part("province") RequestBody Province,
+                                                       @Part("area") RequestBody Area,
+                                                       @Part("city") RequestBody City,
+                                                       @Part("country") RequestBody Country,
+                                                       @Part("shopTheme") RequestBody Shop_Theme,
+                                                       @Part("profileId") RequestBody ProfileId
     );
 
 
@@ -129,15 +143,15 @@ public interface Iapi {
     @POST("api/Product/AddNewProductwithImage")
     Call<AddNewProductResponse> addNewProducts(@Header("Authorization") String token,
                                                @Part List<MultipartBody.Part> Product_Pic,
-                                               @Part("Product_Category_id") RequestBody Product_Category_id,
-                                               @Part("Title") RequestBody Title,
-                                               @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
-                                               @Part("Discount_Price") RequestBody Discount_Price,
-                                               @Part("Sku") RequestBody Sku,
-                                               @Part("Summary") RequestBody Summary,
-                                               @Part("ProfileId") RequestBody ProfileId,
-                                               @Part("ProductStatus") RequestBody ProductStatus,
-                                               @Part("Price") RequestBody Price);
+                                               @Part("parentProductCategoryId") RequestBody Product_Category_id,
+                                               @Part("title") RequestBody Title,
+                                               @Part("productCategoryId") RequestBody Sub_Product_Category_id,
+                                               @Part("discountPrice") RequestBody Discount_Price,
+                                               @Part("sku") RequestBody Sku,
+                                               @Part("summary") RequestBody Summary,
+                                               @Part("profileId") RequestBody ProfileId,
+                                               @Part("productStatus") RequestBody ProductStatus,
+                                               @Part("price") RequestBody Price);
 
     //updateProductApi
     @Headers({
@@ -147,16 +161,16 @@ public interface Iapi {
     @POST("api/Product/UpdateProductwithImage")
     Call<UpdateProductResponse> updateProduct(@Header("Authorization") String token,
                                               @Part List<MultipartBody.Part> Product_Pic,
-                                              @Part("Product_Category_id") RequestBody Product_Category_id,
-                                              @Part("Title") RequestBody Title,
-                                              @Part("Sub_Product_Category_id") RequestBody Sub_Product_Category_id,
-                                              @Part("Discount_Price") RequestBody Discount_Price,
-                                              @Part("Sku") RequestBody Sku,
-                                              @Part("Summary") RequestBody Summary,
-                                              @Part("ProfileId") RequestBody ProfileId,
-                                              @Part("ProductStatus") RequestBody ProductStatus,
-                                              @Part("Price") RequestBody Price,
-                                              @Part("ProductId") RequestBody ProductId);
+                                              @Part("parentProductCategoryId") RequestBody Product_Category_id,
+                                              @Part("title") RequestBody Title,
+                                              @Part("productCategoryId") RequestBody Sub_Product_Category_id,
+                                              @Part("discountPrice") RequestBody Discount_Price,
+                                              @Part("sku") RequestBody Sku,
+                                              @Part("summary") RequestBody Summary,
+                                              @Part("profileId") RequestBody ProfileId,
+                                              @Part("productStatus") RequestBody ProductStatus,
+                                              @Part("price") RequestBody Price,
+                                              @Part("productId") RequestBody ProductId);
 
     //getproductforedit
     @Headers({"Accept: */*",
@@ -176,8 +190,8 @@ public interface Iapi {
     //getordersbystatus
     @GET("api/Order/getOrderbyStatus")
     Call<GetOrderByStatusResponse> getOrderbyStatus(@Header("Authorization") String token,
-                                                    @Query("ProfileId") String ProfileId,
-                                                    @Query("StatusId") String StatusId);
+                                                    @Query("profileId") String ProfileId,
+                                                    @Query("statusId") String StatusId);
 
 
     //updateorderstatus
@@ -193,13 +207,13 @@ public interface Iapi {
     )
     @GET("api/Order/ViewFullOrder")
     Call<ViewFullOrderResponse> viewfullorder(@Header("Authorization") String token,
-                                              @Query("ProfileId") String ProfileId,
-                                              @Query("OrderId") String OrderId,
-                                              @Query("OrderStatus") String OrderStatus);
+                                              @Query("profileId") String ProfileId,
+                                              @Query("orderId") String OrderId,
+                                              @Query("orderStatus") String OrderStatus);
 
     //getproductList
     @GET("api/Product/GetProductList")
-    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId,@Query("ProductId") String productID);
+    Call<ProductListResponse> getProductList(@Header("Authorization") String token, @Query("ProfileId") String ProfileId, @Query("ProductId") String productID);
 
     //subcategory by parent id.
     @Headers({"Accept: */*",
@@ -218,7 +232,7 @@ public interface Iapi {
 
     //gettimings
     @GET("api/shop/getshopTimming")
-    Call<GetTimingsResponse> getShopTiming(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
+    Call<GetTimingsResponse> getShopTiming(@Header("Authorization") String token, @Query("profileId") String ProfileId);
 
     //posttiming remaining....
     @POST("api/shop/ShopTiming")

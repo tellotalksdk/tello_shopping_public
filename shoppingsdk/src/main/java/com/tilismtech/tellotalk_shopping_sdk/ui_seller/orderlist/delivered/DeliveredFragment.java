@@ -193,11 +193,10 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
                 // Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
-                    et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
-                    et_orderStatus.setText("Delivered");
-                    et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
+                    et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
+                    et_orderStatus.setText("Paid");
+                    et_orderDate.setText( " " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     productDetailLL.removeAllViews();
                     if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
@@ -225,15 +224,15 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                     }
 
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSeller_firstname() + " " + viewFullOrderResponse.getData().getRequestList().getSeller_lastname());
-                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSeller_mobile());
-                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSeller_Address());
-                    //  et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " +viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
+                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
+                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
+                    et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
-                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getFirstname() + viewFullOrderResponse.getData().getRequestList().getMiddlename());
-                    et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
-                    et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getCompleteAddress());
-                    // et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
+                    et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile());
+                    et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress());
+                    et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
                 }
             }

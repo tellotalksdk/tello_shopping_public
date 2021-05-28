@@ -616,12 +616,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
                     UpdateProduct updateProduct = new UpdateProduct();
                     updateProduct.setTitle(productName.getText().toString());
-                    updateProduct.setDiscount_Price(discountedPrice.getText().toString());
+                    updateProduct.setDiscountPrice(discountedPrice.getText().toString());
                     updateProduct.setPrice(originalPrice.getText().toString());
                     updateProduct.setProductId(String.valueOf(productID));
                     updateProduct.setProfileId(Constant.PROFILE_ID);
-                    updateProduct.setProduct_Category_id(parentCategoryId);
-                    updateProduct.setSub_Product_Category_id(childCategoryId);
+                    updateProduct.setParentProductCategoryId(parentCategoryId);
+                    updateProduct.setProductCategoryId(childCategoryId);
                     updateProduct.setProduct_Pic(filePaths);
                     updateProduct.setSku(skucodeoptional.getText().toString());
                     updateProduct.setSummary(product_description.getText().toString());
@@ -678,7 +678,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 if (productForEditResponse != null) {
 
                     parentCategoryId = productForEditResponse.getData().getRequestList().getParentProductCategoryId();
-                    childCategoryId = productForEditResponse.getData().getRequestList().getProductCategoryId();
+                    childCategoryId = productForEditResponse.getData().getRequestList().getProductCategoryid();
 
                     productName.setText(productForEditResponse.getData().getRequestList().getTitle());
                     productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());

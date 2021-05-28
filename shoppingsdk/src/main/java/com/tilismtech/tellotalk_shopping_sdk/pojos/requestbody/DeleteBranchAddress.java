@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName;
 public class DeleteBranchAddress {
 
 
-        @SerializedName("ProfileId")
+        @SerializedName("profileId")
         @Expose
         private String profileId;
-        @SerializedName("Id")
+        @SerializedName("id")
         @Expose
         private String id;
 

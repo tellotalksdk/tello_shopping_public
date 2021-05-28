@@ -30,7 +30,7 @@ public class GetTimingsResponse {
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
-    @SerializedName("OTP")
+    @SerializedName("oTP")
     @Expose
     private Object otp;
     @SerializedName("data")
@@ -72,19 +72,19 @@ public class GetTimingsResponse {
 
     public class Request {
 
-        @SerializedName("SettingId")
+        @SerializedName("id")
         @Expose
         private Integer settingId;
-        @SerializedName("Shop_Day_Name")
+        @SerializedName("shopDayName")
         @Expose
         private String shopDayName;
-        @SerializedName("Shop_Start_Time")
+        @SerializedName("shopStartTime")
         @Expose
         private String shopStartTime;
-        @SerializedName("Shop_End_Time")
+        @SerializedName("shopEndTime")
         @Expose
         private String shopEndTime;
-        @SerializedName("Shop_Status_Daywise")
+        @SerializedName("shopStatusDaywise")
         @Expose
         private String shopStatusDaywise;
 

@@ -56,6 +56,7 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
         holder.address.setText(receivedItemPojo.getCompleteAddress());
         holder.date.setText(receivedItemPojo.getOrderdate());
         holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
+        holder.quantity.setText("Items : " + receivedItemPojo.getQuantity());
 
         if (receivedItemPojo.getRiderName() != null && receivedItemPojo.getRiderContact() != null) {
             holder.addRiderInfo1.setVisibility(View.VISIBLE);

@@ -6,19 +6,19 @@ import java.util.List;
 
 public class UpdateProduct {
     private List<String>  Product_Pic;
-    private String Product_Category_id;
-    private String Title;
-    private String Sub_Product_Category_id;
-    private String Discount_Price;
-    private String Sku;
-    private String Summary;
-    private String ProfileId;
-    private String ProductStatus;
-    private String Price;
-    private String ProductId;
+    private String parentProductCategoryId;
+    private String title;
+    private String productCategoryId;
+    private String discountPrice;
+    private String sku;
+    private String summary;
+    private String profileId;
+    private String productStatus;
+    private String price;
+    private String productId;
 
 
-    public List<String>  getProduct_Pic() {
+    public List<String> getProduct_Pic() {
         return Product_Pic;
     }
 
@@ -26,83 +26,83 @@ public class UpdateProduct {
         Product_Pic = product_Pic;
     }
 
-    public String getProduct_Category_id() {
-        return Product_Category_id;
+    public String getParentProductCategoryId() {
+        return parentProductCategoryId;
     }
 
-    public void setProduct_Category_id(String product_Category_id) {
-        Product_Category_id = product_Category_id;
+    public void setParentProductCategoryId(String parentProductCategoryId) {
+        this.parentProductCategoryId = parentProductCategoryId;
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
-    public String getSub_Product_Category_id() {
-        return Sub_Product_Category_id;
+    public String getProductCategoryId() {
+        return productCategoryId;
     }
 
-    public void setSub_Product_Category_id(String sub_Product_Category_id) {
-        Sub_Product_Category_id = sub_Product_Category_id;
+    public void setProductCategoryId(String productCategoryId) {
+        this.productCategoryId = productCategoryId;
     }
 
-    public String getDiscount_Price() {
-        return Discount_Price;
+    public String getDiscountPrice() {
+        return discountPrice;
     }
 
-    public void setDiscount_Price(String discount_Price) {
-        Discount_Price = discount_Price;
+    public void setDiscountPrice(String discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
     public String getSku() {
-        return Sku;
+        return sku;
     }
 
     public void setSku(String sku) {
-        Sku = sku;
+        this.sku = sku;
     }
 
     public String getSummary() {
-        return Summary;
+        return summary;
     }
 
     public void setSummary(String summary) {
-        Summary = summary;
+        this.summary = summary;
     }
 
     public String getProfileId() {
-        return ProfileId;
+        return profileId;
     }
 
     public void setProfileId(String profileId) {
-        ProfileId = profileId;
+        this.profileId = profileId;
     }
 
     public String getProductStatus() {
-        return ProductStatus;
+        return productStatus;
     }
 
     public void setProductStatus(String productStatus) {
-        ProductStatus = productStatus;
+        this.productStatus = productStatus;
     }
 
     public String getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(String price) {
-        Price = price;
+        this.price = price;
     }
 
     public String getProductId() {
-        return ProductId;
+        return productId;
     }
 
     public void setProductId(String productId) {
-        ProductId = productId;
+        this.productId = productId;
     }
 }

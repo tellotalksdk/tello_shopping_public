@@ -90,10 +90,10 @@ public class GetShopDetailResponse {
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private Object profileId;
-    @SerializedName("OTP")
+    @SerializedName("oTP")
     @Expose
     private Object otp;
     @SerializedName("data")
@@ -170,10 +170,10 @@ public class GetShopDetailResponse {
         @SerializedName("country")
         @Expose
         private String country;
-        @SerializedName("shop_Description")
+        @SerializedName("shopDescription")
         @Expose
         private String shopDescription;
-        @SerializedName("shop_Theme")
+        @SerializedName("shopTheme")
         @Expose
         private String shopTheme;
         @SerializedName("tax")

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class GetShopDetail {
 
 
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
 

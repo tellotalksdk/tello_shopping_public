@@ -3,37 +3,37 @@ package com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody;
 
 public class ShopBasicSetting {
 
-    private String ShippingFee;
+    private String shippingFee;
     private String tax;
-    private String Province;
-    private String Area;
-    private String City;
-    private String Country;
-    private String Shop_Theme;
-    private String ProfileId;
-    private String ShopProfile;
+    private String province;
+    private String area;
+    private String city;
+    private String country;
+    private String shopTheme;
+    private String profileId;
+    private String shopProfile;
 
-    public ShopBasicSetting(String shippingFee, String tax, String province, String area, String city, String country, String shop_Theme, String profileId, String shopProfile) {
-        ShippingFee = shippingFee;
+    public ShopBasicSetting(String shippingFee, String tax, String province, String area, String city, String country, String shopTheme, String profileId, String shopProfile) {
+        this.shippingFee = shippingFee;
         this.tax = tax;
-        Province = province;
-        Area = area;
-        City = city;
-        Country = country;
-        Shop_Theme = shop_Theme;
-        ProfileId = profileId;
-        ShopProfile = shopProfile;
+        this.province = province;
+        this.area = area;
+        this.city = city;
+        this.country = country;
+        this.shopTheme = shopTheme;
+        this.profileId = profileId;
+        this.shopProfile = shopProfile;
     }
 
     public ShopBasicSetting() {
     }
 
     public String getShippingFee() {
-        return ShippingFee;
+        return shippingFee;
     }
 
     public void setShippingFee(String shippingFee) {
-        ShippingFee = shippingFee;
+        this.shippingFee = shippingFee;
     }
 
     public String getTax() {
@@ -45,58 +45,58 @@ public class ShopBasicSetting {
     }
 
     public String getProvince() {
-        return Province;
+        return province;
     }
 
     public void setProvince(String province) {
-        Province = province;
+        this.province = province;
     }
 
     public String getArea() {
-        return Area;
+        return area;
     }
 
     public void setArea(String area) {
-        Area = area;
+        this.area = area;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        City = city;
+        this.city = city;
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = country;
     }
 
     public String getShop_Theme() {
-        return Shop_Theme;
+        return shopTheme;
     }
 
-    public void setShop_Theme(String shop_Theme) {
-        Shop_Theme = shop_Theme;
+    public void setShop_Theme(String shopTheme) {
+        this.shopTheme = shopTheme;
     }
 
     public String getProfileId() {
-        return ProfileId;
+        return profileId;
     }
 
     public void setProfileId(String profileId) {
-        ProfileId = profileId;
+        this.profileId = profileId;
     }
 
     public String getShopProfile() {
-        return ShopProfile;
+        return shopProfile;
     }
 
     public void setShopProfile(String shopProfile) {
-        ShopProfile = shopProfile;
+        this.shopProfile = shopProfile;
     }
 }

@@ -49,7 +49,10 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
@@ -122,7 +125,7 @@ public class ShopRegistrationFragment extends Fragment {
                     ShopRegister shopRegister = new ShopRegister();
                     shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
                     shopRegister.setShopURl("Jeally456.tello.pk");
-                    shopRegister.setRegisterPhone("03350221182");
+                    shopRegister.setRegisterPhone("03330347473");
                     shopRegister.setEmail("ali@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
@@ -163,7 +166,8 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkOTP()) {
-                    navController.navigate(R.id.action_shopRegistrationFragment_to_shopSettingFragment);
+                   // navController.navigate(R.id.action_shopRegistrationFragment_to_shopSettingFragment);
+                    getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                 }
             }
         });
@@ -913,16 +917,22 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //here we call api for set user name and image ...
-                Toast.makeText(getActivity(), "call api here...", Toast.LENGTH_SHORT).show();
-
-
-                /*if (isEditable) {
-                    userShopname.setEnabled(false);
-                    isEditable = false;
-                } else {
-                    userShopname.setEnabled(true);
-                    isEditable = true;
-                }*/
+                UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
+                updateUserAndImage.setFirstName("sharjeel");
+                updateUserAndImage.setMiddleName(" ");
+                updateUserAndImage.setLastName(" ");
+                updateUserAndImage.setProfileId(Constant.PROFILE_ID);
+                updateUserAndImage.setProfilePic(filePath);
+                shopRegistrationViewModel.userImageandName(updateUserAndImage);
+                shopRegistrationViewModel.getUpdateUserImageResponse().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
+                    @Override
+                    public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                        if (updateUserAndImage != null) {
+                            Toast.makeText(getActivity(),updateUserAndImageResponse.getStatusDetail(),Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+                // Toast.makeText(getActivity(), "call api here...", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -11,7 +11,7 @@ public class UpdateBranchAddressResponse {
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
-    @SerializedName("OTP")
+    @SerializedName("oTP")
     @Expose
     private Object otp;
     @SerializedName("data")

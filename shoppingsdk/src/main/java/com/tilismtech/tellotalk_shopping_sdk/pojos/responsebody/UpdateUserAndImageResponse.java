@@ -3,16 +3,21 @@ package com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DeleteProductResponse {
+public class UpdateUserAndImageResponse {
+
+
     @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
+    @SerializedName("profileId")
+    @Expose
+    private Object profileId;
     @SerializedName("oTP")
     @Expose
-    private Object otp;
+    private Object oTP;
     @SerializedName("data")
     @Expose
     private Object data;
@@ -33,12 +38,20 @@ public class DeleteProductResponse {
         this.statusDetail = statusDetail;
     }
 
-    public Object getOtp() {
-        return otp;
+    public Object getProfileId() {
+        return profileId;
     }
 
-    public void setOtp(Object otp) {
-        this.otp = otp;
+    public void setProfileId(Object profileId) {
+        this.profileId = profileId;
+    }
+
+    public Object getoTP() {
+        return oTP;
+    }
+
+    public void setoTP(Object oTP) {
+        this.oTP = oTP;
     }
 
     public Object getData() {

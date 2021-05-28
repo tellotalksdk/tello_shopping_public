@@ -31,6 +31,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateBranchAddre
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
@@ -59,6 +60,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddr
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
@@ -139,6 +141,41 @@ public class Repository {
         });
     }
 
+    //multipart request
+    public void updateUserName_Image(MutableLiveData<UpdateUserAndImageResponse> updateUserAndImageResponseMutableLiveData, UpdateUserAndImage updateUserAndImage) {
+
+        File file = new File(updateUserAndImage.getProfilePic());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part profilePic = MultipartBody.Part.createFormData("profilePic", file.getName(), requestBody); //for send an image as multipart
+
+        RequestBody firstName = RequestBody.create(MediaType.parse("text/plain"), updateUserAndImage.getFirstName());
+        RequestBody middleName = RequestBody.create(MediaType.parse("text/plain"), updateUserAndImage.getMiddleName());
+        RequestBody lastName = RequestBody.create(MediaType.parse("text/plain"), updateUserAndImage.getLastName());
+        RequestBody profileId = RequestBody.create(MediaType.parse("text/plain"), updateUserAndImage.getProfileId());
+
+        getRetrofitClient().updateUserImageAndName("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
+                firstName, middleName, lastName, profileId, profilePic).enqueue(new Callback<UpdateUserAndImageResponse>() {
+            @Override
+            public void onResponse(Call<UpdateUserAndImageResponse> call, Response<UpdateUserAndImageResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response != null) {
+                        UpdateUserAndImageResponse updateUserAndImage1 = response.body();
+                        updateUserAndImageResponseMutableLiveData.setValue(updateUserAndImage1);
+                    } else {
+                        updateUserAndImageResponseMutableLiveData.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateUserAndImageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+
     public void registerShop(MutableLiveData<ShopRegisterResponse> shopRegisterResponseMutableLiveData, ShopRegister shopRegister) {
         getRetrofitClient().shopRegister("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopRegister).enqueue(new Callback<ShopRegisterResponse>() {
             @Override
@@ -158,6 +195,26 @@ public class Repository {
                         shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN));
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
                     } else if (response.code() == HttpsURLConnection.HTTP_INTERNAL_ERROR) {
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("Internal Server Error...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        shopRegisterResponseMutableLiveData.setValue(null);
+                    }else if (response.code() == HttpsURLConnection.HTTP_RESET) {
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("Internal Server Error...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        shopRegisterResponseMutableLiveData.setValue(null);
+                    }else if (response.code() == HttpsURLConnection.HTTP_NOT_FOUND) {
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("Internal Server Error...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        shopRegisterResponseMutableLiveData.setValue(null);
+                    }else if (response.code() == HttpsURLConnection.HTTP_NOT_ACCEPTABLE) {
+                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
+                        shopRegisterResponse.setMessage("Internal Server Error...");
+                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        shopRegisterResponseMutableLiveData.setValue(null);
+                    }else if (response.code() == HttpsURLConnection.HTTP_BAD_REQUEST) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
                         shopRegisterResponse.setMessage("Internal Server Error...");
                         shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
@@ -183,7 +240,7 @@ public class Repository {
 
         File file = new File(shopBasicSetting.getShopProfile());
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part ShopProfile = MultipartBody.Part.createFormData("ShopProfile", file.getName(), requestBody); //for send an image as multipart
+        MultipartBody.Part ShopProfile = MultipartBody.Part.createFormData("shopProfile", file.getName(), requestBody); //for send an image as multipart
 
         RequestBody ShippingFee = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShippingFee());
         RequestBody tax = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getTax());
@@ -375,10 +432,10 @@ public class Repository {
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
 */
-        RequestBody Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProduct_Category_id());
-        RequestBody Sub_Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSub_Product_Category_id());
+        RequestBody Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getParentProductCategoryId());
+        RequestBody Sub_Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductCategoryId());
         RequestBody Title = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getTitle());
-        RequestBody Discount_Price = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getDiscount_Price());
+        RequestBody Discount_Price = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getDiscountPrice());
         RequestBody Sku = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSku());
         RequestBody Summary = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getSummary());
         RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProfileId());
@@ -435,7 +492,7 @@ public class Repository {
     }
 
     public void productList(MutableLiveData<ProductListResponse> productListResponseMutableLiveData, ProductList productList, String lastProductId) {
-        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId() , lastProductId).enqueue(new Callback<ProductListResponse>() {
+        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId(), lastProductId).enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
                 if (response != null) {
@@ -815,8 +872,8 @@ public class Repository {
         getRetrofitClient().getWalletDetailList().enqueue(new Callback<WalletListResponse>() {
             @Override
             public void onResponse(Call<WalletListResponse> call, Response<WalletListResponse> response) {
-                if(response != null){
-                    if(response.isSuccessful()){
+                if (response != null) {
+                    if (response.isSuccessful()) {
                         walletListResponseMutableLiveData.setValue(response.body());
                     }
                 }

@@ -23,16 +23,18 @@ public class ProductForEditResponse {
 
     }
 
-
         @SerializedName("status")
         @Expose
         private String status;
         @SerializedName("statusDetail")
         @Expose
         private String statusDetail;
-        @SerializedName("OTP")
+        @SerializedName("profileId")
         @Expose
-        private Object otp;
+        private Object profileId;
+        @SerializedName("oTP")
+        @Expose
+        private Object oTP;
         @SerializedName("data")
         @Expose
         private Data data;
@@ -53,12 +55,20 @@ public class ProductForEditResponse {
             this.statusDetail = statusDetail;
         }
 
-        public Object getOtp() {
-            return otp;
+        public Object getProfileId() {
+            return profileId;
         }
 
-        public void setOtp(Object otp) {
-            this.otp = otp;
+        public void setProfileId(Object profileId) {
+            this.profileId = profileId;
+        }
+
+        public Object getoTP() {
+            return oTP;
+        }
+
+        public void setoTP(Object oTP) {
+            this.oTP = oTP;
         }
 
         public Data getData() {
@@ -72,42 +82,42 @@ public class ProductForEditResponse {
 
     public class RequestList {
 
-        @SerializedName("Id")
+        @SerializedName("id")
         @Expose
         private Integer id;
-        @SerializedName("Title")
+        @SerializedName("title")
         @Expose
         private String title;
-        @SerializedName("Summary")
+        @SerializedName("summary")
         @Expose
         private String summary;
-        @SerializedName("Product_Category_id")
+        @SerializedName("productCategoryid")
         @Expose
-        private String productCategoryId;
-        @SerializedName("Sku")
+        private String productCategoryid;
+        @SerializedName("sku")
         @Expose
         private String sku;
-        @SerializedName("Price")
+        @SerializedName("price")
         @Expose
         private String price;
-        @SerializedName("Discount")
+        @SerializedName("discount")
         @Expose
         private String discount;
-        @SerializedName("ProductStatus")
-        @Expose
-        private String productStatus;
-        @SerializedName("parent_product_category_id")
+        @SerializedName("parentProductCategoryId")
         @Expose
         private String parentProductCategoryId;
-        @SerializedName("Parent_Category_Name")
+        @SerializedName("parentCategoryName")
         @Expose
         private String parentCategoryName;
-        @SerializedName("Product_Category_Name")
+        @SerializedName("productStatus")
+        @Expose
+        private String productStatus;
+        @SerializedName("productCategoryName")
         @Expose
         private String productCategoryName;
-        @SerializedName("ProfilePic")
+        @SerializedName("images")
         @Expose
-        private List<String> profilePic = null;
+        private List<String> images ;
 
         public Integer getId() {
             return id;
@@ -133,12 +143,12 @@ public class ProductForEditResponse {
             this.summary = summary;
         }
 
-        public String getProductCategoryId() {
-            return productCategoryId;
+        public String getProductCategoryid() {
+            return productCategoryid;
         }
 
-        public void setProductCategoryId(String productCategoryId) {
-            this.productCategoryId = productCategoryId;
+        public void setProductCategoryid(String productCategoryid) {
+            this.productCategoryid = productCategoryid;
         }
 
         public String getSku() {
@@ -165,14 +175,6 @@ public class ProductForEditResponse {
             this.discount = discount;
         }
 
-        public String getProductStatus() {
-            return productStatus;
-        }
-
-        public void setProductStatus(String productStatus) {
-            this.productStatus = productStatus;
-        }
-
         public String getParentProductCategoryId() {
             return parentProductCategoryId;
         }
@@ -189,6 +191,14 @@ public class ProductForEditResponse {
             this.parentCategoryName = parentCategoryName;
         }
 
+        public String getProductStatus() {
+            return productStatus;
+        }
+
+        public void setProductStatus(String productStatus) {
+            this.productStatus = productStatus;
+        }
+
         public String getProductCategoryName() {
             return productCategoryName;
         }
@@ -197,12 +207,12 @@ public class ProductForEditResponse {
             this.productCategoryName = productCategoryName;
         }
 
-        public List<String> getProfilePic() {
-            return profilePic;
+        public List<String> getImages() {
+            return images;
         }
 
-        public void setProfilePic(List<String> profilePic) {
-            this.profilePic = profilePic;
+        public void setImages(List<String> images) {
+            this.images = images;
         }
 
     }

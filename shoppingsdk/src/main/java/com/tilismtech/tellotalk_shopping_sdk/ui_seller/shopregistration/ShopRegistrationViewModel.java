@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.repository.Repository;
 
 public class ShopRegistrationViewModel extends ViewModel {
@@ -15,12 +17,14 @@ public class ShopRegistrationViewModel extends ViewModel {
     private Repository repository;
     private MutableLiveData<GenerateTokenResponse> generateTokenResponseLiveData;
     private MutableLiveData<ShopRegisterResponse> shopRegisterResponseMutableLiveData;
+    private MutableLiveData<UpdateUserAndImageResponse> updateUserAndImageResponseMutableLiveData;
 
 
     public ShopRegistrationViewModel() {
         repository = Repository.getRepository();
         generateTokenResponseLiveData = new MutableLiveData<>();
         shopRegisterResponseMutableLiveData = new MutableLiveData<>();
+        updateUserAndImageResponseMutableLiveData = new MutableLiveData<>();
     }
 
     //generateTokenCall
@@ -41,6 +45,14 @@ public class ShopRegistrationViewModel extends ViewModel {
         return shopRegisterResponseMutableLiveData;
     }
 
+    //updateuserimageandname
+    public void userImageandName(UpdateUserAndImage updateUserAndImage) {
+        repository.updateUserName_Image(updateUserAndImageResponseMutableLiveData,updateUserAndImage);
+    }
+
+    public LiveData<UpdateUserAndImageResponse> getUpdateUserImageResponse() {
+        return updateUserAndImageResponseMutableLiveData;
+    }
 
 
 }

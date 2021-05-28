@@ -173,7 +173,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
                 //Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
 
-                if (viewFullOrderResponse.getData().getRequestList() != null) {
+               /* if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
                     // et_orderStatus.setText(viewFullOrderResponse.getData().getRequestList().getOrderStatus());
                     et_orderStatus.setText("Received");
@@ -181,10 +181,10 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
                     Toast.makeText(getActivity(), "" + viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(), Toast.LENGTH_SHORT).show();
 
-                  /*  et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList());
+                  *//*  et_ProductPrice.setText(viewFullOrderResponse.getData().getRequestList());
                     et_ProductDiscountedPrice.setText(viewFullOrderResponse.getData().getRequestList());
                     et_qty.setText(viewFullOrderResponse.getData().getRequestList());
-                    et_payableAmount.setText(viewFullOrderResponse.getData().getRequestList());*/
+                    et_payableAmount.setText(viewFullOrderResponse.getData().getRequestList());*//*
 
                         et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSeller_firstname() + " " + viewFullOrderResponse.getData().getRequestList().getSeller_lastname());
                     et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSeller_mobile());
@@ -195,7 +195,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
                     et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getCompleteAddress());
                     // et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
-                }
+                }*/
             }
         });
 
