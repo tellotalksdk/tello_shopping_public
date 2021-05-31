@@ -8,6 +8,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopExistResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import retrofit2.Call;
@@ -91,9 +92,9 @@ public class TelloApiClient {
                         TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
                         TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(generateToken.getPhone());
                         TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
-                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(gtResponse.getProfileId());
+                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(generateToken.getProfileId());
 
-                        Log.i("TAG", "onResponse: " + gtResponse.getData().getRequestList().getAccessToken());
+                        Log.i("TAG", "TOKEN SAVE : " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
 
                     } else {
                         Log.i("TAG", "onResponse: " + response.code()); //500 code occur but run
@@ -104,6 +105,20 @@ public class TelloApiClient {
             @Override
             public void onFailure(Call<GTResponse> call, Throwable t) {
 
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void isShopExist(String profileId) {
+        getRetrofitClient().isShopExist("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), profileId).enqueue(new Callback<ShopExistResponse>() {
+            @Override
+            public void onResponse(Call<ShopExistResponse> call, Response<ShopExistResponse> response) {
+                response.body();
+            }
+
+            @Override
+            public void onFailure(Call<ShopExistResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });

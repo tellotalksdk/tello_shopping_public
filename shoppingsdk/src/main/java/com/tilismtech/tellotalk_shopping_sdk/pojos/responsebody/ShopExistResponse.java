@@ -3,7 +3,25 @@ package com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ShopRegisterResponse {
+import java.util.List;
+
+public class ShopExistResponse {
+
+    public class Datum {
+
+        @SerializedName("isShopExist")
+        @Expose
+        private Boolean isShopExist;
+
+        public Boolean getIsShopExist() {
+            return isShopExist;
+        }
+
+        public void setIsShopExist(Boolean isShopExist) {
+            this.isShopExist = isShopExist;
+        }
+
+    }
 
 
         @SerializedName("status")
@@ -12,15 +30,15 @@ public class ShopRegisterResponse {
         @SerializedName("statusDetail")
         @Expose
         private String statusDetail;
-        @SerializedName("profileId")
+        @SerializedName("ProfileId")
         @Expose
-        private Object profileId;
-        @SerializedName("oTP")
+        private String profileId;
+        @SerializedName("OTP")
         @Expose
-        private Object oTP;
+        private Object otp;
         @SerializedName("data")
         @Expose
-        private Object data;
+        private List<Datum> data = null;
 
         public String getStatus() {
             return status;
@@ -38,29 +56,27 @@ public class ShopRegisterResponse {
             this.statusDetail = statusDetail;
         }
 
-        public Object getProfileId() {
+        public String getProfileId() {
             return profileId;
         }
 
-        public void setProfileId(Object profileId) {
+        public void setProfileId(String profileId) {
             this.profileId = profileId;
         }
 
-        public Object getoTP() {
-            return oTP;
+        public Object getOtp() {
+            return otp;
         }
 
-        public void setoTP(Object oTP) {
-            this.oTP = oTP;
+        public void setOtp(Object otp) {
+            this.otp = otp;
         }
 
-        public Object getData() {
+        public List<Datum> getData() {
             return data;
         }
 
-        public void setData(Object data) {
+        public void setData(List<Datum> data) {
             this.data = data;
         }
-
-
 }

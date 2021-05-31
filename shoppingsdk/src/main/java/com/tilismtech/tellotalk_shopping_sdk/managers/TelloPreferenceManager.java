@@ -11,6 +11,10 @@ public class TelloPreferenceManager {
     public static final String PROFILE_ID = "profile_id";
     public static final String SHOP_URI = "shop_uri";
     public static final String OWNER_NAME = "owner_name";
+    public static final String FIRST_NAME = "first_name";
+    public static final String MIDDLE_NAME = "middle_name";
+    public static final String LAST_NAME = "last_name";
+    public static final String EMAIL = "email";
 
     private final SharedPreferences.Editor editor;
     private final SharedPreferences sharedPreferences;
@@ -25,6 +29,49 @@ public class TelloPreferenceManager {
     private TelloPreferenceManager(Context myCtx) {
         sharedPreferences = myCtx.getSharedPreferences(PREFRENSE_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+    }
+
+    //firstname
+
+    public void saveFirstName(String firstName) {
+        editor.putString(FIRST_NAME, firstName);
+        editor.apply();
+    }
+
+    public String getFirstName() {
+        return sharedPreferences.getString(FIRST_NAME, "");
+    }
+
+    //middle name
+
+    public void saveMiddleName(String middleName) {
+        editor.putString(MIDDLE_NAME, middleName);
+        editor.apply();
+    }
+
+    public String getMiddleName() {
+        return sharedPreferences.getString(MIDDLE_NAME, "");
+    }
+
+    //last name
+
+    public void saveLastName(String lastName) {
+        editor.putString(LAST_NAME, lastName);
+        editor.apply();
+    }
+
+    public String getLastName() {
+        return sharedPreferences.getString(LAST_NAME, "");
+    }
+
+    //email
+    public void saveEmail(String email) {
+        editor.putString(EMAIL, email);
+        editor.apply();
+    }
+
+    public String getEmail() {
+        return sharedPreferences.getString(EMAIL, "");
     }
 
     //access token

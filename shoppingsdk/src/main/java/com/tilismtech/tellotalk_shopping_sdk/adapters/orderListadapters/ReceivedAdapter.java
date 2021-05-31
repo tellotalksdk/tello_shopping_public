@@ -25,8 +25,13 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatus
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.ReceivedItemViewHolder> {
 
@@ -58,9 +63,20 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
         GetOrderByStatusResponse.Request receivedItemPojo = requestList.get(position);
 
         holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
-        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        holder.customerName.setText(receivedItemPojo.getFirstname() + " " + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
         holder.address.setText(receivedItemPojo.getCompleteAddress());
-        holder.date.setText(Utility.parseDateToddMMyyyy(receivedItemPojo.getOrderdate()));
+   /*     DateFormat originalFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("d MMM , yyyy / hh:m");
+        Date date = null;
+        try {
+            date = originalFormat.parse(receivedItemPojo.getOrderdate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+
+*/
+        holder.date.setText(receivedItemPojo.getOrderdate());
         holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
 
     }

@@ -3,7 +3,25 @@ package com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ShopRegisterResponse {
+import java.util.List;
+
+public class TotalProductResponse {
+
+    public class Data {
+
+        @SerializedName("requestList")
+        @Expose
+        private RequestList requestList;
+
+        public RequestList getRequestList() {
+            return requestList;
+        }
+
+        public void setRequestList(RequestList requestList) {
+            this.requestList = requestList;
+        }
+
+    }
 
 
         @SerializedName("status")
@@ -20,7 +38,7 @@ public class ShopRegisterResponse {
         private Object oTP;
         @SerializedName("data")
         @Expose
-        private Object data;
+        private Data data;
 
         public String getStatus() {
             return status;
@@ -54,13 +72,45 @@ public class ShopRegisterResponse {
             this.oTP = oTP;
         }
 
-        public Object getData() {
+        public Data getData() {
             return data;
         }
 
-        public void setData(Object data) {
+        public void setData(Data data) {
             this.data = data;
         }
 
 
+
+    public class Request {
+
+        @SerializedName("productCount")
+        @Expose
+        private Integer productCount;
+
+        public Integer getProductCount() {
+            return productCount;
+        }
+
+        public void setProductCount(Integer productCount) {
+            this.productCount = productCount;
+        }
+
+    }
+
+    public class RequestList {
+
+        @SerializedName("requestList")
+        @Expose
+        private List<Request> requestList = null;
+
+        public List<Request> getRequestList() {
+            return requestList;
+        }
+
+        public void setRequestList(List<Request> requestList) {
+            this.requestList = requestList;
+        }
+
+    }
 }

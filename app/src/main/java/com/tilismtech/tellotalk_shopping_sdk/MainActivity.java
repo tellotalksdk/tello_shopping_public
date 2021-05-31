@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloApiClient;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
@@ -17,11 +18,21 @@ public class MainActivity extends AppCompatActivity {
 
     Button button, client;
     AccessTokenPojo accessTokenPojo;
+    EditText fN, mN, lN, cN, pI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //
+     /*   fN = findViewById(R.id.fName);
+        mN = findViewById(R.id.mName);
+        lN = findViewById(R.id.lName);
+        cN = findViewById(R.id.contact);
+        pI = findViewById(R.id.profileid);*/
+
+
+        //
         /*accessTokenPojo = new AccessTokenPojo();
 
         //user name + password + grant type always remain same other will change...
@@ -53,11 +64,15 @@ public class MainActivity extends AppCompatActivity {
                 generateToken.setMiddlename("Mehdi");
                 generateToken.setLastname("Rizvi");
                 generateToken.setPhone("03330347473");
+           /*     generateToken.setProfileId(pI.getText().toString());
+                generateToken.setFirstname(fN.getText().toString());
+                generateToken.setMiddlename(mN.getText().toString());
+                generateToken.setLastname(lN.getText().toString());
+                generateToken.setPhone(cN.getText().toString());*/
                 generateToken.setEmail("Mehdi2399@gmail.com");
 
-
-
                 telloApiClient.generateTokenResponse(generateToken, MainActivity.this);
+                // telloApiClient.isShopExist("3F64D77CB1BA4A3CA6CF9B9D786D4A41");
                 startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
 
                 /* boolean gettingAhead = TelloApiClient.initializeShoppingSDK();

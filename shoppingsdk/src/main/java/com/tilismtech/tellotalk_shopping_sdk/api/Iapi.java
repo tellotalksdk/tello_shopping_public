@@ -32,9 +32,12 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryL
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopExistResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
@@ -43,6 +46,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndIma
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 
+import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -97,7 +101,29 @@ public interface Iapi {
                                                             @Part MultipartBody.Part profilePic);
 
 
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
+    @GET("api/shop/ShopExist")
+    Call<ShopExistResponse> isShopExist(@Header("Authorization") String token,
+                                        @Query("profileId") String profileid
+    );
+
+    //getShopNameImageAPI
+    @GET("api/shop/getShopNameandImage")
+    Call<ShopNameAndImageResponse> getShopNameAndImage(@Header("Authorization") String token, @Query("profileId") String profileId);
+
+    //getProductCount
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
+    @GET("api/product/getTotalProductCount")
+    Call<TotalProductResponse> getTotalProductCount(@Header("Authorization") String token, @Query("profileId") String profileId);
+
     // returning null right now ...
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
     @POST("api/shop/RegisterShop")
     Call<ShopRegisterResponse> shopRegister(@Header("Authorization") String token,
                                             @Body ShopRegister shopRegister

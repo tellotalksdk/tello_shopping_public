@@ -52,10 +52,13 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryL
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopExistResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatusResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
@@ -175,6 +178,56 @@ public class Repository {
 
     }
 
+    public void getShopNameAndImage(MutableLiveData<ShopNameAndImageResponse> shopNameAndImageResponseMutableLiveData) {
+        getRetrofitClient().getShopNameAndImage("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<ShopNameAndImageResponse>() {
+            @Override
+            public void onResponse(Call<ShopNameAndImageResponse> call, Response<ShopNameAndImageResponse> response) {
+                if(response != null){
+                    if(response.isSuccessful()){
+                        shopNameAndImageResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ShopNameAndImageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getProductCount(MutableLiveData<TotalProductResponse> totalProductResponseMutableLiveData){
+        getRetrofitClient().getTotalProductCount("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),Constant.PROFILE_ID).enqueue(new Callback<TotalProductResponse>() {
+            @Override
+            public void onResponse(Call<TotalProductResponse> call, Response<TotalProductResponse> response) {
+                if(response != null){
+                    if(response.isSuccessful()){
+                        totalProductResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TotalProductResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void isShopExist(String profileId) {
+        getRetrofitClient().isShopExist("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), profileId).enqueue(new Callback<ShopExistResponse>() {
+            @Override
+            public void onResponse(Call<ShopExistResponse> call, Response<ShopExistResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ShopExistResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     public void registerShop(MutableLiveData<ShopRegisterResponse> shopRegisterResponseMutableLiveData, ShopRegister shopRegister) {
         getRetrofitClient().shopRegister("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopRegister).enqueue(new Callback<ShopRegisterResponse>() {
@@ -186,38 +239,38 @@ public class Repository {
                         shopRegisterResponseMutableLiveData.setValue(response.body());
                     } else if (response.code() == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("Token Expired.Please Try Again...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_UNAUTHORIZED));
+                        //    shopRegisterResponse.setMessage("Token Expired.Please Try Again...");
+                        //   shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_UNAUTHORIZED));
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
                     } else if (response.code() == HttpsURLConnection.HTTP_FORBIDDEN) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("User Already Register...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN));
+                        //   shopRegisterResponse.setMessage("User Already Register...");
+                        //   shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN));
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
                     } else if (response.code() == HttpsURLConnection.HTTP_INTERNAL_ERROR) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("Internal Server Error...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        // shopRegisterResponse.setMessage("Internal Server Error...");
+                        // shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
                         shopRegisterResponseMutableLiveData.setValue(null);
-                    }else if (response.code() == HttpsURLConnection.HTTP_RESET) {
+                    } else if (response.code() == HttpsURLConnection.HTTP_RESET) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("Internal Server Error...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        //shopRegisterResponse.setMessage("Internal Server Error...");
+                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
                         shopRegisterResponseMutableLiveData.setValue(null);
-                    }else if (response.code() == HttpsURLConnection.HTTP_NOT_FOUND) {
+                    } else if (response.code() == HttpsURLConnection.HTTP_NOT_FOUND) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("Internal Server Error...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        //shopRegisterResponse.setMessage("Internal Server Error...");
+                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
                         shopRegisterResponseMutableLiveData.setValue(null);
-                    }else if (response.code() == HttpsURLConnection.HTTP_NOT_ACCEPTABLE) {
+                    } else if (response.code() == HttpsURLConnection.HTTP_NOT_ACCEPTABLE) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("Internal Server Error...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        //shopRegisterResponse.setMessage("Internal Server Error...");
+                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
                         shopRegisterResponseMutableLiveData.setValue(null);
-                    }else if (response.code() == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                    } else if (response.code() == HttpsURLConnection.HTTP_BAD_REQUEST) {
                         ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        shopRegisterResponse.setMessage("Internal Server Error...");
-                        shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
+                        //shopRegisterResponse.setMessage("Internal Server Error...");
+                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
                         shopRegisterResponseMutableLiveData.setValue(null);
                     }
                 }

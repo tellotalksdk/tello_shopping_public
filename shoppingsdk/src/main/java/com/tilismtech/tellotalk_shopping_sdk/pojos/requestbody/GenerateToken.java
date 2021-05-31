@@ -6,25 +6,25 @@ import com.google.gson.annotations.SerializedName;
 public class GenerateToken {
 
 
-    @SerializedName("Grant_username")
+    @SerializedName("grantUsername")
     @Expose
     private String grantUsername;
-    @SerializedName("Grant_Password")
+    @SerializedName("grantPassword")
     @Expose
     private String grantPassword;
-    @SerializedName("grant_type")
+    @SerializedName("grantType")
     @Expose
     private String grantType;
     @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("firstname")
+    @SerializedName("firstName")
     @Expose
     private String firstname;
-    @SerializedName("middlename")
+    @SerializedName("middleName")
     @Expose
     private String middlename;
-    @SerializedName("lastname")
+    @SerializedName("lastName")
     @Expose
     private String lastname;
     @SerializedName("phone")

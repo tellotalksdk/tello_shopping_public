@@ -43,6 +43,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
@@ -54,7 +55,9 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductRes
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
@@ -103,6 +106,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
+        setShopNameAndImage();
+        setTotalProductOnActionBar();
         productList = findViewById(R.id.productList);
         filePaths = new ArrayList<>();
 
@@ -804,14 +809,28 @@ public class ShopLandingActivity extends AppCompatActivity {
 
     }
 
+    private void setShopNameAndImage() {
+        shopLandingPageViewModel.shopImageAndName();
+        shopLandingPageViewModel.getShopNameAndImage().observe(ShopLandingActivity.this, new Observer<ShopNameAndImageResponse>() {
+            @Override
+            public void onChanged(ShopNameAndImageResponse shopNameAndImageResponse) {
+                if (shopNameAndImageResponse != null) {
+                    //Toast.makeText(ShopLandingActivity.this, shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                    shopName.setText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
+                    Glide.with(ShopLandingActivity.this).load(shopNameAndImageResponse.getData().getRequestList().get(0).getShopProfile()).into(profileImage);
+                }
+            }
+        });
+    }
+
     public void hidecongratsdialog() {
         dialogCongratulation.dismiss();
     }
 
     public void setTotalProductOnActionBar() {
-        ProductList productList1 = new ProductList();
+       /* ProductList productList1 = new ProductList();
         productList1.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
-        shopLandingPageViewModel.productList(productList1,"0");
+        shopLandingPageViewModel.productList(productList1, "0");
         shopLandingPageViewModel.getProductList().observe(ShopLandingActivity.this, new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
@@ -821,6 +840,16 @@ public class ShopLandingActivity extends AppCompatActivity {
                     } else {
                         totalProducts.setText("0" + " Product");
                     }
+                }
+            }
+        });*/
+
+        shopLandingPageViewModel.shopTotalProducts();
+        shopLandingPageViewModel.getShopTotalProducts().observe(ShopLandingActivity.this, new Observer<TotalProductResponse>() {
+            @Override
+            public void onChanged(TotalProductResponse totalProductResponse) {
+                if(totalProductResponse != null){
+                    totalProducts.setText(totalProductResponse.getData().getRequestList().getRequestList().get(0).getProductCount() + " " + "Products");
                 }
             }
         });
@@ -1125,9 +1154,6 @@ public class ShopLandingActivity extends AppCompatActivity {
         number5.setText(String.valueOf(requestList.get(0).getCancel()));
         number6.setText(String.valueOf(requestList.get(0).getAll()));
     }
-
-
-
 
 
 }

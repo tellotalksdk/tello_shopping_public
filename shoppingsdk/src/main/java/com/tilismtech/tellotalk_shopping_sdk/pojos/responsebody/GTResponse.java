@@ -28,10 +28,10 @@ public class GTResponse {
     @SerializedName("statusDetail")
     @Expose
     private String statusDetail;
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("OTP")
+    @SerializedName("oTP")
     @Expose
     private Object otp;
     @SerializedName("data")

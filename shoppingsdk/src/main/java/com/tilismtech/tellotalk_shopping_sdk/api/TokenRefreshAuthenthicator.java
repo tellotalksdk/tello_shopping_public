@@ -35,12 +35,13 @@ public class TokenRefreshAuthenthicator implements Authenticator {
     }
 
     private String getUpdatedToken() {
-        getRetrofitClient().generateToken("Basit@tilismtech.com", "basit@1234", "password", Constant.PROFILE_ID, "Hassan", "Muddassir", "Rizvi", "03330347473", "Hasan2399@gmail.com").enqueue(new Callback<GenerateTokenResponse>() {
+        getRetrofitClient().generateToken("Basit@tilismtech.com", "basit@1234", "password", Constant.PROFILE_ID, "Hassan", "Muddassir", "Rizvi", Constant.CONTACT_NUMBER, "Hasan2399@gmail.com").enqueue(new Callback<GenerateTokenResponse>() {
             @Override
             public void onResponse(Call<GenerateTokenResponse> call, retrofit2.Response<GenerateTokenResponse> response) {
                 if (response.isSuccessful()) {
                     GenerateTokenResponse generateTokenResponse = response.body();
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(Constant.PROFILE_ID);
+                    Log.i("TAG", "onResponse: " + "trigger after 401");
                 }
             }
 

@@ -62,6 +62,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductRes
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
@@ -142,6 +143,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         // shopLandingPageViewModel1 = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        setShopNameAndImage();
         initRV(); // this recycler view set product list on screen
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
@@ -263,13 +265,25 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                   // Toast.makeText(getActivity(), "end of recycler ...", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getActivity(), "end of recycler ...", Toast.LENGTH_SHORT).show();
                     //initRV();
                     updateRecyclerView();
                 }
             }
         });
 
+    }
+
+    private void setShopNameAndImage() {
+        shopLandingPageViewModel.shopImageAndName();
+        shopLandingPageViewModel.getShopNameAndImage().observe(getActivity(), new Observer<ShopNameAndImageResponse>() {
+            @Override
+            public void onChanged(ShopNameAndImageResponse shopNameAndImageResponse) {
+                if (shopNameAndImageResponse != null) {
+                    Toast.makeText(getActivity(), shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void updateRecyclerView() {
@@ -282,7 +296,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (response.body() != null) {
                         ProductListResponse productListResponse = response.body();
                         addProduct_btn.setVisibility(View.GONE);
-                        if(productListResponse.getData().getRequestList() != null) {
+                        if (productListResponse.getData().getRequestList() != null) {
                             productListAppend.addAll(productListResponse.getData().getRequestList());
                             productListAdapter.notifyDataSetChanged();
                             lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());

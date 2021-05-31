@@ -18,7 +18,9 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCo
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.repository.Repository;
 
@@ -33,7 +35,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     private MutableLiveData<IsProductActiveResponse> isProductActiveResponseMutableLiveData;
     private MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData;
     private MutableLiveData<DeleteProductResponse> deleteProductResponseMutableLiveData;
-
+    private MutableLiveData<ShopNameAndImageResponse> shopNameAndImageResponseMutableLiveData;
+    private MutableLiveData<TotalProductResponse> totalProductResponseMutableLiveData;
 
     private Repository repository;
 
@@ -47,10 +50,12 @@ public class ShopLandingPageViewModel extends ViewModel {
         isProductActiveResponseMutableLiveData = new MutableLiveData<>();
         this.getOrderStatusCountResponseMutableLiveData = new MutableLiveData<>();
         this.deleteProductResponseMutableLiveData = new MutableLiveData<>();
+        this.shopNameAndImageResponseMutableLiveData = new MutableLiveData<>();
+        this.totalProductResponseMutableLiveData = new MutableLiveData<>();
         this.repository = Repository.getRepository();
     }
 
-    //get parent list from server as live data
+    //get parent list from server as live data0
     public void parentCategories() {
         repository.postTogetParentCategories(parentCategoryListResponseMutableLiveData);
     }
@@ -87,8 +92,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get product list to show on product landing  page ...
-    public void productList(ProductList productList,String lastProductId) {
-        repository.productList(productListResponseMutableLiveData, productList , lastProductId);
+    public void productList(ProductList productList, String lastProductId) {
+        repository.productList(productListResponseMutableLiveData, productList, lastProductId);
     }
 
     public LiveData<ProductListResponse> getProductList() {
@@ -129,6 +134,24 @@ public class ShopLandingPageViewModel extends ViewModel {
 
     public MutableLiveData<DeleteProductResponse> deleteProductResponse() {
         return this.deleteProductResponseMutableLiveData;
+    }
+
+    //get shop name and image
+    public void shopImageAndName() {
+        repository.getShopNameAndImage(shopNameAndImageResponseMutableLiveData);
+    }
+
+    public LiveData<ShopNameAndImageResponse> getShopNameAndImage() {
+        return shopNameAndImageResponseMutableLiveData;
+    }
+
+    //get total products
+    public void shopTotalProducts() {
+        repository.getProductCount(totalProductResponseMutableLiveData);
+    }
+
+    public LiveData<TotalProductResponse> getShopTotalProducts() {
+        return totalProductResponseMutableLiveData;
     }
 
 

@@ -124,9 +124,9 @@ public class ShopRegistrationFragment extends Fragment {
 
                     ShopRegister shopRegister = new ShopRegister();
                     shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
-                    shopRegister.setShopURl("Jeally456.tello.pk");
+                    shopRegister.setShopURl(et_shop_name.getText().toString().trim() + ".tello.pk");
                     shopRegister.setRegisterPhone("03330347473");
-                    shopRegister.setEmail("ali@gmail.com");
+                    shopRegister.setEmail("sharjeel@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
                     shopRegister.setShopName(et_shop_name.getText().toString());
@@ -139,18 +139,18 @@ public class ShopRegistrationFragment extends Fragment {
                         @Override
                         public void onChanged(ShopRegisterResponse shopRegisterResponse) {
                             if (shopRegisterResponse != null) {
-                                if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_UNAUTHORIZED))) {
+                            /*    if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_UNAUTHORIZED))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_FORBIDDEN))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR))) {
                                     Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                                }*/
 
                                /* if(shopRegisterResponse.getStatus().equals("-6")){
                                     Toast.makeText(getActivity(), "Shop already Exist on this Profile.", Toast.LENGTH_SHORT).show();
                                 }*/
-
+                                Toast.makeText(getActivity(), "found...", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
                             }
@@ -166,7 +166,7 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkOTP()) {
-                   // navController.navigate(R.id.action_shopRegistrationFragment_to_shopSettingFragment);
+                    // navController.navigate(R.id.action_shopRegistrationFragment_to_shopSettingFragment);
                     getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                 }
             }
@@ -928,7 +928,7 @@ public class ShopRegistrationFragment extends Fragment {
                     @Override
                     public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                         if (updateUserAndImage != null) {
-                            Toast.makeText(getActivity(),updateUserAndImageResponse.getStatusDetail(),Toast.LENGTH_SHORT);
+                            Toast.makeText(getActivity(), updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
                         }
                     }
                 });
