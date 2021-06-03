@@ -43,6 +43,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatu
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 
@@ -108,6 +109,22 @@ public interface Iapi {
     Call<ShopExistResponse> isShopExist(@Header("Authorization") String token,
                                         @Query("profileId") String profileid
     );
+
+    //OTP related APIs
+    @GET("api/shop/VerifyOTP")
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
+    Call<VerifyOtpResponse> verifyOTP(@Header("Authorization") String token, @Query("Mobile") String Mobile, @Query("OTPCode") String OTPCode);
+
+    @GET("api/user/sendOTP")
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
+    Call<VerifyOtpResponse> resendOTP(@Header("Authorization") String token, @Query("Mobile") String Mobile);
+
+
+    //end Otp apis
 
     //getShopNameImageAPI
     @GET("api/shop/getShopNameandImage")
@@ -205,6 +222,9 @@ public interface Iapi {
     @GET("api/Product/GetProductforedit")
     Call<ProductForEditResponse> getProductForEdit(@Header("Authorization") String token, @Query("ProfileId") String ProfileId,
                                                    @Query("ProductId") String ProductId);
+
+    @GET("GetProductByPID")
+    Call<?> getProductById(@Header("Authorization") String token, @Query("ProductId") String ProductId);
 
     //update rider information api
     @Headers({"Accept: */*",

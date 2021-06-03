@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--<EditText
+    <EditText
         android:id="@+id/fName"
         android:hint="first Name"
         android:layout_width="match_parent"
@@ -39,7 +39,6 @@
         android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A43"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
--->
 
 
     <Button

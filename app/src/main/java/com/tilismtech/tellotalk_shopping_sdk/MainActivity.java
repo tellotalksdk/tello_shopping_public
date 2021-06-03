@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //
-     /*   fN = findViewById(R.id.fName);
+        fN = findViewById(R.id.fName);
         mN = findViewById(R.id.mName);
         lN = findViewById(R.id.lName);
         cN = findViewById(R.id.contact);
-        pI = findViewById(R.id.profileid);*/
+        pI = findViewById(R.id.profileid);
 
 
         //
@@ -59,16 +59,16 @@ public class MainActivity extends AppCompatActivity {
                 generateToken.setGrantUsername("Basit@tilismtech.com");
                 generateToken.setGrantPassword("basit@1234");
                 generateToken.setGrantType("password");
-                generateToken.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43");
+              /*  generateToken.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43");
                 generateToken.setFirstname("Ali");
                 generateToken.setMiddlename("Mehdi");
                 generateToken.setLastname("Rizvi");
-                generateToken.setPhone("03330347473");
-           /*     generateToken.setProfileId(pI.getText().toString());
+                generateToken.setPhone("03330347473");*/
+                generateToken.setProfileId(pI.getText().toString());
                 generateToken.setFirstname(fN.getText().toString());
                 generateToken.setMiddlename(mN.getText().toString());
                 generateToken.setLastname(lN.getText().toString());
-                generateToken.setPhone(cN.getText().toString());*/
+                generateToken.setPhone(cN.getText().toString());
                 generateToken.setEmail("Mehdi2399@gmail.com");
 
                 telloApiClient.generateTokenResponse(generateToken, MainActivity.this);

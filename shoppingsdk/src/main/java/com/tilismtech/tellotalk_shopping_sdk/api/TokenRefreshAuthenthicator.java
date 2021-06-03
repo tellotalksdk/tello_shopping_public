@@ -28,19 +28,21 @@ public class TokenRefreshAuthenthicator implements Authenticator {
     public Request authenticate(@Nullable Route route, @NotNull Response response) throws IOException {
 
         String updatedToken = getUpdatedToken();
+        Log.i("TAG", "authenticate: ");
 
         return response.request().newBuilder()
-                .header("Authorization", "Bearer" + updatedToken)
+                .header("Authorization", "Bearer " + updatedToken)
                 .build();
     }
 
     private String getUpdatedToken() {
-        getRetrofitClient().generateToken("Basit@tilismtech.com", "basit@1234", "password", Constant.PROFILE_ID, "Hassan", "Muddassir", "Rizvi", Constant.CONTACT_NUMBER, "Hasan2399@gmail.com").enqueue(new Callback<GenerateTokenResponse>() {
+        getRetrofitClient().generateToken("Basit@tilismtech.com", "basit@1234", "password", Constant.PROFILE_ID, "Hassan", "Muddassir", "Rizvi", "03330347473", "Hasan2399@gmail.com").enqueue(new Callback<GenerateTokenResponse>() {
             @Override
             public void onResponse(Call<GenerateTokenResponse> call, retrofit2.Response<GenerateTokenResponse> response) {
                 if (response.isSuccessful()) {
                     GenerateTokenResponse generateTokenResponse = response.body();
-                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(Constant.PROFILE_ID);
+                    // TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(Constant.PROFILE_ID);
+                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(generateTokenResponse.getAccessToken());
                     Log.i("TAG", "onResponse: " + "trigger after 401");
                 }
             }
@@ -48,9 +50,10 @@ public class TokenRefreshAuthenthicator implements Authenticator {
             @Override
             public void onFailure(Call<GenerateTokenResponse> call, Throwable t) {
                 Log.d("TAG", "onFailure: " + t.getMessage());
+                Log.i("TAG", "onFailure: " + "trigger after 401");
             }
         });
 
-        return TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId();
+        return TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken();
     }
 }

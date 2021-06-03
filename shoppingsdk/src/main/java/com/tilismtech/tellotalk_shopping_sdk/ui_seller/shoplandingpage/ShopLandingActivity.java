@@ -3,6 +3,7 @@ package com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -240,6 +241,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 chooseMultipleProductsIV = dialogAddProduct.findViewById(R.id.chooseMultipleProductsIV);
                 LLimages = dialogAddProduct.findViewById(R.id.LLimages);
                 isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
+                isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
 
 
                 chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
@@ -818,6 +820,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     //Toast.makeText(ShopLandingActivity.this, shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     shopName.setText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
                     Glide.with(ShopLandingActivity.this).load(shopNameAndImageResponse.getData().getRequestList().get(0).getShopProfile()).into(profileImage);
+                    shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
                 }
             }
         });
@@ -1064,7 +1067,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                     imageUri = data.getData();
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     ImageView iv = inflater.findViewById(R.id.iv);
-                    filepath = getImagePath(imageUri);
+                     filepath = getImagePath(imageUri);
+                   // filepath = getPath(ShopLandingActivity.this,imageUri);
                     filePaths.add(filepath);
                     iv.setImageURI(imageUri);
                     LLimages.addView(inflater);

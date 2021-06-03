@@ -10,6 +10,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImag
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.repository.Repository;
 
 public class ShopRegistrationViewModel extends ViewModel {
@@ -18,6 +19,8 @@ public class ShopRegistrationViewModel extends ViewModel {
     private MutableLiveData<GenerateTokenResponse> generateTokenResponseLiveData;
     private MutableLiveData<ShopRegisterResponse> shopRegisterResponseMutableLiveData;
     private MutableLiveData<UpdateUserAndImageResponse> updateUserAndImageResponseMutableLiveData;
+    private MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData;
+    private MutableLiveData<VerifyOtpResponse> resendOtpResponseMutableLiveData;
 
 
     public ShopRegistrationViewModel() {
@@ -25,6 +28,8 @@ public class ShopRegistrationViewModel extends ViewModel {
         generateTokenResponseLiveData = new MutableLiveData<>();
         shopRegisterResponseMutableLiveData = new MutableLiveData<>();
         updateUserAndImageResponseMutableLiveData = new MutableLiveData<>();
+        verifyOtpResponseMutableLiveData = new MutableLiveData<>();
+        resendOtpResponseMutableLiveData = new MutableLiveData<>();
     }
 
     //generateTokenCall
@@ -47,12 +52,29 @@ public class ShopRegistrationViewModel extends ViewModel {
 
     //updateuserimageandname
     public void userImageandName(UpdateUserAndImage updateUserAndImage) {
-        repository.updateUserName_Image(updateUserAndImageResponseMutableLiveData,updateUserAndImage);
+        repository.updateUserName_Image(updateUserAndImageResponseMutableLiveData, updateUserAndImage);
     }
 
     public LiveData<UpdateUserAndImageResponse> getUpdateUserImageResponse() {
         return updateUserAndImageResponseMutableLiveData;
     }
 
+    //verifyOTP
+    public void verifyOTP(String otp) {
+        repository.verifyOTP(verifyOtpResponseMutableLiveData, otp);
+    }
+
+    public LiveData<VerifyOtpResponse> getVerifyOtp() {
+        return verifyOtpResponseMutableLiveData;
+    }
+
+    //resendOTP
+    public void resendOTP(String otp) {
+        repository.verifyOTP(resendOtpResponseMutableLiveData, otp);
+    }
+
+    public LiveData<VerifyOtpResponse> getresendOtp() {
+        return resendOtpResponseMutableLiveData;
+    }
 
 }

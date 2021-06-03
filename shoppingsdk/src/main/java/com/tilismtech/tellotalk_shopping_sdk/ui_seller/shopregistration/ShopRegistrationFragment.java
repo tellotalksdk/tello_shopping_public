@@ -52,6 +52,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
@@ -87,7 +88,7 @@ public class ShopRegistrationFragment extends Fragment {
     boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11;
     Dialog dialogImage;
     Uri imageUri;
-    String filePath = "";
+    String filePath = "", otp;
 
 
     @Override
@@ -110,14 +111,19 @@ public class ShopRegistrationFragment extends Fragment {
         initViews(view);
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
 
-
+        //region initiliation
         requestforPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
                     RL.setVisibility(View.VISIBLE);
                     requestforPin.setVisibility(View.GONE);
+                    //startCountDown();
+                    requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
+                    requestAgain.setTextColor(Color.BLACK);
+                    requestAgain.setClickable(false);
                     startCountDown();
+                    counter++;
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
 
                     // mobileNumber = 0 + d2.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
@@ -161,13 +167,28 @@ public class ShopRegistrationFragment extends Fragment {
                 Utility.hideKeyboard(getActivity(), v);
             }
         });
+        //endregion
 
         done_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkOTP()) {
-                    // navController.navigate(R.id.action_shopRegistrationFragment_to_shopSettingFragment);
-                    getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                    otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
+                    shopRegistrationViewModel.verifyOTP(otp);
+                    shopRegistrationViewModel.getVerifyOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
+                        @Override
+                        public void onChanged(VerifyOtpResponse verifyOtpResponse) {
+                            if (verifyOtpResponse != null) {
+                                if (verifyOtpResponse.getStatus().equals("0")) {
+                                    Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                } else if (verifyOtpResponse.getStatus().equals("-1")) {
+                                    Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
+
+                      getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                 }
             }
         });
@@ -176,6 +197,7 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (counter < 2) {
+                    // here we call resend opt
                     requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
                     requestAgain.setTextColor(Color.BLACK);
                     requestAgain.setClickable(false);
@@ -1079,7 +1101,7 @@ public class ShopRegistrationFragment extends Fragment {
 
     private void startCountDown() {
 
-        new CountDownTimer(2000, 1000) {
+        new CountDownTimer(45000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 countDown.setText("in 00 : " + millisUntilFinished / 1000);

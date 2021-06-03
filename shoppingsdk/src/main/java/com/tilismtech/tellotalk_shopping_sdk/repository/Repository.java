@@ -64,6 +64,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateOrderStatu
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateRiderInfoResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
@@ -182,8 +183,8 @@ public class Repository {
         getRetrofitClient().getShopNameAndImage("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<ShopNameAndImageResponse>() {
             @Override
             public void onResponse(Call<ShopNameAndImageResponse> call, Response<ShopNameAndImageResponse> response) {
-                if(response != null){
-                    if(response.isSuccessful()){
+                if (response != null) {
+                    if (response.isSuccessful()) {
                         shopNameAndImageResponseMutableLiveData.setValue(response.body());
                     }
                 }
@@ -196,12 +197,12 @@ public class Repository {
         });
     }
 
-    public void getProductCount(MutableLiveData<TotalProductResponse> totalProductResponseMutableLiveData){
-        getRetrofitClient().getTotalProductCount("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),Constant.PROFILE_ID).enqueue(new Callback<TotalProductResponse>() {
+    public void getProductCount(MutableLiveData<TotalProductResponse> totalProductResponseMutableLiveData) {
+        getRetrofitClient().getTotalProductCount("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<TotalProductResponse>() {
             @Override
             public void onResponse(Call<TotalProductResponse> call, Response<TotalProductResponse> response) {
-                if(response != null){
-                    if(response.isSuccessful()){
+                if (response != null) {
+                    if (response.isSuccessful()) {
                         totalProductResponseMutableLiveData.setValue(response.body());
                     }
                 }
@@ -286,6 +287,43 @@ public class Repository {
         });
 
     }
+
+    public void verifyOTP(MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData, String otp) {
+        getRetrofitClient().verifyOTP("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.CONTACT_NUMBER, otp).enqueue(new Callback<VerifyOtpResponse>() {
+            @Override
+            public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        verifyOtpResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerifyOtpResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp) {
+        getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.CONTACT_NUMBER).enqueue(new Callback<VerifyOtpResponse>() {
+            @Override
+            public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        resendOtp.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerifyOtpResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     public void setShopBasicSetting(MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData, ShopBasicSetting shopBasicSetting, Context myContext) {
 

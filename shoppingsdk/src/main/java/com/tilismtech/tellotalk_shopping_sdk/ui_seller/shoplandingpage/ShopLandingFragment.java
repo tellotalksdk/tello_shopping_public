@@ -142,7 +142,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
-        // shopLandingPageViewModel1 = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         setShopNameAndImage();
         initRV(); // this recycler view set product list on screen
         uriList = new ArrayList<>();
@@ -342,9 +341,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     loadingDialog.dismissDialog();
 
                 }
+                loadingDialog.dismissDialog();
+
             }
+
         });
 
+        loadingDialog.dismissDialog();
 
     }
 
@@ -820,7 +823,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     et_ProductID.setText(String.valueOf(productForEditResponse.getData().getRequestList().getId()));
                     et_OriginalPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getPrice()));
                     et_DiscountedPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getDiscount()));
-                    // Toast.makeText(getActivity(), productForEditResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
