@@ -6,7 +6,9 @@ import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
@@ -237,42 +239,11 @@ public class Repository {
                 if (response != null) {
                     if (response.isSuccessful()) {
                         ShopRegisterResponse shopRegisterResponse = response.body();
-                        shopRegisterResponseMutableLiveData.setValue(response.body());
-                    } else if (response.code() == HttpsURLConnection.HTTP_UNAUTHORIZED) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        //    shopRegisterResponse.setMessage("Token Expired.Please Try Again...");
-                        //   shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_UNAUTHORIZED));
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
-                    } else if (response.code() == HttpsURLConnection.HTTP_FORBIDDEN) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        //   shopRegisterResponse.setMessage("User Already Register...");
-                        //   shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_FORBIDDEN));
-                        shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
-                    } else if (response.code() == HttpsURLConnection.HTTP_INTERNAL_ERROR) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        // shopRegisterResponse.setMessage("Internal Server Error...");
-                        // shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
-                        shopRegisterResponseMutableLiveData.setValue(null);
-                    } else if (response.code() == HttpsURLConnection.HTTP_RESET) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        //shopRegisterResponse.setMessage("Internal Server Error...");
-                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
-                        shopRegisterResponseMutableLiveData.setValue(null);
-                    } else if (response.code() == HttpsURLConnection.HTTP_NOT_FOUND) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        //shopRegisterResponse.setMessage("Internal Server Error...");
-                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
-                        shopRegisterResponseMutableLiveData.setValue(null);
-                    } else if (response.code() == HttpsURLConnection.HTTP_NOT_ACCEPTABLE) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        //shopRegisterResponse.setMessage("Internal Server Error...");
-                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
-                        shopRegisterResponseMutableLiveData.setValue(null);
-                    } else if (response.code() == HttpsURLConnection.HTTP_BAD_REQUEST) {
-                        ShopRegisterResponse shopRegisterResponse = new ShopRegisterResponse();
-                        //shopRegisterResponse.setMessage("Internal Server Error...");
-                        //shopRegisterResponse.setCode(String.valueOf(HttpsURLConnection.HTTP_INTERNAL_ERROR));
-                        shopRegisterResponseMutableLiveData.setValue(null);
+                    }else{
+                        ShopRegisterResponse message = new Gson().fromJson(response.errorBody().charStream(), ShopRegisterResponse.class);
+                        Log.i("TAG", "onResponse: " + message.toString());
+                        shopRegisterResponseMutableLiveData.setValue(message);
                     }
                 }
 
@@ -285,6 +256,18 @@ public class Repository {
                 t.printStackTrace();
             }
         });
+
+   /*     getRetrofitClient().shopRegister("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopRegister).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                response.body().toString();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+             t.printStackTrace();
+             }
+        });*/
 
     }
 

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class GTResponse {
 
+
     public class Data {
 
         @SerializedName("requestList")
@@ -33,7 +34,7 @@ public class GTResponse {
     private String profileId;
     @SerializedName("oTP")
     @Expose
-    private Object otp;
+    private Object oTP;
     @SerializedName("data")
     @Expose
     private Data data;
@@ -62,12 +63,12 @@ public class GTResponse {
         this.profileId = profileId;
     }
 
-    public Object getOtp() {
-        return otp;
+    public Object getoTP() {
+        return oTP;
     }
 
-    public void setOtp(Object otp) {
-        this.otp = otp;
+    public void setoTP(Object oTP) {
+        this.oTP = oTP;
     }
 
     public Data getData() {
@@ -77,6 +78,7 @@ public class GTResponse {
     public void setData(Data data) {
         this.data = data;
     }
+
 
 
     public class RequestList {

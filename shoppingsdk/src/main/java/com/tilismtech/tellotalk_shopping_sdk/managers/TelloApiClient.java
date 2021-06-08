@@ -3,7 +3,9 @@ package com.tilismtech.tellotalk_shopping_sdk.managers;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
@@ -82,29 +84,37 @@ public class TelloApiClient {
         return true;
     }
 
-    public static void generateTokenResponse(GenerateToken generateToken, Context myCtx) {
+    public static void generateTokenResponse(GenerateToken generateToken, Context myCtx, OnSuccessListener onSuccessListener) {
         getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
             @Override
             public void onResponse(Call<GTResponse> call, Response<GTResponse> response) {
                 if (response != null) {
+
                     if (response.isSuccessful()) {
                         GTResponse gtResponse = response.body();
-                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
-                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(generateToken.getPhone());
-                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
-                        TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(generateToken.getProfileId());
+                        if (gtResponse != null) {
+                            if (gtResponse.getData() != null) {
+                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
+                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(generateToken.getPhone());
+                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
+                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(generateToken.getProfileId());
+                                onSuccessListener.onSuccess(gtResponse);
+                                Constant c = new Constant();
+                                c.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
 
-                        Log.i("TAG", "TOKEN SAVE : " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
-
+                                Log.i("TAG", "TOKEN SAVE : " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
+                            }
+                        }
                     } else {
-                        Log.i("TAG", "onResponse: " + response.code()); //500 code occur but run
+                        GTResponse message = new Gson().fromJson(response.errorBody().charStream(), GTResponse.class);
+                        Log.i("TAG", "onResponse: " + message.toString());
+                        onSuccessListener.onSuccess(message);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<GTResponse> call, Throwable t) {
-
                 t.printStackTrace();
             }
         });

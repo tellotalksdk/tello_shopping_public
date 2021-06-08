@@ -54,6 +54,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResp
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingFragment;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
@@ -111,14 +112,13 @@ public class ShopRegistrationFragment extends Fragment {
         initViews(view);
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
 
-        //region initiliation
+        //region requestforpin
         requestforPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
                     RL.setVisibility(View.VISIBLE);
                     requestforPin.setVisibility(View.GONE);
-                    //startCountDown();
                     requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
                     requestAgain.setTextColor(Color.BLACK);
                     requestAgain.setClickable(false);
@@ -126,37 +126,28 @@ public class ShopRegistrationFragment extends Fragment {
                     counter++;
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
 
-                    // mobileNumber = 0 + d2.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
+                    mobileNumber = d1.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
 
                     ShopRegister shopRegister = new ShopRegister();
                     shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
                     shopRegister.setShopURl(et_shop_name.getText().toString().trim() + ".tello.pk");
-                    shopRegister.setRegisterPhone("03330347473");
+                    // shopRegister.setRegisterPhone(mobileNumber.toString().trim());
+                    shopRegister.setRegisterPhone("03302469683");
                     shopRegister.setEmail("sharjeel@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
                     shopRegister.setShopName(et_shop_name.getText().toString());
-
-                    // shopRegister.setShopURl(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
-                    //  shopRegister.setRegisterPhone(mobileNumber);
 
                     shopRegistrationViewModel.postShopRegister(shopRegister);
                     shopRegistrationViewModel.getShopResponse().observe(getActivity(), new Observer<ShopRegisterResponse>() {
                         @Override
                         public void onChanged(ShopRegisterResponse shopRegisterResponse) {
                             if (shopRegisterResponse != null) {
-                            /*    if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_UNAUTHORIZED))) {
-                                    Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_FORBIDDEN))) {
-                                    Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else if (shopRegisterResponse.getCode().equals(String.valueOf(HttpURLConnection.HTTP_INTERNAL_ERROR))) {
-                                    Toast.makeText(getActivity(), shopRegisterResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                }*/
-
-                               /* if(shopRegisterResponse.getStatus().equals("-6")){
-                                    Toast.makeText(getActivity(), "Shop already Exist on this Profile.", Toast.LENGTH_SHORT).show();
-                                }*/
-                                Toast.makeText(getActivity(), "found...", Toast.LENGTH_SHORT).show();
+                                if ("-6".equals(shopRegisterResponse.getStatus())) {
+                                    Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
                             }
@@ -169,6 +160,7 @@ public class ShopRegistrationFragment extends Fragment {
         });
         //endregion
 
+        //region done_btn
         done_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,19 +172,23 @@ public class ShopRegistrationFragment extends Fragment {
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
                             if (verifyOtpResponse != null) {
                                 if (verifyOtpResponse.getStatus().equals("0")) {
-                                    Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "OTP verified...", Toast.LENGTH_SHORT).show();
+                                   // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                                    navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
                     });
-
-                      getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                    // getActivity().startActivity(new Intent(getActivity(), ShopSettingFragment.class));
+                    navController.navigate(R.id.shopSettingFragment);
                 }
             }
         });
+        //endregion
 
+        //region requestAgain
         requestAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,6 +199,15 @@ public class ShopRegistrationFragment extends Fragment {
                     requestAgain.setClickable(false);
                     startCountDown();
                     counter++;
+                    shopRegistrationViewModel.resendOTP(otp);
+                    shopRegistrationViewModel.getresendOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
+                        @Override
+                        public void onChanged(VerifyOtpResponse verifyOtpResponse) {
+                            if (verifyOtpResponse != null) {
+
+                            }
+                        }
+                    });
                 } else {
                     requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_dark_selected));
                     requestAgain.setTextColor(Color.WHITE);
@@ -211,16 +216,18 @@ public class ShopRegistrationFragment extends Fragment {
                 }
             }
         });
+        //endregion
 
+        //region backbutton
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
             }
         });
+        //endregion
 
-        //et_shop_name.setKeyListener(DigitsKeyListener.getInstance("abcdefghijklmnopqrstuvwxyz1234567890 "));
-
+        //region shopNameAnimation
         et_shop_name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -245,8 +252,9 @@ public class ShopRegistrationFragment extends Fragment {
 
             }
         });
+        //endregion
 
-
+        //region mobileNumber
         insertDigitreflection.setText(mobileNumberReflection);
 
         d1.addTextChangedListener(new TextWatcher() {
@@ -828,6 +836,9 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        //endregion
+
+        //region OTP
         otp_one.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -932,9 +943,9 @@ public class ShopRegistrationFragment extends Fragment {
 
             }
         });
+        //endregion
 
-        //enable disable image
-
+        //region updateUserName_Image
         iv_editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -945,6 +956,7 @@ public class ShopRegistrationFragment extends Fragment {
                 updateUserAndImage.setLastName(" ");
                 updateUserAndImage.setProfileId(Constant.PROFILE_ID);
                 updateUserAndImage.setProfilePic(filePath);
+                shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(getActivity()); //need to remove observer here to stop multiple call of apis
                 shopRegistrationViewModel.userImageandName(updateUserAndImage);
                 shopRegistrationViewModel.getUpdateUserImageResponse().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
                     @Override
@@ -954,10 +966,11 @@ public class ShopRegistrationFragment extends Fragment {
                         }
                     }
                 });
-                // Toast.makeText(getActivity(), "call api here...", Toast.LENGTH_SHORT).show();
             }
         });
+        //endregion
 
+        //region mobileOperatorsetOnSpinner
         mobileOpt.add("Select");
         mobileOpt.add("Ufone");
         mobileOpt.add("Telenor");
@@ -965,14 +978,16 @@ public class ShopRegistrationFragment extends Fragment {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, mobileOpt);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item); // The drop down vieww
         spinner_operator.setAdapter(spinnerArrayAdapter);
+        //endregion
 
+        //region Storage_Permissions
         iv_user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkPermissions();
             }
         });
-
+        //endregion
     }
 
     private void checkPermissions() {

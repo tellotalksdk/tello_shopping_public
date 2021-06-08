@@ -11,6 +11,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.ReceivedItemViewHolder> {
+public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.ReceivedItemViewHolder> implements Filterable {
 
     List<ReceivedItemPojo> receivedItemPojos;
     Context myCtx;
@@ -42,10 +44,15 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
     OnOrderClickListener onOrderClickListener;
     //
     List<GetOrderByStatusResponse.Request> requestList;
+    List<GetOrderByStatusResponse.Request> requestItemsFull;
+    List<GetOrderByStatusResponse.Request> filterlist;
 
 
     public ReceivedAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.requestList = receivedItemPojos;
+        if (requestList != null) {
+            this.requestItemsFull = new ArrayList<>(this.requestList);
+        }
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -89,6 +96,43 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
             return 0;
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return receivedItemFilter;
+    }
+
+
+    public Filter receivedItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filterlist = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterlist.addAll(requestItemsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetOrderByStatusResponse.Request item : requestItemsFull) {
+                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterlist;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            requestList.clear();
+            requestList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+
 
     public class ReceivedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

@@ -356,9 +356,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                             @Override
                             public void onChanged(ShopTimingResponse shopTimingResponse) {
                                 if (shopTimingResponse != null) {
-                                    // Toast.makeText(getActivity(), " " + shopTimingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                    // Toast.makeText(getActivity(), " " + shopTimingResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                    // Toast.makeText(getActivity(), "Shop Timing has been set successfully...", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                     daysSettingList.clear();
                                     showTimings();

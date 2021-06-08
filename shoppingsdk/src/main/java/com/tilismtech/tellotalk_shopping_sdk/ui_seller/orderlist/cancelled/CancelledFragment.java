@@ -127,7 +127,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     if (getArguments() != null) {
                         if (cancelledAdapter != null) {
                             cancelledAdapter.getFilter().filter(getArguments().getString("query"));
-                            Toast.makeText(getActivity(), " cancelled fragment  : " + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+                            //  Toast.makeText(getActivity(), " cancelled fragment  : " + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getActivity(), "cancelled fragment is null ...", Toast.LENGTH_SHORT).show();
                         }
@@ -223,7 +223,6 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getAbsolutePath()))));
 
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -244,7 +243,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
                     et_orderStatus.setText("Paid");
-                    et_orderDate.setText( " " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
+                    et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     productDetailLL.removeAllViews();
                     if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
@@ -272,12 +271,12 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     }
 
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " +viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
                     et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
                     et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
                     et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
-                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile());
                     et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress());
                     et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());

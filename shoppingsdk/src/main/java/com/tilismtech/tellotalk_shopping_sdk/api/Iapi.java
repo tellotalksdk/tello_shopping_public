@@ -138,16 +138,23 @@ public interface Iapi {
     Call<TotalProductResponse> getTotalProductCount(@Header("Authorization") String token, @Query("profileId") String profileId);
 
     // returning null right now ...
-    @Headers({"Accept: application/json",
+    /*@Headers({"Accept: application/json",
             "Content-Type: application/json"}
-    )
+    )*/
     @POST("api/shop/RegisterShop")
     Call<ShopRegisterResponse> shopRegister(@Header("Authorization") String token,
                                             @Body ShopRegister shopRegister
     );
-
+ /*   @Headers({
+            "Content-Type: application/json"}
+    )
+    @POST("api/shop/RegisterShop")
+    Call<ResponseBody> shopRegister(@Header("Authorization") String token,
+                                            @Body ShopRegister shopRegister
+    );*/
 
     //shopsetting
+
     @Headers({
             "Accept: application/json"
     })

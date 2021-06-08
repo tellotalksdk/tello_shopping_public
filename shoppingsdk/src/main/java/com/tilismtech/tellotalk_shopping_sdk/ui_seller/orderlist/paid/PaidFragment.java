@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AcceptedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.PaidAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
@@ -98,7 +99,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
 
 
         if (getArguments() != null) {
-            Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+       //     Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_paid_orders = view.findViewById(R.id.recycler_paid_orders);
@@ -116,9 +117,17 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
-                    //  Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     paidAdapter = new PaidAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_paid_orders.setAdapter(paidAdapter);
+
+                    if (getArguments() != null) {
+                        if (paidAdapter != null) {
+                            paidAdapter.getFilter().filter(getArguments().getString("query"));
+                        } else {
+                            Toast.makeText(getActivity(), "Accepted Adapter is null ...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
                 }
             }
         });

@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloApiClient;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_client.homescreen.ClientHomeActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //
-        fN = findViewById(R.id.fName);
+       /* fN = findViewById(R.id.fName);
         mN = findViewById(R.id.mName);
         lN = findViewById(R.id.lName);
         cN = findViewById(R.id.contact);
-        pI = findViewById(R.id.profileid);
+        pI = findViewById(R.id.profileid);*/
 
 
         //
@@ -59,21 +64,32 @@ public class MainActivity extends AppCompatActivity {
                 generateToken.setGrantUsername("Basit@tilismtech.com");
                 generateToken.setGrantPassword("basit@1234");
                 generateToken.setGrantType("password");
-              /*  generateToken.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A43");
+                generateToken.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A987");
                 generateToken.setFirstname("Ali");
                 generateToken.setMiddlename("Mehdi");
                 generateToken.setLastname("Rizvi");
-                generateToken.setPhone("03330347473");*/
-                generateToken.setProfileId(pI.getText().toString());
+                generateToken.setPhone("03302469683");
+                generateToken.setEmail("Mehdi2399@gmail.com");
+
+                telloApiClient.generateTokenResponse(generateToken, MainActivity.this, new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object object) {
+                        GTResponse gtResponseError = (GTResponse) object;
+                        if ("-6".equals(gtResponseError.getStatus().toString())) {
+                            Toast.makeText(MainActivity.this, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
+                        }
+                    }
+                });
+
+               /* generateToken.setProfileId(pI.getText().toString());
                 generateToken.setFirstname(fN.getText().toString());
                 generateToken.setMiddlename(mN.getText().toString());
                 generateToken.setLastname(lN.getText().toString());
-                generateToken.setPhone(cN.getText().toString());
-                generateToken.setEmail("Mehdi2399@gmail.com");
+                generateToken.setPhone(cN.getText().toString());*/
 
-                telloApiClient.generateTokenResponse(generateToken, MainActivity.this);
                 // telloApiClient.isShopExist("3F64D77CB1BA4A3CA6CF9B9D786D4A41");
-                startActivity(new Intent(MainActivity.this, ShopRegistrationActivity.class));
 
                 /* boolean gettingAhead = TelloApiClient.initializeShoppingSDK();
                 if (gettingAhead) {

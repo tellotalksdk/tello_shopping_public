@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AcceptedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.DispatchedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
@@ -98,7 +99,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
 
         if (getArguments() != null) {
-            Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_dispatched_orders = view.findViewById(R.id.recycler_dispatched_orders);
@@ -107,11 +108,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
 
     private void initReceivedItems() {
-       /* receivedItemPojos = new ArrayList<>();
-        receivedItemPojos.add(new ReceivedItemPojo("Order # 102345", "Ahmed \n1234567", "Unit # 102 , Parsa Tower , Karachi"));
-        receivedItemPojos.add(new ReceivedItemPojo("Order # 102345", "Ahmed \n1234567", "Unit # 102 , Parsa Tower , Karachi"));
-        receivedItemPojos.add(new ReceivedItemPojo("Order # 102345", "Ahmed \n1234567", "Unit # 102 , Parsa Tower , Karachi"));
-       */
+
         OrderByStatus orderByStatus = new OrderByStatus();
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("3"); //for dispatched order list
@@ -121,10 +118,16 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
-                    //Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     dispatchedAdapter = new DispatchedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_dispatched_orders.setAdapter(dispatchedAdapter);
 
+                    if (getArguments() != null) {
+                        if (dispatchedAdapter != null) {
+                            dispatchedAdapter.getFilter().filter(getArguments().getString("query"));
+                        } else {
+                            Toast.makeText(getActivity(), "Dispatched Adapter is null ...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });
@@ -197,7 +200,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
                     et_orderStatus.setText("Paid");
-                    et_orderDate.setText( " " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
+                    et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     productDetailLL.removeAllViews();
                     if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
@@ -225,12 +228,12 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
                     }
 
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " +viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
                     et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
                     et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
                     et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
-                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile());
                     et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress());
                     et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());

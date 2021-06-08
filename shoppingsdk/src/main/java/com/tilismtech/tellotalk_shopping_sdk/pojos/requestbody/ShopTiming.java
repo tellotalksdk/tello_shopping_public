@@ -10,19 +10,19 @@ public class ShopTiming {
 
     public class DaysSetting {
 
-        @SerializedName("SettingId")
+        @SerializedName("id")
         @Expose
         private Integer settingId;
-        @SerializedName("Shop_Day_Name")
+        @SerializedName("shopDayName")
         @Expose
         private String shopDayName;
-        @SerializedName("Shop_Start_Time")
+        @SerializedName("shopStartTime")
         @Expose
         private String shopStartTime;
-        @SerializedName("Shop_End_Time")
+        @SerializedName("shopEndTime")
         @Expose
         private String shopEndTime;
-        @SerializedName("Shop_Status_Daywise")
+        @SerializedName("shopStatusDaywise")
         @Expose
         private String shopStatusDaywise;
 
@@ -69,7 +69,7 @@ public class ShopTiming {
     }
 
 
-        @SerializedName("ProfileId")
+        @SerializedName("profileId")
         @Expose
         private String profileId;
         @SerializedName("DaysSetting")

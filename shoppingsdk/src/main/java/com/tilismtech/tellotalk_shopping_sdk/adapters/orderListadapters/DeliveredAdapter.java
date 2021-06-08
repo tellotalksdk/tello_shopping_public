@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,18 +25,25 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.DeliveredItemViewHolder> {
+public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.DeliveredItemViewHolder> implements Filterable {
 
-    List<GetOrderByStatusResponse.Request> deliveredItems;
+
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
 
+    List<GetOrderByStatusResponse.Request> deliveredItems;
+    List<GetOrderByStatusResponse.Request> deliveredItemsFULL;
+    List<GetOrderByStatusResponse.Request> filterlist;
 
     public DeliveredAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.deliveredItems = receivedItemPojos;
+        if (deliveredItems != null) {
+            this.deliveredItemsFULL = new ArrayList<>(this.deliveredItems);
+        }
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -77,6 +86,42 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
             return 0;
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return deliveredItemFilter;
+    }
+
+    public Filter deliveredItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filterlist = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterlist.addAll(deliveredItemsFULL);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetOrderByStatusResponse.Request item : deliveredItemsFULL) {
+                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterlist;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            deliveredItems.clear();
+            deliveredItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+
 
     public class DeliveredItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -144,7 +189,7 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
                 onOrderClickListener.OnRiderInfoUpdateListener(deliveredItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.orderStatus) {
                 onOrderClickListener.OnStatusChange(5, deliveredItems.get(getAdapterPosition()).getOrderid());
-            } else if(v.getId() == R.id.edit_rider_info){
+            } else if (v.getId() == R.id.edit_rider_info) {
                 onOrderClickListener.OnRiderInfoUpdateListener(deliveredItems.get(getAdapterPosition()).getOrderid());
             }
         }

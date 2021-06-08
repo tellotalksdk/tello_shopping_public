@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,18 +26,25 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHolder> {
+public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHolder> implements Filterable {
 
-    List<GetOrderByStatusResponse.Request> paidItems;
+
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
 
+    List<GetOrderByStatusResponse.Request> paidItems;
+    List<GetOrderByStatusResponse.Request> paidItemsFULL;
+    List<GetOrderByStatusResponse.Request> filterlist;
 
     public PaidAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.paidItems = receivedItemPojos;
+        if (paidItems != null) {
+            this.paidItemsFULL = new ArrayList<>(this.paidItems);
+        }
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -79,6 +88,41 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
             return 0;
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return paidItemFilter;
+    }
+
+    public Filter paidItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filterlist = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterlist.addAll(paidItemsFULL);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetOrderByStatusResponse.Request item : paidItemsFULL) {
+                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterlist;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            paidItems.clear();
+            paidItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public class PaidItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

@@ -740,7 +740,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 totalProducts.setVisibility(View.GONE);
                 tv_addproducts.setVisibility(View.GONE);
 
-                switch (currentTab) {
+                /*switch (currentTab) {
                     case RECEIVED:
                         Bundle bundle = new Bundle();
                         bundle.putString("query", query);
@@ -776,12 +776,50 @@ public class ShopLandingActivity extends AppCompatActivity {
                         bundle6.putString("query", query);
                         navController.navigate(R.id.allFragment, bundle6);
                         break;
-                }
+                }*/
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                switch (currentTab) {
+                    case RECEIVED:
+                        Bundle bundle = new Bundle();
+                        bundle.putString("query", newText);
+                        navController.navigate(R.id.receivedFragment, bundle);
+                        break;
+                    case ACCEPTED:
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("query", newText);
+                        navController.navigate(R.id.acceptedFragment, bundle1);
+                        break;
+                    case DISPATCHED:
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putString("query", newText);
+                        navController.navigate(R.id.dispatchedFragment, bundle2);
+                        break;
+                    case DELIVERED:
+                        Bundle bundle3 = new Bundle();
+                        bundle3.putString("query", newText);
+                        navController.navigate(R.id.deliveredFragment, bundle3);
+                        break;
+                    case PAID:
+                        Bundle bundle4 = new Bundle();
+                        bundle4.putString("query", newText);
+                        navController.navigate(R.id.paidFragment, bundle4);
+                        break;
+                    case CANCEL:
+                        Bundle bundle5 = new Bundle();
+                        bundle5.putString("query", newText);
+                        navController.navigate(R.id.cancelledFragment, bundle5);
+                        break;
+                    case ALL:
+                        Bundle bundle6 = new Bundle();
+                        bundle6.putString("query", newText);
+                        navController.navigate(R.id.allFragment, bundle6);
+                        break;
+                }
+                
                 return false;
             }
 
@@ -851,7 +889,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         shopLandingPageViewModel.getShopTotalProducts().observe(ShopLandingActivity.this, new Observer<TotalProductResponse>() {
             @Override
             public void onChanged(TotalProductResponse totalProductResponse) {
-                if(totalProductResponse != null){
+                if (totalProductResponse != null) {
                     totalProducts.setText(totalProductResponse.getData().getRequestList().getRequestList().get(0).getProductCount() + " " + "Products");
                 }
             }
@@ -1067,8 +1105,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                     imageUri = data.getData();
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     ImageView iv = inflater.findViewById(R.id.iv);
-                     filepath = getImagePath(imageUri);
-                   // filepath = getPath(ShopLandingActivity.this,imageUri);
+                    filepath = getImagePath(imageUri);
+                    // filepath = getPath(ShopLandingActivity.this,imageUri);
                     filePaths.add(filepath);
                     iv.setImageURI(imageUri);
                     LLimages.addView(inflater);

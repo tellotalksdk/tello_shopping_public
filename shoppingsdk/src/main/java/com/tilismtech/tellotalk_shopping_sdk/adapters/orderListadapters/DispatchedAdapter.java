@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,18 +26,26 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.DispatchedItemViewHolder> {
+public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.DispatchedItemViewHolder> implements Filterable {
 
-    List<GetOrderByStatusResponse.Request> dispatchedItems;
+
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
 
+    List<GetOrderByStatusResponse.Request> dispatchedItems;
+    List<GetOrderByStatusResponse.Request> dispatchedItemsFULL;
+    List<GetOrderByStatusResponse.Request> filterlist;
+
 
     public DispatchedAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.dispatchedItems = receivedItemPojos;
+        if (dispatchedItems != null) {
+            this.dispatchedItemsFULL = new ArrayList<>(this.dispatchedItems);
+        }
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
@@ -46,6 +56,41 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_orderlist_dispatched_items, parent, false);
         return new DispatchedItemViewHolder(v, this.onOrderClickListener);
     }
+
+    @Override
+    public Filter getFilter() {
+        return dispatchedItemFilter;
+    }
+
+    public Filter dispatchedItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filterlist = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterlist.addAll(dispatchedItemsFULL);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetOrderByStatusResponse.Request item : dispatchedItemsFULL) {
+                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterlist;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            dispatchedItems.clear();
+            dispatchedItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     @Override
     public void onBindViewHolder(@NonNull DispatchedItemViewHolder holder, int position) {
@@ -136,6 +181,7 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
             return 0;
         }
     }
+
 
     public class DispatchedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

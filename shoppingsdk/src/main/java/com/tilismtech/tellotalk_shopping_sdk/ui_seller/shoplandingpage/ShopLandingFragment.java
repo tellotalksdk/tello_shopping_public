@@ -200,7 +200,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 uploadProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
 
                         if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
@@ -242,9 +241,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                     }
                                 }
                             });
-
-
-                            // navController.navigate(R.id.shopLandingFragment);
                         }
                     }
                 });
@@ -252,7 +248,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 Window window = dialogAddProduct.getWindow();
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
                 window.setAttributes(wlp);
                 dialogAddProduct.show();
             }
@@ -279,7 +274,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(ShopNameAndImageResponse shopNameAndImageResponse) {
                 if (shopNameAndImageResponse != null) {
-                    Toast.makeText(getActivity(), shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getActivity(), shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -325,12 +320,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (productListResponse.getData().getRequestList() != null) {
                         addProduct_btn.setVisibility(View.GONE);
                         productListAppend.addAll(productListResponse.getData().getRequestList());
-                        //productListAppend.clear();
-                       /* for (ProductListResponse.Request request : productListResponse.getData().getRequestList()) {
-                            productListAppend.add(request);
-                        }*/
-
-
                         productListAdapter = new ProductListAdapter(productListAppend, getActivity(), getReference());
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
                         recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
@@ -339,12 +328,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         loadingDialog.dismissDialog();
                     }
                     loadingDialog.dismissDialog();
-
                 }
                 loadingDialog.dismissDialog();
-
             }
-
         });
 
         loadingDialog.dismissDialog();

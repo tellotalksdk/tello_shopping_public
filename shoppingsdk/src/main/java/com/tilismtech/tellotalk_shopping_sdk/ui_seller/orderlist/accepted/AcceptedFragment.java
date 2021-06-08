@@ -110,17 +110,14 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
-                    // Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-
                     acceptedAdapter = new AcceptedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_accepted_orders.setAdapter(acceptedAdapter);
 
                     if (getArguments() != null) {
                         if (acceptedAdapter != null) {
                             acceptedAdapter.getFilter().filter(getArguments().getString("query"));
-                            Toast.makeText(getActivity(), " accepted fragment : " + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getActivity(), "accepted fragment is null ...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Accepted Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -194,7 +191,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
                     et_orderStatus.setText("Paid");
-                    et_orderDate.setText( " " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
+                    et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     productDetailLL.removeAllViews();
                     if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
@@ -222,12 +219,12 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                     }
 
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " +viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
                     et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
                     et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
                     et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
-                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile());
                     et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress());
                     et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());

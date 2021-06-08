@@ -37,6 +37,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
     //
     List<GetOrderByStatusResponse.Request> acceptedItems;
     List<GetOrderByStatusResponse.Request> acceptedItemsFULL;
+    List<GetOrderByStatusResponse.Request> filterlist;
 
 
     public AcceptedAdapter(List<GetOrderByStatusResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
@@ -85,7 +86,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
     public Filter acceptedItemFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<GetOrderByStatusResponse.Request> filterlist = new ArrayList<>();
+            filterlist = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filterlist.addAll(acceptedItemsFULL);
@@ -110,6 +111,10 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
             notifyDataSetChanged();
         }
     };
+
+    public int getFilterSize(){
+        return filterlist.size();
+    }
 
     public class AcceptedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

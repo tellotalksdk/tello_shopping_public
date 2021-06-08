@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AcceptedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.ReceivedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
@@ -84,7 +85,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
 
         if (getArguments() != null) {
-            Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_received_orders = view.findViewById(R.id.recycler_received_orders);
@@ -103,11 +104,17 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
-                    //Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                    if(getOrderByStatusResponse.getData() != null) {
-                        receivedAdapter = new ReceivedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
-                        recycler_received_orders.setAdapter(receivedAdapter);
+                    receivedAdapter = new ReceivedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
+                    recycler_received_orders.setAdapter(receivedAdapter);
+
+                    if (getArguments() != null) {
+                        if (receivedAdapter != null) {
+                            receivedAdapter.getFilter().filter(getArguments().getString("query"));
+                        } else {
+                            Toast.makeText(getActivity(), "Received Adapter is null ...", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                 }
             }
         });

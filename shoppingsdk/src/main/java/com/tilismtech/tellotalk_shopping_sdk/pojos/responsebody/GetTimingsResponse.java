@@ -72,7 +72,7 @@ public class GetTimingsResponse {
 
     public class Request {
 
-        @SerializedName("id")
+        @SerializedName("settingId")
         @Expose
         private Integer settingId;
         @SerializedName("shopDayName")
