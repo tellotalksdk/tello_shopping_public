@@ -17,8 +17,8 @@
 
 
     <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
-        <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom</item>
     </style>
 
     <!-- Animation for dialog box -->
@@ -33,6 +33,7 @@
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/bg_spinner</item>
     </style>
+
 
 
 

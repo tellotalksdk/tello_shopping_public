@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     android:elevation="8dp"
-    app:cardCornerRadius="15dp">
+    android:foreground="@drawable/bg_roundrect_ripple_light_border"
+    app:cardCornerRadius="23dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,7 +64,7 @@
 
         <TextView
             android:id="@+id/address"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/customerName"
             android:layout_alignParentStart="true"
@@ -72,6 +73,16 @@
             android:text="Unit 304 3rd Unit Floor\nParsa Tower,PECHS sharah e faisal "
             android:textColor="@android:color/black"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_locate"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:paddingBottom="3dp"
+            android:src="@drawable/ic_address"
+            android:layout_toLeftOf="@+id/lldetail"
+            android:layout_alignBottom="@+id/address"
+            android:layout_toRightOf="@+id/address"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -148,14 +159,14 @@
 
         <ImageView
             android:id="@+id/edit_rider_info"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_below="@+id/address"
             android:layout_marginStart="5dp"
             android:layout_marginTop="18dp"
             android:layout_toLeftOf="@+id/spinner_moveto"
             android:layout_toRightOf="@+id/addRiderInfo1"
-            android:src="@drawable/ic_edit"
+            android:src="@drawable/ic_edit_order_list"
             android:visibility="visible" />
 
         <Spinner

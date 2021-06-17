@@ -10,12 +10,14 @@ import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBank;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProductImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetOrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
@@ -35,12 +37,16 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ViewFullOrder;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBankResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddWalletResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.BankListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBankResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
@@ -49,6 +55,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatus
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetUserBankDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
@@ -99,7 +106,6 @@ public class Repository {
 
     public String boundary;
 
-
     public static Repository getRepository() {
         if (repository == null) {
             repository = new Repository();
@@ -107,6 +113,7 @@ public class Repository {
         return repository;
     }
 
+    //region firstTokenApi
     public void generateTokenresponse(MutableLiveData<GenerateTokenResponse> generateTokenResponseLiveData, String UN, String Pass, String Grant_type, String profile, String firstName, String middleName, String lastName, String phone, String email) {
         getRetrofitClient().generateToken(UN, Pass, Grant_type, profile, firstName, middleName, lastName, phone, email).enqueue(new Callback<GenerateTokenResponse>() {
             @Override
@@ -123,8 +130,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
-    //second api
+    //region secondTokenApi
     public void generateTokenResponse(MutableLiveData<GTResponse> gtResponseMutableLiveData, GenerateToken generateToken) {
         getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
             @Override
@@ -146,8 +154,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
-    //multipart request
+    //region updateUserNameImage
     public void updateUserName_Image(MutableLiveData<UpdateUserAndImageResponse> updateUserAndImageResponseMutableLiveData, UpdateUserAndImage updateUserAndImage) {
 
         File file = new File(updateUserAndImage.getProfilePic());
@@ -180,7 +189,9 @@ public class Repository {
         });
 
     }
+    //endregion
 
+    //region getShopNameandImage
     public void getShopNameAndImage(MutableLiveData<ShopNameAndImageResponse> shopNameAndImageResponseMutableLiveData) {
         getRetrofitClient().getShopNameAndImage("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<ShopNameAndImageResponse>() {
             @Override
@@ -198,7 +209,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region productCount
     public void getProductCount(MutableLiveData<TotalProductResponse> totalProductResponseMutableLiveData) {
         getRetrofitClient().getTotalProductCount("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<TotalProductResponse>() {
             @Override
@@ -216,7 +229,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region shopExistence
     public void isShopExist(String profileId) {
         getRetrofitClient().isShopExist("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), profileId).enqueue(new Callback<ShopExistResponse>() {
             @Override
@@ -230,8 +245,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
-
+    //region registerShop
     public void registerShop(MutableLiveData<ShopRegisterResponse> shopRegisterResponseMutableLiveData, ShopRegister shopRegister) {
         getRetrofitClient().shopRegister("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopRegister).enqueue(new Callback<ShopRegisterResponse>() {
             @Override
@@ -240,7 +256,7 @@ public class Repository {
                     if (response.isSuccessful()) {
                         ShopRegisterResponse shopRegisterResponse = response.body();
                         shopRegisterResponseMutableLiveData.setValue(shopRegisterResponse);
-                    }else{
+                    } else {
                         ShopRegisterResponse message = new Gson().fromJson(response.errorBody().charStream(), ShopRegisterResponse.class);
                         Log.i("TAG", "onResponse: " + message.toString());
                         shopRegisterResponseMutableLiveData.setValue(message);
@@ -256,21 +272,10 @@ public class Repository {
                 t.printStackTrace();
             }
         });
-
-   /*     getRetrofitClient().shopRegister("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopRegister).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                response.body().toString();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-             t.printStackTrace();
-             }
-        });*/
-
     }
+    //endregion
 
+    //region verifyOtp
     public void verifyOTP(MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData, String otp) {
         getRetrofitClient().verifyOTP("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.CONTACT_NUMBER, otp).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
@@ -288,7 +293,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region reSendotp
     public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp) {
         getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.CONTACT_NUMBER).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
@@ -302,12 +309,13 @@ public class Repository {
 
             @Override
             public void onFailure(Call<VerifyOtpResponse> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
+    //endregion
 
-
+    //region shopBasicSetting
     public void setShopBasicSetting(MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData, ShopBasicSetting shopBasicSetting, Context myContext) {
 
         //  boundary = UUID.randomUUID().toString();
@@ -353,7 +361,9 @@ public class Repository {
         System.out.println();
 
     }
+    //endregion
 
+    //region getTimings
     public void getTimings(MutableLiveData<GetTimingsResponse> getTimingsResponseMutableLiveData, GetTimings getTimings) {
         getRetrofitClient().getShopTiming("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), getTimings.getProfileId()).enqueue(new Callback<GetTimingsResponse>() {
             @Override
@@ -362,6 +372,8 @@ public class Repository {
                     if (response.isSuccessful()) {
                         GetTimingsResponse getTimingsResponse = response.body();
                         getTimingsResponseMutableLiveData.setValue(getTimingsResponse);
+                    } else {
+                        getTimingsResponseMutableLiveData.setValue(null);
                     }
                 } else {
                     getTimingsResponseMutableLiveData.setValue(null);
@@ -374,7 +386,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getparentCategories
     public void postTogetParentCategories(MutableLiveData<ParentCategoryListResponse> parentCategoryListResponseMutableLiveData) {
         getRetrofitClient().getParentCategories("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken()).enqueue(new Callback<ParentCategoryListResponse>() {
             @Override
@@ -397,7 +411,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getChildCategories
     public void postTogetChildCategories(MutableLiveData<SubCategoryBYParentCatIDResponse> subCategoryBYParentCatIDResponseMutableLiveData, SubCategoryBYParentCatID parentID) {
         getRetrofitClient().getSubcategoryByParentID("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), parentID.getParentCategoryId()).enqueue(new Callback<SubCategoryBYParentCatIDResponse>() {
             @Override
@@ -420,7 +436,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region addNewProduct
     public void addNewProducts(MutableLiveData<AddNewProductResponse> addNewProductResponseMutableLiveData, AddNewProduct addNewProduct) {
 
        /* File file = new File(addNewProduct.getProduct_Pic().get(0));
@@ -476,7 +494,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region productForEdit
     public void productForEdit(MutableLiveData<ProductForEditResponse> productForEditMutableLiveData, ProductForEdit productForEdit) {
         getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
             @Override
@@ -497,7 +517,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region updateProduct
     public void updateProduct(MutableLiveData<UpdateProductResponse> updateProductResponseMutableLiveData, UpdateProduct updateProduct) {
 
         List<MultipartBody.Part> Product_Pic = getAllImages(updateProduct.getProduct_Pic());
@@ -549,8 +571,10 @@ public class Repository {
 
 
     }
+    //endregion
 
-    //this method will return list of images to send toward server either one or two both will work...
+    //this method will return list of images to send toward server either one image or more both will work...
+    //region getAllImages
     public List<MultipartBody.Part> getAllImages(List<String> product_pic) {
         List<MultipartBody.Part> parts = new ArrayList<>();
 
@@ -564,7 +588,9 @@ public class Repository {
 
         return parts;
     }
+    //endregion
 
+    //region productList
     public void productList(MutableLiveData<ProductListResponse> productListResponseMutableLiveData, ProductList productList, String lastProductId) {
         getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId(), lastProductId).enqueue(new Callback<ProductListResponse>() {
             @Override
@@ -585,9 +611,10 @@ public class Repository {
             }
         });
 
-
     }
+    //endregion
 
+    //region viewFullorder
     public void viewFullOrder(MutableLiveData<ViewFullOrderResponse> viewFullOrderMutableLiveData, ViewFullOrder viewFullOrder) {
 
         getRetrofitClient().viewfullorder("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), viewFullOrder.getProfileId(), viewFullOrder.getOrderId(), viewFullOrder.getOrderStatus()).enqueue(new Callback<ViewFullOrderResponse>() {
@@ -609,7 +636,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region updateRiderInfo
     public void updateRiderInfo(MutableLiveData<UpdateRiderInfoResponse> updateRiderInfoMutableLiveData, UpdateRiderInfo updateRiderInfo) {
         getRetrofitClient().updateRiderInformation("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), updateRiderInfo).enqueue(new Callback<UpdateRiderInfoResponse>() {
             @Override
@@ -630,7 +659,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getShopDetail
     public void getShopDetails(MutableLiveData<GetShopDetailResponse> getShopDetailResponseMutableLiveData, GetShopDetail shopDetail) {
 
         getRetrofitClient().getShopDetail("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopDetail.getProfileId()).enqueue(new Callback<GetShopDetailResponse>() {
@@ -651,9 +682,10 @@ public class Repository {
                 t.printStackTrace();
             }
         });
-
     }
+    //endregion
 
+    //region updateOrderStatus
     public void updateOrderStatus(MutableLiveData<UpdateOrderStatusResponse> updateOrderStatusResponseMutableLiveData, UpdateOrderStatus updateOrderStatus) {
         updateOrderStatus.getOrderId();
         getRetrofitClient().updateOrderStatus("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), updateOrderStatus).enqueue(new Callback<UpdateOrderStatusResponse>() {
@@ -675,7 +707,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getOrderByStatus
     public void getOrderbyStatus(MutableLiveData<GetOrderByStatusResponse> getOrderByStatusResponseMutableLiveData, OrderByStatus orderByStatus) {
 
         getRetrofitClient().getOrderbyStatus("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), orderByStatus.getProfileId(), orderByStatus.getStatus()).enqueue(new Callback<GetOrderByStatusResponse>() {
@@ -697,7 +731,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region updateProductStatus
     public void updateProductStatus(MutableLiveData<IsProductActiveResponse> isProductActiveResponseMutableLiveData, IsProductActive isProductActive) {
         getRetrofitClient().updateProductStatus("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), isProductActive).enqueue(new Callback<IsProductActiveResponse>() {
             @Override
@@ -717,7 +753,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getAllorders
     public void getAllOrders(MutableLiveData<GetAllOrderResponse> getAllOrderResponseMutableLiveData, String ProfileId) {
         getRetrofitClient().getAllOrderList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), ProfileId).enqueue(new Callback<GetAllOrderResponse>() {
             @Override
@@ -735,7 +773,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getAllStatusCount
     public void getAllStatusCount(MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData) {
         getRetrofitClient().getOrderAllStatusCount("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<GetOrderStatusCountResponse>() {
             @Override
@@ -756,7 +796,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region postTiming
     public void postTiming(MutableLiveData<ShopTimingResponse> shopTimingResponseMutableLiveData, ShopTiming shopTiming) {
         getRetrofitClient().postTiming("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), shopTiming).enqueue(new Callback<ShopTimingResponse>() {
             @Override
@@ -781,7 +823,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region postBranchAddress
     public void addBranchAddress(MutableLiveData<AddBranchAddressResponse> addBranchAddressResponseMutableLiveData, AddBranchAddress addBranchAddress) {
         getRetrofitClient().addBranchAddress("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), addBranchAddress).enqueue(new Callback<AddBranchAddressResponse>() {
             @Override
@@ -801,7 +845,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region updateBranchAddress
     public void updateBranchAddress(MutableLiveData<UpdateBranchAddressResponse> updateBranchAddressResponseMutableLiveData, UpdateBranchAddress updateBranchAddress) {
         getRetrofitClient().updateBranchAddress("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), updateBranchAddress).enqueue(new Callback<UpdateBranchAddressResponse>() {
             @Override
@@ -821,7 +867,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region deleteBranchAddress
     public void deleteBranchAddress(MutableLiveData<DeleteBranchAddressResponse> deleteBranchAddressMutableLiveData, DeleteBranchAddress deleteBranchAddress) {
         getRetrofitClient().deleteBranchAddress("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteBranchAddress).enqueue(new Callback<DeleteBranchAddressResponse>() {
             @Override
@@ -841,7 +889,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region deleteProduct
     public void deleteProduct(MutableLiveData<DeleteProductResponse> deleteProductResponseMutableLiveData, DeleteProduct deleteProduct) {
         getRetrofitClient().deleteProduct("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteProduct).enqueue(new Callback<DeleteProductResponse>() {
             @Override
@@ -860,7 +910,25 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region deleteProductImage
+    public void deleteProductImage(MutableLiveData<DeleteProductImageResponse> deleteProduct, DeleteProductImage deleteProductImage) {
+        getRetrofitClient().deleteProductImage("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteProductImage).enqueue(new Callback<DeleteProductImageResponse>() {
+            @Override
+            public void onResponse(Call<DeleteProductImageResponse> call, Response<DeleteProductImageResponse> response) {
+                deleteProduct.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<DeleteProductImageResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+    //endregion
+
+    //region colorTheme
     public void getColorTheme(MutableLiveData<ColorThemeResponse> colorThemeResponseMutableLiveData) {
         getRetrofitClient().getColorThemes().enqueue(new Callback<ColorThemeResponse>() {
             @Override
@@ -881,49 +949,110 @@ public class Repository {
             }
         });
     }
+    //endregion
 
-    public void addWallet(AddWallet addWallet) {
-        getRetrofitClient().addWallet("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), addWallet).enqueue(new Callback<ResponseBody>() {
+    //region addWallet
+    public void addWallet(MutableLiveData<AddWalletResponse> addWalletResponseMutableLiveData, AddWallet addWallet) {
+        getRetrofitClient().addWallet("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), addWallet).enqueue(new Callback<AddWalletResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+            public void onResponse(Call<AddWalletResponse> call, Response<AddWalletResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        addWalletResponseMutableLiveData.setValue(response.body());
+                    }
+                }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void deleteCardorWallet(DeleteCardorWallet deleteCardorWallet) {
-        getRetrofitClient().deleteWalletorCard("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteCardorWallet).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+            public void onFailure(Call<AddWalletResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }
+    //endregion
 
-    public void getClientWalletDetails() {
+    //region addBank
+    public void addBank(MutableLiveData<AddBankResponse> addBankResponseMutableLiveData, AddBank addBank) {
+        getRetrofitClient().addBank("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), addBank).enqueue(new Callback<AddBankResponse>() {
+            @Override
+            public void onResponse(Call<AddBankResponse> call, Response<AddBankResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        addBankResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddBankResponse> call, Throwable t) {
+
+                t.printStackTrace();
+            }
+        });
+    }
+    //endregion
+
+    //region deleteCardorWallet
+    public void deleteCardorWallet(MutableLiveData<DeleteBankResponse> deleteBankResponseMutableLiveData, DeleteCardorWallet deleteCardorWallet) {
+        getRetrofitClient().deleteWalletorCard("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), deleteCardorWallet).enqueue(new Callback<DeleteBankResponse>() {
+            @Override
+            public void onResponse(Call<DeleteBankResponse> call, Response<DeleteBankResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        deleteBankResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeleteBankResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+    //endregion
+
+    //region getClientWalletDetail
+    public void getClientWalletDetails(MutableLiveData<ClientWalletDetailResponse> clientWalletDetailResponseMutableLiveData) {
         getRetrofitClient().getClientWalletDetails("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<ClientWalletDetailResponse>() {
             @Override
             public void onResponse(Call<ClientWalletDetailResponse> call, Response<ClientWalletDetailResponse> response) {
-
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        clientWalletDetailResponseMutableLiveData.setValue(response.body());
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<ClientWalletDetailResponse> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
+    //endregion
 
+    //region getClientBankDetail
+    public void getClientBankDetails(MutableLiveData<GetUserBankDetailResponse> getUserBankDetailResponseMutableLiveData) {
+        getRetrofitClient().getUserbankDetails("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<GetUserBankDetailResponse>() {
+            @Override
+            public void onResponse(Call<GetUserBankDetailResponse> call, Response<GetUserBankDetailResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        getUserBankDetailResponseMutableLiveData.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserBankDetailResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+    //endregion
+
+    //region getBankList
     public void bankList(MutableLiveData<BankListResponse> bankListResponseMutableLiveData) {
         getRetrofitClient().getBankDetailList().enqueue(new Callback<BankListResponse>() {
             @Override
@@ -941,7 +1070,9 @@ public class Repository {
             }
         });
     }
+    //endregion
 
+    //region getWalletList
     public void walletList(MutableLiveData<WalletListResponse> walletListResponseMutableLiveData) {
         getRetrofitClient().getWalletDetailList().enqueue(new Callback<WalletListResponse>() {
             @Override
@@ -959,4 +1090,5 @@ public class Repository {
             }
         });
     }
+    //endregion
 }

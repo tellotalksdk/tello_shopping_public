@@ -7,8 +7,9 @@
     <!-- image viwer to view the images -->
     <ImageView
         android:id="@+id/imageViewMain"
-        android:scaleType="fitXY"
+        android:scaleType="centerInside"
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

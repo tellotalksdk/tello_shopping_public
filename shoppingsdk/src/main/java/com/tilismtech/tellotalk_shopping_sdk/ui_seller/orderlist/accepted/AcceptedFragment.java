@@ -61,6 +61,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
     ImageView screenShot;
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
+    EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,8 +129,8 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
 
     @Override
     public void OnViewFullOrderListener(int orderId) {
-        EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
-
+       // EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
+      //  Toast.makeText(getActivity(), "" + orderId, Toast.LENGTH_SHORT).show();
         //Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -149,7 +150,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         et_payableAmount = dialog.findViewById(R.id.et_payableAmount);
         et_SellerName = dialog.findViewById(R.id.et_SellerName);
         et_SellerMobileNumber = dialog.findViewById(R.id.et_SellerMobileNumber);
-        et_SellerAddress = dialog.findViewById(R.id.et_order);
+        et_SellerAddress = dialog.findViewById(R.id.et_SellerAddress);
         et_SellerIBAN = dialog.findViewById(R.id.et_SellerIBAN);
         et_BuyerName = dialog.findViewById(R.id.et_BuyerName);
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
@@ -190,7 +191,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
 
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
-                    et_orderStatus.setText("Paid");
+                    et_orderStatus.setText("Accepted");
                     et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     productDetailLL.removeAllViews();

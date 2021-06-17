@@ -60,14 +60,17 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
     public void onBindViewHolder(@NonNull AcceptedItemViewHolder holder, int position) {
         GetOrderByStatusResponse.Request receivedItemPojo = acceptedItems.get(position);
 
-        holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
-        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        String str = receivedItemPojo.getOrderno();
+        String[] arrOfStr = str.split("-");
+
+        holder.orderNumber.setText("Order # " + arrOfStr[3]);
+        holder.customerName.setText(receivedItemPojo.getFirstname() + " " + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
         holder.address.setText(receivedItemPojo.getCompleteAddress());
         holder.date.setText(receivedItemPojo.getOrderdate());
         holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
+        holder.quantity.setText("Qty ." + receivedItemPojo.getQuantity());
 
-
-    }
+    }/*order: #jhgjhg*/
 
     @Override
     public int getItemCount() {
@@ -93,7 +96,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (GetOrderByStatusResponse.Request item : acceptedItemsFULL) {
-                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                    if (String.valueOf(item.getOrderno()).toLowerCase().contains(filterPattern)) {
                         filterlist.add(item);
                     }
                 }
@@ -112,7 +115,7 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
         }
     };
 
-    public int getFilterSize(){
+    public int getFilterSize() {
         return filterlist.size();
     }
 

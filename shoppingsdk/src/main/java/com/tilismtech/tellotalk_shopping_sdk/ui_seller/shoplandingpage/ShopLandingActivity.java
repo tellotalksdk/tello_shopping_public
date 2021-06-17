@@ -333,22 +333,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                                         setTotalProductOnActionBar();
                                         navController.navigate(R.id.shopLandingFragment);
 
-                                       /* new CountDownTimer(5000, 1000) {
-                                            public void onTick(long millisUntilFinished) {
-                                            }
-
-                                            public void onFinish() {
-                                                try {
-                                                    loadingDialog.dismissDialog();
-                                                    dialogAddProduct.dismiss();
-                                                    setTotalProductOnActionBar();
-                                                    navController.navigate(R.id.shopLandingFragment);
-                                                } catch (Exception ex) {
-                                                    ex.printStackTrace();
-                                                }
-                                            }
-                                        }.start();*/
-
                                     } else {
                                         loadingDialog.dismissDialog();
                                         Toast.makeText(ShopLandingActivity.this, "Some thing went wrong...", Toast.LENGTH_SHORT).show();
@@ -858,7 +842,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     //Toast.makeText(ShopLandingActivity.this, shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     shopName.setText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
                     Glide.with(ShopLandingActivity.this).load(shopNameAndImageResponse.getData().getRequestList().get(0).getShopProfile()).into(profileImage);
-                    shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
+                   // shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
                 }
             }
         });

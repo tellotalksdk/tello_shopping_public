@@ -156,7 +156,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         et_payableAmount = dialog.findViewById(R.id.et_payableAmount);
         et_SellerName = dialog.findViewById(R.id.et_SellerName);
         et_SellerMobileNumber = dialog.findViewById(R.id.et_SellerMobileNumber);
-        et_SellerAddress = dialog.findViewById(R.id.et_order);
+        et_SellerAddress = dialog.findViewById(R.id.et_SellerAddress);
         et_SellerIBAN = dialog.findViewById(R.id.et_SellerIBAN);
         et_BuyerName = dialog.findViewById(R.id.et_BuyerName);
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);

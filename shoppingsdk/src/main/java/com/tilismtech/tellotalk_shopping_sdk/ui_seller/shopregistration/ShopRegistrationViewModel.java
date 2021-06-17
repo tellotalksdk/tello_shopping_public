@@ -69,8 +69,8 @@ public class ShopRegistrationViewModel extends ViewModel {
     }
 
     //resendOTP
-    public void resendOTP(String otp) {
-        repository.verifyOTP(resendOtpResponseMutableLiveData, otp);
+    public void resendOTP() {
+        repository.resendOTP(resendOtpResponseMutableLiveData);
     }
 
     public LiveData<VerifyOtpResponse> getresendOtp() {

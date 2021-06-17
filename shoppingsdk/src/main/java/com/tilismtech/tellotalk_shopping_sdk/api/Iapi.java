@@ -1,10 +1,12 @@
 package com.tilismtech.tellotalk_shopping_sdk.api;
 
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBank;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteCardorWallet;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProductImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
@@ -13,12 +15,16 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateBranchAddress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateRiderInfo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBankResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddWalletResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.BankListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBankResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
@@ -27,6 +33,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatus
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderStatusCountResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetUserBankDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
@@ -117,7 +124,7 @@ public interface Iapi {
     )
     Call<VerifyOtpResponse> verifyOTP(@Header("Authorization") String token, @Query("Mobile") String Mobile, @Query("OTPCode") String OTPCode);
 
-    @GET("api/user/sendOTP")
+    @GET("api/shop/sendOTP")
     @Headers({"Accept: application/json",
             "Content-Type: application/json"}
     )
@@ -127,6 +134,9 @@ public interface Iapi {
     //end Otp apis
 
     //getShopNameImageAPI
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
     @GET("api/shop/getShopNameandImage")
     Call<ShopNameAndImageResponse> getShopNameAndImage(@Header("Authorization") String token, @Query("profileId") String profileId);
 
@@ -323,15 +333,35 @@ public interface Iapi {
     @GET("api/shop/GetShopTColor")
     Call<ColorThemeResponse> getColorThemes();
 
+    //DeleteProduct_Image one at a time
+    @POST("api/Product/DeleteProductImage")
+    Call<DeleteProductImageResponse> deleteProductImage(@Header("Authorization") String token, @Body DeleteProductImage deleteProductImage);
+
     // ===================== wallet and bank screen apis start from here =------------------
 
     @POST("api/user/AddUserWallet")
-    Call<ResponseBody> addWallet(@Header("Authorization") String token, @Body AddWallet addWallet);
+    Call<AddWalletResponse> addWallet(@Header("Authorization") String token, @Body AddWallet addWallet);
 
+    @POST("api/user/AddUserBankDetails")
+    Call<AddBankResponse> addBank(@Header("Authorization") String token, @Body AddBank addWallet);
+
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
     @POST("api/user/DeleteuserCardsorwallet")
-    Call<ResponseBody> deleteWalletorCard(@Header("Authorization") String token, @Body DeleteCardorWallet deleteCardorWallet);
+    Call<DeleteBankResponse> deleteWalletorCard(@Header("Authorization") String token, @Body DeleteCardorWallet deleteCardorWallet);
 
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
+    @GET("api/user/getUserWallet")
     Call<ClientWalletDetailResponse> getClientWalletDetails(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
+
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
+    @GET("api/user/getUserBankdetails")
+    Call<GetUserBankDetailResponse> getUserbankDetails(@Header("Authorization") String token, @Query("ProfileId") String ProfileId);
 
     @GET("api/user/getBankList")
     Call<BankListResponse> getBankDetailList();

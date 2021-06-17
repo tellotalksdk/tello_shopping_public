@@ -181,7 +181,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
             @Override
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
-                // screenShot.setImageBitmap(bitmap);
+                Toast.makeText(getActivity(), "dsadadsadsa", Toast.LENGTH_SHORT).show();
                 captureScreenShot(bitmap, flash);
             }
         });

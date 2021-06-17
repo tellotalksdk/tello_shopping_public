@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.adapters.CustomSpinnerAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
@@ -72,7 +73,7 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (GetOrderByStatusResponse.Request item : dispatchedItemsFULL) {
-                    if (String.valueOf(item.getOrderid()).toLowerCase().contains(filterPattern)) {
+                    if (String.valueOf(item.getOrderno()).toLowerCase().contains(filterPattern)) {
                         filterlist.add(item);
                     }
                 }
@@ -96,8 +97,11 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
     public void onBindViewHolder(@NonNull DispatchedItemViewHolder holder, int position) {
         GetOrderByStatusResponse.Request receivedItemPojo = dispatchedItems.get(position);
 
-        holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
-        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        String str = receivedItemPojo.getOrderno();
+        String[] arrOfStr = str.split("-");
+
+        holder.orderNumber.setText("Order # " + arrOfStr[3]);
+        holder.customerName.setText(receivedItemPojo.getFirstname() + " " + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
         holder.address.setText(receivedItemPojo.getCompleteAddress());
         holder.date.setText(receivedItemPojo.getOrderdate());
         holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
@@ -112,6 +116,8 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
             holder.addRiderInfo.setVisibility(View.VISIBLE);
             holder.edit_rider_info.setVisibility(View.GONE);
         }
+
+        holder.quantity.setText("Qty ." + receivedItemPojo.getQuantity());
 
 
       /*  holder.addRiderInfo.setOnClickListener(new View.OnClickListener() {
@@ -217,9 +223,13 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
             edit_rider_info.setOnClickListener(this);
             itemView.setOnClickListener(this);
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.dispatched));
+            /*ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.dispatched));
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-            spinner_moveto.setAdapter(spinnerArrayAdapter);
+            spinner_moveto.setAdapter(spinnerArrayAdapter);*/
+
+            CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(myCtx, R.layout.spinner_text, myCtx.getResources().getStringArray(R.array.dispatched));
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner_moveto.setAdapter(adapter);
 
 
             spinner_moveto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

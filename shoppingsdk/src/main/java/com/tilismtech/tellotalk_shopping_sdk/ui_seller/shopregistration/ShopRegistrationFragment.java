@@ -126,13 +126,14 @@ public class ShopRegistrationFragment extends Fragment {
                     counter++;
                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
 
+                    //this will collect all digits from number fields...
                     mobileNumber = d1.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
 
                     ShopRegister shopRegister = new ShopRegister();
                     shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
                     shopRegister.setShopURl(et_shop_name.getText().toString().trim() + ".tello.pk");
-                    // shopRegister.setRegisterPhone(mobileNumber.toString().trim());
-                    shopRegister.setRegisterPhone("03302469683");
+                    shopRegister.setRegisterPhone(mobileNumber.toString().trim());
+                    // shopRegister.setRegisterPhone("03330347473");
                     shopRegister.setEmail("sharjeel@gmail.com");
                     shopRegister.setShopCategoryId("1");
                     shopRegister.setShopDescription("shopTesting");
@@ -173,7 +174,7 @@ public class ShopRegistrationFragment extends Fragment {
                             if (verifyOtpResponse != null) {
                                 if (verifyOtpResponse.getStatus().equals("0")) {
                                     Toast.makeText(getActivity(), "OTP verified...", Toast.LENGTH_SHORT).show();
-                                   // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                                    // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                                     navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
@@ -181,7 +182,7 @@ public class ShopRegistrationFragment extends Fragment {
                             }
                         }
                     });
-                    // getActivity().startActivity(new Intent(getActivity(), ShopSettingFragment.class));
+                   // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                     navController.navigate(R.id.shopSettingFragment);
                 }
             }
@@ -199,7 +200,7 @@ public class ShopRegistrationFragment extends Fragment {
                     requestAgain.setClickable(false);
                     startCountDown();
                     counter++;
-                    shopRegistrationViewModel.resendOTP(otp);
+                    shopRegistrationViewModel.resendOTP();
                     shopRegistrationViewModel.getresendOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
@@ -946,7 +947,7 @@ public class ShopRegistrationFragment extends Fragment {
         //endregion
 
         //region updateUserName_Image
-        iv_editImage.setOnClickListener(new View.OnClickListener() {
+            iv_editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //here we call api for set user name and image ...
@@ -988,6 +989,8 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
         //endregion
+
+        Utility.hideKeyboard(getActivity(),view);
     }
 
     private void checkPermissions() {
@@ -1116,7 +1119,7 @@ public class ShopRegistrationFragment extends Fragment {
 
     private void startCountDown() {
 
-        new CountDownTimer(45000, 1000) {
+        new CountDownTimer(5000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 countDown.setText("in 00 : " + millisUntilFinished / 1000);
@@ -1171,6 +1174,8 @@ public class ShopRegistrationFragment extends Fragment {
         d9 = view.findViewById(R.id.d9);
         d10 = view.findViewById(R.id.d10);
         d11 = view.findViewById(R.id.d11);
+
+
     }
 
     public boolean checkValidation() {

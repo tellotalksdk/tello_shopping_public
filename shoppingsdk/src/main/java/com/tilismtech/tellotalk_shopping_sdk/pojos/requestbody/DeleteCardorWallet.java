@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DeleteCardorWallet {
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
     @SerializedName("id")

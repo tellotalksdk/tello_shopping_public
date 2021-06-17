@@ -5,8 +5,8 @@ import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 
 public class Constant {
 
-   //  public static String BASE_URL = "https://www.tilismtechservices.com/ShoppingSDK_staging/";
-    public static String BASE_URL = "http://172.16.10.53/abc/";
+       public static String BASE_URL = "https://www.tilismtechservices.com/ShoppingSDK_staging/";
+       //public static String BASE_URL = "http://172.16.10.53/abc/";
 
 
     //public static String BASE_URL = "http://localhost:51322/";
@@ -17,11 +17,11 @@ public class Constant {
     //  public static String LAST_NAME = TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId();
     public static String CONTACT_NUMBER = TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber();
 
-    public  String getProfileId() {
+    public String getProfileId() {
         return PROFILE_ID;
     }
 
-    public  void setProfileId(String profileId) {
+    public void setProfileId(String profileId) {
         PROFILE_ID = profileId;
     }
 }

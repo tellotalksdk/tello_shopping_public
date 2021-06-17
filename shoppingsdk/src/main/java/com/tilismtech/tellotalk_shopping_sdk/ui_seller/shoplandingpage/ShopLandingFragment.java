@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
@@ -51,6 +52,7 @@ import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProductImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
@@ -58,6 +60,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductList;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.SubCategoryBYParentCatID;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
@@ -73,6 +76,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,7 +94,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private ImageView setting, open_edit_details, iv_back_addproduct, chooseMultipleProductsIV;
     private Dialog dialog_edit_details;
     private LinearLayout outerRL;
-    private Button addProduct_btn, uploadProduct, post_product_btn;
+    public Button addProduct_btn, uploadProduct, post_product_btn;
     private Dialog dialogAddProduct;
     private LinearLayout productList;
     private RecyclerView recycler_add_product;
@@ -115,6 +119,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Dialog dialog;
     private String lastProductId = "0";
     List<ProductListResponse.Request> productListAppend, dummy;
+    List<String> imageIds;
 
 
     @Override
@@ -136,23 +141,143 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         navController = Navigation.findNavController(view);
         productListAppend = new ArrayList<>();
         dummy = new ArrayList<>();
+        imageIds = new ArrayList<>();
         // orderListtabbar = view.findViewById(R.id.orderListtabbar);
         loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.dismissDialog();
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
-        shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        shopLandingPageViewModel = new ViewModelProvider(getActivity()).get(ShopLandingPageViewModel.class);
+        addProduct_btn = view.findViewById(R.id.addProduct_btn);
         setShopNameAndImage();
         initRV(); // this recycler view set product list on screen
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
 
         //this button show only first time when there is np product list
-        addProduct_btn = view.findViewById(R.id.addProduct_btn);
+
         addProduct_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogAddProduct = new Dialog(getActivity());
+                dialogAddProduct.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialogAddProduct.setContentView(R.layout.dialog_add_product);
+
+                chooseMultipleProductsIV = dialogAddProduct.findViewById(R.id.chooseMultipleProductsIV);
+                LLimages = dialogAddProduct.findViewById(R.id.LLimages);
+                isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
+                isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
+
+                chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);
+                    }
+                });
+
+                et_OriginalPrice = dialogAddProduct.findViewById(R.id.et_OriginalPrice);
+                et_DiscountedPrice = dialogAddProduct.findViewById(R.id.et_DiscountedPrice);
+                et_SKU = dialogAddProduct.findViewById(R.id.et_SKU);
+                et_Description = dialogAddProduct.findViewById(R.id.et_Description);
+                et_ProductTitle = dialogAddProduct.findViewById(R.id.et_ProductTitle);
+
+                parentSpinner = dialogAddProduct.findViewById(R.id.parentSpinner);
+                childSpinner = dialogAddProduct.findViewById(R.id.childSpinner);
+                parentSpinner.setOnItemSelectedListener(onItemSelectedListener);
+                childSpinner.setOnItemSelectedListener(onItemSelectedListener);
+
+                uploadParentCategory(parentSpinner, childSpinner);
+
+                iv_back_addproduct = dialogAddProduct.findViewById(R.id.iv_back);
+                iv_back_addproduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogAddProduct.dismiss();
+                    }
+                });
+
+                uploadProduct = dialogAddProduct.findViewById(R.id.uploadProduct);
+                uploadProduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
+
+                        if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
+                                TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
+                                TextUtils.isEmpty(et_Description.getText().toString()) ||
+                                TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
+                                TextUtils.isEmpty(et_SKU.getText().toString())
+                        ) {
+                            Toast.makeText(getActivity(), "Some Fields are missing...", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                Toast.makeText(getActivity(), "Discounted price must be less than original price...", Toast.LENGTH_SHORT).show();
+                                return;
+                            } else if (Integer.parseInt(et_DiscountedPrice.getText().toString()) == Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                Toast.makeText(getActivity(), "Discounted price can not be same as original price...", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+
+                            AddNewProduct addNewProduct = new AddNewProduct();
+                            addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
+                            addNewProduct.setPrice(et_OriginalPrice.getText().toString());
+                            addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
+                            addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
+                            addNewProduct.setSku(et_SKU.getText().toString());
+                            addNewProduct.setSummary(et_Description.getText().toString());
+                            addNewProduct.setProfileId(Constant.PROFILE_ID);
+                            addNewProduct.setProductStatus(productStatus); //work with toggle on and off
+                            addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
+                            addNewProduct.setTitle(et_ProductTitle.getText().toString());
+
+                            LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                            loadingDialog.showDialog();
+                            shopLandingPageViewModel.addNewProduct(addNewProduct);
+                            shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
+                            shopLandingPageViewModel.getNewProduct().observe(getActivity(), new Observer<AddNewProductResponse>() {
+                                @Override
+                                public void onChanged(AddNewProductResponse addNewProductResponse) {
+                                    shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
+                                    if (addNewProductResponse != null) {
+                                        //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        filePaths.clear();
+                                        loadingDialog.dismissDialog();
+                                        dialogAddProduct.dismiss();
+
+                                        navController.navigate(R.id.shopLandingFragment);
+
+                                    } else {
+                                        loadingDialog.dismissDialog();
+                                        Toast.makeText(getActivity(), "Some thing went wrong...", Toast.LENGTH_SHORT).show();
+                                    }
+                                    loadingDialog.dismissDialog();
+                                }
+                            });
+
+                            // navController.navigate(R.id.shopLandingFragment);
+                        }
+                    }
+                });
+
+                Window window = dialogAddProduct.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                window.setAttributes(wlp);
+                dialogAddProduct.show();
+         /*       dialogAddProduct = new Dialog(getActivity());
                 dialogAddProduct.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialogAddProduct.setContentView(R.layout.dialog_add_product);
@@ -249,7 +374,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 window.setAttributes(wlp);
-                dialogAddProduct.show();
+                dialogAddProduct.show();*/
             }
         });
 
@@ -274,7 +399,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(ShopNameAndImageResponse shopNameAndImageResponse) {
                 if (shopNameAndImageResponse != null) {
-                  //  Toast.makeText(getActivity(), shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(getActivity(), shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -301,7 +426,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
             @Override
             public void onFailure(Call<ProductListResponse> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
@@ -313,7 +438,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         loadingDialog.showDialog();
         shopLandingPageViewModel.productList(productList, lastProductId); //initially first set of product will be fecthed
         shopLandingPageViewModel.getProductList().observe(getActivity(), new Observer<ProductListResponse>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+
             @Override
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
@@ -353,7 +478,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, parentCategories);
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                     parentSpinner.setAdapter(spinnerArrayAdapter);
-                    parentSpinneredit.setAdapter(spinnerArrayAdapter);
+//                    parentSpinneredit.setAdapter(spinnerArrayAdapter);
 
                     // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -551,10 +676,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     //rececler product view edit icons action
     @Override
     public void onOpenProductEditor(int productID) {
+        //  Toast.makeText(getActivity(), "" + productID, Toast.LENGTH_SHORT).show();
 
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //   dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
         dialog.setContentView(R.layout.dialog_edit_product);
 
         outerRL = dialog.findViewById(R.id.outerRL);
@@ -576,7 +703,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         childSpinneredit.setOnItemSelectedListener(onItemSelectedListenerEDit);
 
         uploadParentCategory(parentSpinneredit, childSpinneredit);
-
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -591,9 +717,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         outerRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                shopLandingPageViewModel.getProductForEdit().removeObservers(getActivity());
                 dialog.dismiss();
             }
         });
+
 
         //this will trigger update api
         post_product_btn.setOnClickListener(new View.OnClickListener() {
@@ -673,12 +801,14 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         ProductForEdit productForEdit = new ProductForEdit();
         productForEdit.setProfileId(Constant.PROFILE_ID);
         productForEdit.setProductId(String.valueOf(productID));
-
+       /* shopLandingPageViewModel.getProductForEdit().removeObservers(this);
         shopLandingPageViewModel.productForEdit(productForEdit);
-        shopLandingPageViewModel.getProductForEdit().observe(getActivity(), new Observer<ProductForEditResponse>() {
+        shopLandingPageViewModel.getProductForEdit().observe(this, new Observer<ProductForEditResponse>() {
             @Override
             public void onChanged(ProductForEditResponse productForEditResponse) {
                 if (productForEditResponse != null) {
+                    shopLandingPageViewModel.dPResponse().removeObservers(getActivity());
+                    Log.i("TAG", "trigger :::");
 
                     parentCategoryId = productForEditResponse.getData().getRequestList().getParentProductCategoryId();
                     childCategoryId = productForEditResponse.getData().getRequestList().getProductCategoryid();
@@ -690,21 +820,110 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
                     isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
                     product_description.setText(productForEditResponse.getData().getRequestList().getSummary());
-
+                    imageIds.clear();
                     //when url provided this will work for sure...
-                    /*if (productForEditResponse.getData().getRequestList().getProfilePic() != null) {
-                        for (int i = 0; i < productForEditResponse.getData().getRequestList().getProfilePic().size(); i++) {
+                    if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
+                        for (int i = 0; i < productForEditResponse.getData().getRequestList().getProductImageDTO().size(); i++) {
                             View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                             ImageView iv = inflater.findViewById(R.id.iv);
-                            //imageUri = data.getClipData().getItemAt(i).getUri();
-                            iv.setImageDrawable(getActivity().getDrawable(R.drawable.ic_bbq));
+                            imageIds.add(productForEditResponse.getData().getRequestList().getProductImageDTO().get(i).getImageId());
+                            Glide.with(getActivity()).load(productForEditResponse.getData().getRequestList().getProductImageDTO().get(i).getImageURL()).into(iv);
+                            ImageView ic_delete = inflater.findViewById(R.id.ic_delete);
+                            //this will delete image
+                            ic_delete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //Toast.makeText(getActivity(), "Deleted....." +imageIds.get(LLimages_edit.indexOfChild(inflater) - 1) , Toast.LENGTH_SHORT).show();
+                                    DeleteProductImage deleteProductImage = new DeleteProductImage();
+                                    deleteProductImage.setImageId(imageIds.get(LLimages_edit.indexOfChild(inflater) - 1).toString());
+                                    deleteProductImage.setProductId(String.valueOf(productID));
+                                    deleteProductImage.setProfileId(Constant.PROFILE_ID);
+
+                                    shopLandingPageViewModel.deleteProduct(deleteProductImage);
+                                    shopLandingPageViewModel.dPResponse().observe(getActivity(), new Observer<DeleteProductImageResponse>() {
+                                        @Override
+                                        public void onChanged(DeleteProductImageResponse responseBody) {
+                                            if (responseBody != null) {
+                                                Toast.makeText(getActivity(), "Image Removed Successfully...", Toast.LENGTH_SHORT).show();
+                                                LLimages_edit.removeView(inflater);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
                             LLimages_edit.addView(inflater);
                         }
-                    }*/
-
-                    //  product description key missing from getproductforedit api...
-                    //  product_description.setText(productForEditResponse.getData().getRequestList().getprod());
+                    }
                 }
+            }
+        });*/
+
+        getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
+            @Override
+            public void onResponse(Call<ProductForEditResponse> call, Response<ProductForEditResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ProductForEditResponse productForEditResponse = response.body();
+                        if (productForEditResponse != null) {
+                            shopLandingPageViewModel.dPResponse().removeObservers(getActivity());
+                            Log.i("TAG", "trigger :::");
+
+                            parentCategoryId = productForEditResponse.getData().getRequestList().getParentProductCategoryId();
+                            childCategoryId = productForEditResponse.getData().getRequestList().getProductCategoryid();
+
+                            productName.setText(productForEditResponse.getData().getRequestList().getTitle());
+                            productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
+                            originalPrice.setText(productForEditResponse.getData().getRequestList().getPrice());
+                            discountedPrice.setText(productForEditResponse.getData().getRequestList().getDiscount());
+                            skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
+                            isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
+                            product_description.setText(productForEditResponse.getData().getRequestList().getSummary());
+                            imageIds.clear();
+                            //when url provided this will work for sure...
+                            if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
+                                for (int i = 0; i < productForEditResponse.getData().getRequestList().getProductImageDTO().size(); i++) {
+                                    View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                                    ImageView iv = inflater.findViewById(R.id.iv);
+                                    imageIds.add(productForEditResponse.getData().getRequestList().getProductImageDTO().get(i).getImageId());
+                                    Glide.with(getActivity()).load(productForEditResponse.getData().getRequestList().getProductImageDTO().get(i).getImageURL()).into(iv);
+                                    ImageView ic_delete = inflater.findViewById(R.id.ic_delete);
+                                    //this will delete image
+                                    ic_delete.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //Toast.makeText(getActivity(), "Deleted....." +imageIds.get(LLimages_edit.indexOfChild(inflater) - 1) , Toast.LENGTH_SHORT).show();
+                                            DeleteProductImage deleteProductImage = new DeleteProductImage();
+                                            deleteProductImage.setImageId(imageIds.get(LLimages_edit.indexOfChild(inflater) - 1).toString());
+                                            deleteProductImage.setProductId(String.valueOf(productID));
+                                            deleteProductImage.setProfileId(Constant.PROFILE_ID);
+
+                                            shopLandingPageViewModel.deleteProduct(deleteProductImage);
+                                            shopLandingPageViewModel.dPResponse().observe(getActivity(), new Observer<DeleteProductImageResponse>() {
+                                                @Override
+                                                public void onChanged(DeleteProductImageResponse responseBody) {
+                                                    if (responseBody != null) {
+                                                        Toast.makeText(getActivity(), "Image Removed Successfully...", Toast.LENGTH_SHORT).show();
+                                                        LLimages_edit.removeView(inflater);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                    LLimages_edit.addView(inflater);
+                                }
+                            }
+                        }
+                    }
+                } else { //incase response is null
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductForEditResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
 
@@ -756,10 +975,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         TextView et_ProductName, et_ProductID, et_OriginalPrice, et_DiscountedPrice;
         androidx.viewpager.widget.ViewPager viewPager2;
         DotsIndicator dotsIndicator;
-        // images array
-        int[] images = {R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq,
-                R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq, R.drawable.ic_bbq};
-
 
         dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -771,14 +986,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         et_DiscountedPrice = dialog.findViewById(R.id.et_DiscountedPrice);
         viewPager2 = dialog.findViewById(R.id.viewPager);
 
-
-        // Creating Object of ViewPagerAdapter
-        ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getActivity(), images);
-
-        // Adding the Adapter to the ViewPager
-        viewPager2.setAdapter(mViewPagerAdapter);
         dotsIndicator = dialog.findViewById(R.id.dots_indicator);
-        dotsIndicator.setViewPager(viewPager2);
 
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -805,6 +1013,21 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(ProductForEditResponse productForEditResponse) {
                 if (productForEditResponse != null) {
+                    List<String> images = new ArrayList<>();
+
+                    if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
+                        for (int i = 0; i < productForEditResponse.getData().getRequestList().getProductImageDTO().size(); i++) {
+                            images.add(productForEditResponse.getData().getRequestList().getProductImageDTO().get(i).getImageURL());
+                        }
+                    }
+
+                    // Creating Object of ViewPagerAdapter
+                    ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getActivity(), images);
+
+                    // Adding the Adapter to the ViewPager
+                    viewPager2.setAdapter(mViewPagerAdapter);
+                    dotsIndicator.setViewPager(viewPager2);
+
                     et_ProductName.setText(String.valueOf(productForEditResponse.getData().getRequestList().getTitle()));
                     et_ProductID.setText(String.valueOf(productForEditResponse.getData().getRequestList().getId()));
                     et_OriginalPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getPrice()));

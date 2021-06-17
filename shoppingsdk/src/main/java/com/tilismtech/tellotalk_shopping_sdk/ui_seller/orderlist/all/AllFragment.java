@@ -90,7 +90,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
 
 
         if (getArguments() != null) {
-            Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_all_orders = view.findViewById(R.id.recycler_all_orders);
@@ -108,6 +108,14 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                     // Toast.makeText(getActivity(), "" + getAllOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     allAdapter = new AllAdapter(getAllOrderResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_all_orders.setAdapter(allAdapter);
+
+                    if (getArguments() != null) {
+                        if (allAdapter != null) {
+                            allAdapter.getFilter().filter(getArguments().getString("query"));
+                        } else {
+                            Toast.makeText(getActivity(), "All Adapter is null ...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });
@@ -137,7 +145,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         et_payableAmount = dialog.findViewById(R.id.et_payableAmount);
         et_SellerName = dialog.findViewById(R.id.et_SellerName);
         et_SellerMobileNumber = dialog.findViewById(R.id.et_SellerMobileNumber);
-        et_SellerAddress = dialog.findViewById(R.id.et_order);
+        et_SellerAddress = dialog.findViewById(R.id.et_SellerAddress);
         et_SellerIBAN = dialog.findViewById(R.id.et_SellerIBAN);
         et_BuyerName = dialog.findViewById(R.id.et_BuyerName);
         et_BuyerMobile = dialog.findViewById(R.id.et_BuyerMobile);
@@ -175,9 +183,8 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
                 //  Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-/*
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
-                    et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderno());
+                    et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("1")) {
                         et_orderStatus.setText("Received");
@@ -193,8 +200,6 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                         et_orderStatus.setText("Cancel");
                     }
 
-
-                    et_orderDate.setText(viewFullOrderResponse.getData().getRequestList().getOrderdate());
 
                     productDetailLL.removeAllViews();
                     if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
@@ -221,16 +226,16 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                         }
                     }
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSeller_firstname() + " " + viewFullOrderResponse.getData().getRequestList().getSeller_lastname());
-                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSeller_mobile());
-                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSeller_Address());
-                    //  et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
+                    et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
+                    et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
+                    et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
-                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getFirstname() + viewFullOrderResponse.getData().getRequestList().getMiddlename());
-                    et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getMobile());
-                    et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getCompleteAddress());
-                    // et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList());
-                }*/
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
+                    et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile());
+                    et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress());
+                    et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
+                }
             }
         });
 
@@ -306,7 +311,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
 
     @Override
     public void OnRiderInfoUpdateListener(int position) {
-        Toast.makeText(getActivity(), "position " + position, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getActivity(), "position " + position, Toast.LENGTH_SHORT).show();
     }
 
     public AllAdapter.OnOrderClickListener getReference() {

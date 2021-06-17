@@ -2,8 +2,11 @@ package com.tilismtech.tellotalk_shopping_sdk.api;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GenerateToken;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GenerateTokenResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
@@ -36,6 +39,46 @@ public class TokenRefreshAuthenthicator implements Authenticator {
     }
 
     private String getUpdatedToken() {
+
+        GenerateToken generateToken = new GenerateToken();
+
+        generateToken.setGrantUsername("Basit@tilismtech.com");
+        generateToken.setGrantPassword("basit@1234");
+        generateToken.setGrantType("password");
+        generateToken.setProfileId(Constant.PROFILE_ID);
+        generateToken.setFirstname(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getFirstName());
+        generateToken.setMiddlename(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getMiddleName());
+        generateToken.setLastname(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getLastName());
+        generateToken.setPhone(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber());
+        generateToken.setEmail(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getEmail());
+
+        getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
+            @Override
+            public void onResponse(Call<GTResponse> call, retrofit2.Response<GTResponse> response) {
+                if (response != null) {
+
+                    if (response.isSuccessful()) {
+                        GTResponse gtResponse = response.body();
+                        if (gtResponse != null) {
+                            if (gtResponse.getData() != null) {
+                                if (gtResponse.getData().getRequestList().getAccessToken() != null)
+                                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
+                            }
+                        }
+                    } else {
+                        GTResponse message = new Gson().fromJson(response.errorBody().charStream(), GTResponse.class);
+                        Log.i("TAG", "onResponse: " + message.toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GTResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+/*
         getRetrofitClient().generateToken("Basit@tilismtech.com", "basit@1234", "password", Constant.PROFILE_ID, "Hassan", "Muddassir", "Rizvi", "03330347473", "Hasan2399@gmail.com").enqueue(new Callback<GenerateTokenResponse>() {
             @Override
             public void onResponse(Call<GenerateTokenResponse> call, retrofit2.Response<GenerateTokenResponse> response) {
@@ -52,7 +95,7 @@ public class TokenRefreshAuthenthicator implements Authenticator {
                 Log.d("TAG", "onFailure: " + t.getMessage());
                 Log.i("TAG", "onFailure: " + "trigger after 401");
             }
-        });
+        });*/
 
         return TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken();
     }

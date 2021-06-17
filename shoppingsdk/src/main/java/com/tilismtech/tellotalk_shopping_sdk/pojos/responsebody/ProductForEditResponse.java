@@ -23,62 +23,90 @@ public class ProductForEditResponse {
 
     }
 
-        @SerializedName("status")
+
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("statusDetail")
+    @Expose
+    private String statusDetail;
+    @SerializedName("profileId")
+    @Expose
+    private Object profileId;
+    @SerializedName("oTP")
+    @Expose
+    private Object oTP;
+    @SerializedName("data")
+    @Expose
+    private Data data;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatusDetail() {
+        return statusDetail;
+    }
+
+    public void setStatusDetail(String statusDetail) {
+        this.statusDetail = statusDetail;
+    }
+
+    public Object getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(Object profileId) {
+        this.profileId = profileId;
+    }
+
+    public Object getoTP() {
+        return oTP;
+    }
+
+    public void setoTP(Object oTP) {
+        this.oTP = oTP;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+
+    public class ProductImageDTO {
+
+        @SerializedName("imageId")
         @Expose
-        private String status;
-        @SerializedName("statusDetail")
+        private String imageId;
+        @SerializedName("imageURL")
         @Expose
-        private String statusDetail;
-        @SerializedName("profileId")
-        @Expose
-        private Object profileId;
-        @SerializedName("oTP")
-        @Expose
-        private Object oTP;
-        @SerializedName("data")
-        @Expose
-        private Data data;
+        private String imageURL;
 
-        public String getStatus() {
-            return status;
+        public String getImageId() {
+            return imageId;
         }
 
-        public void setStatus(String status) {
-            this.status = status;
+        public void setImageId(String imageId) {
+            this.imageId = imageId;
         }
 
-        public String getStatusDetail() {
-            return statusDetail;
+        public String getImageURL() {
+            return imageURL;
         }
 
-        public void setStatusDetail(String statusDetail) {
-            this.statusDetail = statusDetail;
+        public void setImageURL(String imageURL) {
+            this.imageURL = imageURL;
         }
 
-        public Object getProfileId() {
-            return profileId;
-        }
-
-        public void setProfileId(Object profileId) {
-            this.profileId = profileId;
-        }
-
-        public Object getoTP() {
-            return oTP;
-        }
-
-        public void setoTP(Object oTP) {
-            this.oTP = oTP;
-        }
-
-        public Data getData() {
-            return data;
-        }
-
-        public void setData(Data data) {
-            this.data = data;
-        }
-
+    }
 
     public class RequestList {
 
@@ -117,7 +145,10 @@ public class ProductForEditResponse {
         private String productCategoryName;
         @SerializedName("images")
         @Expose
-        private List<String> images ;
+        private Object images;
+        @SerializedName("productImageDTO")
+        @Expose
+        private List<ProductImageDTO> productImageDTO = null;
 
         public Integer getId() {
             return id;
@@ -207,12 +238,20 @@ public class ProductForEditResponse {
             this.productCategoryName = productCategoryName;
         }
 
-        public List<String> getImages() {
+        public Object getImages() {
             return images;
         }
 
-        public void setImages(List<String> images) {
+        public void setImages(Object images) {
             this.images = images;
+        }
+
+        public List<ProductImageDTO> getProductImageDTO() {
+            return productImageDTO;
+        }
+
+        public void setProductImageDTO(List<ProductImageDTO> productImageDTO) {
+            this.productImageDTO = productImageDTO;
         }
 
     }

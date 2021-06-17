@@ -10,8 +10,10 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ViewPagerAdapter extends PagerAdapter {
@@ -21,14 +23,14 @@ public class ViewPagerAdapter extends PagerAdapter {
     Context context;
 
     // Array of images
-    int[] images;
+    List<String> images;
 
     // Layout Inflater
     LayoutInflater mLayoutInflater;
 
 
     // Viewpager Constructor
-    public ViewPagerAdapter(Context context, int[] images) {
+    public ViewPagerAdapter(Context context, List<String> images) {
         this.context = context;
         this.images = images;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -38,7 +40,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         // return the number of images
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -56,7 +58,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageViewMain);
 
         // setting the image in the imageView
-        imageView.setImageResource(images[position]);
+      //  imageView.setImageResource(Integer.parseInt(images.get(position)));
+        Glide.with(context).load(images.get(position)).into(imageView);
 
         // Adding the View
         Objects.requireNonNull(container).addView(itemView);

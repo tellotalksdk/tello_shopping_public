@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,21 +22,64 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetAllOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetOrderByStatusResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemViewHolder> {
+public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemViewHolder> implements Filterable {
 
     List<GetAllOrderResponse.Request> allItems;
     Context myCtx;
     Button done;
     OnOrderClickListener onOrderClickListener;
 
+    //  List<GetOrderByStatusResponse.Request> acceptedItems;
+    List<GetAllOrderResponse.Request> acceptedItemsFULL;
+    List<GetAllOrderResponse.Request> filterlist;
+
 
     public AllAdapter(List<GetAllOrderResponse.Request> receivedItemPojos, Context myCtx, OnOrderClickListener onOrderClickListener) {
         this.allItems = receivedItemPojos;
+        if (allItems != null) {
+            this.acceptedItemsFULL = new ArrayList<>(this.allItems);
+        }
         this.myCtx = myCtx;
         this.onOrderClickListener = onOrderClickListener;
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return acceptedItemFilter;
+    }
+
+    public Filter acceptedItemFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filterlist = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filterlist.addAll(acceptedItemsFULL);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (GetAllOrderResponse.Request item : acceptedItemsFULL) {
+                    if (String.valueOf(item.getOrderno()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterlist;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            allItems.clear();
+            allItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     @NonNull
     @Override
@@ -47,8 +92,11 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
     public void onBindViewHolder(@NonNull AllStatusItemViewHolder holder, int position) {
         GetAllOrderResponse.Request receivedItemPojo = allItems.get(position);
 
-        holder.orderNumber.setText("Order # " + receivedItemPojo.getOrderid());
-        holder.customerName.setText(receivedItemPojo.getFirstname() + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
+        String str = receivedItemPojo.getOrderno();
+        String[] arrOfStr = str.split("-");
+
+        holder.orderNumber.setText("Order # " + arrOfStr[3]);
+        holder.customerName.setText(receivedItemPojo.getFirstname() + " " + receivedItemPojo.getMiddlename() + "\n" + receivedItemPojo.getMobile());
         holder.address.setText(receivedItemPojo.getCompleteAddress());
         holder.date.setText(receivedItemPojo.getOrderdate());
         holder.rupees.setText("Rs : " + receivedItemPojo.getGrandtotal());
@@ -97,6 +145,7 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
         }
     }
 
+
     public class AllStatusItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView orderNumber, customerName, address, quantity, date, rupees, addRiderInfo, viewFull, orderStat, addRiderInfo1;
@@ -138,7 +187,7 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.viewFull) {
-                onOrderClickListener.OnViewFullOrderListener(allItems.get(getAdapterPosition()).getOrderid(),allItems.get(getAdapterPosition()).getOrderStatus());
+                onOrderClickListener.OnViewFullOrderListener(allItems.get(getAdapterPosition()).getOrderid(), allItems.get(getAdapterPosition()).getOrderStatus());
             } else if (v.getId() == R.id.addRiderInfo) {
                 onOrderClickListener.OnRiderInfoUpdateListener(getAdapterPosition());
             } else if (v.getId() == R.id.edit_rider_info) {
@@ -150,7 +199,7 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
 
 
     public interface OnOrderClickListener {
-        void OnViewFullOrderListener(int position , int orderStatus);
+        void OnViewFullOrderListener(int position, int orderStatus);
 
         void OnRiderInfoUpdateListener(int position);
     }

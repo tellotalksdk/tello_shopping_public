@@ -23,11 +23,11 @@ public class RetrofitClient {
     static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
     static OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(180, TimeUnit.SECONDS)
+            .readTimeout(180, TimeUnit.SECONDS)
+            .writeTimeout(180, TimeUnit.SECONDS)
             .authenticator(new TokenRefreshAuthenthicator()) //this class will refresh token
-            .addInterceptor(logging)
+           // .addInterceptor(logging)
             .build();
 
 
