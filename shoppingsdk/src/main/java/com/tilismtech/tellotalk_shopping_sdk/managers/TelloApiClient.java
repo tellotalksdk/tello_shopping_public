@@ -2,6 +2,7 @@ package com.tilismtech.tellotalk_shopping_sdk.managers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,6 +46,9 @@ public class TelloApiClient {
         return instance;
     }
 
+    public static void initApp(Context context) {
+        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+    }
 
     public static boolean initializeShoppingSDK(Context context, String profileId, String firstName, String middleName, String lastName, String phone, String email) {
         boolean isUserAvailable = false;
@@ -54,31 +58,28 @@ public class TelloApiClient {
         generateToken.setGrantUsername("Basit@tilismtech.com");
         generateToken.setGrantPassword("basit@1234");
         generateToken.setGrantType("password");
-        //generateToken.setProfileId("3F64D77CB1BA4A3CA6CF9B9D786D4A987");
         generateToken.setProfileId(profileId);
         generateToken.setFirstname(firstName);
         generateToken.setMiddlename(middleName);
         generateToken.setLastname(lastName);
-        //generateToken.setPhone("03302469683");
         generateToken.setPhone(phone);
         generateToken.setEmail(email);
 
-        generateTokenResponse(generateToken, context, new OnSuccessListener() {
-            @Override
-            public void onSuccess(Object object) {
-                GTResponse gtResponseError = (GTResponse) object;
-                if ("-6".equals(gtResponseError.getStatus().toString())) {
-                    Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                } else {
-                    /*if (isShopExist(Constant.PROFILE_ID)) {
-                        context.startActivity(new Intent(context, ShopLandingActivity.class));
+        try {
+            generateTokenResponse(generateToken, context, new OnSuccessListener() {
+                @Override
+                public void onSuccess(Object object) {
+                    GTResponse gtResponseError = (GTResponse) object;
+                    if ("-6".equals(gtResponseError.getStatus().toString())) {
+                        Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     } else {
-                        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
-                    }*/
-                    context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                        isShopExist(Constant.PROFILE_ID, context);
+                    }
                 }
-            }
-        });
+            });
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
 
         return isUserAvailable;
     }
@@ -130,7 +131,7 @@ public class TelloApiClient {
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveLastName(generateToken.getLastname());
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveEmail(generateToken.getEmail());
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(generateToken.getProfileId());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " "  + generateToken.getMiddlename());
+                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
                                 onSuccessListener.onSuccess(gtResponse);
 
                                 Constant c = new Constant();
@@ -154,16 +155,22 @@ public class TelloApiClient {
         });
     }
 
-    public static boolean isShopExist(String profileId) {
+    public static boolean isShopExist(String profileId, Context context) {
         getRetrofitClient().isShopExist("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), profileId).enqueue(new Callback<ShopExistResponse>() {
             @Override
             public void onResponse(Call<ShopExistResponse> call, Response<ShopExistResponse> response) {
                 if (response != null) {
                     if (response.isSuccessful()) {
-                        if (response.body().getData().get(0).getIsShopExist()) {
-                            isshopExist = true;
-                        } else {
-                            isshopExist = false;
+                        try {
+                            if (response.body().getData().get(0).getIsShopExist()) {
+                                isshopExist = true;
+                                context.startActivity(new Intent(context, ShopLandingActivity.class));
+                            } else {
+                                isshopExist = false;
+                                context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }

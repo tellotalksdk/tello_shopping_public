@@ -193,6 +193,7 @@ public class BankSettingFragment extends Fragment {
                         public void onChanged(AddBankResponse addBankResponse) {
                             if (addBankResponse != null) {
                                 Toast.makeText(getActivity(), "" + addBankResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                populateBankWalletDetails();
                             }
                         }
                     });
@@ -233,6 +234,7 @@ public class BankSettingFragment extends Fragment {
                         public void onChanged(AddWalletResponse addBankResponse) {
                             if (addBankResponse != null) {
                                 Toast.makeText(getActivity(), "" + addBankResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                populateBankWalletDetails();
                             }
                         }
                     });
@@ -243,7 +245,7 @@ public class BankSettingFragment extends Fragment {
     }
 
     private void populateBankWalletDetails() {
-
+        bankSettingViewModel.getUserBankList().removeObservers(getActivity());
         bankSettingViewModel.UserBankList();
         bankSettingViewModel.getUserBankList().observe(getActivity(), new Observer<GetUserBankDetailResponse>() {
             @Override
@@ -251,6 +253,9 @@ public class BankSettingFragment extends Fragment {
                 if (getUserBankDetailResponse != null) {
                     if (getUserBankDetailResponse.getData().getRequestList() != null) {
                         if (getUserBankDetailResponse.getData().getRequestList().size() > 0) {
+                            if (RL3.getChildCount() > 0) {
+                                RL3.removeAllViews();
+                            }
                             for (int i = 0; i < getUserBankDetailResponse.getData().getRequestList().size(); i++) {
                                 View inflater = getLayoutInflater().inflate(R.layout.bank_wallet_detail_layout, null);
 
@@ -292,7 +297,7 @@ public class BankSettingFragment extends Fragment {
                 }
             }
         });
-
+        bankSettingViewModel.getUserWalletList().removeObservers(getActivity());
         bankSettingViewModel.UserWalletList();
         bankSettingViewModel.getUserWalletList().observe(getActivity(), new Observer<ClientWalletDetailResponse>() {
             @Override

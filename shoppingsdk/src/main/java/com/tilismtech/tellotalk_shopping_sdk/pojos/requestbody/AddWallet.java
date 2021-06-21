@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class AddWallet {
 
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("Account_Number")
+    @SerializedName("accountNumber")
     @Expose
     private String accountNumber;
-    @SerializedName("Cnic")
+    @SerializedName("cnic")
     @Expose
     private String cnic;
-    @SerializedName("AccountFrom")
+    @SerializedName("accountFrom")
     @Expose
     private String accountFrom;
 

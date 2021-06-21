@@ -174,7 +174,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.open_edit_details) {
-                this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId());
+                this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId(),getAdapterPosition());
             } else if (v.getId() == R.id.isActive) {
                 this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(), isActive.isChecked());
             } else if (v.getId() == R.id.viewProductDetail) {
@@ -185,7 +185,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
 
     public interface OnProductEditorClickDialog {
-        void onOpenProductEditor(int position);
+        void onOpenProductEditor(int position,int adapterPosition);
 
         void isActiveproduct(int position, boolean isActive);
 

@@ -17,6 +17,9 @@ public class TelloApplication extends Application {
     }
 
     public static TelloApplication getInstance() {
+        if(instance == null){
+            instance = new TelloApplication();
+        }
         return instance;
     }
 

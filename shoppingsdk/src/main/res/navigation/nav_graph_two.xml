@@ -10,7 +10,12 @@
         android:name="com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingFragment"
         android:label="ShopLandingFragment"
         tools:layout="@layout/fragment_shop_landing_page"
-        />
+        >
+        <action
+            android:id="@+id/action_shopLandingFragment_to_shopLandingFragment2"
+            app:destination="@id/shopLandingFragment" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/chat"

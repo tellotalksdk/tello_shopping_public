@@ -803,7 +803,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                         navController.navigate(R.id.allFragment, bundle6);
                         break;
                 }
-                
+
                 return false;
             }
 
@@ -842,7 +842,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     //Toast.makeText(ShopLandingActivity.this, shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     shopName.setText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
                     Glide.with(ShopLandingActivity.this).load(shopNameAndImageResponse.getData().getRequestList().get(0).getShopProfile()).into(profileImage);
-                   // shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
+                    // shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
                 }
             }
         });
@@ -874,7 +874,9 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onChanged(TotalProductResponse totalProductResponse) {
                 if (totalProductResponse != null) {
-                    totalProducts.setText(totalProductResponse.getData().getRequestList().getRequestList().get(0).getProductCount() + " " + "Products");
+                    if (totalProductResponse.getData().getRequestList().getRequestList() != null) {
+                        totalProducts.setText(totalProductResponse.getData().getRequestList().getRequestList().get(0).getProductCount() + " " + "Products");
+                    }
                 }
             }
         });

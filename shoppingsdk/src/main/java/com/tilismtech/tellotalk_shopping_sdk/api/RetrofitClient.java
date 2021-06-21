@@ -18,7 +18,7 @@ import retrofit2.http.Body;
 public class RetrofitClient {
 
     public static final String BASE_URL = Constant.BASE_URL;
-    public static Retrofit retrofit;
+    public static Retrofit retrofit = null;
 
     static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 

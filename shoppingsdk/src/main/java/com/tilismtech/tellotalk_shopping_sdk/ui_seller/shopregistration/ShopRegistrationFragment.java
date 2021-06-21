@@ -131,7 +131,7 @@ public class ShopRegistrationFragment extends Fragment {
 
                     ShopRegister shopRegister = new ShopRegister();
                     shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
-                    shopRegister.setShopURl(et_shop_name.getText().toString().trim() + ".tello.pk");
+                    shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + " tello.pk");
                     shopRegister.setRegisterPhone(mobileNumber.toString().trim());
                     // shopRegister.setRegisterPhone("03330347473");
                     shopRegister.setEmail("sharjeel@gmail.com");
@@ -174,10 +174,11 @@ public class ShopRegistrationFragment extends Fragment {
                             if (verifyOtpResponse != null) {
                                 if (verifyOtpResponse.getStatus().equals("0")) {
                                     Toast.makeText(getActivity(), "OTP verified...", Toast.LENGTH_SHORT).show();
-                                    // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
-                                    navController.navigate(R.id.shopSettingFragment);
+                                    getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                                    //navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    navController.navigate(R.id.shopSettingFragment);
                                 }
                             }
                         }

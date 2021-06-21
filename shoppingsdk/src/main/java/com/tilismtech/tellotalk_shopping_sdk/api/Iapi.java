@@ -339,6 +339,9 @@ public interface Iapi {
 
     // ===================== wallet and bank screen apis start from here =------------------
 
+    @Headers({"Accept: */*",
+            "Content-Type: application/json"}
+    )
     @POST("api/user/AddUserWallet")
     Call<AddWalletResponse> addWallet(@Header("Authorization") String token, @Body AddWallet addWallet);
 

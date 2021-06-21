@@ -142,12 +142,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         productListAppend = new ArrayList<>();
         dummy = new ArrayList<>();
         imageIds = new ArrayList<>();
-        // orderListtabbar = view.findViewById(R.id.orderListtabbar);
         loadingDialog = new LoadingDialog(getActivity());
         loadingDialog.dismissDialog();
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
-        shopLandingPageViewModel = new ViewModelProvider(getActivity()).get(ShopLandingPageViewModel.class);
+        shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         addProduct_btn = view.findViewById(R.id.addProduct_btn);
         setShopNameAndImage();
         initRV(); // this recycler view set product list on screen
@@ -240,11 +239,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                             loadingDialog.showDialog();
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
-                            shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
+                           // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
                             shopLandingPageViewModel.getNewProduct().observe(getActivity(), new Observer<AddNewProductResponse>() {
                                 @Override
                                 public void onChanged(AddNewProductResponse addNewProductResponse) {
-                                    shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
+                                   // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
                                     if (addNewProductResponse != null) {
                                         //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         try {
@@ -256,7 +255,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                         loadingDialog.dismissDialog();
                                         dialogAddProduct.dismiss();
 
-                                        navController.navigate(R.id.shopLandingFragment);
+                                        navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
 
                                     } else {
                                         loadingDialog.dismissDialog();
@@ -435,10 +434,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         ProductList productList = new ProductList();
         productList.setProfileId(Constant.PROFILE_ID);
         LoadingDialog loadingDialog = new LoadingDialog(getActivity());
-        loadingDialog.showDialog();
-        shopLandingPageViewModel.productList(productList, lastProductId); //initially first set of product will be fecthed
-        shopLandingPageViewModel.getProductList().observe(getActivity(), new Observer<ProductListResponse>() {
 
+        shopLandingPageViewModel.productList(productList, lastProductId); //initially first set of product will be fecthed
+        shopLandingPageViewModel.getProductList().observe(getViewLifecycleOwner(), new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
@@ -449,16 +447,53 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
                         recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
                         recycler_add_product.setAdapter(productListAdapter);
+                        productListAdapter.notifyDataSetChanged();
                         lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
                         loadingDialog.dismissDialog();
+                        shopLandingPageViewModel.getProductList().removeObservers(getActivity());
                     }
                     loadingDialog.dismissDialog();
                 }
                 loadingDialog.dismissDialog();
             }
         });
+/*
 
-        loadingDialog.dismissDialog();
+        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId(), lastProductId).enqueue(new Callback<ProductListResponse>() {
+            @Override
+            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        ProductListResponse productListResponse = response.body();
+                        if (productListResponse != null) {
+                            if (productListResponse.getData().getRequestList() != null) {
+                                addProduct_btn.setVisibility(View.GONE);
+                                productListAppend.addAll(productListResponse.getData().getRequestList());
+                                productListAdapter = new ProductListAdapter(productListAppend, getActivity(), getReference());
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
+                                recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+                                recycler_add_product.setAdapter(productListAdapter);
+                                productListAdapter.notifyDataSetChanged();
+                                lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
+                                loadingDialog.dismissDialog();
+                                shopLandingPageViewModel.getProductList().removeObservers(getActivity());
+                            }
+                            loadingDialog.dismissDialog();
+                        }
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductListResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+*/
+
 
     }
 
@@ -675,7 +710,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     //rececler product view edit icons action
     @Override
-    public void onOpenProductEditor(int productID) {
+    public void onOpenProductEditor(int productID, int adapterPosition) {
         //  Toast.makeText(getActivity(), "" + productID, Toast.LENGTH_SHORT).show();
 
         Dialog dialog = new Dialog(getActivity());
@@ -717,7 +752,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         outerRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shopLandingPageViewModel.getProductForEdit().removeObservers(getActivity());
+                //shopLandingPageViewModel.getProductForEdit().removeObservers(getActivity());
                 dialog.dismiss();
             }
         });
@@ -772,7 +807,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                 if (dialog != null) {
                                     dialog.dismiss();
                                 }
-                                navController.navigate(R.id.shopLandingFragment);
+                                navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
                             }
                         }
                     });
@@ -785,7 +820,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         tv_deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteProduct(productID, dialog);
+                deleteProduct(productID, dialog,adapterPosition);
             }
         });
 
@@ -866,7 +901,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (response.isSuccessful()) {
                         ProductForEditResponse productForEditResponse = response.body();
                         if (productForEditResponse != null) {
-                            shopLandingPageViewModel.dPResponse().removeObservers(getActivity());
+                            //shopLandingPageViewModel.dPResponse().removeObservers(getActivity());
                             Log.i("TAG", "trigger :::");
 
                             parentCategoryId = productForEditResponse.getData().getRequestList().getParentProductCategoryId();
@@ -932,7 +967,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         dialog.show();
     }
 
-    private void deleteProduct(int productID, Dialog dialog) {
+    private void deleteProduct(int productID, Dialog dialog,int adapterPosition) {
+
+        loadingDialog.showDialog();
         DeleteProduct deleteProduct = new DeleteProduct();
         deleteProduct.setProductId(String.valueOf(productID));
         deleteProduct.setProfileId(Constant.PROFILE_ID);
@@ -942,10 +979,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             public void onChanged(DeleteProductResponse deleteProductResponse) {
                 if (deleteProductResponse != null) {
                     if (deleteProductResponse.getStatus().equals("0")) {
-                        Toast.makeText(getActivity(), "Product Has Been Deleted...", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
                         ((ShopLandingActivity) getActivity()).setTotalProductOnActionBar();
-                        navController.navigate(R.id.shopLandingFragment);
+                        dialog.dismiss();
+                        loadingDialog.dismissDialog();
+                        navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
                     }
                 }
             }
