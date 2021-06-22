@@ -263,7 +263,7 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
             } else if (v.getId() == R.id.orderCancel) {
                 onOrderClickListener.OnStatusChange(6, dispatchedItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.edit_rider_info) {
-                onOrderClickListener.OnRiderInfoUpdateListener(dispatchedItems.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnRiderInfoUpdateListener(dispatchedItems.get(getAdapterPosition()).getOrderid(),dispatchedItems.get(getAdapterPosition()));
             }
         }
     }
@@ -273,6 +273,8 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
         void OnViewFullOrderListener(int position);
 
         void OnRiderInfoUpdateListener(int position);
+
+        void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request);
 
         void OnStatusChange(int status, int OrderID);
 

@@ -368,6 +368,63 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
     }
 
     @Override
+    public void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request) {
+        Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_add_rider_info);
+
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        wlp.gravity = Gravity.BOTTOM;
+        // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+
+
+        etRiderName = dialog.findViewById(R.id.etRiderName);
+        etRiderNumber = dialog.findViewById(R.id.etRiderContact);
+        etRiderTracking = dialog.findViewById(R.id.etRiderTracking);
+
+        etRiderName.setText(request.getRiderName().toString());
+        etRiderNumber.setText(request.getRiderContact().toString());
+
+        Button done = dialog.findViewById(R.id.confirmRiderbtn);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkValidation()
+                ) {
+                    UpdateRiderInfo updateRiderInfo = new UpdateRiderInfo();
+                    updateRiderInfo.setRiderName(etRiderName.getText().toString());
+                    updateRiderInfo.setRiderContact(etRiderNumber.getText().toString());
+                    updateRiderInfo.setOrderTrackingId(etRiderTracking.getText().toString());
+                    updateRiderInfo.setOrderId(String.valueOf(position));
+                    updateRiderInfo.setProfileId(Constant.PROFILE_ID);
+
+                    orderListViewModel.updateRiderInfo(updateRiderInfo);
+                    orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
+                        @Override
+                        public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
+                            if (updateRiderInfoResponse != null) {
+                                // Toast.makeText(getActivity(), "" + updateRiderInfoResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                initReceivedItems();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+
+    }
+
+    @Override
     public void OnStatusChange(int status, int OrderID) {
         UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
         updateOrderStatus.setOrderId(String.valueOf(OrderID));

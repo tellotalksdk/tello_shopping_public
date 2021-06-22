@@ -185,9 +185,31 @@ public class GetShopDetailResponse {
         @SerializedName("shopProfile")
         @Expose
         private String shopProfile;
+        @SerializedName("shopOwnerName")
+        @Expose
+        private String shopOwnerName;
+        @SerializedName("shopOwnerImage")
+        @Expose
+        private String shopOwnerImage;
         @SerializedName("BranchAddress")
         @Expose
         private List<BranchAddress> branchAddress = null;
+
+        public String getShopOwnerName() {
+            return shopOwnerName;
+        }
+
+        public void setShopOwnerName(String shopOwnerName) {
+            this.shopOwnerName = shopOwnerName;
+        }
+
+        public String getShopOwnerImage() {
+            return shopOwnerImage;
+        }
+
+        public void setShopOwnerImage(String shopOwnerImage) {
+            this.shopOwnerImage = shopOwnerImage;
+        }
 
         public String getShopId() {
             return shopId;

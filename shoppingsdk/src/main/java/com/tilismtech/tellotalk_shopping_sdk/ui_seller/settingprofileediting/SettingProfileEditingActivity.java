@@ -39,9 +39,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingViewModel;
@@ -60,13 +64,13 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     com.google.android.material.tabs.TabLayout tab1;
     ImageView iv_imageedit, iv_profile;
     ShopRegistrationViewModel shopRegistrationViewModel;
+    StoreSettingViewModel storeSettingViewModel;
     Dialog dialogImage;
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
     String filePath = "";
     Uri imageUri;
     EditText shopOwnername;
-    StoreSettingViewModel storeSettingViewModel;
 
 
     @Override
@@ -86,6 +90,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         shopOwnername = findViewById(R.id.user_name);
 
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
+        storeSettingViewModel = new ViewModelProvider(this).get(StoreSettingViewModel.class);
 
         horizontalLine1 = findViewById(R.id.horizontalLine1);
         horizontalLine2 = findViewById(R.id.horizontalLine2);
@@ -115,7 +120,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     Toast.makeText(SettingProfileEditingActivity.this, "User name can not be empty...", Toast.LENGTH_SHORT).show();
                 } else {
                     UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
-                    updateUserAndImage.setFirstName("sharjeel");
+                    updateUserAndImage.setFirstName(shopOwnername.getText().toString());
                     updateUserAndImage.setMiddleName(" ");
                     updateUserAndImage.setLastName(" ");
                     updateUserAndImage.setProfileId(Constant.PROFILE_ID);
@@ -178,6 +183,19 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        GetShopDetail getShopDetail = new GetShopDetail();
+        getShopDetail.setProfileId(Constant.PROFILE_ID);
+        storeSettingViewModel.postShopDetail(getShopDetail);
+        storeSettingViewModel.getShopDetail().observe(SettingProfileEditingActivity.this, new Observer<GetShopDetailResponse>() {
+            @Override
+            public void onChanged(GetShopDetailResponse getShopDetailResponse) {
+                if (getShopDetailResponse != null) {
+                    shopOwnername.setText(getShopDetailResponse.getData().getRequestList().getShopOwnerName());
+                    Glide.with(SettingProfileEditingActivity.this).load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage()).into(iv_profile);
+                }
             }
         });
 

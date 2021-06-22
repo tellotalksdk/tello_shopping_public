@@ -199,7 +199,7 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
             } else if (v.getId() == R.id.orderStatus) {
                 onOrderClickListener.OnStatusChange(5, deliveredItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.edit_rider_info) {
-                onOrderClickListener.OnRiderInfoUpdateListener(deliveredItems.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnRiderInfoUpdateListener(deliveredItems.get(getAdapterPosition()).getOrderid(),deliveredItems.get(getAdapterPosition()));
             }
         }
     }
@@ -209,6 +209,9 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
         void OnViewFullOrderListener(int position);
 
         void OnRiderInfoUpdateListener(int position);
+
+        void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request);
+
 
         void OnStatusChange(int status, int OrderID);
     }

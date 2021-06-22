@@ -198,7 +198,7 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
             } else if (v.getId() == R.id.orderStatus) {
                 onOrderClickListener.OnStatusChange(5, cancelledItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.edit_rider_info) {
-                onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid(),cancelledItems.get(getAdapterPosition()));
             }
         }
     }
@@ -208,6 +208,8 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
         void OnViewFullOrderListener(int position);
 
         void OnRiderInfoUpdateListener(int position);
+
+        void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request);
 
         void OnStatusChange(int status, int OrderID);
     }

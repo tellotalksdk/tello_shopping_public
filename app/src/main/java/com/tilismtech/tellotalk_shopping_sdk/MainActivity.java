@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                  TelloApiClient.initializeShoppingSDK(MainActivity.this, "3F64D77CB1BA4A3CA6CF9B9D786D4A43", "Ali", "Mehdi", "Rizvi", "03330347473", "Azan@gmail.com");
-                //TelloApiClient.init(MainActivity.this);
             }
         });
 

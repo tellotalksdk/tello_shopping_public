@@ -203,7 +203,7 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
             } else if (v.getId() == R.id.orderStatus) {
                 onOrderClickListener.OnStatusChange(6, paidItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.edit_rider_info) {
-                onOrderClickListener.OnRiderInfoUpdateListener(paidItems.get(getAdapterPosition()).getOrderid());
+                onOrderClickListener.OnRiderInfoUpdateListener(paidItems.get(getAdapterPosition()).getOrderid(), paidItems.get(getAdapterPosition()));
             }
         }
     }
@@ -212,6 +212,8 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
         void OnViewFullOrderListener(int position);
 
         void OnRiderInfoUpdateListener(int position);
+
+        void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request);
 
         void OnStatusChange(int status, int OrderID);
     }
