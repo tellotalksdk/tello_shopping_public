@@ -62,6 +62,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
     EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
+    public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +81,8 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
+        horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
@@ -121,16 +124,19 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                             Toast.makeText(getActivity(), "Accepted Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
-
+                    horizontalProgressBar.clearAnimation();
+                    horizontalProgressBar.setVisibility(View.GONE);
                 }
+                horizontalProgressBar.clearAnimation();
+                horizontalProgressBar.setVisibility(View.GONE);
             }
         });
     }
 
     @Override
     public void OnViewFullOrderListener(int orderId) {
-       // EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
-      //  Toast.makeText(getActivity(), "" + orderId, Toast.LENGTH_SHORT).show();
+        // EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
+        //  Toast.makeText(getActivity(), "" + orderId, Toast.LENGTH_SHORT).show();
         //Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -309,7 +309,7 @@
         android:paddingRight="50dp"
         android:text="Add Product"
         android:textColor="@android:color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"

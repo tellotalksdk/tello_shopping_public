@@ -65,6 +65,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.productTitle.setText(request.getTitle());
         holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
 
+        if(String.valueOf(request.getDiscountPrice()).equals("0")){
+            holder.originalprice.setVisibility(View.GONE);
+            holder.discountedprice.setText(String.valueOf(request.getPrice()));
+        }
+
         Glide.with(myCtx).
                 load(request.getProdpic()).
                 placeholder(R.drawable.ic_dummy).
@@ -72,72 +77,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 into(holder.productImage);
         holder.originalprice.setPaintFlags(holder.originalprice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        // holder.productImage.setImageDrawable(myCtx.getResources().getDrawable(R.drawable.ic_bbq));
-
-       /* holder.open_edit_details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_edit_product);
-                outerRL = dialog.findViewById(R.id.outerRL);
-                closeEditbtn = dialog.findViewById(R.id.post_product_btn);
-
-                outerRL.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                closeEditbtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });*/
-       /* holder.viewProductDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog = new Dialog(myCtx);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.setContentView(R.layout.dialog_product_detail_new);
-
-                ImageView iv_back = dialog.findViewById(R.id.iv_back);
-                iv_back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Window window = dialog.getWindow();
-                WindowManager.LayoutParams wlp = window.getAttributes();
-                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-                wlp.gravity = Gravity.BOTTOM;
-                // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                window.setAttributes(wlp);
-
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-        });*/
     }
 
     @Override
@@ -148,7 +87,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class ProductItemVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView productTitle, originalprice, discountedprice, productcategory;
         Switch isActive;
-        ImageView productImage, open_edit_details;
+        ImageView productImage, open_edit_details, shareProductLink;
         CardView viewProductDetail;
         OnProductEditorClickDialog onProductEditorClickDialog;
 
@@ -163,8 +102,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productImage = itemView.findViewById(R.id.productImage);
             open_edit_details = itemView.findViewById(R.id.open_edit_details);
             viewProductDetail = itemView.findViewById(R.id.viewProductDetail);
+            shareProductLink = itemView.findViewById(R.id.shareProductLink);
             this.onProductEditorClickDialog = onProductEditorClickDialog;
 
+            shareProductLink.setOnClickListener(this);
             open_edit_details.setOnClickListener(this);
             itemView.setOnClickListener(this);
             isActive.setOnClickListener(this);
@@ -174,21 +115,25 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.open_edit_details) {
-                this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId(),getAdapterPosition());
+                this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId(), getAdapterPosition());
             } else if (v.getId() == R.id.isActive) {
                 this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(), isActive.isChecked());
             } else if (v.getId() == R.id.viewProductDetail) {
                 this.onProductEditorClickDialog.onOpenProductDetailDialog(productList.get(getAdapterPosition()).getProductId());
+            } else if (v.getId() == R.id.shareProductLink) {
+                this.onProductEditorClickDialog.onShareProductLink(productList.get(getAdapterPosition()).getProductLink());
             }
         }
     }
 
 
     public interface OnProductEditorClickDialog {
-        void onOpenProductEditor(int position,int adapterPosition);
+        void onOpenProductEditor(int position, int adapterPosition);
 
         void isActiveproduct(int position, boolean isActive);
 
         void onOpenProductDetailDialog(int position);
+
+        void onShareProductLink(String productLink);
     }
 }

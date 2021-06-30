@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.lifecycle.LiveData;
@@ -20,6 +21,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -66,6 +69,12 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import javax.security.auth.login.LoginException;
 
 
 public class ShopLandingActivity extends AppCompatActivity {
@@ -79,6 +88,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private TextView productList, orderList, chat;
     private LinearLayout Lineartabbar;
     private HorizontalScrollView orderListtabbar;
+    private LinearLayout LLtabbar;
     private RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
     private TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
     private TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
@@ -111,14 +121,15 @@ public class ShopLandingActivity extends AppCompatActivity {
         setTotalProductOnActionBar();
         productList = findViewById(R.id.productList);
         filePaths = new ArrayList<>();
-
         currentTab = CurrentTab.RECEIVED;
 
 
         simpleSearchView = findViewById(R.id.simpleSearchView);
         Lineartabbar = findViewById(R.id.tabbar);
-        orderListtabbar = findViewById(R.id.orderListtabbar);
-        orderListtabbar.setVisibility(View.GONE);
+        // orderListtabbar = findViewById(R.id.orderListtabbar);
+        LLtabbar = findViewById(R.id.LLtabbar);
+        // orderListtabbar.setVisibility(View.GONE);
+        LLtabbar.setVisibility(View.GONE);
 
         deliveryStatus = findViewById(R.id.deliveryStatus);
         deliveryStatus1 = findViewById(R.id.deliveryStatus1);
@@ -161,6 +172,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         shopName = findViewById(R.id.shopName);
         totalProducts = findViewById(R.id.totalProducts);
         tv_addproducts = findViewById(R.id.tv_addproducts);
+
 
         dialogCongratulation = new Dialog(ShopLandingActivity.this);
         dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -359,7 +371,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         productList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderListtabbar.setVisibility(View.GONE);
+                // orderListtabbar.setVisibility(View.GONE);
+                LLtabbar.setVisibility(View.GONE);
 
                 productList.setTextColor(Color.WHITE);
                 productList.setBackground(getResources().getDrawable(R.drawable.bg_text_left_rounded));
@@ -393,7 +406,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         orderList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderListtabbar.setVisibility(View.VISIBLE);
+                //  orderListtabbar.setVisibility(View.VISIBLE);
+                LLtabbar.setVisibility(View.VISIBLE);
 
                 productList.setTextColor(Color.BLACK);
                 productList.setBackgroundColor(Color.TRANSPARENT);
@@ -427,7 +441,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderListtabbar.setVisibility(View.GONE);
+                // orderListtabbar.setVisibility(View.GONE);
+                LLtabbar.setVisibility(View.GONE);
 
                 productList.setTextColor(Color.BLACK);
                 productList.setBackgroundColor(Color.TRANSPARENT);
@@ -834,14 +849,21 @@ public class ShopLandingActivity extends AppCompatActivity {
     }
 
     private void setShopNameAndImage() {
+        //LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
+        //loadingDialog.showDialog();
         shopLandingPageViewModel.shopImageAndName();
         shopLandingPageViewModel.getShopNameAndImage().observe(ShopLandingActivity.this, new Observer<ShopNameAndImageResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onChanged(ShopNameAndImageResponse shopNameAndImageResponse) {
                 if (shopNameAndImageResponse != null) {
                     //Toast.makeText(ShopLandingActivity.this, shopNameAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     shopName.setText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        shopName.setTooltipText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
+                    }
                     Glide.with(ShopLandingActivity.this).load(shopNameAndImageResponse.getData().getRequestList().get(0).getShopProfile()).into(profileImage);
+                   // loadingDialog.dismissDialog();
                     // shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
                 }
             }
@@ -880,7 +902,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {

@@ -102,8 +102,9 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
@@ -121,7 +122,7 @@
                     android:text="Product Name : "
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -138,7 +139,7 @@
                     android:text="HAIER Air Conditioner for sale condition is \nvery good 9/10"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
 
@@ -146,8 +147,9 @@
 
 
             <LinearLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
@@ -165,7 +167,7 @@
                     android:text=" Product ID # :"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -182,7 +184,7 @@
                     android:text="AAB 250"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
 
@@ -190,8 +192,9 @@
 
 
             <LinearLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
@@ -209,7 +212,7 @@
                     android:text="Original Price : "
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -226,7 +229,7 @@
                     android:text="10,000"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
 
@@ -235,7 +238,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
@@ -253,7 +257,7 @@
                     android:text="Discounted Price : "
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -270,7 +274,7 @@
                     android:text="8000"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
 

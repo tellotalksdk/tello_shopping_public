@@ -56,6 +56,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpRespons
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingFragment;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 import java.io.ByteArrayOutputStream;
@@ -131,7 +132,7 @@ public class ShopRegistrationFragment extends Fragment {
 
                     ShopRegister shopRegister = new ShopRegister();
                     shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
-                    shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + " tello.pk");
+                    shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
                     shopRegister.setRegisterPhone(mobileNumber.toString().trim());
                     // shopRegister.setRegisterPhone("03330347473");
                     shopRegister.setEmail("sharjeel@gmail.com");
@@ -183,7 +184,7 @@ public class ShopRegistrationFragment extends Fragment {
                             }
                         }
                     });
-                   // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                    // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                     navController.navigate(R.id.shopSettingFragment);
                 }
             }
@@ -948,23 +949,32 @@ public class ShopRegistrationFragment extends Fragment {
         //endregion
 
         //region updateUserName_Image
-            iv_editImage.setOnClickListener(new View.OnClickListener() {
+        iv_editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //here we call api for set user name and image ...
+                LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                 UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
-                updateUserAndImage.setFirstName("sharjeel");
+                if (TextUtils.isEmpty(userShopname.getText().toString())) {
+                    Toast.makeText(getActivity(), "Shop Owner Name Required...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                updateUserAndImage.setFirstName(userShopname.getText().toString());
                 updateUserAndImage.setMiddleName(" ");
                 updateUserAndImage.setLastName(" ");
                 updateUserAndImage.setProfileId(Constant.PROFILE_ID);
                 updateUserAndImage.setProfilePic(filePath);
+                loadingDialog.showDialog();
                 shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(getActivity()); //need to remove observer here to stop multiple call of apis
                 shopRegistrationViewModel.userImageandName(updateUserAndImage);
                 shopRegistrationViewModel.getUpdateUserImageResponse().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
                     @Override
                     public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
-                        if (updateUserAndImage != null) {
-                            Toast.makeText(getActivity(), updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                        if (updateUserAndImageResponse != null) {
+                            loadingDialog.dismissDialog();
+                            Toast.makeText(getActivity(), "" + updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                        } else {
+                            loadingDialog.dismissDialog();
                         }
                     }
                 });
@@ -991,7 +1001,7 @@ public class ShopRegistrationFragment extends Fragment {
         });
         //endregion
 
-        Utility.hideKeyboard(getActivity(),view);
+        Utility.hideKeyboard(getActivity(), view);
     }
 
     private void checkPermissions() {
@@ -1120,7 +1130,7 @@ public class ShopRegistrationFragment extends Fragment {
 
     private void startCountDown() {
 
-        new CountDownTimer(5000, 1000) {
+        new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 countDown.setText("in 00 : " + millisUntilFinished / 1000);
@@ -1140,7 +1150,7 @@ public class ShopRegistrationFragment extends Fragment {
 
         }.start();
 
-
+//03350221182
     }
 
     public void initViews(View view) {

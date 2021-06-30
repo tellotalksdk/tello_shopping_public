@@ -65,7 +65,7 @@ public class TelloApiClient {
         generateToken.setPhone(phone);
         generateToken.setEmail(email);
 
-        try {
+        try {//03350221182
             generateTokenResponse(generateToken, context, new OnSuccessListener() {
                 @Override
                 public void onSuccess(Object object) {
@@ -75,9 +75,10 @@ public class TelloApiClient {
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
                     }
+         //           context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -123,6 +124,7 @@ public class TelloApiClient {
                         if (gtResponse != null) {
                             if (gtResponse.getData() != null) {
                                 if (gtResponse.getData().getRequestList().getAccessToken() != null)
+
                                     TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
 
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(generateToken.getPhone());
@@ -132,12 +134,11 @@ public class TelloApiClient {
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveEmail(generateToken.getEmail());
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(generateToken.getProfileId());
                                 TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
-                                onSuccessListener.onSuccess(gtResponse);
 
                                 Constant c = new Constant();
                                 c.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
-
-                                Log.i("TAG", "TOKEN SAVE : " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
+                                c.setContactNumber(generateToken.getPhone());
+                                onSuccessListener.onSuccess(gtResponse);
                             }
                         }
                     } else {

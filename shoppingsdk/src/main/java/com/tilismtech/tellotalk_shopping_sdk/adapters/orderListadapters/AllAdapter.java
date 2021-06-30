@@ -75,9 +75,11 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            allItems.clear();
-            allItems.addAll((List) results.values);
-            notifyDataSetChanged();
+            if (allItems != null) {
+                allItems.clear();
+                allItems.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
         }
     };
 

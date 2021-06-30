@@ -121,9 +121,11 @@ public class PaidAdapter extends RecyclerView.Adapter<PaidAdapter.PaidItemViewHo
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            paidItems.clear();
-            paidItems.addAll((List) results.values);
-            notifyDataSetChanged();
+           if(paidItems != null) {
+               paidItems.clear();
+               paidItems.addAll((List) results.values);
+               notifyDataSetChanged();
+           }
         }
     };
 

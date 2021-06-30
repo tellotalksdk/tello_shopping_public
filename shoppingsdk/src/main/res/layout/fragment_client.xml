@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:weightSum="3">
@@ -21,10 +22,20 @@
         android:layout_weight="0.2"
         android:background="#FFFFFF"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="#0E0E0E">
+        app:tabSelectedTextColor="#0E0E0E"></com.google.android.material.tabs.TabLayout>
 
+  <!--  <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_weight="1.8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>-->
 
-    </com.google.android.material.tabs.TabLayout>
+   <!-- <androidx.recyclerview.widget.RecyclerView
+        android:layout_weight="1.8"
+        android:id="@+id/productList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/rv_shop_items"/>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -32,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.8"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph_client_sub_categories" />
+        app:defaultNavHost="false"
+        app:navGraph="@navigation/nav_graph_sub_categories" />
 
 </LinearLayout>

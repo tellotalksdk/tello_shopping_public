@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AcceptedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.ReceivedAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
@@ -53,6 +54,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     ImageView screenShot;
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
+    public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
 
     @Override
@@ -71,6 +73,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         super.onViewCreated(view, savedInstanceState);
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
         //this will update the order list all tabs status counts
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
@@ -85,7 +88,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
 
         if (getArguments() != null) {
-          //  Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(getActivity(), "" + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
         }
         orderListViewModel = new ViewModelProvider(this).get(OrderListViewModel.class);
         recycler_received_orders = view.findViewById(R.id.recycler_received_orders);
@@ -113,17 +116,25 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                         } else {
                             Toast.makeText(getActivity(), "Received Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
+                        horizontalProgressBar.clearAnimation();
+                        horizontalProgressBar.setVisibility(View.GONE);
                     }
-
+                    horizontalProgressBar.clearAnimation();
+                    horizontalProgressBar.setVisibility(View.GONE);
                 }
+                horizontalProgressBar.clearAnimation();
+                horizontalProgressBar.setVisibility(View.GONE);
             }
         });
+
+        horizontalProgressBar.setVisibility(View.GONE);
+
     }
 
     @Override
     public void OnViewFullOrderListener(int orderId) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
-        LinearLayout flash , productDetailLL;
+        LinearLayout flash, productDetailLL;
         //Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -185,7 +196,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
                     et_orderStatus.setText("Paid");
-                    et_orderDate.setText( " " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
+                    et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
 
                     productDetailLL.removeAllViews();
                     if (viewFullOrderResponse.getData().getRequestList().getProductsDetails() != null) {
@@ -213,12 +224,12 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                     }
 
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " +viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getLastName());
                     et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
                     et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
                     et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());
 
-                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName()  + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
+                    et_BuyerName.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getLastName());
                     et_BuyerMobile.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile());
                     et_BuyerAddress.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress());
                     et_BuyerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());

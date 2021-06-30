@@ -191,9 +191,20 @@ public class GetShopDetailResponse {
         @SerializedName("shopOwnerImage")
         @Expose
         private String shopOwnerImage;
+        @SerializedName("shopRating")
+        @Expose
+        private String shopRating;
         @SerializedName("BranchAddress")
         @Expose
         private List<BranchAddress> branchAddress = null;
+
+        public String getShopRating() {
+            return shopRating;
+        }
+
+        public void setShopRating(String shopRating) {
+            this.shopRating = shopRating;
+        }
 
         public String getShopOwnerName() {
             return shopOwnerName;

@@ -114,6 +114,17 @@ public class GetOrderByStatusResponse {
         @SerializedName("qty")
         @Expose
         private String quantity;
+        @SerializedName("orderTrackingId")
+        @Expose
+        private String orderTrackingId;
+
+        public String getOrderTrackingId() {
+            return orderTrackingId;
+        }
+
+        public void setOrderTrackingId(String orderTrackingId) {
+            this.orderTrackingId = orderTrackingId;
+        }
 
         public String getQuantity() {
             return quantity;

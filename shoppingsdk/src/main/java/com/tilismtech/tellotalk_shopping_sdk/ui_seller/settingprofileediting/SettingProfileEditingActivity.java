@@ -50,6 +50,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndIma
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     NavHostFragment navHostFragment;
     NavController navController;
     View horizontalLine1, horizontalLine2, horizontalLine3;
-    TextView tv_storesettings, tv_bank, tv_personal;
+    TextView tv_storesettings, tv_bank, tv_personal, rating_number;
     com.google.android.material.tabs.TabLayout tab1;
     ImageView iv_imageedit, iv_profile;
     ShopRegistrationViewModel shopRegistrationViewModel;
@@ -88,6 +89,8 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         storeSettingRL = findViewById(R.id.storeSettingRL);
         bankRL = findViewById(R.id.bankRL);
         shopOwnername = findViewById(R.id.user_name);
+        rating_number = findViewById(R.id.rating_number);
+
 
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
         storeSettingViewModel = new ViewModelProvider(this).get(StoreSettingViewModel.class);
@@ -126,13 +129,17 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     updateUserAndImage.setProfileId(Constant.PROFILE_ID);
                     updateUserAndImage.setProfilePic(filePath);
                     shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
+                    LoadingDialog loadingDialog = new LoadingDialog(SettingProfileEditingActivity.this);
+                    loadingDialog.showDialog();
                     shopRegistrationViewModel.userImageandName(updateUserAndImage);
                     shopRegistrationViewModel.getUpdateUserImageResponse().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
                         @Override
                         public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                             if (updateUserAndImage != null) {
                                 Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                                loadingDialog.dismissDialog();
                             }
+                            loadingDialog.dismissDialog();
                         }
                     });
                 }
@@ -193,8 +200,20 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             @Override
             public void onChanged(GetShopDetailResponse getShopDetailResponse) {
                 if (getShopDetailResponse != null) {
+                    // Toast.makeText(getActivity(), "" + getShopDetailResponse.getStatusDetail() + getShopDetailResponse.getData().getRequestList().getBranchAddress().size(), Toast.LENGTH_SHORT).show();
+
                     shopOwnername.setText(getShopDetailResponse.getData().getRequestList().getShopOwnerName());
-                    Glide.with(SettingProfileEditingActivity.this).load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage()).into(iv_profile);
+
+                    if (shopOwnername.getText().toString().equals(" ")) {
+                        shopOwnername.setHint("Your Name Required...");
+                    }
+                    rating_number.setText(getShopDetailResponse.getData().getRequestList().getShopRating());
+
+                    Glide.with(SettingProfileEditingActivity.this).
+                            load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage()).
+                            thumbnail(0.05f).
+                            into(iv_profile);
+
                 }
             }
         });

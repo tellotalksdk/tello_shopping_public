@@ -92,7 +92,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private ProductListAdapter.OnProductEditorClickDialog onProductEditorClickDialog;
     private NavController navController;
     private ImageView setting, open_edit_details, iv_back_addproduct, chooseMultipleProductsIV;
-    private Dialog dialog_edit_details;
+    private Dialog dialog_edit_details, dialogCongratulation;
     private LinearLayout outerRL;
     public Button addProduct_btn, uploadProduct, post_product_btn;
     private Dialog dialogAddProduct;
@@ -239,11 +239,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                             loadingDialog.showDialog();
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
-                           // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
+                            // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
                             shopLandingPageViewModel.getNewProduct().observe(getActivity(), new Observer<AddNewProductResponse>() {
                                 @Override
                                 public void onChanged(AddNewProductResponse addNewProductResponse) {
-                                   // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
+                                    // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
                                     if (addNewProductResponse != null) {
                                         //Toast.makeText(ShopLandingActivity.this, " : " + addNewProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                         try {
@@ -441,6 +441,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
                     if (productListResponse.getData().getRequestList() != null) {
+
                         addProduct_btn.setVisibility(View.GONE);
                         productListAppend.addAll(productListResponse.getData().getRequestList());
                         productListAdapter = new ProductListAdapter(productListAppend, getActivity(), getReference());
@@ -451,48 +452,37 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
                         loadingDialog.dismissDialog();
                         shopLandingPageViewModel.getProductList().removeObservers(getActivity());
+
+                    } else {
+                        dialogCongratulation = new Dialog(getActivity());
+                        dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialogCongratulation.setContentView(R.layout.dialog_congratulation);
+                        dialogCongratulation.show();
+
+                        ImageView iv_close = dialogCongratulation.findViewById(R.id.iv_close);
+                        Button getStarted_btn = dialogCongratulation.findViewById(R.id.getStarted_btn);
+
+                        iv_close.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogCongratulation.dismiss();
+                            }
+                        });
+
+                        getStarted_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogCongratulation.dismiss();
+                            }
+                        });
+
+                        loadingDialog.dismissDialog();
+                        addProduct_btn.setVisibility(View.VISIBLE);
                     }
-                    loadingDialog.dismissDialog();
                 }
                 loadingDialog.dismissDialog();
             }
         });
-/*
-
-        getRetrofitClient().getProductList("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productList.getProfileId(), lastProductId).enqueue(new Callback<ProductListResponse>() {
-            @Override
-            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
-                if (response != null) {
-                    if (response.isSuccessful()) {
-                        ProductListResponse productListResponse = response.body();
-                        if (productListResponse != null) {
-                            if (productListResponse.getData().getRequestList() != null) {
-                                addProduct_btn.setVisibility(View.GONE);
-                                productListAppend.addAll(productListResponse.getData().getRequestList());
-                                productListAdapter = new ProductListAdapter(productListAppend, getActivity(), getReference());
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
-                                recycler_add_product.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
-                                recycler_add_product.setAdapter(productListAdapter);
-                                productListAdapter.notifyDataSetChanged();
-                                lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
-                                loadingDialog.dismissDialog();
-                                shopLandingPageViewModel.getProductList().removeObservers(getActivity());
-                            }
-                            loadingDialog.dismissDialog();
-                        }
-                    }
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ProductListResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-*/
 
 
     }
@@ -716,7 +706,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        //   dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
         dialog.setContentView(R.layout.dialog_edit_product);
 
         outerRL = dialog.findViewById(R.id.outerRL);
@@ -775,9 +765,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 {
                     //every thing fine post edit api
 
-                    if (Integer.parseInt(discountedPrice.getText().toString()) > Integer.parseInt(originalPrice.getText().toString())) {
-                        Toast.makeText(getActivity(), "Discounted Price must be less than original price...", Toast.LENGTH_SHORT).show();
-                        return;
+                    if (!TextUtils.isEmpty(discountedPrice.getText().toString())) {
+                        if (Integer.parseInt(discountedPrice.getText().toString()) > Integer.parseInt(originalPrice.getText().toString())) {
+                            Toast.makeText(getActivity(), "Discounted Price must be less than original price...", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                     }
 
                     UpdateProduct updateProduct = new UpdateProduct();
@@ -820,7 +812,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         tv_deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteProduct(productID, dialog,adapterPosition);
+                deleteProduct(productID, dialog, adapterPosition);
             }
         });
 
@@ -967,7 +959,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         dialog.show();
     }
 
-    private void deleteProduct(int productID, Dialog dialog,int adapterPosition) {
+    private void deleteProduct(int productID, Dialog dialog, int adapterPosition) {
 
         loadingDialog.showDialog();
         DeleteProduct deleteProduct = new DeleteProduct();
@@ -1001,6 +993,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(IsProductActiveResponse isProductActiveResponse) {
                 if (isProductActiveResponse != null) {
+
+                    /* initRV();*/
                     //Toast.makeText(getActivity(), " : " + isProductActiveResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -1075,6 +1069,19 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+    }
+
+    @Override
+    public void onShareProductLink(String productLink) {
+        Toast.makeText(getActivity(), "" + productLink, Toast.LENGTH_SHORT).show();
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, productLink);
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     public ProductListAdapter.OnProductEditorClickDialog getReference() {

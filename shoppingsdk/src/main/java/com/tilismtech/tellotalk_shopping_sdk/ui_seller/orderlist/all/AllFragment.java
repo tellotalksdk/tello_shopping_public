@@ -58,6 +58,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
     ImageView screenShot;
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
+    public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
 
     @Override
@@ -77,6 +78,8 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
+        horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
@@ -116,7 +119,11 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                             Toast.makeText(getActivity(), "All Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    horizontalProgressBar.clearAnimation();
+                    horizontalProgressBar.setVisibility(View.GONE);
                 }
+                horizontalProgressBar.clearAnimation();
+                horizontalProgressBar.setVisibility(View.GONE);
             }
         });
     }

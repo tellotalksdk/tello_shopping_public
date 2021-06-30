@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -25,6 +28,8 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 public class ClientHomeFragment extends Fragment {
 
     com.google.android.material.tabs.TabLayout tabLayout;
+    NavController navController;
+    NavHostFragment navHostFragment;
 
     public ClientHomeFragment() {
     }
@@ -40,6 +45,12 @@ public class ClientHomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tabLayout = view.findViewById(R.id.tabLayout);
 
+        navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        navController = navHostFragment.getNavController();
+    //    navController.navigate(R.id.subCategoryFragment);
+
+      //  navController = Navigation.findNavController(view);
+
         tabLayout.addTab(tabLayout.newTab().setText("Deals"));
         tabLayout.addTab(tabLayout.newTab().setText("HardDisk"));
         tabLayout.addTab(tabLayout.newTab().setText("Laptop"));
@@ -50,7 +61,10 @@ public class ClientHomeFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                if(tab.getPosition() == 0){
+                    Toast.makeText(getActivity(), "da", Toast.LENGTH_SHORT).show();
+                  //  navController.navigate(R.id.nav_graph_client_sub_categories);
+                }
             }
 
             @Override

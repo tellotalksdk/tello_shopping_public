@@ -5,6 +5,7 @@ public class ProductListpojo {
     private String productTitle, originalPrice, discountedPrice, productCategory;
     private boolean isActive;
     private int image;
+    private String productRating;
 
     public ProductListpojo(String productTitle, String originalPrice, String discountedPrice, String productCategory, boolean isActive, int image) {
         this.productTitle = productTitle;
@@ -13,6 +14,14 @@ public class ProductListpojo {
         this.productCategory = productCategory;
         this.isActive = isActive;
         this.image = image;
+    }
+
+    public String getProductRating() {
+        return productRating;
+    }
+
+    public void setProductRating(String productRating) {
+        this.productRating = productRating;
     }
 
     public int getImage() {

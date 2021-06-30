@@ -297,7 +297,8 @@ public class Repository {
 
     //region reSendotp
     public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp) {
-        getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), Constant.CONTACT_NUMBER).enqueue(new Callback<VerifyOtpResponse>() {
+        Constant constant = new Constant();
+        getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), constant.getContactNumber()).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
             public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
                 if (response != null) {
@@ -362,7 +363,6 @@ public class Repository {
 
     }
     //endregion
-
 
     //region getTimings
     public void getTimings(MutableLiveData<GetTimingsResponse> getTimingsResponseMutableLiveData, GetTimings getTimings) {

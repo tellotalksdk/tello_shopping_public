@@ -30,8 +30,8 @@
                 android:id="@+id/drawerOpenClose"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginLeft="10dp"
                 android:layout_gravity="start|center"
+                android:layout_marginLeft="10dp"
                 android:src="@drawable/hamberg_icon" />
 
         </FrameLayout>

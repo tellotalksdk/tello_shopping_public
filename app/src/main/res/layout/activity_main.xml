@@ -7,6 +7,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
+
     <EditText
         android:id="@+id/fName"
         android:hint="first Name"
@@ -29,6 +34,7 @@
     <EditText
         android:id="@+id/contact"
         android:hint="mobile number"
+        android:text="03350221182"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
 
@@ -36,7 +42,7 @@
     <EditText
         android:id="@+id/profileid"
         android:hint="profile id"
-        android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A43"
+        android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A99"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
 

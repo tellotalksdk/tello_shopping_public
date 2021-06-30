@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
@@ -66,6 +67,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     ImageView screenShot;
     ScrollView scroller;
     EditText etRiderName, etRiderNumber, etRiderTracking;
+    public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
 
     @Override
@@ -85,6 +87,8 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
+        horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
@@ -132,7 +136,11 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                             Toast.makeText(getActivity(), "cancelled fragment is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    horizontalProgressBar.clearAnimation();
+                    horizontalProgressBar.setVisibility(View.GONE);
                 }
+                horizontalProgressBar.clearAnimation();
+                horizontalProgressBar.setVisibility(View.GONE);
             }
         });
 

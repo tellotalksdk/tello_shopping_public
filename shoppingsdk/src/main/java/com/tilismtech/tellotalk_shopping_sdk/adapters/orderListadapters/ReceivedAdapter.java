@@ -120,12 +120,13 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            requestList.clear();
-            requestList.addAll((List) results.values);
-            notifyDataSetChanged();
+            if (requestList != null) {
+                requestList.clear();
+                requestList.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
         }
     };
-
 
 
     public class ReceivedItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

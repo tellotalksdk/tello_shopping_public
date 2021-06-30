@@ -97,6 +97,28 @@ public class ProductListResponse {
         @SerializedName("Product_Category_Name")
         @Expose
         private String Product_Category_Name;
+        @SerializedName("ProductLink")
+        @Expose
+        private String ProductLink;
+        @SerializedName("productRating")
+        @Expose
+        private String productRating;
+
+        public String getProductRating() {
+            return productRating;
+        }
+
+        public void setProductRating(String productRating) {
+            this.productRating = productRating;
+        }
+
+        public String getProductLink() {
+            return ProductLink;
+        }
+
+        public void setProductLink(String productLink) {
+            ProductLink = productLink;
+        }
 
         public String getProduct_Category_Name() {
             return Product_Category_Name;

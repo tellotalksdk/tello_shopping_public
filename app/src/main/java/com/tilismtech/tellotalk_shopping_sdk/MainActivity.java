@@ -42,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
         //03152612485
         //azan id  : 3F64D77CB1BA4A3CA6CF9B9D786D4A234567
 
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 TelloApiClient.initializeShoppingSDK(MainActivity.this, "3F64D77CB1BA4A3CA6CF9B9D786D4A43", "Ali", "Mehdi", "Rizvi", "03330347473", "Azan@gmail.com");
+                TelloApiClient.initializeShoppingSDK(MainActivity.this, pI.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com");
             }
         });
 

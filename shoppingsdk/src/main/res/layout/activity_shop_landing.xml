@@ -32,7 +32,27 @@
                     android:layout_alignParentStart="true"
                     android:src="@drawable/ic_baseline_arrow_back" />
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_toRightOf="@+id/arrowback"
+                    app:cardCornerRadius="360dp">
+
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/four_corner_rounded_image"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_bbq" />
+                </androidx.cardview.widget.CardView>
+
+<!--
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profileImage"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -40,7 +60,7 @@
                     android:layout_toRightOf="@+id/arrowback"
                     android:src="@drawable/ic_shop"
                     app:civ_border_color="#FF000000"
-                    app:civ_border_width="0.5dp" />
+                    app:civ_border_width="0.5dp" />-->
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -50,10 +70,9 @@
 
                     <TextView
                         android:id="@+id/shopName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:text="My Shop"
-                        android:maxLength="13"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@android:color/black"
@@ -200,17 +219,23 @@
 
     </LinearLayout>
 
-    <HorizontalScrollView
+<!--    <HorizontalScrollView
         android:id="@+id/orderListtabbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tabbar"
         android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:visibility="visible">
+        android:visibility="visible">-->
 
         <LinearLayout
+            android:id="@+id/LLtabbar"
+            android:weightSum="7"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tabbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -218,6 +243,7 @@
             <RelativeLayout
                 android:id="@+id/received"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs"
@@ -256,6 +282,7 @@
             <RelativeLayout
                 android:id="@+id/accepted"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs_unselected"
@@ -294,6 +321,7 @@
             <RelativeLayout
                 android:id="@+id/dispatched"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs_unselected"
@@ -332,6 +360,7 @@
             <RelativeLayout
                 android:id="@+id/delivered"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs_unselected"
@@ -370,6 +399,7 @@
             <RelativeLayout
                 android:id="@+id/paid"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs_unselected"
@@ -408,6 +438,7 @@
             <RelativeLayout
                 android:id="@+id/cancel"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs_unselected"
@@ -446,6 +477,7 @@
             <RelativeLayout
                 android:id="@+id/all"
                 android:layout_width="45dp"
+                android:layout_weight="1"
                 android:layout_height="60dp"
                 android:layout_margin="3dp"
                 android:background="@drawable/order_list_tabs_unselected"
@@ -482,14 +514,14 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </HorizontalScrollView>
+ <!--   </HorizontalScrollView>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/orderListtabbar"
+        android:layout_below="@+id/LLtabbar"
         android:layout_marginTop="10dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph_two" />

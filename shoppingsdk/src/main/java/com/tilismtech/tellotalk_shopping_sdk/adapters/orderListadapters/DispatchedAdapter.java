@@ -86,9 +86,11 @@ public class DispatchedAdapter extends RecyclerView.Adapter<DispatchedAdapter.Di
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            dispatchedItems.clear();
-            dispatchedItems.addAll((List) results.values);
-            notifyDataSetChanged();
+            if(dispatchedItems != null) {
+                dispatchedItems.clear();
+                dispatchedItems.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
         }
     };
 

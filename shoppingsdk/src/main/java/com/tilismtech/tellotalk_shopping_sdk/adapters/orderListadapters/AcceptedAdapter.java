@@ -109,9 +109,11 @@ public class AcceptedAdapter extends RecyclerView.Adapter<AcceptedAdapter.Accept
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            acceptedItems.clear();
-            acceptedItems.addAll((List) results.values);
-            notifyDataSetChanged();
+            if(acceptedItems != null) {
+                acceptedItems.clear();
+                acceptedItems.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
         }
     };
 

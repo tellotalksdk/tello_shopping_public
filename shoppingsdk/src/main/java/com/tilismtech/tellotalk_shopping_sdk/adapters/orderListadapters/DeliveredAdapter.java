@@ -121,9 +121,11 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.Deli
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            deliveredItems.clear();
-            deliveredItems.addAll((List) results.values);
-            notifyDataSetChanged();
+            if(deliveredItems != null) {
+                deliveredItems.clear();
+                deliveredItems.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
         }
     };
 

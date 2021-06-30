@@ -68,6 +68,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
     EditText etRiderName, etRiderNumber, etRiderTracking;
+    public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +87,8 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
+        horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
@@ -128,7 +131,11 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
                             Toast.makeText(getActivity(), "Dispatched Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    horizontalProgressBar.clearAnimation();
+                    horizontalProgressBar.setVisibility(View.GONE);
                 }
+                horizontalProgressBar.clearAnimation();
+                horizontalProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -316,6 +323,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
         dialog.setContentView(R.layout.dialog_add_rider_info);
 
         Window window = dialog.getWindow();
@@ -371,6 +379,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     public void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request) {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
         dialog.setContentView(R.layout.dialog_add_rider_info);
 
         Window window = dialog.getWindow();
@@ -388,6 +397,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
         etRiderName.setText(request.getRiderName().toString());
         etRiderNumber.setText(request.getRiderContact().toString());
+        etRiderTracking.setText(request.getOrderTrackingId().toString());
 
         Button done = dialog.findViewById(R.id.confirmRiderbtn);
         done.setOnClickListener(new View.OnClickListener() {

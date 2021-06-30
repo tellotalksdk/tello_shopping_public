@@ -27,42 +27,42 @@
 
     <item
         android:id="@+id/smart_phone_and_tablets"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_smartphone"
         android:title="@string/smart_phone_tablets" />
 
     <item
         android:id="@+id/accessories"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_accesories"
         android:title="Accesories" />
 
     <item
         android:id="@+id/home_audio_theatre"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_home_audio"
         android:title="@string/home_audio_theater" />
 
     <item
         android:id="@+id/printer"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_printer"
         android:title="Printer" />
 
     <item
         android:id="@+id/faxmachine"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_faxmachione"
         android:title="Fax Machine" />
 
     <item
         android:id="@+id/household_goods"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_house_hold"
         android:title="Household goods" />
 
     <item
         android:id="@+id/watch"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_watch"
         android:title="Watch" />
 
     <item
         android:id="@+id/others"
-        android:icon="@drawable/ic_camera"
+        android:icon="@drawable/ic_others"
         android:title="Others" />
 
 </menu>

@@ -67,6 +67,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
     EditText etRiderName, etRiderNumber, etRiderTracking;
+    public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
+        horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
         shopLandingPageViewModel.allStatusCount();
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
@@ -125,8 +128,11 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                             Toast.makeText(getActivity(), "Accepted Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
-
+                    horizontalProgressBar.clearAnimation();
+                    horizontalProgressBar.setVisibility(View.GONE);
                 }
+                horizontalProgressBar.clearAnimation();
+                horizontalProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -394,6 +400,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
 
         etRiderName.setText(request.getRiderName().toString());
         etRiderNumber.setText(request.getRiderContact().toString());
+        etRiderTracking.setText(request.getOrderTrackingId().toString());
 
         Button done = dialog.findViewById(R.id.confirmRiderbtn);
         done.setOnClickListener(new View.OnClickListener() {
