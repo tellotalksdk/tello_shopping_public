@@ -14,6 +14,15 @@ public class AddNewProduct {
     private String profileId;
     private String productStatus;
     private String price;
+    private String videoLink;
+
+    public String getVideoName() {
+        return videoLink;
+    }
+
+    public void setVideoName(String videoName) {
+        this.videoLink = videoName;
+    }
 
     public List<String> getProduct_Pic() {
         return this.Product_Pic;

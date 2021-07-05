@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:elevation="20dp"
+    app:cardCornerRadius="20dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/ic_baseline_close"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_congrats"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/iv_close"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="right"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_congrats"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/dialogMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_congrats"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="20dp"
+            android:text="After clicking on continue button the order status will be changed to Accept..."
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            android:textStyle="normal" />
+
+        <EditText
+            android:layout_below="@+id/dialogMsg"
+            android:id="@+id/reasonForCancellation"
+            android:layout_width="match_parent"
+            android:hint="Reason for order cancellation..."
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/reasonForCancellation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/continue_status"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_below="@+id/setupShop"
+            android:layout_marginTop="25dp"
+            android:layout_toLeftOf="@+id/cancel_status"
+            android:background="@drawable/rounded_btn"
+            android:text="Continue"
+            android:layout_marginEnd="10dp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+
+        <Button
+            android:id="@+id/cancel_status"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_below="@+id/setupShop"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20sp"
+            android:background="@drawable/rounded_btn"
+            android:text="Cancel"
+            android:layout_marginRight="10dp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -68,6 +69,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     ScrollView scroller;
     EditText etRiderName, etRiderNumber, etRiderTracking;
     public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
+    Dialog dialogCongratulation;
 
 
     @Override
@@ -323,6 +325,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     public void OnRiderInfoUpdateListener(int orderId) {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
         dialog.setContentView(R.layout.dialog_add_rider_info);
 
         Window window = dialog.getWindow();
@@ -390,6 +393,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     public void OnRiderInfoUpdateListener(int position, GetOrderByStatusResponse.Request request) {
         Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
         dialog.setContentView(R.layout.dialog_add_rider_info);
 
         Window window = dialog.getWindow();
@@ -445,31 +449,72 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
 
     @Override
     public void OnStatusChange(int status, int OrderID) {
-        UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
-        updateOrderStatus.setOrderId(String.valueOf(OrderID));
-        updateOrderStatus.setProfileId(Constant.PROFILE_ID);
-        updateOrderStatus.setStatus(String.valueOf(status));
+        dialogCongratulation = new Dialog(getActivity());
+        dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialogCongratulation.setContentView(R.layout.dialog_order_status_confirmation);
+        dialogCongratulation.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+        dialogCongratulation.show();
 
-        orderListViewModel.updateOrderStatus(updateOrderStatus);
-        orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+        Button continue_status = dialogCongratulation.findViewById(R.id.continue_status);
+        Button cancel_status = dialogCongratulation.findViewById(R.id.cancel_status);
+        TextView dialogMessage = dialogCongratulation.findViewById(R.id.dialogMsg);
+        EditText editText = dialogCongratulation.findViewById(R.id.reasonForCancellation);
+        editText.setVisibility(View.VISIBLE);
+
+        if (status == 2) {
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Accept...");
+            editText.setVisibility(View.GONE);
+        } else if (status == 3) {
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Dispatch...");
+            editText.setVisibility(View.GONE);
+        } else if (status == 4) {
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Deliver...");
+            editText.setVisibility(View.GONE);
+        } else if(status == 5){
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Paid...");
+            editText.setVisibility(View.GONE);
+        }
+
+        continue_status.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
-                if (updateOrderStatusResponse != null) {
-                    Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
-                    initReceivedItems();
-                    shopLandingPageViewModel.allStatusCount();
-                    shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
-                        @Override
-                        public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
-                            if (getOrderStatusCountResponse != null) {
-                                //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
-                                ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
-                            }
+            public void onClick(View v) {
+                UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
+                updateOrderStatus.setOrderId(String.valueOf(OrderID));
+                updateOrderStatus.setProfileId(Constant.PROFILE_ID);
+                updateOrderStatus.setStatus(String.valueOf(status));
+
+                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+                    @Override
+                    public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
+                        if (updateOrderStatusResponse != null) {
+                            Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
+                            initReceivedItems();
+                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                                @Override
+                                public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                                    if (getOrderStatusCountResponse != null) {
+                                        //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                        ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                                        dialogCongratulation.dismiss();
+                                    }
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         });
+
+        cancel_status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCongratulation.dismiss();
+            }
+        });
+
+
     }
 
     public CancelledAdapter.OnOrderClickListener getReference() {

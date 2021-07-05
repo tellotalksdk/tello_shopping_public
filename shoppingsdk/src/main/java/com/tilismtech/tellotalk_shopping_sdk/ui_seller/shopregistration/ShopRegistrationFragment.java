@@ -175,8 +175,8 @@ public class ShopRegistrationFragment extends Fragment {
                             if (verifyOtpResponse != null) {
                                 if (verifyOtpResponse.getStatus().equals("0")) {
                                     Toast.makeText(getActivity(), "OTP verified...", Toast.LENGTH_SHORT).show();
-                                    getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
-                                    //navController.navigate(R.id.shopSettingFragment);
+                                    //getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                                    navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                     navController.navigate(R.id.shopSettingFragment);
@@ -185,7 +185,7 @@ public class ShopRegistrationFragment extends Fragment {
                         }
                     });
                     // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
-                    navController.navigate(R.id.shopSettingFragment);
+                   // navController.navigate(R.id.shopSettingFragment);
                 }
             }
         });

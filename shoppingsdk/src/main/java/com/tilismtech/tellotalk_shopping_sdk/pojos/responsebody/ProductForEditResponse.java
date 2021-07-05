@@ -146,9 +146,20 @@ public class ProductForEditResponse {
         @SerializedName("images")
         @Expose
         private Object images;
+        @SerializedName("videoLink")
+        @Expose
+        private String videoLink;
         @SerializedName("productImageDTO")
         @Expose
         private List<ProductImageDTO> productImageDTO = null;
+
+        public String getVideoLink() {
+            return videoLink;
+        }
+
+        public void setVideoLink(String videoLink) {
+            this.videoLink = videoLink;
+        }
 
         public Integer getId() {
             return id;

@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white">
 
     <RelativeLayout
@@ -45,74 +46,39 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/RLheader"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/LL1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tabbar"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/PN"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="15dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/switch_opt"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:orientation="vertical">
+                app:endIconMode="none">
 
-                <Spinner
-                    android:id="@+id/parentSpinner"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_spinner"
-                    android:text="Khan-store.tello.com"
+                    android:hint="Product Name"
+                    android:gravity="center|left"
+                    android:id="@+id/et_ProductTitle"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:background="@null"
+                    android:inputType="text" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="17dp"
-                    android:paddingTop="3dp"
-                    android:text="Select Industry : "
-                    android:textSize="10.5sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tabbar"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:orientation="vertical">
-
-                <Spinner
-                    android:id="@+id/childSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_spinner"
-                    android:text="Khan-store.tello.com"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="17dp"
-                    android:paddingTop="3dp"
-                    android:text="Select Category : "
-                    android:textSize="10.5sp" />
-
-
-            </FrameLayout>
-
-            <LinearLayout
+ <!--           <LinearLayout
                 android:id="@+id/LL2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,7 +100,71 @@
                     android:textSize="12sp" />
 
 
-            </LinearLayout>
+            </LinearLayout>-->
+
+            <FrameLayout
+                android:id="@+id/LL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tabbar"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/parentSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_spinner"
+                    android:text="Khan-store.tello.com"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingTop="3dp"
+                    android:text="Select Industry : "
+                    android:textSize="10.5sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tabbar"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/childSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_spinner"
+                    android:text="Khan-store.tello.com"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingTop="3dp"
+                    android:text="Select Category : "
+                    android:textSize="10.5sp" />
+
+
+            </FrameLayout>
+
+
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -146,7 +176,7 @@
                     android:id="@+id/LLimages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:orientation="horizontal">
 
@@ -163,57 +193,160 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <LinearLayout
-                android:id="@+id/LL4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/switch_opt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_top_image"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
+                android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:orientation="vertical">
+                app:endIconMode="none">
 
-
-                <EditText
-                    android:id="@+id/et_OriginalPrice"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="10dp"
-                    android:inputType="number"
-                    android:background="@drawable/edit_text_bg_color"
+                    android:hint="Youtube Video Product Url"
+                    android:gravity="center|left"
+                    android:id="@+id/et_VideoUrl"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/switch_opt"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_bg_color"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:hint="Original Price"
-                    android:textSize="12sp" />
+                    android:gravity="center|left"
+                    android:id="@+id/et_OriginalPrice"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            </LinearLayout>
+            <!--       <LinearLayout
+                       android:id="@+id/LL4"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_below="@+id/iv_top_image"
+                       android:layout_marginStart="15dp"
+                       android:layout_marginTop="10dp"
+                       android:layout_marginEnd="15dp"
+                       android:background="@drawable/edit_text_bg_color"
+                       android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/LL5"
+
+                       <EditText
+                           android:id="@+id/et_OriginalPrice"
+                           android:layout_width="match_parent"
+                           android:layout_height="50dp"
+                           android:layout_marginStart="10dp"
+                           android:inputType="number"
+                           android:background="@drawable/edit_text_bg_color"
+                           android:hint="Original Price"
+                           android:textSize="12sp" />
+
+
+                   </LinearLayout>-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/switch_opt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_top_image"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
+                android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:orientation="vertical">
+                app:endIconMode="none">
 
-
-                <EditText
-                    android:id="@+id/et_DiscountedPrice"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:inputType="number"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/edit_text_bg_color"
                     android:hint="Discounted Price"
-                    android:textSize="12sp" />
+                    android:gravity="center|left"
+                    android:id="@+id/et_DiscountedPrice"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            </LinearLayout>
+            <!--            <LinearLayout
+                            android:id="@+id/LL5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_top_image"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:orientation="vertical">
 
-            <FrameLayout
+
+                            <EditText
+                                android:id="@+id/et_DiscountedPrice"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:inputType="number"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/edit_text_bg_color"
+                                android:hint="Discounted Price"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/switch_opt"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_bg_color"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="SKU Code"
+                    android:gravity="center|left"
+                    android:id="@+id/et_SKU"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+  <!--          <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tabbar"
@@ -246,9 +379,36 @@
                     android:textSize="10.5sp" />
 
 
-            </FrameLayout>
+            </FrameLayout>-->
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/switch_opt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_bg_color"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Description"
+                    android:gravity="center|left"
+                    android:id="@+id/et_Description"
+                    android:paddingLeft="10dp"
+                    android:textSize="14sp"
+                    android:paddingBottom="22dp"
+                    android:background="@null"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+ <!--           <LinearLayout
                 android:id="@+id/LL7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -270,24 +430,48 @@
                     android:hint="Description"
                     android:paddingTop="10dp"
                     android:textSize="12sp" />
-            </LinearLayout>
+            </LinearLayout>-->
 
-            <Button
+        <!--    <Button
                 android:id="@+id/uploadProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp"
                 android:text="Upload"
                 android:textColor="@android:color/white" />
-
+-->
         </LinearLayout>
+
+        <Button
+            android:id="@+id/uploadProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@+id/l"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Upload"
+            android:textColor="@android:color/white" />
+
+       <!-- <include
+            android:id="@+id/inc"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/uploadProduct"
+            layout="@layout/dialog_powered_by_tellotalk"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>-->
+
 
     </RelativeLayout>
 </ScrollView>

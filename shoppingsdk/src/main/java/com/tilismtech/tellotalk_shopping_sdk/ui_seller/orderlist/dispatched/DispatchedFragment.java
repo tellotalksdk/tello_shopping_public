@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -68,6 +69,7 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
     EditText etRiderName, etRiderNumber, etRiderTracking;
+    Dialog dialogCongratulation;
     public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
     @Override
@@ -436,33 +438,70 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
 
     @Override
     public void OnStatusChange(int status, int OrderID) {
-        //    Toast.makeText(getActivity(), "" + status + OrderID, Toast.LENGTH_SHORT).show();
-        UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
-        updateOrderStatus.setOrderId(String.valueOf(OrderID));
-        updateOrderStatus.setProfileId(Constant.PROFILE_ID);
-        updateOrderStatus.setStatus(String.valueOf(status));
+        dialogCongratulation = new Dialog(getActivity());
+        dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialogCongratulation.setContentView(R.layout.dialog_order_status_confirmation);
+        dialogCongratulation.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+        dialogCongratulation.show();
 
-        orderListViewModel.updateOrderStatus(updateOrderStatus);
-        orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+        Button continue_status = dialogCongratulation.findViewById(R.id.continue_status);
+        Button cancel_status = dialogCongratulation.findViewById(R.id.cancel_status);
+        TextView dialogMessage = dialogCongratulation.findViewById(R.id.dialogMsg);
+        EditText editText = dialogCongratulation.findViewById(R.id.reasonForCancellation);
+        editText.setVisibility(View.VISIBLE);
+
+        if (status == 4) {
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Deliver...");
+            editText.setVisibility(View.GONE);
+        } else if (status == 2) {
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Accept...");
+            editText.setVisibility(View.GONE);
+        } else {
+            dialogMessage.setText("After clicking on continue button the order status will be changed to Cancel...");
+            editText.setVisibility(View.VISIBLE);
+        }
+
+        continue_status.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
-                if (updateOrderStatusResponse != null) {
-                    Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
-                    initReceivedItems();
+            public void onClick(View v) {
+                UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
+                updateOrderStatus.setOrderId(String.valueOf(OrderID));
+                updateOrderStatus.setProfileId(Constant.PROFILE_ID);
+                updateOrderStatus.setStatus(String.valueOf(status));
 
-                    shopLandingPageViewModel.allStatusCount();
-                    shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
-                        @Override
-                        public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
-                            if (getOrderStatusCountResponse != null) {
-                                //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
-                                ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
-                            }
+                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+                    @Override
+                    public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
+                        if (updateOrderStatusResponse != null) {
+                            Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
+                            initReceivedItems();
+
+                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                                @Override
+                                public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                                    if (getOrderStatusCountResponse != null) {
+                                        //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                        ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                                        dialogCongratulation.dismiss();
+                                    }
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         });
+
+        cancel_status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCongratulation.dismiss();
+            }
+        });
+
+
     }
 
     @Override

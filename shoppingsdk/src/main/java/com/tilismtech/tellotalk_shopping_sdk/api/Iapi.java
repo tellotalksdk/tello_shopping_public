@@ -211,7 +211,8 @@ public interface Iapi {
                                                @Part("summary") RequestBody Summary,
                                                @Part("profileId") RequestBody ProfileId,
                                                @Part("productStatus") RequestBody ProductStatus,
-                                               @Part("price") RequestBody Price);
+                                               @Part("price") RequestBody Price,
+                                               @Part("videoName") RequestBody videoName);
 
     //updateProductApi
     @Headers({

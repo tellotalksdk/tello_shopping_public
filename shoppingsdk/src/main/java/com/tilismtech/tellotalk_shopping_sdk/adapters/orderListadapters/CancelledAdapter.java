@@ -171,7 +171,6 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     if (parent.getId() == spinner_moveto.getId()) {
-
                         if (parent.getItemAtPosition(position).equals("Accept")) {
                             onOrderClickListener.OnStatusChange(2, cancelledItems.get(getAdapterPosition()).getOrderid());
                         } else if (parent.getItemAtPosition(position).equals("Dispatch")) {

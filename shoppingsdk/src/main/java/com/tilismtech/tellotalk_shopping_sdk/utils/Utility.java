@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -35,6 +36,11 @@ public class Utility {
             e.printStackTrace();
         }
         return str;
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
 

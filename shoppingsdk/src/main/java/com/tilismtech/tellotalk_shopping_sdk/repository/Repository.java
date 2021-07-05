@@ -458,6 +458,7 @@ public class Repository {
         RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getProfileId());
         RequestBody ProductStatus = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getProductStatus());
         RequestBody Price = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getPrice());
+        RequestBody videoName = RequestBody.create(MediaType.parse("text/plain"), addNewProduct.getVideoName());
 
 
         getRetrofitClient().addNewProducts("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
@@ -470,7 +471,8 @@ public class Repository {
                 Summary,
                 ProfileId,
                 ProductStatus,
-                Price).enqueue(new Callback<AddNewProductResponse>() {
+                Price,
+                videoName).enqueue(new Callback<AddNewProductResponse>() {
             @Override
             public void onResponse(Call<AddNewProductResponse> call, Response<AddNewProductResponse> response) {
                 if (response != null) {
@@ -1093,4 +1095,7 @@ public class Repository {
         });
     }
     //endregion
+
+
+
 }

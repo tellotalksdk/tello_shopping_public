@@ -46,6 +46,7 @@ import com.bumptech.glide.Glide;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.WebViewActivity;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ViewPagerAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
@@ -109,7 +110,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Uri imageUri;
     private String filepath;
     private List<String> filePaths;
-    private TextView tv_deleteProduct;
+    private TextView tv_deleteProduct, et_Category, et_SubCategory, et_YoutubeLink, et_productDescription;
     private LoadingDialog loadingDialog;
     private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
     private Spinner parentSpinner, childSpinner, parentSpinneredit, childSpinneredit;
@@ -118,8 +119,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private List<ChildCategory> childCategoryList;
     private Dialog dialog;
     private String lastProductId = "0";
+    private EditText et_VideoUrl;
     List<ProductListResponse.Request> productListAppend, dummy;
     List<String> imageIds;
+    String video;
 
 
     @Override
@@ -713,6 +716,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         chooseMultipleProductsIV = dialog.findViewById(R.id.chooseMultipleProducts);
         LLimages_edit = dialog.findViewById(R.id.LLimages);
         productName = dialog.findViewById(R.id.productName);
+        et_VideoUrl = dialog.findViewById(R.id.et_VideoUrl);
         productCategory = dialog.findViewById(R.id.productCategory);
         originalPrice = dialog.findViewById(R.id.originalPrice);
         discountedPrice = dialog.findViewById(R.id.discountedPrice);
@@ -752,60 +756,82 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         post_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (TextUtils.isEmpty(productName.getText().toString()) ||
-                        TextUtils.isEmpty(productCategory.getText().toString()) ||
-                        TextUtils.isEmpty(originalPrice.getText().toString()) ||
-                        TextUtils.isEmpty(discountedPrice.getText().toString()) ||
-                        TextUtils.isEmpty(skucodeoptional.getText().toString()) ||
-                        TextUtils.isEmpty(product_description.getText().toString()) ||
-                        filePaths.size() > 0
-                ) {
-                    Toast.makeText(getActivity(), "Some fields are missing...", Toast.LENGTH_SHORT).show();
-                } else*/
-                {
-                    //every thing fine post edit api
+                if (checkEditDialogFieldsValidation()) {
+                    {
+                        //every thing fine post edit api
 
-                    if (!TextUtils.isEmpty(discountedPrice.getText().toString())) {
-                        if (Integer.parseInt(discountedPrice.getText().toString()) > Integer.parseInt(originalPrice.getText().toString())) {
-                            Toast.makeText(getActivity(), "Discounted Price must be less than original price...", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-
-                    UpdateProduct updateProduct = new UpdateProduct();
-                    updateProduct.setTitle(productName.getText().toString());
-                    updateProduct.setDiscountPrice(discountedPrice.getText().toString());
-                    updateProduct.setPrice(originalPrice.getText().toString());
-                    updateProduct.setProductId(String.valueOf(productID));
-                    updateProduct.setProfileId(Constant.PROFILE_ID);
-                    updateProduct.setParentProductCategoryId(parentCategoryId);
-                    updateProduct.setProductCategoryId(childCategoryId);
-                    updateProduct.setProduct_Pic(filePaths);
-                    updateProduct.setSku(skucodeoptional.getText().toString());
-                    updateProduct.setSummary(product_description.getText().toString());
-                    updateProduct.setProductStatus(productStatus);
-                    updateProduct.setProfileId(Constant.PROFILE_ID);
-
-
-                    // loadingDialog.showDialog();
-                    shopLandingPageViewModel.updateproduct(updateProduct);
-                    shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
-                        @Override
-                        public void onChanged(UpdateProductResponse updateProductResponse) {
-                            if (updateProductResponse != null) {
-                                //Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                filePaths.clear();
-
-                                if (dialog != null) {
-                                    dialog.dismiss();
-                                }
-                                navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
+                        if (!TextUtils.isEmpty(discountedPrice.getText().toString())) {
+                            if (Integer.parseInt(discountedPrice.getText().toString()) > Integer.parseInt(originalPrice.getText().toString())) {
+                                Toast.makeText(getActivity(), "Discounted Price must be less than original price...", Toast.LENGTH_SHORT).show();
+                                return;
                             }
                         }
-                    });
+
+                        UpdateProduct updateProduct = new UpdateProduct();
+                        updateProduct.setTitle(productName.getText().toString());
+                        updateProduct.setDiscountPrice(discountedPrice.getText().toString());
+                        updateProduct.setPrice(originalPrice.getText().toString());
+                        updateProduct.setProductId(String.valueOf(productID));
+                        updateProduct.setProfileId(Constant.PROFILE_ID);
+                        updateProduct.setParentProductCategoryId(parentCategoryId);
+                        updateProduct.setProductCategoryId(childCategoryId);
+                        updateProduct.setProduct_Pic(filePaths);
+                        updateProduct.setSku(skucodeoptional.getText().toString());
+                        updateProduct.setSummary(product_description.getText().toString());
+                        updateProduct.setProductStatus(productStatus);
+                        updateProduct.setProfileId(Constant.PROFILE_ID);
 
 
+                        // loadingDialog.showDialog();
+                        shopLandingPageViewModel.updateproduct(updateProduct);
+                        shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
+                            @Override
+                            public void onChanged(UpdateProductResponse updateProductResponse) {
+                                if (updateProductResponse != null) {
+                                    //Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    filePaths.clear();
+
+                                    if (dialog != null) {
+                                        dialog.dismiss();
+                                    }
+                                    navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
+                                }
+                            }
+                        });
+
+
+                    }
                 }
+
+            }
+
+            private boolean checkEditDialogFieldsValidation() {
+
+                if (TextUtils.isEmpty(originalPrice.getText().toString())) {
+                    Toast.makeText(getActivity(), "Original Price Field is empty...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                if (TextUtils.isEmpty(discountedPrice.getText().toString())) {
+                    Toast.makeText(getActivity(), "Discounted Price Field is empty...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                if (TextUtils.isEmpty(skucodeoptional.getText().toString())) {
+                    Toast.makeText(getActivity(), "SKU Code Field is empty...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                if (TextUtils.isEmpty(originalPrice.getText().toString())) {
+                    Toast.makeText(getActivity(), "Original Price Field is empty...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                if (TextUtils.isEmpty(product_description.getText().toString())) {
+                    Toast.makeText(getActivity(), "Product Description is empty...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                return true;
             }
         });
 
@@ -906,6 +932,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
                             isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
                             product_description.setText(productForEditResponse.getData().getRequestList().getSummary());
+                            et_VideoUrl.setText(productForEditResponse.getData().getRequestList().getVideoLink());
                             imageIds.clear();
                             //when url provided this will work for sure...
                             if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
@@ -1010,11 +1037,17 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_new);
+        Button button = dialog.findViewById(R.id.open);
+
 
         et_ProductName = dialog.findViewById(R.id.et_ProductName);
         et_ProductID = dialog.findViewById(R.id.et_ProductID);
         et_OriginalPrice = dialog.findViewById(R.id.et_OriginalPrice);
         et_DiscountedPrice = dialog.findViewById(R.id.et_DiscountedPrice);
+        et_Category = dialog.findViewById(R.id.et_Category);
+        et_SubCategory = dialog.findViewById(R.id.et_SubCategory);
+        et_YoutubeLink = dialog.findViewById(R.id.et_YoutubeLink);
+        et_productDescription = dialog.findViewById(R.id.et_productDescription);
         viewPager2 = dialog.findViewById(R.id.viewPager);
 
         dotsIndicator = dialog.findViewById(R.id.dots_indicator);
@@ -1063,7 +1096,22 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     et_ProductID.setText(String.valueOf(productForEditResponse.getData().getRequestList().getId()));
                     et_OriginalPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getPrice()));
                     et_DiscountedPrice.setText(String.valueOf(productForEditResponse.getData().getRequestList().getDiscount()));
+                    et_Category.setText(productForEditResponse.getData().getRequestList().getParentCategoryName());
+                    et_SubCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
+                    et_YoutubeLink.setText(productForEditResponse.getData().getRequestList().getVideoLink());
+                    et_productDescription.setText(productForEditResponse.getData().getRequestList().getSummary());
+                    video = productForEditResponse.getData().getRequestList().getVideoLink();
                 }
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), WebViewActivity.class);
+                i.putExtra("videoUrl", video);
+                startActivity(i);
+
             }
         });
 

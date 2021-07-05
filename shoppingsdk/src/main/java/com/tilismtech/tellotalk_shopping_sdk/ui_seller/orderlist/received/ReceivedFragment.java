@@ -1,18 +1,32 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.received;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +57,10 @@ import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandi
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingPageViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Random;
 
 public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrderClickListener {
 
@@ -54,6 +71,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     ImageView screenShot;
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
+    Dialog dialogCongratulation;
     public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
 
 
@@ -143,6 +161,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         dialog.setContentView(R.layout.dialog_product_detail_order_list);
 
         ImageView iv_back = dialog.findViewById(R.id.iv_back);
+        ImageView printer = dialog.findViewById(R.id.printer);
         screenShot = dialog.findViewById(R.id.screenShot);
         scroller = dialog.findViewById(R.id.scroller);
         et_order = dialog.findViewById(R.id.et_order);
@@ -178,6 +197,13 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
                 captureScreenShot(bitmap, flash);
+            }
+        });
+
+        printer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doWebViewPrint();
             }
         });
 
@@ -251,6 +277,46 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     }
 
     private void captureScreenShot(Bitmap bitmap, LinearLayout flash) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/TelloShopping");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        Log.i("TAG", "" + file);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Toast.makeText(getActivity(), "Screen Shot Captured...", Toast.LENGTH_SHORT).show();
+
+            flash.setVisibility(View.VISIBLE);
+            AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+            animation1.setDuration(500);
+            //  animation1.setStartOffset(5000);
+            animation1.setFillAfter(true);
+            flash.startAnimation(animation1);
+
+            //this code refresh gallery
+            MediaScannerConnection.scanFile(getActivity(), new String[]{file.getPath()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("TAG", "Scanned " + path);
+                        }
+                    });
+
+            getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(file.getAbsolutePath()))));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //screen shot whole receipt...
@@ -294,35 +360,99 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
 
     @Override
     public void OnStatusChange(int status, int OrderID) {
-        UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
-        updateOrderStatus.setOrderId(String.valueOf(OrderID));
-        updateOrderStatus.setProfileId(Constant.PROFILE_ID);
-        updateOrderStatus.setStatus(String.valueOf(status));
+        dialogCongratulation = new Dialog(getActivity());
+        dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialogCongratulation.setContentView(R.layout.dialog_order_status_confirmation);
+        dialogCongratulation.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+        dialogCongratulation.show();
 
-        orderListViewModel.updateOrderStatus(updateOrderStatus);
-        orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+        Button continue_status = dialogCongratulation.findViewById(R.id.continue_status);
+        Button cancel_status = dialogCongratulation.findViewById(R.id.cancel_status);
+
+        continue_status.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
-                if (updateOrderStatusResponse != null) {
-                    Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
-                    initReceivedItems();
+            public void onClick(View v) {
+                UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
+                updateOrderStatus.setOrderId(String.valueOf(OrderID));
+                updateOrderStatus.setProfileId(Constant.PROFILE_ID);
+                updateOrderStatus.setStatus(String.valueOf(status));
 
-                    shopLandingPageViewModel.allStatusCount();
-                    shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
-                        @Override
-                        public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
-                            if (getOrderStatusCountResponse != null) {
-                                //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
-                                ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
-                            }
+                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+                    @Override
+                    public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
+                        if (updateOrderStatusResponse != null) {
+                            Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
+                            initReceivedItems();
+
+                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
+                                @Override
+                                public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
+                                    if (getOrderStatusCountResponse != null) {
+                                        //Toast.makeText(ShopLandingActivity.this, ":" + getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved(), Toast.LENGTH_SHORT).show();
+                                        ((ShopLandingActivity) getActivity()).setOrderStatus(getOrderStatusCountResponse.getData().getRequestList());
+                                        dialogCongratulation.dismiss();
+                                    }
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         });
+
+        cancel_status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCongratulation.dismiss();
+            }
+        });
+
     }
 
     public ReceivedAdapter.OnOrderClickListener getReference() {
         return this;
+    }
+
+    //wifi printing coding
+
+    private void doWebViewPrint() {
+
+        WebView webView = new WebView(getActivity());
+        webView.setWebViewClient(new WebViewClient() {
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.i("TAG", "page finished loading " + url);
+                createWebPrintJob(view);
+
+            }
+        });
+
+        webView.loadUrl("https://www.webfx.com/blog/images/assets/cdn.sixrevisions.com/0435-01_html5_download_attribute_demo/samp/htmldoc.html");
+
+      //  mWebView = webView;
+    }
+
+    private void createWebPrintJob(WebView webView) {
+
+        // Get a PrintManager instance
+        PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+
+        String jobName = getString(R.string.app_name) + " Document";
+
+        // Get a print adapter instance
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter(jobName);
+
+        // Create a print job with name and adapter instance
+        PrintJob printJob = printManager.print(jobName, printAdapter,
+                new PrintAttributes.Builder().build());
+
+        // Save the job object for later status checking
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
@@ -66,8 +67,8 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/productName"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/PN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/switch_opt"
@@ -75,19 +76,47 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="Product Title"
-                android:paddingLeft="15dp"
-                android:text=""
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/productName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="Product Name"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!--    <EditText
+                    android:id="@+id/productName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/switch_opt"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:hint="Product Title"
+                    android:paddingLeft="15dp"
+                    android:text=""
+                    android:visibility="gone"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />-->
 
             <EditText
                 android:id="@+id/productCategory"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/productName"
+                android:layout_below="@+id/PN"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:enabled="false"
@@ -98,11 +127,11 @@
 
             <LinearLayout
                 android:id="@+id/categorySelection"
-                android:layout_below="@id/productCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/productCategory"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:orientation="vertical">
 
@@ -127,10 +156,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="17dp"
+                        android:layout_marginStart="10dp"
                         android:paddingTop="3dp"
                         android:text="Select Industry : "
-                        android:textSize="10.5sp" />
+                        android:textSize="12sp" />
 
                 </FrameLayout>
 
@@ -138,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tabbar"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_bg_color"
                     android:orientation="vertical">
 
@@ -155,10 +184,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="17dp"
+                        android:layout_marginStart="10dp"
                         android:paddingTop="3dp"
                         android:text="Select Category : "
-                        android:textSize="10.5sp" />
+                        android:textSize="12sp" />
 
 
                 </FrameLayout>
@@ -179,8 +208,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/edittext2"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp">
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
 
 
                     <ImageView
@@ -195,73 +224,208 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <EditText
-                android:id="@+id/originalPrice"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/youtube"
+                android:layout_marginStart="10dp"
+
+                android:layout_marginEnd="10dp"
+                android:paddingTop="5dp"
                 android:layout_below="@+id/hor"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:hint="Original Price"
-                android:inputType="number"
-                android:paddingLeft="15dp"
-                android:text=""
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/discountedPrice"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/originalPrice"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="Discounted Price"
-                android:inputType="number"
-                android:paddingLeft="15dp"
-                android:text=""
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                app:endIconMode="none">
 
-            <EditText
-                android:id="@+id/skucodeoptional"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Youtube Video Product Url"
+                    android:gravity="center|left"
+                    android:id="@+id/et_VideoUrl"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/OP"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/discountedPrice"
+                android:layout_below="@+id/youtube"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="SKU Code (optional)"
-                android:paddingLeft="15dp"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/originalPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="Original Price"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/product_description"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--   <EditText
+                   android:id="@+id/originalPrice"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"
+                   android:layout_below="@+id/hor"
+                   android:layout_marginStart="10dp"
+                   android:layout_marginEnd="10dp"
+                   android:background="@drawable/edit_text_bg_color"
+                   android:hint="Original Price"
+                   android:inputType="number"
+                   android:paddingLeft="15dp"
+                   android:text=""
+                   android:textSize="14sp"
+                   android:textStyle="bold" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/DP"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_below="@+id/skucodeoptional"
+                android:layout_height="50dp"
+                android:layout_below="@+id/OP"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:gravity="left|top"
-                android:hint="Description"
-                android:paddingLeft="15dp"
-                android:paddingTop="10dp"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/discountedPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="Discounted Price"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- <EditText
+                 android:id="@+id/discountedPrice"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@+id/OP"
+                 android:layout_marginStart="10dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="10dp"
+                 android:background="@drawable/edit_text_bg_color"
+                 android:hint="Discounted Price"
+                 android:inputType="number"
+                 android:paddingLeft="15dp"
+                 android:text=""
+                 android:textSize="14sp"
+                 android:textStyle="bold" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/SKU"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/DP"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:paddingTop="5dp"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/skucodeoptional"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="SKU Code"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--          <EditText
+                          android:id="@+id/skucodeoptional"
+                          android:layout_width="match_parent"
+                          android:layout_height="50dp"
+                          android:layout_below="@+id/DP"
+                          android:layout_marginStart="10dp"
+                          android:layout_marginTop="10dp"
+                          android:layout_marginEnd="10dp"
+                          android:background="@drawable/edit_text_bg_color"
+                          android:hint="SKU Code (optional)"
+                          android:paddingLeft="15dp"
+                          android:textSize="14sp"
+                          android:textStyle="bold" />-->
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/DESC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/SKU"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:paddingTop="5dp"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/product_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:text=""
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="22dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!--     <EditText
+                     android:id="@+id/product_description"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@+id/SKU"
+                     android:layout_marginStart="10dp"
+                     android:layout_marginTop="10dp"
+                     android:layout_marginEnd="10dp"
+                     android:background="@drawable/edit_text_bg_color"
+                     android:gravity="left|top"
+                     android:hint="Description"
+                     android:paddingLeft="15dp"
+                     android:paddingTop="15dp"
+                     android:paddingRight="15dp"
+                     android:paddingBottom="20dp"
+                     android:text=""
+                     android:textSize="14sp"
+                     android:textStyle="bold" />-->
 
             <Button
                 android:id="@+id/post_product_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/product_description"
+                android:layout_below="@+id/DESC"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"

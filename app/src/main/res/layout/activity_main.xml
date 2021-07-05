@@ -22,12 +22,14 @@
     <EditText
         android:id="@+id/mName"
         android:hint="middle Name"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
 
     <EditText
         android:id="@+id/lName"
         android:hint="last Name"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
 

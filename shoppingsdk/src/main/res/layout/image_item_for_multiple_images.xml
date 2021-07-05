@@ -18,7 +18,7 @@
 
     <ImageView
         android:id="@+id/ic_delete"
-        android:tint="@android:color/black"
+        android:tint="@android:color/holo_red_dark"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_gravity="right"

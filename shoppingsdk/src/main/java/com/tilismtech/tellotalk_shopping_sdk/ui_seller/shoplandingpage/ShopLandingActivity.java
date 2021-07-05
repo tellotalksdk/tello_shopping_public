@@ -25,6 +25,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -97,7 +98,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private ShopLandingPageViewModel shopLandingPageViewModel;
     private Spinner parentSpinner, childSpinner;
     private List<String> parentCategories, childCategories;
-    private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
+    private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle, et_VideoUrl;
     private String parentCategory = "1", childCategory = "1", productStatus = "N"; //by default
     private LinearLayout LLimages, LL1;
     private Switch isActiveproduct;
@@ -272,6 +273,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 et_SKU = dialogAddProduct.findViewById(R.id.et_SKU);
                 et_Description = dialogAddProduct.findViewById(R.id.et_Description);
                 et_ProductTitle = dialogAddProduct.findViewById(R.id.et_ProductTitle);
+                et_VideoUrl = dialogAddProduct.findViewById(R.id.et_VideoUrl);
+                et_VideoUrl.setText("https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore");
 
                 parentSpinner = dialogAddProduct.findViewById(R.id.parentSpinner);
                 childSpinner = dialogAddProduct.findViewById(R.id.childSpinner);
@@ -323,7 +326,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                             addNewProduct.setProductStatus(productStatus); //work with toggle on and off
                             addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
                             addNewProduct.setTitle(et_ProductTitle.getText().toString());
-
+                            addNewProduct.setVideoName(et_VideoUrl.getText().toString());
+                            Linkify.addLinks(et_VideoUrl, Linkify.ALL);
                             LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
                             loadingDialog.showDialog();
                             shopLandingPageViewModel.addNewProduct(addNewProduct);
@@ -863,7 +867,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                         shopName.setTooltipText(shopNameAndImageResponse.getData().getRequestList().get(0).getShopName());
                     }
                     Glide.with(ShopLandingActivity.this).load(shopNameAndImageResponse.getData().getRequestList().get(0).getShopProfile()).into(profileImage);
-                   // loadingDialog.dismissDialog();
+                    // loadingDialog.dismissDialog();
                     // shopLandingPageViewModel.getShopNameAndImage().removeObservers(ShopLandingActivity.this);
                 }
             }
