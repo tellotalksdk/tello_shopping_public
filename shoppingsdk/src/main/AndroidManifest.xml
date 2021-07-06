@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
     <application
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
@@ -31,6 +35,18 @@
         <activity
             android:name=".ui_seller.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
     </application>
+<!--
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBVv11oiF53NPVjb22LJpSlfCoP0ALXNHM" />-->
+
+
+
 
 </manifest>

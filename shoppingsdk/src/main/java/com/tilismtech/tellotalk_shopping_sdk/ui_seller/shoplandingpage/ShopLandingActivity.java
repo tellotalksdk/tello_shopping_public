@@ -14,10 +14,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,9 +65,11 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListRespo
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.receiver.NetworkReceiver;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
+import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,11 +114,20 @@ public class ShopLandingActivity extends AppCompatActivity {
     //these fields hide when onsearch is pressed
     ImageView profileImage;
     TextView shopName, totalProducts, tv_addproducts;
+    NetworkReceiver networkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_landing);
+
+        NoInternetDetection loadingDialog = new NoInternetDetection(this);
+        networkReceiver = new NetworkReceiver(loadingDialog);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkReceiver, intentFilter);
+
+
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();

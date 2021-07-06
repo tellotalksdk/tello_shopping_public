@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_margin="20dp"
+    app:cardCornerRadius="20dp"
+    android:elevation="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_close"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <ImageView
+            android:layout_below="@+id/iv_close"
+            android:id="@+id/iv_congrats"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:src="@drawable/nid"
+            android:layout_gravity="right"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:id="@+id/setupShop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_congrats"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="1dp"
+            android:text="No Internet Connected..."
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/getStarted_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/setupShop"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp"
+            android:text="Okay..."
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

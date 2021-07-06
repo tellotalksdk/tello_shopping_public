@@ -13,6 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,6 +57,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
@@ -83,10 +95,11 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ShopSettingFragment extends Fragment implements ColorChooserAdapter.OnColorChooserListener {
+public class ShopSettingFragment extends Fragment implements ColorChooserAdapter.OnColorChooserListener, OnMapReadyCallback {
 
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private FrameLayout FL1;
     private RecyclerView recycler_timings;
     private TimingnAdapter timingnAdapter;
@@ -130,6 +143,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     Citiespojo citiespojo;
     String mondayOpenTimings, mondayCloseTimings, tuesdayOpenTimings, tuesdayCloseTimings, wednesdayOpenTimings, wednesdayCloseTimings, thrusdayOpenTimings, thrusdayCloseTimings, fridayOpenTimings, fridayCloseTimings, saturdayOpenTimings, saturdayCloseTimings, sundayOpenTimings, sundayCloseTimings;
     ArrayAdapter<String> openTimingAdapter;
+    private GoogleMap mMap;
+    private MapView mapView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,6 +155,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shop_setting, container, false);
+
         return view;
     }
 
@@ -147,6 +163,19 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
+
+        mapView.onCreate(savedInstanceState);
+
+        mapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mapView.getMapAsync(this);
+
         activity = getActivity();
         shopSettingViewModel = new ViewModelProvider(this).get(ShopSettingViewModel.class);
         Gson gson = new Gson();
@@ -858,6 +887,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         et_OwnerShopUrl = view.findViewById(R.id.et_OwnerShopUrl);
         et_OwnerNumber = view.findViewById(R.id.et_OwnerNumber);
         iv_image = view.findViewById(R.id.iv_image);
+        mapView = (MapView) view.findViewById(R.id.mapView);
         shopBasicSetting = new ShopBasicSetting();
         shopTiming = new ShopTiming();
         shopTiming.setProfileId(Constant.PROFILE_ID);
@@ -939,6 +969,37 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     dialogImage.dismiss();
                     openCamera();
                 }
+            case MY_PERMISSIONS_REQUEST_LOCATION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(activity, "Permission Granted...", Toast.LENGTH_SHORT).show();
+                    setMapCurrentLocation();
+                } else {
+                    Toast.makeText(activity, "Permission Not Granted...", Toast.LENGTH_SHORT).show();
+                }
+
+
+        }
+    }
+
+    private void setMapCurrentLocation() {
+        if (checkLocationPermission()) {
+            mMap.setMyLocationEnabled(true);
+            LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            //  Log.i("TAG", "onMapReady: " + longitude + "  " + latitude);
+            //  Toast.makeText(activity, " Longitude : " + longitude + " Latitude : " + latitude, Toast.LENGTH_SHORT).show();
+
+            // For dropping a marker at a point on the Map
+            LatLng sydney = new LatLng(latitude, longitude);
+            mMap.addMarker(new MarkerOptions().position(sydney));
+
+            // For zooming automatically to the location of the marker
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+//            setMap(mMap);
         }
     }
 
@@ -1438,4 +1499,102 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     }
 
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        //mMap.setMyLocationEnabled(true);
+        if (checkLocationPermission()) {
+            mMap.setMyLocationEnabled(true);
+            LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+          //  Log.i("TAG", "onMapReady: " + longitude + "  " + latitude);
+          //  Toast.makeText(activity, " Longitude : " + longitude + " Latitude : " + latitude, Toast.LENGTH_SHORT).show();
+
+            // For dropping a marker at a point on the Map
+            LatLng sydney = new LatLng(latitude, longitude);
+            googleMap.addMarker(new MarkerOptions().position(sydney));
+
+            // For zooming automatically to the location of the marker
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+//            setMap(mMap);
+        }
+
+        mMap.getUiSettings();
+
+    }
+
+
+
+    public boolean checkLocationPermission() {
+        if ((ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION)) +
+                (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION))
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if ((ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) ||
+                    (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION))) {
+
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Grant Those Permission...")
+                        .setMessage("Tello Shopping Want To Access Your Location")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 }

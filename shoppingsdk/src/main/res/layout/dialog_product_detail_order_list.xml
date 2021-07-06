@@ -237,15 +237,15 @@
 
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:id="@+id/productDetailLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:orientation="vertical">
 
-               <!-- <include layout="@layout/product_detail" />-->
+                    <!-- <include layout="@layout/product_detail" />-->
 
                 </LinearLayout>
 
@@ -597,7 +597,8 @@
                             android:textAllCaps="false"
                             android:textColor="@android:color/black"
                             android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
                         <EditText
                             android:id="@+id/et_BuyerIBAN"
@@ -614,7 +615,8 @@
                             android:textAllCaps="false"
                             android:textColor="@android:color/black"
                             android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>

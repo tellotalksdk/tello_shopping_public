@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+      <!--          <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_user_image"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -73,7 +73,29 @@
                     android:layout_marginBottom="6dp"
                     android:src="@drawable/ic_bbq"
                     app:civ_border_color="#FF000000"
-                    app:civ_border_width="0.5dp" />
+                    app:civ_border_width="0.5dp" />-->
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_toRightOf="@+id/arrowback"
+                    app:cardCornerRadius="360dp">
+
+                    <ImageView
+                        android:id="@+id/iv_user_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/four_corner_rounded_image"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_avatar" />
+
+                </androidx.cardview.widget.CardView>
 
                 <EditText
                     android:id="@+id/userShopname"
@@ -81,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15sp"
-                    android:layout_toRightOf="@+id/iv_user_image"
+                    android:layout_toRightOf="@+id/card"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
                     android:enabled="true"
@@ -580,18 +602,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
-                        android:text="By Continuing , you agree to "
+                        android:text="By Continuing , you agree to TelloTalk's"
                         android:textColor="@android:color/black"
                         android:textSize="10sp" />
 
 
                     <TextView
+                        android:id="@+id/toc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="2dp"
-                        android:text="TelloTalk's terms of use"
-                        android:textColor="#6F90D9"
-                        android:textSize="12sp" />
+                        android:text="Terms of Use"
+                        android:textColor="#2241EA"
+                        android:textStyle="bold"
+                        android:textSize="10sp" />
 
 
                 </LinearLayout>
@@ -610,12 +634,13 @@
                         android:layout_below="@+id/term"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="20dp"
                         android:background="@drawable/rounded_btn_light"
-                        android:paddingLeft="75dp"
-                        android:paddingRight="75dp"
+                        android:paddingLeft="50dp"
+                        android:paddingRight="50dp"
                         android:text="Done"
+                        android:textAllCaps="false"
                         android:textColor="@android:color/black"
                         android:visibility="visible" />
 
@@ -638,7 +663,8 @@
             android:background="@drawable/rounded_btn"
             android:paddingLeft="13dp"
             android:paddingRight="13dp"
-            android:text="Request For Pin"
+            android:text="Request for PIN"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:visibility="visible" />
 

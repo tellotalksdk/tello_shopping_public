@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -79,18 +80,18 @@ public class ShopRegistrationFragment extends Fragment {
     NavController navController;
     RelativeLayout RL;
     ImageView iv_back, iv_editImage, iv_user_image;
-    TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown;
+    TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown, termOfUse;
     EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
     boolean isEditable;
     Spinner spinner_operator;
     String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$"; //regex for shop name must be in alphanumeric format...
-    StringBuilder mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
+    StringBuilder mobileNumberReflection;
     ArrayList<String> mobileOpt = new ArrayList<>();
     ShopRegistrationViewModel shopRegistrationViewModel;
     boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11;
     Dialog dialogImage;
     Uri imageUri;
-    String filePath = "", otp;
+    String filePath = "", otp, mN;
 
 
     @Override
@@ -112,6 +113,25 @@ public class ShopRegistrationFragment extends Fragment {
 
         initViews(view);
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
+        // Toast.makeText(getActivity(), "number" +  TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber(), Toast.LENGTH_SHORT).show();
+
+
+        mN = String.valueOf(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber());
+
+        d1.setText(String.valueOf(mN.charAt(0)));
+        d2.setText(String.valueOf(mN.charAt(1)));
+        d3.setText(String.valueOf(mN.charAt(2)));
+        d4.setText(String.valueOf(mN.charAt(3)));
+        d5.setText(String.valueOf(mN.charAt(4)));
+        d6.setText(String.valueOf(mN.charAt(5)));
+        d7.setText(String.valueOf(mN.charAt(6)));
+        d8.setText(String.valueOf(mN.charAt(7)));
+        d9.setText(String.valueOf(mN.charAt(8)));
+        d10.setText(String.valueOf(mN.charAt(9)));
+        d11.setText(String.valueOf(mN.charAt(10)));
+        mobileNumberReflection = new StringBuilder("92 " + mN.charAt(1) + mN.charAt(2) + mN.charAt(3) + " " + mN.charAt(4) + mN.charAt(5) + mN.charAt(6) + " "+ mN.charAt(7) + mN.charAt(8) + mN.charAt(9) + mN.charAt(10));
+       // mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
+
 
         //region requestforpin
         requestforPin.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +205,7 @@ public class ShopRegistrationFragment extends Fragment {
                         }
                     });
                     // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
-                   // navController.navigate(R.id.shopSettingFragment);
+                    // navController.navigate(R.id.shopSettingFragment);
                 }
             }
         });
@@ -1173,6 +1193,8 @@ public class ShopRegistrationFragment extends Fragment {
         userShopname = view.findViewById(R.id.userShopname);
         spinner_operator = view.findViewById(R.id.spinner_operator);
         iv_user_image = view.findViewById(R.id.iv_user_image);
+        termOfUse = view.findViewById(R.id.toc);
+        termOfUse.setPaintFlags(termOfUse.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         d1 = view.findViewById(R.id.d1);
         d2 = view.findViewById(R.id.d2);

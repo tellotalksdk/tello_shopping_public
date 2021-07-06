@@ -17,11 +17,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,10 +49,12 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
+import com.tilismtech.tellotalk_shopping_sdk.receiver.NetworkReceiver;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
+import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -72,6 +76,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     String filePath = "";
     Uri imageUri;
     EditText shopOwnername;
+    NetworkReceiver networkReceiver;
 
 
     @Override
@@ -90,6 +95,13 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         bankRL = findViewById(R.id.bankRL);
         shopOwnername = findViewById(R.id.user_name);
         rating_number = findViewById(R.id.rating_number);
+
+        NoInternetDetection loadingDialog = new NoInternetDetection(this);
+        networkReceiver = new NetworkReceiver(loadingDialog);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkReceiver, intentFilter);
+
 
 
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
