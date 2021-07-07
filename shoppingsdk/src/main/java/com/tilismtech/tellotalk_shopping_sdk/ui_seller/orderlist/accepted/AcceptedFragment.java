@@ -11,6 +11,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -329,12 +330,15 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         Button cancel_status = dialogCongratulation.findViewById(R.id.cancel_status);
         TextView dialogMessage = dialogCongratulation.findViewById(R.id.dialogMsg);
         EditText editText= dialogCongratulation.findViewById(R.id.reasonForCancellation);
-        editText.setVisibility(View.VISIBLE);
 
         if(status == 3) {
             dialogMessage.setText("After clicking on continue button the order status will be changed to Dispatch...");
+            editText.setVisibility(View.GONE);
+
         }else{
             dialogMessage.setText("After clicking on continue button the order status will be changed to Cancel...");
+            editText.setVisibility(View.VISIBLE);
+
         }
 
         continue_status.setOnClickListener(new View.OnClickListener() {
@@ -344,6 +348,8 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 updateOrderStatus.setOrderId(String.valueOf(OrderID));
                 updateOrderStatus.setProfileId(Constant.PROFILE_ID);
                 updateOrderStatus.setStatus(String.valueOf(status));
+                updateOrderStatus.setContent(TextUtils.isEmpty(editText.getText().toString()) ? "" : editText.getText().toString());
+
 
                 orderListViewModel.updateOrderStatus(updateOrderStatus);
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {

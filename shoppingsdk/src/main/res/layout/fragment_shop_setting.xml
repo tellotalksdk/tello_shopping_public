@@ -209,7 +209,35 @@
                 android:background="@drawable/custom_spinner"
                 android:entries="@array/area" />-->
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/aa"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_bg_color"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Area"
+                    android:id="@+id/area"
+                    android:gravity="center|left"
+                    android:paddingStart="15dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:text=""
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+   <!--         <EditText
                 android:id="@+id/area"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -220,13 +248,13 @@
                 android:background="@drawable/edit_text_bg_color"
                 android:hint="Enter your area..."
                 android:paddingStart="15dp"
-                android:textSize="12sp" />
+                android:textSize="12sp" />-->
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/area"
+                android:layout_below="@+id/aa"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
@@ -274,7 +302,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.google.android.gms.maps.MapView
+                    <com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/mapView"
                         android:layout_width="match_parent"

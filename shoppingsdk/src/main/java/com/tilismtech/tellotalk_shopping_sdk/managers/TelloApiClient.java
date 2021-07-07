@@ -70,7 +70,7 @@ public class TelloApiClient {
                 @Override
                 public void onSuccess(Object object) {
                     GTResponse gtResponseError = (GTResponse) object;
-                  /*  if ("-6".equals(gtResponseError.getStatus().toString())) {
+              /*      if ("-6".equals(gtResponseError.getStatus().toString())) {
                         Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);

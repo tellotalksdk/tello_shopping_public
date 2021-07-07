@@ -185,6 +185,7 @@ public class Repository {
             @Override
             public void onFailure(Call<UpdateUserAndImageResponse> call, Throwable t) {
                 t.printStackTrace();
+                updateUserAndImageResponseMutableLiveData.setValue(null);
             }
         });
 
@@ -333,9 +334,11 @@ public class Repository {
         RequestBody Country = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getCountry());
         RequestBody Shop_Theme = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShop_Theme());
         RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getProfileId());
+        RequestBody Lat = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getLat());
+        RequestBody Long = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getLong());
 
         getRetrofitClient().setShopBasicSetting("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
-                ShopProfile, ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId
+                ShopProfile, ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId, Lat, Long
         ).enqueue(new Callback<ShopBasicSettingResponse>() {
             @Override
             public void onResponse(Call<ShopBasicSettingResponse> call, Response<ShopBasicSettingResponse> response) {
@@ -541,6 +544,7 @@ public class Repository {
         RequestBody ProductStatus = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductStatus());
         RequestBody Price = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getPrice());
         RequestBody ProductId = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductId());
+        RequestBody videoLink = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getVideoLink());
 
         getRetrofitClient().updateProduct("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(),
                 Product_Pic,
@@ -553,7 +557,8 @@ public class Repository {
                 ProfileId,
                 ProductStatus,
                 Price,
-                ProductId).enqueue(new Callback<UpdateProductResponse>() {
+                ProductId,
+                videoLink).enqueue(new Callback<UpdateProductResponse>() {
             @Override
             public void onResponse(Call<UpdateProductResponse> call, Response<UpdateProductResponse> response) {
                 if (response != null) {
@@ -1095,7 +1100,6 @@ public class Repository {
         });
     }
     //endregion
-
 
 
 }

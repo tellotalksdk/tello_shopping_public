@@ -139,7 +139,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     updateUserAndImage.setMiddleName(" ");
                     updateUserAndImage.setLastName(" ");
                     updateUserAndImage.setProfileId(Constant.PROFILE_ID);
-                    updateUserAndImage.setProfilePic(filePath);
+                    updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
                     shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
                     LoadingDialog loadingDialog = new LoadingDialog(SettingProfileEditingActivity.this);
                     loadingDialog.showDialog();

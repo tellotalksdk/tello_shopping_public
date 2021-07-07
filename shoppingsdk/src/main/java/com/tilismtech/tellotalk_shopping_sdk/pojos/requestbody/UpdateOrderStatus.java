@@ -6,15 +6,26 @@ import com.google.gson.annotations.SerializedName;
 public class UpdateOrderStatus {
 
 
-    @SerializedName("ProfileId")
+    @SerializedName("profileId")
     @Expose
     private String profileId;
-    @SerializedName("OrderId")
+    @SerializedName("orderId")
     @Expose
     private String orderId;
-    @SerializedName("Status")
+    @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("content")
+    @Expose
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getProfileId() {
         return profileId;

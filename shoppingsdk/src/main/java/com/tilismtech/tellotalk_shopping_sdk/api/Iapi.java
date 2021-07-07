@@ -179,7 +179,9 @@ public interface Iapi {
                                                        @Part("city") RequestBody City,
                                                        @Part("country") RequestBody Country,
                                                        @Part("shopTheme") RequestBody Shop_Theme,
-                                                       @Part("profileId") RequestBody ProfileId
+                                                       @Part("profileId") RequestBody ProfileId,
+                                                       @Part("latitude") RequestBody Lat,
+                                                       @Part("longitude") RequestBody Long
     );
 
 
@@ -212,7 +214,7 @@ public interface Iapi {
                                                @Part("profileId") RequestBody ProfileId,
                                                @Part("productStatus") RequestBody ProductStatus,
                                                @Part("price") RequestBody Price,
-                                               @Part("videoName") RequestBody videoName);
+                                               @Part("videoLink") RequestBody videoLink);
 
     //updateProductApi
     @Headers({
@@ -231,7 +233,9 @@ public interface Iapi {
                                               @Part("profileId") RequestBody ProfileId,
                                               @Part("productStatus") RequestBody ProductStatus,
                                               @Part("price") RequestBody Price,
-                                              @Part("productId") RequestBody ProductId);
+                                              @Part("productId") RequestBody ProductId,
+                                              @Part("videoLink") RequestBody videoLink
+    );
 
     //getproductforedit
     @Headers({"Accept: */*",

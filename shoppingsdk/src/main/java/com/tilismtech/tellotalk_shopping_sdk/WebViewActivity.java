@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 public class WebViewActivity extends AppCompatActivity {
 
     WebView webView1;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,13 +23,14 @@ public class WebViewActivity extends AppCompatActivity {
         webView1 = findViewById(R.id.webView1);
         Intent intent = getIntent();
         String id = intent.getStringExtra("videoUrl");
+        back = findViewById(R.id.back);
         Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
        // webView1.loadUrl(id);
       //  https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore
         String str = id;
         String result = str.substring(str.indexOf("=") + 1, str.indexOf("&"));
 
-        String myYouTubeVideoUrl = "https://www.youtube.com/embed/"+result;
+        String myYouTubeVideoUrl = "https://www.youtube.com/embed/"+result+"?autoplay=1&mute=1";
         //String myYouTubeVideoUrl = "https://www.youtube.com/embed/bGkd90PIMcQ";
 
         String dataUrl =
@@ -44,5 +49,12 @@ public class WebViewActivity extends AppCompatActivity {
         webView1.getSettings().setLoadWithOverviewMode(true);
         webView1.getSettings().setUseWideViewPort(true);
         webView1.loadData(dataUrl, "text/html", "utf-8");
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }

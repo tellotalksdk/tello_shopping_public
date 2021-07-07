@@ -16,7 +16,15 @@ public class UpdateProduct {
     private String productStatus;
     private String price;
     private String productId;
+    private String videoLink;
 
+    public String getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
 
     public List<String> getProduct_Pic() {
         return Product_Pic;

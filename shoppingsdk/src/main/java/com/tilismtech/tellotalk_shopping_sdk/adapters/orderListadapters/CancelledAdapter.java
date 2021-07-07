@@ -17,6 +17,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,6 +80,13 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
         }
 
         holder.quantity.setText("Qty ." + receivedItemPojo.getQuantity());
+
+        holder.iv_locate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(myCtx, "" + receivedItemPojo.getReason(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -132,11 +140,13 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
         private Spinner spinner_moveto;
         OnOrderClickListener onOrderClickListener;
         ImageView edit_rider_info;
+        ImageView iv_locate;
 
 
         public CancelledItemViewHolder(@NonNull View itemView, OnOrderClickListener onOrderClickListener) {
             super(itemView);
 
+            iv_locate = itemView.findViewById(R.id.iv_locate);
             orderNumber = itemView.findViewById(R.id.orderNumber);
             customerName = itemView.findViewById(R.id.customerName);
             address = itemView.findViewById(R.id.address);

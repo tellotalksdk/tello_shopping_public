@@ -468,6 +468,8 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
                 updateOrderStatus.setOrderId(String.valueOf(OrderID));
                 updateOrderStatus.setProfileId(Constant.PROFILE_ID);
                 updateOrderStatus.setStatus(String.valueOf(status));
+                updateOrderStatus.setContent(TextUtils.isEmpty(editText.getText().toString()) ? "" : editText.getText().toString());
+
 
                 orderListViewModel.updateOrderStatus(updateOrderStatus);
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {

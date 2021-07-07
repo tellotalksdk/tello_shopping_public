@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -73,6 +74,7 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -767,6 +769,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             }
                         }
 
+
+                        if (!URLUtil.isValidUrl(et_VideoUrl.getText().toString())) {
+                            Toast.makeText(getActivity(), "URL is not valid", Toast.LENGTH_SHORT).show();
+                            //System.out.println("Yes");
+                            return;
+                        }
+
                         UpdateProduct updateProduct = new UpdateProduct();
                         updateProduct.setTitle(productName.getText().toString());
                         updateProduct.setDiscountPrice(discountedPrice.getText().toString());
@@ -780,6 +789,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         updateProduct.setSummary(product_description.getText().toString());
                         updateProduct.setProductStatus(productStatus);
                         updateProduct.setProfileId(Constant.PROFILE_ID);
+                        updateProduct.setVideoLink(TextUtils.isEmpty(et_VideoUrl.getText().toString()) ? "" : et_VideoUrl.getText().toString());
 
 
                         // loadingDialog.showDialog();
@@ -932,7 +942,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             skucodeoptional.setText(productForEditResponse.getData().getRequestList().getSku());
                             isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
                             product_description.setText(productForEditResponse.getData().getRequestList().getSummary());
-                            et_VideoUrl.setText(productForEditResponse.getData().getRequestList().getVideoLink());
+                            // et_VideoUrl.setText(productForEditResponse.getData().getRequestList().getVideoLink());
+                            et_VideoUrl.setText("https://www.youtube.com/watch?v=PC6ief4uXxk&ab_channel=NaveenPehal");
                             imageIds.clear();
                             //when url provided this will work for sure...
                             if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
@@ -1101,6 +1112,14 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     et_YoutubeLink.setText(productForEditResponse.getData().getRequestList().getVideoLink());
                     et_productDescription.setText(productForEditResponse.getData().getRequestList().getSummary());
                     video = productForEditResponse.getData().getRequestList().getVideoLink();
+
+                    if (!URLUtil.isValidUrl(video)) {
+                        button.setVisibility(View.GONE);
+                    } else {
+                        button.setVisibility(View.VISIBLE);
+                    }
+
+
                 }
             }
         });
@@ -1111,7 +1130,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 Intent i = new Intent(getActivity(), WebViewActivity.class);
                 i.putExtra("videoUrl", video);
                 startActivity(i);
-
             }
         });
 
@@ -1207,6 +1225,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
         }
     };
+
+    /* Returns true if url is valid */
+    public static boolean isValid(String url) {
+        /* Try creating a valid URL */
+        return URLUtil.isValidUrl(url);
+    }
 
 }
 

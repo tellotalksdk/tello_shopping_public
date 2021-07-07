@@ -166,6 +166,10 @@ public class BankSettingFragment extends Fragment {
                     RL3.setVisibility(View.GONE);
                     RL4.setVisibility(View.VISIBLE);
                 }
+
+                if (!iswalletClicked && !isbankClicked) {
+                    Toast.makeText(getActivity(), "Select either wallet or bank", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

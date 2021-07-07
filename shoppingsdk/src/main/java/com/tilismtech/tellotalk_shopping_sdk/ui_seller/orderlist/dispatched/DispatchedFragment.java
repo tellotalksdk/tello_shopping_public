@@ -468,9 +468,10 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
                 updateOrderStatus.setOrderId(String.valueOf(OrderID));
                 updateOrderStatus.setProfileId(Constant.PROFILE_ID);
                 updateOrderStatus.setStatus(String.valueOf(status));
+                updateOrderStatus.setContent(TextUtils.isEmpty(editText.getText().toString()) ? "" : editText.getText().toString());
 
                 orderListViewModel.updateOrderStatus(updateOrderStatus);
-                orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
+                orderListViewModel.updateOrderStatusResponse().observe(getViewLifecycleOwner(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
                         if (updateOrderStatusResponse != null) {

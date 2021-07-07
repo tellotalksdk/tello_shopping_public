@@ -7,7 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".WebViewActivity">
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@drawable/edit_text_bg_color"
+        >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"/>
+
+    </LinearLayout>
+
     <WebView
+        android:layout_below="@+id/linear"
         android:id="@+id/webView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

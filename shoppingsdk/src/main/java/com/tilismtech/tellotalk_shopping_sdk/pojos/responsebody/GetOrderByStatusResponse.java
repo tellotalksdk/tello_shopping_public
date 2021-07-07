@@ -117,6 +117,17 @@ public class GetOrderByStatusResponse {
         @SerializedName("orderTrackingId")
         @Expose
         private String orderTrackingId;
+        @SerializedName("Content")
+        @Expose
+        private String reason;
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
+        }
 
         public String getOrderTrackingId() {
             return orderTrackingId;

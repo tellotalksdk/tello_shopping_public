@@ -79,6 +79,8 @@ public class StoreSettingFragment extends Fragment {
                     shopId = getShopDetailResponse.getData().getRequestList().getShopId();
 
                     Glide.with(getActivity()).load(getShopDetailResponse.getData().getRequestList().getShopProfile()).into(iv_top_image);
+                    addMainBranchAddress(getShopDetailResponse.getData().getRequestList());
+
 
                     if (getShopDetailResponse.getData().getRequestList().getBranchAddress() != null) {
                         for (int i = 0; i < getShopDetailResponse.getData().getRequestList().getBranchAddress().size(); i++) {
@@ -86,6 +88,7 @@ public class StoreSettingFragment extends Fragment {
                         }
                         addedAddress(getShopDetailResponse.getData().getRequestList().getBranchAddress().size(), getShopDetailResponse.getData().getRequestList());
                     }
+
                 }
             }
         });
@@ -166,6 +169,29 @@ public class StoreSettingFragment extends Fragment {
 
             }
         });
+    }
+
+    private void addMainBranchAddress(GetShopDetailResponse.RequestList requestList) {
+        View inflater = getLayoutInflater().inflate(R.layout.add_address_layout, null);
+        addressRL.addView(inflater);
+
+        et_street = inflater.findViewById(R.id.et_street);
+        et_city = inflater.findViewById(R.id.et_city);
+        et_province = inflater.findViewById(R.id.et_province);
+        et_country = inflater.findViewById(R.id.et_country);
+        ic_delete = inflater.findViewById(R.id.ic_delete);
+        ic_edit = inflater.findViewById(R.id.ic_edit);
+        addbranchaddress = inflater.findViewById(R.id.addbranchaddress);
+
+        ic_delete.setVisibility(View.GONE);
+        ic_edit.setVisibility(View.GONE);
+        addbranchaddress.setVisibility(View.GONE);
+
+        et_street.setText(requestList.getArea());
+        et_city.setText(requestList.getCity());
+        et_province.setText(requestList.getProvince());
+        et_country.setText(requestList.getCountry());
+
     }
 
     private void addedAddress(int size, GetShopDetailResponse.RequestList requestList) {

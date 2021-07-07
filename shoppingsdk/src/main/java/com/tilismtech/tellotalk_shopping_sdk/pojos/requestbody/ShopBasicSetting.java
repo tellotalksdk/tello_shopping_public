@@ -12,6 +12,16 @@ public class ShopBasicSetting {
     private String shopTheme;
     private String profileId;
     private String shopProfile;
+    private String lat ;
+    private String Long;
+
+    public String getLong() {
+        return Long;
+    }
+
+    public void setLong(String aLong) {
+        Long = aLong;
+    }
 
     public ShopBasicSetting(String shippingFee, String tax, String province, String area, String city, String country, String shopTheme, String profileId, String shopProfile) {
         this.shippingFee = shippingFee;
@@ -23,6 +33,22 @@ public class ShopBasicSetting {
         this.shopTheme = shopTheme;
         this.profileId = profileId;
         this.shopProfile = shopProfile;
+    }
+
+    public String getShopTheme() {
+        return shopTheme;
+    }
+
+    public void setShopTheme(String shopTheme) {
+        this.shopTheme = shopTheme;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
     public ShopBasicSetting() {

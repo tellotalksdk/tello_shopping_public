@@ -131,6 +131,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
+
         setShopNameAndImage();
         setTotalProductOnActionBar();
         productList = findViewById(R.id.productList);
@@ -223,7 +224,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -1078,7 +1079,21 @@ public class ShopLandingActivity extends AppCompatActivity {
                         iv.setImageBitmap(resized);
                         LLimages.addView(view);
                     }
-                } else {
+                } /*else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    Toast.makeText(ShopLandingActivity.this, " android 11 or greater...", Toast.LENGTH_SHORT).show();
+                    int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    for (int i = 0; i < count; i++) {
+                        View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                        iv = inflater.findViewById(R.id.iv);
+                        imageUri = data.getClipData().getItemAt(i).getUri();
+                        Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                        filepath = getPath(ShopLandingActivity.this,imageUri);
+                        Log.i("TAG", "onActivityResult: " + filepath);
+                        filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+                        iv.setImageURI(imageUri);
+                        LLimages.addView(inflater);
+                    }
+                }*/ else {
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                     for (int i = 0; i < count; i++) {
                         View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);

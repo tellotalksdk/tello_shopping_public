@@ -66,11 +66,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.TimingnAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.Citiespojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
@@ -94,6 +96,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
 
 public class ShopSettingFragment extends Fragment implements ColorChooserAdapter.OnColorChooserListener, OnMapReadyCallback {
 
@@ -128,7 +131,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private int isMondayOpen_ID, isTuedayOpen_ID, isWednesdayOpen_ID, isThrusdayOpen_ID, isFridayOpen_ID, isSaturdayOpen_ID, isSundayOpen_ID;
     private Switch mondaySwitch, tuesdaySwitch, wednesdaySwitch, thrusdaySwitch, fridaySwitch, saturdaySwitch, sundaySwitch;
     private ShopSettingViewModel shopSettingViewModel;
-    private String filePath = "", Country, Province, City; //this file path either come from capture image or upload image
+    private String filePath = "", Country, Province, City, Latitude, Longitude; //this file path either come from capture image or upload image
     private ShopTiming shopTiming; // request body for shop timing dialog and its related api...
     private List<ShopTiming.DaysSetting> daysSettingList;
     private List<String> ColorList;
@@ -144,7 +147,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     String mondayOpenTimings, mondayCloseTimings, tuesdayOpenTimings, tuesdayCloseTimings, wednesdayOpenTimings, wednesdayCloseTimings, thrusdayOpenTimings, thrusdayCloseTimings, fridayOpenTimings, fridayCloseTimings, saturdayOpenTimings, saturdayCloseTimings, sundayOpenTimings, sundayCloseTimings;
     ArrayAdapter<String> openTimingAdapter;
     private GoogleMap mMap;
-    private MapView mapView;
+    private CustomMapView mapView;
+    LocationManager mLocationManager;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -747,6 +752,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     shopBasicSetting.setProvince(Province);
                     shopBasicSetting.setCity(City);
                     shopBasicSetting.setArea(area.getText().toString());
+                    shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
+                    shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
 
                     shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
                     LoadingDialog loadingDialog = new LoadingDialog(getActivity());
@@ -887,7 +894,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         et_OwnerShopUrl = view.findViewById(R.id.et_OwnerShopUrl);
         et_OwnerNumber = view.findViewById(R.id.et_OwnerNumber);
         iv_image = view.findViewById(R.id.iv_image);
-        mapView = (MapView) view.findViewById(R.id.mapView);
+        mapView = (CustomMapView) view.findViewById(R.id.mapView);
         shopBasicSetting = new ShopBasicSetting();
         shopTiming = new ShopTiming();
         shopTiming.setProfileId(Constant.PROFILE_ID);
@@ -972,6 +979,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             case MY_PERMISSIONS_REQUEST_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(activity, "Permission Granted...", Toast.LENGTH_SHORT).show();
+                    mapView.getMapAsync(this);
                     setMapCurrentLocation();
                 } else {
                     Toast.makeText(activity, "Permission Not Granted...", Toast.LENGTH_SHORT).show();
@@ -984,23 +992,66 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private void setMapCurrentLocation() {
         if (checkLocationPermission()) {
             mMap.setMyLocationEnabled(true);
-            LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-            //  Log.i("TAG", "onMapReady: " + longitude + "  " + latitude);
-            //  Toast.makeText(activity, " Longitude : " + longitude + " Latitude : " + latitude, Toast.LENGTH_SHORT).show();
+            Location myLocation = getLastKnownLocation();
+
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+                    Toast.makeText(getActivity(), " 1 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
+                    // TODO Auto-generated method stub
+                    // Toast.makeText(getActivity(), " 2 dasdasdas" + marker.getPosition().latitude, Toast.LENGTH_SHORT).show();
+                    Latitude = String.valueOf(marker.getPosition().latitude);
+                    Longitude = String.valueOf(marker.getPosition().longitude);
+                }
+
+                @Override
+                public void onMarkerDrag(Marker marker) {
+                    // Toast.makeText(getActivity(), " 3 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
             // For dropping a marker at a point on the Map
-            LatLng sydney = new LatLng(latitude, longitude);
-            mMap.addMarker(new MarkerOptions().position(sydney));
+            LatLng sydney = new LatLng(myLocation.getLatitude(), myLocation.getLatitude());
+            mMap.addMarker(new MarkerOptions().position(sydney).draggable(true));
 
             // For zooming automatically to the location of the marker
             CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-//            setMap(mMap);
+            Latitude = String.valueOf(myLocation.getLatitude());
+            Longitude = String.valueOf(myLocation.getLongitude());
+
+            mMap.getUiSettings();
+
         }
+    }
+
+    private Location getLastKnownLocation() {
+        mLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+
+        for (String provider : providers) {
+            if (checkLocationPermission()) {
+                Location l = mLocationManager.getLastKnownLocation(provider);
+
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    bestLocation = l;
+                }
+            }
+        }
+        return bestLocation;
     }
 
     private void openGallery() {
@@ -1505,28 +1556,48 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         //mMap.setMyLocationEnabled(true);
         if (checkLocationPermission()) {
             mMap.setMyLocationEnabled(true);
-            LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-          //  Log.i("TAG", "onMapReady: " + longitude + "  " + latitude);
-          //  Toast.makeText(activity, " Longitude : " + longitude + " Latitude : " + latitude, Toast.LENGTH_SHORT).show();
+            Location myLocation = getLastKnownLocation();
 
             // For dropping a marker at a point on the Map
-            LatLng sydney = new LatLng(latitude, longitude);
-            googleMap.addMarker(new MarkerOptions().position(sydney));
+            LatLng sydney = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            googleMap.addMarker(new MarkerOptions().position(sydney).draggable(true));
 
             // For zooming automatically to the location of the marker
             CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+                    //  Toast.makeText(getActivity(), " 1 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
+                    // TODO Auto-generated method stub
+                    // Toast.makeText(getActivity(), " 2 dasdasdas" + marker.getPosition().latitude, Toast.LENGTH_SHORT).show();
+                    Latitude = String.valueOf(marker.getPosition().latitude);
+                    Longitude = String.valueOf(marker.getPosition().longitude);
+                }
+
+                @Override
+                public void onMarkerDrag(Marker marker) {
+                    // Toast.makeText(getActivity(), " 3 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+            Latitude = String.valueOf(myLocation.getLatitude());
+            Longitude = String.valueOf(myLocation.getLongitude());
 //            setMap(mMap);
         }
 
         mMap.getUiSettings();
 
     }
-
 
 
     public boolean checkLocationPermission() {

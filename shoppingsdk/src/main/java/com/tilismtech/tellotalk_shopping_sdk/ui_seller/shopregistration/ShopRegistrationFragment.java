@@ -161,7 +161,7 @@ public class ShopRegistrationFragment extends Fragment {
                     shopRegister.setShopName(et_shop_name.getText().toString());
 
                     shopRegistrationViewModel.postShopRegister(shopRegister);
-                    shopRegistrationViewModel.getShopResponse().observe(getActivity(), new Observer<ShopRegisterResponse>() {
+                    shopRegistrationViewModel.getShopResponse().observe(getViewLifecycleOwner(), new Observer<ShopRegisterResponse>() {
                         @Override
                         public void onChanged(ShopRegisterResponse shopRegisterResponse) {
                             if (shopRegisterResponse != null) {
@@ -189,7 +189,7 @@ public class ShopRegistrationFragment extends Fragment {
                 if (checkOTP()) {
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
                     shopRegistrationViewModel.verifyOTP(otp);
-                    shopRegistrationViewModel.getVerifyOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
+                    shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
                             if (verifyOtpResponse != null) {

@@ -376,6 +376,8 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                 updateOrderStatus.setOrderId(String.valueOf(OrderID));
                 updateOrderStatus.setProfileId(Constant.PROFILE_ID);
                 updateOrderStatus.setStatus(String.valueOf(status));
+                updateOrderStatus.setContent("");
+
 
                 orderListViewModel.updateOrderStatus(updateOrderStatus);
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {

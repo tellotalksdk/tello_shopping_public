@@ -194,7 +194,7 @@
             </HorizontalScrollView>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:paddingTop="5dp"
@@ -220,7 +220,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:paddingTop="5dp"
@@ -240,7 +240,7 @@
                     android:paddingBottom="25dp"
                     android:textSize="14sp"
                     android:background="@null"
-                    android:inputType="text" />
+                    android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -271,7 +271,7 @@
                    </LinearLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:paddingTop="5dp"
@@ -291,7 +291,7 @@
                     android:paddingBottom="25dp"
                     android:textSize="14sp"
                     android:background="@null"
-                    android:inputType="text" />
+                    android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -322,7 +322,7 @@
                         </LinearLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:paddingTop="5dp"
@@ -342,7 +342,7 @@
                     android:paddingBottom="25dp"
                     android:textSize="14sp"
                     android:background="@null"
-                    android:inputType="text" />
+                    android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -382,7 +382,7 @@
             </FrameLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:paddingTop="5dp"
@@ -399,6 +399,7 @@
                     android:gravity="center|left"
                     android:id="@+id/et_Description"
                     android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:textSize="14sp"
                     android:paddingBottom="22dp"
                     android:background="@null"
@@ -458,6 +459,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
             android:layout_below="@+id/l"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/rounded_btn"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
