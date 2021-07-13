@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
         <RelativeLayout
@@ -59,7 +68,6 @@
                 android:text="Bank" />
 
 
-
             <Button
                 android:id="@+id/continue_btn_RL1"
                 android:layout_width="wrap_content"
@@ -71,12 +79,10 @@
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
-                android:textAllCaps="false"
                 android:text="Continue"
-                android:textSize="18sp"
-                android:textColor="@android:color/white" />
-
-
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
 
         </RelativeLayout>
@@ -131,208 +137,260 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_spinner" />
 
-            <EditText
-                android:id="@+id/account_title"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/PN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/spinner_bank_names"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="* Account Title"
-                android:maxLength="12"
-                android:paddingLeft="10dp"
-                android:textSize="15sp" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
 
-            <EditText
-                android:id="@+id/account_number"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="* Account Title"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--           <EditText
+                           android:id="@+id/account_title"
+                           android:layout_width="match_parent"
+                           android:layout_height="50dp"
+                           android:layout_below="@+id/spinner_bank_names"
+                           android:layout_marginStart="20dp"
+                           android:layout_marginTop="10dp"
+                           android:layout_marginEnd="20dp"
+                           android:background="@drawable/edit_text_bg_color"
+                           android:hint="* Account Title"
+                           android:maxLength="12"
+                           android:paddingLeft="10dp"
+                           android:textSize="15sp" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/accountNumber"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/account_title"
+                android:layout_below="@+id/PN"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="* Account Number"
-                android:inputType="number"
-                android:maxLength="24"
-                android:paddingLeft="10dp"
-                android:textSize="15sp" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="* Account Number"
+                    android:inputType="number"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--      <EditText
+                      android:id="@+id/account_number"
+                      android:layout_width="match_parent"
+                      android:layout_height="50dp"
+                      android:layout_below="@+id/account_title"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginEnd="20dp"
+                      android:background="@drawable/edit_text_bg_color"
+                      android:hint="* Account Number"
+                      android:inputType="number"
+                      android:maxLength="24"
+                      android:paddingLeft="10dp"
+                      android:textSize="15sp" />-->
 
             <Button
                 android:id="@+id/continue_btn_RL2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/bottomLine"
+                android:layout_height="50dp"
+                android:layout_below="@+id/accountNumber"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="bottom"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="160dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
+                android:textSize="18sp"
                 android:text="Continue"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white" />
 
             <View
-                android:layout_alignParentBottom="true"
                 android:id="@+id/bottomLine"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
-
-
+                android:layout_height="10dp"
+                android:layout_alignParentBottom="true" />
 
 
         </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/RL3"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:visibility="gone">
 
-      <!--      <RelativeLayout
-                android:id="@+id/addressRL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/LL3"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp">
+            <!--      <RelativeLayout
+                      android:id="@+id/addressRL"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_below="@+id/LL3"
+                      android:layout_marginStart="15dp"
+                      android:layout_marginTop="15dp"
+                      android:layout_marginEnd="15dp"
+                      android:background="@drawable/edit_text_bg_color"
+                      android:paddingTop="20dp"
+                      android:paddingBottom="20dp">
 
-                <LinearLayout
-                    android:id="@+id/leftLLlabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Bank :" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Account Title :" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Account # " />
+                      <LinearLayout
+                          android:id="@+id/leftLLlabel"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical">
 
 
-                </LinearLayout>
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="10dp"
+                              android:layout_marginTop="5dp"
+                              android:text="Bank :" />
 
-                <LinearLayout
-                    android:id="@+id/middleLL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/leftLLlabel"
-                    android:orientation="vertical">
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="10dp"
+                              android:layout_marginTop="5dp"
+                              android:text="Account Title :" />
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="11-E DHA street"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Karachi"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Sindh"
-                        android:textColor="@android:color/black" />
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="10dp"
+                              android:layout_marginTop="5dp"
+                              android:text="Account # " />
 
 
-                </LinearLayout>
+                      </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/LL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="right|bottom"
-                        android:layout_marginRight="10dp" />
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="right|bottom"
-                        android:layout_marginRight="10dp" />
-
-                    <ImageView
-                        android:id="@+id/ic_delete"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="right|bottom"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_baseline_delete" />
-
-                </LinearLayout>
+                      <LinearLayout
+                          android:id="@+id/middleLL"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_toRightOf="@+id/leftLLlabel"
+                          android:orientation="vertical">
 
 
-            </RelativeLayout>-->
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="10dp"
+                              android:layout_marginTop="5dp"
+                              android:text="11-E DHA street"
+                              android:textColor="@android:color/black" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/addressRL"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/edit_text_bg_color"
-                android:gravity="center">
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="10dp"
+                              android:layout_marginTop="5dp"
+                              android:text="Karachi"
+                              android:textColor="@android:color/black" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_baseline_add_circle_outline" />
+                          <TextView
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="10dp"
+                              android:layout_marginTop="5dp"
+                              android:text="Sindh"
+                              android:textColor="@android:color/black" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_below="@+id/addressRL"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/edit_text_bg_color"
-                    android:text="Add New Address"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold">
 
-                </TextView>
-            </LinearLayout>
+                      </LinearLayout>
+
+                      <LinearLayout
+                          android:id="@+id/LL"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_alignParentEnd="true"
+                          android:orientation="vertical">
+
+                          <ImageView
+                              android:layout_width="24dp"
+                              android:layout_height="24dp"
+                              android:layout_gravity="right|bottom"
+                              android:layout_marginRight="10dp" />
+
+                          <ImageView
+                              android:layout_width="24dp"
+                              android:layout_height="24dp"
+                              android:layout_gravity="right|bottom"
+                              android:layout_marginRight="10dp" />
+
+                          <ImageView
+                              android:id="@+id/ic_delete"
+                              android:layout_width="24dp"
+                              android:layout_height="24dp"
+                              android:layout_gravity="right|bottom"
+                              android:layout_marginRight="10dp"
+                              android:src="@drawable/ic_baseline_delete" />
+
+                      </LinearLayout>
+
+
+                  </RelativeLayout>-->
+
+            <!--            <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_below="@+id/addressRL"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="15dp"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:src="@drawable/ic_baseline_add_circle_outline" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_below="@+id/addressRL"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="15dp"
+                                android:background="@drawable/edit_text_bg_color"
+                                android:text="Add New Address"
+                                android:textColor="@android:color/black"
+                                android:textStyle="bold">
+
+                            </TextView>
+                        </LinearLayout>-->
 
             <Button
                 android:id="@+id/continue_btn_RL3"
@@ -346,8 +404,10 @@
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
                 android:text="Continue"
-                android:visibility="gone"
-                android:textColor="@android:color/white" />
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
 
         </LinearLayout>
@@ -403,61 +463,142 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_spinner" />
 
-            <EditText
-                android:id="@+id/account_title_wallet"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/SWN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/spinner_wallet_names"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="* Account Title"
-                android:maxLength="24"
-                android:paddingLeft="10dp"
-                android:textSize="15sp" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
 
-            <EditText
-                android:id="@+id/account_mobile_number"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_title_wallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="* Account Title"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--      <EditText
+                      android:id="@+id/account_title_wallet"
+                      android:layout_width="match_parent"
+                      android:layout_height="50dp"
+                      android:layout_below="@+id/spinner_wallet_names"
+                      android:layout_marginStart="20dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginEnd="20dp"
+                      android:background="@drawable/edit_text_bg_color"
+                      android:hint="* Account Title"
+                      android:maxLength="24"
+                      android:paddingLeft="10dp"
+                      android:textSize="15sp" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/MN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/account_title_wallet"
+                android:layout_below="@+id/SWN"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="* Mobile Number"
-                android:maxLength="12"
-                android:paddingLeft="10dp"
-                android:textSize="15sp" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
 
-            <EditText
-                android:id="@+id/account_cnic"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="* Mobile Number"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--        <EditText
+                        android:id="@+id/account_mobile_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/SWN"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/edit_text_bg_color"
+                        android:hint="* Mobile Number"
+                        android:maxLength="12"
+                        android:paddingLeft="10dp"
+                        android:textSize="15sp" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/CNIC"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/account_mobile_number"
+                android:layout_below="@+id/MN"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
-                android:hint="* CNIC"
-                android:inputType="number"
-                android:maxLength="12"
-                android:paddingLeft="10dp"
-                android:textSize="15sp" />
+                android:paddingTop="5dp"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/account_cnic"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:gravity="center|left"
+                    android:hint="* CNIC"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!--     <EditText
+                     android:id="@+id/account_cnic"
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_below="@+id/account_mobile_number"
+                     android:layout_marginStart="20dp"
+                     android:layout_marginTop="10dp"
+                     android:layout_marginEnd="20dp"
+                     android:background="@drawable/edit_text_bg_color"
+                     android:hint="* CNIC"
+                     android:inputType="number"
+                     android:maxLength="12"
+                     android:paddingLeft="10dp"
+                     android:textSize="15sp" />-->
 
             <Button
                 android:id="@+id/continue_btn_RL4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="10dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/CNIC"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="140dp"
                 android:layout_marginBottom="11dp"
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="60dp"
-                android:layout_centerHorizontal="true"
                 android:paddingRight="60dp"
                 android:text="Continue"
+                android:textAllCaps="false"
+                android:textSize="18sp"
                 android:textColor="@android:color/white" />
 
 
@@ -476,8 +617,11 @@
             android:paddingLeft="60dp"
             android:paddingRight="60dp"
             android:text="Continue"
+            android:textAllCaps="false"
+            android:textSize="18sp"
             android:textColor="@android:color/white"
             android:visibility="gone" />
 
 
     </RelativeLayout>
+</ScrollView>

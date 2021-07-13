@@ -1,6 +1,8 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.all;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,8 +11,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,7 +51,9 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class AllFragment extends Fragment implements AllAdapter.OnOrderClickListener {
@@ -59,6 +66,8 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
     public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
+    private int totalSumofAllOrderAmount = 0;
+
 
 
     @Override
@@ -175,7 +184,11 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
             public void onClick(View v) {
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
-                captureScreenShot(bitmap, flash);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    CaptureScreenShot(bitmap,flash);
+                } else {
+                    captureScreenShot(bitmap, flash);
+                }
             }
         });
 
@@ -213,6 +226,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                         for (int i = 0; i < viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(); i++) {
                             //productDetailLL.addView();
                             View inflater = getLayoutInflater().inflate(R.layout.product_detail, null);
+                            totalSumofAllOrderAmount += Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount());
 
                             EditText et_ProductName = inflater.findViewById(R.id.et_ProductName);
                             EditText et_ProductPrice = inflater.findViewById(R.id.et_ProductPrice);
@@ -231,6 +245,11 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                             et_payableAmount.setText(String.valueOf(payableAmount));
                             productDetailLL.addView(inflater);
                         }
+                        View inflater1 = getLayoutInflater().inflate(R.layout.product_total, null);
+                        TextView totalAmount = inflater1.findViewById(R.id.totalAmount);
+                        totalAmount.setText(String.valueOf(totalSumofAllOrderAmount));
+                        productDetailLL.addView(inflater1);
+                        totalSumofAllOrderAmount = 0;
                     }
 
                     et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAccountTitle());
@@ -257,6 +276,35 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
 
+    }
+
+    private void CaptureScreenShot(Bitmap bitmap,LinearLayout flash) {
+        OutputStream fos;
+
+        try {
+            ContentResolver contentResolver = getActivity().getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "IMAGE_" + ".jpg");
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "TelloShopping");
+            Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+            fos = (OutputStream) contentResolver.openOutputStream(Objects.requireNonNull(imageUri));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Objects.requireNonNull(fos);
+
+            Toast.makeText(getActivity(), "Screen Shot Captured...", Toast.LENGTH_SHORT).show();
+
+            flash.setVisibility(View.VISIBLE);
+            AlphaAnimation animation1 = new AlphaAnimation(1.0f, 0.0f);
+            animation1.setDuration(500);
+            //  animation1.setStartOffset(5000);
+            animation1.setFillAfter(true);
+            flash.startAnimation(animation1);
+
+        } catch (Exception ex) {
+            Toast.makeText(getActivity(), "Some thing went wrong try again...", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void captureScreenShot(Bitmap bitmap, LinearLayout flash) {

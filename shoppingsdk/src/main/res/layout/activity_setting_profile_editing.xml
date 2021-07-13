@@ -91,7 +91,9 @@
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Khurram Shehzad"
+                    android:hint="Your Name Here..."
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -301,5 +303,5 @@
 
     </androidx.fragment.app.FragmentContainerView>
 
-</RelativeLayout>
+</RelativeLayout>`
 </ScrollView>

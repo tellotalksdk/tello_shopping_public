@@ -70,12 +70,12 @@ public class TelloApiClient {
                 @Override
                 public void onSuccess(Object object) {
                     GTResponse gtResponseError = (GTResponse) object;
-              /*      if ("-6".equals(gtResponseError.getStatus().toString())) {
+                    if ("-6".equals(gtResponseError.getStatus().toString())) {
                         Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
-                    }*/
-                    context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                    }
+                  //  context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {

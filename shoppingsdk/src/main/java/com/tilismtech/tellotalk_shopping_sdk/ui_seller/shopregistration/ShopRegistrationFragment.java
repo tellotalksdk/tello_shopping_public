@@ -199,7 +199,7 @@ public class ShopRegistrationFragment extends Fragment {
                                     navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                    navController.navigate(R.id.shopSettingFragment);
+                                 //   navController.navigate(R.id.shopSettingFragment);
                                 }
                             }
                         }

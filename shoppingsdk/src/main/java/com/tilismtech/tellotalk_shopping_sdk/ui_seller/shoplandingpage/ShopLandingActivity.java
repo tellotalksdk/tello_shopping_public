@@ -451,7 +451,30 @@ public class ShopLandingActivity extends AppCompatActivity {
                 }
 
 
-                navController.navigate(R.id.receivedFragment);
+                switch (currentTab) {
+                    case RECEIVED:
+                        navController.navigate(R.id.receivedFragment);
+                        break;
+                    case ACCEPTED:
+                        navController.navigate(R.id.acceptedFragment);
+                        break;
+                    case DISPATCHED:
+                        navController.navigate(R.id.dispatchedFragment);
+                        break;
+                    case DELIVERED:
+                        navController.navigate(R.id.deliveredFragment);
+                        break;
+                    case PAID:
+                        navController.navigate(R.id.paidFragment);
+                        break;
+                    case CANCEL:
+                        navController.navigate(R.id.cancelledFragment);
+                        break;
+                    case ALL:
+                        navController.navigate(R.id.allFragment);
+                        break;
+                }
+
             }
         });
 

@@ -303,7 +303,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_btn"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"

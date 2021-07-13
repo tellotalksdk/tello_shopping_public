@@ -27,6 +27,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -84,6 +85,9 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_profile_editing);
         initViews();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
     }
 
     public void initViews() {
@@ -101,7 +105,6 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkReceiver, intentFilter);
-
 
 
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
@@ -147,11 +150,12 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     shopRegistrationViewModel.getUpdateUserImageResponse().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
                         @Override
                         public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
-                            if (updateUserAndImage != null) {
-                                Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                            if (updateUserAndImageResponse != null) {
+                                // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                                loadingDialog.dismissDialog();
+                            } else {
                                 loadingDialog.dismissDialog();
                             }
-                            loadingDialog.dismissDialog();
                         }
                     });
                 }

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,6 +74,9 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductRes
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -124,7 +128,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private EditText et_VideoUrl;
     List<ProductListResponse.Request> productListAppend, dummy;
     List<String> imageIds;
-    String video;
+    String video, document;
 
 
     @Override
@@ -189,11 +193,14 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 et_SKU = dialogAddProduct.findViewById(R.id.et_SKU);
                 et_Description = dialogAddProduct.findViewById(R.id.et_Description);
                 et_ProductTitle = dialogAddProduct.findViewById(R.id.et_ProductTitle);
-
                 parentSpinner = dialogAddProduct.findViewById(R.id.parentSpinner);
                 childSpinner = dialogAddProduct.findViewById(R.id.childSpinner);
                 parentSpinner.setOnItemSelectedListener(onItemSelectedListener);
                 childSpinner.setOnItemSelectedListener(onItemSelectedListener);
+
+                et_VideoUrl = dialogAddProduct.findViewById(R.id.et_VideoUrl);
+                et_VideoUrl.setText("https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore");
+
 
                 uploadParentCategory(parentSpinner, childSpinner);
 
@@ -240,6 +247,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             addNewProduct.setProductStatus(productStatus); //work with toggle on and off
                             addNewProduct.setProduct_Pic(filePaths); //here we send a picture path from device...
                             addNewProduct.setTitle(et_ProductTitle.getText().toString());
+                            addNewProduct.setVideoName(et_VideoUrl.getText().toString());
+                            Linkify.addLinks(et_VideoUrl, Linkify.ALL);
 
                             LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                             loadingDialog.showDialog();
@@ -762,6 +771,19 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     {
                         //every thing fine post edit api
 
+                        if (!TextUtils.isEmpty(et_VideoUrl.getText().toString())) {
+                            String path = et_VideoUrl.getText().toString();
+                            String segments[] = path.split(".com/");
+
+                            if(segments.length > 1) {
+                                document = segments[1];
+                            }else{
+                                document = "";
+                            }
+
+                        }
+
+
                         if (!TextUtils.isEmpty(discountedPrice.getText().toString())) {
                             if (Integer.parseInt(discountedPrice.getText().toString()) > Integer.parseInt(originalPrice.getText().toString())) {
                                 Toast.makeText(getActivity(), "Discounted Price must be less than original price...", Toast.LENGTH_SHORT).show();
@@ -770,45 +792,51 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         }
 
 
-                        if (!URLUtil.isValidUrl(et_VideoUrl.getText().toString())) {
-                            Toast.makeText(getActivity(), "URL is not valid", Toast.LENGTH_SHORT).show();
-                            //System.out.println("Yes");
-                            return;
+                        if (!TextUtils.isEmpty(et_VideoUrl.getText().toString())) {
+                            if (!URLUtil.isValidUrl(et_VideoUrl.getText().toString())) {
+                                Toast.makeText(getActivity(), "URL is not valid", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                         }
 
-                        UpdateProduct updateProduct = new UpdateProduct();
-                        updateProduct.setTitle(productName.getText().toString());
-                        updateProduct.setDiscountPrice(discountedPrice.getText().toString());
-                        updateProduct.setPrice(originalPrice.getText().toString());
-                        updateProduct.setProductId(String.valueOf(productID));
-                        updateProduct.setProfileId(Constant.PROFILE_ID);
-                        updateProduct.setParentProductCategoryId(parentCategoryId);
-                        updateProduct.setProductCategoryId(childCategoryId);
-                        updateProduct.setProduct_Pic(filePaths);
-                        updateProduct.setSku(skucodeoptional.getText().toString());
-                        updateProduct.setSummary(product_description.getText().toString());
-                        updateProduct.setProductStatus(productStatus);
-                        updateProduct.setProfileId(Constant.PROFILE_ID);
-                        updateProduct.setVideoLink(TextUtils.isEmpty(et_VideoUrl.getText().toString()) ? "" : et_VideoUrl.getText().toString());
+
+                        if ((et_VideoUrl.getText().toString().contains("www.youtube.com") && !document.equals("")) || TextUtils.isEmpty(et_VideoUrl.getText().toString())) {
+                            UpdateProduct updateProduct = new UpdateProduct();
+                            updateProduct.setTitle(productName.getText().toString());
+                            updateProduct.setDiscountPrice(discountedPrice.getText().toString());
+                            updateProduct.setPrice(originalPrice.getText().toString());
+                            updateProduct.setProductId(String.valueOf(productID));
+                            updateProduct.setProfileId(Constant.PROFILE_ID);
+                            updateProduct.setParentProductCategoryId(parentCategoryId);
+                            updateProduct.setProductCategoryId(childCategoryId);
+                            updateProduct.setProduct_Pic(filePaths);
+                            updateProduct.setSku(skucodeoptional.getText().toString());
+                            updateProduct.setSummary(product_description.getText().toString());
+                            updateProduct.setProductStatus(productStatus);
+                            updateProduct.setProfileId(Constant.PROFILE_ID);
+                            updateProduct.setVideoLink(TextUtils.isEmpty(et_VideoUrl.getText().toString()) ? "" : et_VideoUrl.getText().toString());
 
 
-                        // loadingDialog.showDialog();
-                        shopLandingPageViewModel.updateproduct(updateProduct);
-                        shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
-                            @Override
-                            public void onChanged(UpdateProductResponse updateProductResponse) {
-                                if (updateProductResponse != null) {
-                                    //Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                    filePaths.clear();
+                            // loadingDialog.showDialog();
+                            shopLandingPageViewModel.updateproduct(updateProduct);
+                            shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
+                                @Override
+                                public void onChanged(UpdateProductResponse updateProductResponse) {
+                                    if (updateProductResponse != null) {
+                                        //Toast.makeText(getActivity(), "" + updateProductResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                        filePaths.clear();
 
-                                    if (dialog != null) {
-                                        dialog.dismiss();
+                                        if (dialog != null) {
+                                            dialog.dismiss();
+                                        }
+                                        navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
                                     }
-                                    navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
                                 }
-                            }
-                        });
-
+                            });
+                        } else {
+                            Toast.makeText(getActivity(), "Only Proper YouTube Link is allowed", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                     }
                 }
@@ -858,7 +886,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         wlp.gravity = Gravity.BOTTOM;
-        // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        // wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;f
         window.setAttributes(wlp);
 
         ProductForEdit productForEdit = new ProductForEdit();
@@ -943,7 +971,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             isActiveproduct.setChecked(productForEditResponse.getData().getRequestList().getProductStatus().equals("Y") ? true : false);
                             product_description.setText(productForEditResponse.getData().getRequestList().getSummary());
                             // et_VideoUrl.setText(productForEditResponse.getData().getRequestList().getVideoLink());
-                            et_VideoUrl.setText("https://www.youtube.com/watch?v=PC6ief4uXxk&ab_channel=NaveenPehal");
+                            et_VideoUrl.setText(productForEditResponse.getData().getRequestList().getVideoLink());
                             imageIds.clear();
                             //when url provided this will work for sure...
                             if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
@@ -1031,9 +1059,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             @Override
             public void onChanged(IsProductActiveResponse isProductActiveResponse) {
                 if (isProductActiveResponse != null) {
-
-                    /* initRV();*/
-                    //Toast.makeText(getActivity(), " : " + isProductActiveResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                  /*  if (isProductActiveResponse.getStatus().equals("0")) {
+                        if (productListAppend.get(position).getProductStatus().equals("N")) {
+                            productListAppend.get(position).setProductStatus("Y");
+                        } else {
+                            productListAppend.get(position).setProductStatus("N");
+                        }
+                    }*/
                 }
             }
         });
@@ -1113,10 +1145,14 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     et_productDescription.setText(productForEditResponse.getData().getRequestList().getSummary());
                     video = productForEditResponse.getData().getRequestList().getVideoLink();
 
-                    if (!URLUtil.isValidUrl(video)) {
-                        button.setVisibility(View.GONE);
+                    if (video.contains("www.youtube.com")) {
+                        if (!URLUtil.isValidUrl(video)) {
+                            button.setVisibility(View.GONE);
+                        } else {
+                            button.setVisibility(View.VISIBLE);
+                        }
                     } else {
-                        button.setVisibility(View.VISIBLE);
+                        button.setVisibility(View.GONE);
                     }
 
 

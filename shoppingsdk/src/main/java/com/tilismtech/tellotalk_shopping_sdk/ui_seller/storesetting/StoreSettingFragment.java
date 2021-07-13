@@ -1,5 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -219,22 +221,38 @@ public class StoreSettingFragment extends Fragment {
                 ic_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //  Toast.makeText(getActivity(), "clicked" + branchIds.get(addressRL.indexOfChild(inflater) - 1), Toast.LENGTH_SHORT).show();
 
-                        DeleteBranchAddress deleteBranchAddress = new DeleteBranchAddress();
-                        deleteBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 1));
-                        deleteBranchAddress.setProfileId(Constant.PROFILE_ID);
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Delete Address...")
+                                .setMessage("Are you sure you want to delete this branch address?")
 
-                        storeSettingViewModel.deleteBranchAddress(deleteBranchAddress);
-                        storeSettingViewModel.getDeleteBranchAddress().observe(getActivity(), new Observer<DeleteBranchAddressResponse>() {
-                            @Override
-                            public void onChanged(DeleteBranchAddressResponse deleteBranchAddressResponse) {
-                                if (deleteBranchAddressResponse != null) {
-                                    navController.navigate(R.id.storeSettingFragment);
-                                    //Toast.makeText(getActivity(), " " + deleteBranchAddressResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                                // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        DeleteBranchAddress deleteBranchAddress = new DeleteBranchAddress();
+                                        deleteBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 2));
+                                        deleteBranchAddress.setProfileId(Constant.PROFILE_ID);
+
+                                        storeSettingViewModel.deleteBranchAddress(deleteBranchAddress);
+                                        storeSettingViewModel.getDeleteBranchAddress().observe(getActivity(), new Observer<DeleteBranchAddressResponse>() {
+                                            @Override
+                                            public void onChanged(DeleteBranchAddressResponse deleteBranchAddressResponse) {
+                                                if (deleteBranchAddressResponse != null) {
+                                                    navController.navigate(R.id.storeSettingFragment);
+                                                    //Toast.makeText(getActivity(), " " + deleteBranchAddressResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setNegativeButton("No", null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+
                     }
                 });
 
@@ -247,7 +265,7 @@ public class StoreSettingFragment extends Fragment {
                         updateBranchAddress.setProvince(et_province.getText().toString());
                         updateBranchAddress.setCountry(et_country.getText().toString());
                         updateBranchAddress.setLine1(et_street.getText().toString());
-                        updateBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 1));
+                        updateBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 2));
 
                         if (TextUtils.isEmpty(et_street.getText().toString()) ||
                                 TextUtils.isEmpty(et_city.getText().toString()) ||

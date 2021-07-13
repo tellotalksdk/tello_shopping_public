@@ -354,7 +354,7 @@ public class BankSettingFragment extends Fragment {
 
     private boolean checkWalletValidation() {
 
-       /* if (TextUtils.isEmpty(account_title_wallet.getText().toString())) {
+        if (TextUtils.isEmpty(account_title_wallet.getText().toString())) {
             Toast.makeText(getActivity(), "Account Title is required...", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -368,7 +368,7 @@ public class BankSettingFragment extends Fragment {
         if (TextUtils.isEmpty(account_cnic.getText().toString())) {
             Toast.makeText(getActivity(), "CNIC is required...", Toast.LENGTH_SHORT).show();
             return false;
-        }*/
+        }
 
 
         return true;

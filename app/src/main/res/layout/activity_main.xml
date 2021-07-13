@@ -9,44 +9,43 @@
 
     <com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        ></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
+        android:layout_height="wrap_content"></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
 
     <EditText
         android:id="@+id/fName"
-        android:hint="first Name"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"/>
+        android:layout_height="?actionBarSize"
+        android:hint="first Name" />
 
 
     <EditText
         android:id="@+id/mName"
-        android:hint="middle Name"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"/>
+        android:layout_height="?actionBarSize"
+        android:hint="middle Name"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/lName"
-        android:hint="last Name"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"/>
+        android:layout_height="?actionBarSize"
+        android:hint="last Name"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/contact"
-        android:hint="mobile number"
-        android:text="03350221182"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"/>
+        android:layout_height="?actionBarSize"
+        android:hint="mobile number"
+        android:text="03350221182" />
 
 
     <EditText
         android:id="@+id/profileid"
-        android:hint="profile id"
-        android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A99"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"/>
+        android:layout_height="?actionBarSize"
+        android:hint="profile id"
+        android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A99" />
 
 
     <Button
