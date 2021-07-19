@@ -41,8 +41,8 @@ public class ShopSettingViewModel extends ViewModel {
 
     //get timing
 
-    public void posttogetTimings(GetTimings getTimings) {
-        repository.getTimings(getTimingsResponseMutableLiveData, getTimings);
+    public void posttogetTimings(GetTimings getTimings,Context context) {
+        repository.getTimings(getTimingsResponseMutableLiveData, getTimings,context);
     }
 
     public MutableLiveData<GetTimingsResponse> gettimings() {
@@ -50,8 +50,8 @@ public class ShopSettingViewModel extends ViewModel {
     }
 
     //post timing
-    public void postTiming(ShopTiming shopTiming) {
-        repository.postTiming(shopTimingResponseMutableLiveData, shopTiming);
+    public void postTiming(ShopTiming shopTiming,Context context) {
+        repository.postTiming(shopTimingResponseMutableLiveData, shopTiming,context);
     }
 
     public MutableLiveData<ShopTimingResponse> getUpdateTiming() {

@@ -1,5 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -30,8 +32,8 @@ public class StoreSettingViewModel extends ViewModel {
     }
 
     //post and get shop detail
-    public void postShopDetail(GetShopDetail shopDetail) {
-        repository.getShopDetails(getShopDetailResponseMutableLiveData, shopDetail);
+    public void postShopDetail(GetShopDetail shopDetail, Context context) {
+        repository.getShopDetails(getShopDetailResponseMutableLiveData, shopDetail,context);
     }
 
     public MutableLiveData<GetShopDetailResponse> getShopDetail() {
@@ -39,8 +41,8 @@ public class StoreSettingViewModel extends ViewModel {
     }
 
     //add branch address api
-    public void addBranchAddress(AddBranchAddress addBranchAddress) {
-        repository.addBranchAddress(addBranchAddressResponseMutableLiveData, addBranchAddress);
+    public void addBranchAddress(AddBranchAddress addBranchAddress,Context context) {
+        repository.addBranchAddress(addBranchAddressResponseMutableLiveData, addBranchAddress,context);
     }
 
     public MutableLiveData<AddBranchAddressResponse> getAddBranchAddress() {
@@ -48,8 +50,8 @@ public class StoreSettingViewModel extends ViewModel {
     }
 
     //update branch address api
-    public void updateBranchAddress(UpdateBranchAddress updateBranchAddress) {
-        repository.updateBranchAddress(updateBranchAddressResponseMutableLiveData, updateBranchAddress);
+    public void updateBranchAddress(UpdateBranchAddress updateBranchAddress,Context context) {
+        repository.updateBranchAddress(updateBranchAddressResponseMutableLiveData, updateBranchAddress,context);
     }
 
     public MutableLiveData<UpdateBranchAddressResponse> getUpdateBranchAddress() {
@@ -57,8 +59,8 @@ public class StoreSettingViewModel extends ViewModel {
     }
 
     //delete branch address api
-    public void deleteBranchAddress(DeleteBranchAddress deleteBranchAddress) {
-        repository.deleteBranchAddress(deleteBranchAddressResponseMutableLiveData, deleteBranchAddress);
+    public void deleteBranchAddress(DeleteBranchAddress deleteBranchAddress,Context context) {
+        repository.deleteBranchAddress(deleteBranchAddressResponseMutableLiveData, deleteBranchAddress,context);
     }
 
     public MutableLiveData<DeleteBranchAddressResponse> getDeleteBranchAddress() {

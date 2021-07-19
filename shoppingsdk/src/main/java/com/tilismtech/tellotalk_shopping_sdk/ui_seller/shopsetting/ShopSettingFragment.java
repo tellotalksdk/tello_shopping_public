@@ -394,7 +394,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         shopTiming.setProfileId(Constant.PROFILE_ID);
                         shopTiming.setDaysSetting(daysSettingList);
 
-                        shopSettingViewModel.postTiming(shopTiming);
+                        shopSettingViewModel.postTiming(shopTiming,getActivity());
                         shopSettingViewModel.getUpdateTiming().observe(getActivity(), new Observer<ShopTimingResponse>() {
                             @Override
                             public void onChanged(ShopTimingResponse shopTimingResponse) {
@@ -659,7 +659,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         shopTiming.setProfileId(Constant.PROFILE_ID);
                         shopTiming.setDaysSetting(daysSettingList);
 
-                        shopSettingViewModel.postTiming(shopTiming);
+                        shopSettingViewModel.postTiming(shopTiming,getActivity());
                         shopSettingViewModel.getUpdateTiming().observe(getActivity(), new Observer<ShopTimingResponse>() {
                             @Override
                             public void onChanged(ShopTimingResponse shopTimingResponse) {
@@ -828,7 +828,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         GetTimings getTimings = new GetTimings();
         getTimings.setProfileId(Constant.PROFILE_ID);
         getTimings.setShopId("7");
-        shopSettingViewModel.posttogetTimings(getTimings);
+        shopSettingViewModel.posttogetTimings(getTimings,getActivity());
         shopSettingViewModel.gettimings().observe(getActivity(), new Observer<GetTimingsResponse>() {
             @Override
             public void onChanged(GetTimingsResponse getTimingsResponse) {

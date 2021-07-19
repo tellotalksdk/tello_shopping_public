@@ -117,7 +117,7 @@ public class GetOrderByStatusResponse {
         @SerializedName("orderTrackingId")
         @Expose
         private String orderTrackingId;
-        @SerializedName("Content")
+        @SerializedName("reason")
         @Expose
         private String reason;
 

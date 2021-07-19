@@ -143,21 +143,42 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     updateUserAndImage.setLastName(" ");
                     updateUserAndImage.setProfileId(Constant.PROFILE_ID);
                     updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
-                    shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
-                    LoadingDialog loadingDialog = new LoadingDialog(SettingProfileEditingActivity.this);
-                    loadingDialog.showDialog();
-                    shopRegistrationViewModel.userImageandName(updateUserAndImage);
-                    shopRegistrationViewModel.getUpdateUserImageResponse().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
-                        @Override
-                        public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
-                            if (updateUserAndImageResponse != null) {
-                                // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
-                                loadingDialog.dismissDialog();
-                            } else {
-                                loadingDialog.dismissDialog();
+
+                    if (TextUtils.isEmpty(filePath)) { //run when only name is given........
+                        shopRegistrationViewModel.getUserName().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
+                        LoadingDialog loadingDialog = new LoadingDialog(SettingProfileEditingActivity.this);
+                        loadingDialog.showDialog();
+                        shopRegistrationViewModel.userName(updateUserAndImage,SettingProfileEditingActivity.this);
+                        shopRegistrationViewModel.getUserName().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
+                            @Override
+                            public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                                if (updateUserAndImageResponse != null) {
+                                    // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                                    loadingDialog.dismissDialog();
+                                } else {
+                                    loadingDialog.dismissDialog();
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
+                        LoadingDialog loadingDialog = new LoadingDialog(SettingProfileEditingActivity.this);
+                        loadingDialog.showDialog();
+                        shopRegistrationViewModel.userImageandName(updateUserAndImage,SettingProfileEditingActivity.this);
+                        shopRegistrationViewModel.getUpdateUserImageResponse().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
+                            @Override
+                            public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                                if (updateUserAndImageResponse != null) {
+                                    // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                                    loadingDialog.dismissDialog();
+                                } else {
+                                    loadingDialog.dismissDialog();
+                                }
+                            }
+                        });
+                    }
+
+
                 }
             }
         });
@@ -211,7 +232,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
 
         GetShopDetail getShopDetail = new GetShopDetail();
         getShopDetail.setProfileId(Constant.PROFILE_ID);
-        storeSettingViewModel.postShopDetail(getShopDetail);
+        storeSettingViewModel.postShopDetail(getShopDetail,SettingProfileEditingActivity.this);
         storeSettingViewModel.getShopDetail().observe(SettingProfileEditingActivity.this, new Observer<GetShopDetailResponse>() {
             @Override
             public void onChanged(GetShopDetailResponse getShopDetailResponse) {

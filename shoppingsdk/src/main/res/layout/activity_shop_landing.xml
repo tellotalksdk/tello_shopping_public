@@ -526,6 +526,8 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph_two" />
 
-    <include layout="@layout/dialog_powered_by_tellotalk"/>
+    <include
+        android:visibility="gone"
+        layout="@layout/dialog_powered_by_tellotalk"/>
 
 </RelativeLayout>

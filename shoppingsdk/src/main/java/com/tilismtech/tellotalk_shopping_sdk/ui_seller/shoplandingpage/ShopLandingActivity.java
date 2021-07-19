@@ -165,7 +165,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         LL1 = findViewById(R.id.linearTopsearch);
         menuDots = findViewById(R.id.menuDots);
 
-        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.allStatusCount(ShopLandingActivity.this);
         shopLandingPageViewModel.getAllStatusCount().observe(this, new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -344,7 +344,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                             Linkify.addLinks(et_VideoUrl, Linkify.ALL);
                             LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
                             loadingDialog.showDialog();
-                            shopLandingPageViewModel.addNewProduct(addNewProduct);
+                            shopLandingPageViewModel.addNewProduct(addNewProduct,ShopLandingActivity.this);
                             shopLandingPageViewModel.getNewProduct().removeObservers(ShopLandingActivity.this);
                             shopLandingPageViewModel.getNewProduct().observe(ShopLandingActivity.this, new Observer<AddNewProductResponse>() {
                                 @Override
@@ -475,6 +475,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                         break;
                 }
 
+
+
             }
         });
 
@@ -509,7 +511,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     simpleSearchView.setIconified(true);
                 }
 
-
+              //  currentTab = CurrentTab.CHAT;
                 navController.navigate(R.id.chat);
             }
         });
@@ -858,6 +860,11 @@ public class ShopLandingActivity extends AppCompatActivity {
                         bundle6.putString("query", newText);
                         navController.navigate(R.id.allFragment, bundle6);
                         break;
+                    case CHAT:
+                        Bundle bundle7 = new Bundle();
+                        bundle7.putString("query", newText);
+                        navController.navigate(R.id.chat, bundle7);
+                        break;
                 }
 
                 return false;
@@ -892,7 +899,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private void setShopNameAndImage() {
         //LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
         //loadingDialog.showDialog();
-        shopLandingPageViewModel.shopImageAndName();
+        shopLandingPageViewModel.shopImageAndName(ShopLandingActivity.this);
         shopLandingPageViewModel.getShopNameAndImage().observe(ShopLandingActivity.this, new Observer<ShopNameAndImageResponse>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -932,7 +939,7 @@ public class ShopLandingActivity extends AppCompatActivity {
             }
         });*/
 
-        shopLandingPageViewModel.shopTotalProducts();
+        shopLandingPageViewModel.shopTotalProducts(ShopLandingActivity.this);
         shopLandingPageViewModel.getShopTotalProducts().observe(ShopLandingActivity.this, new Observer<TotalProductResponse>() {
             @Override
             public void onChanged(TotalProductResponse totalProductResponse) {
@@ -946,7 +953,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     }
 
     private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {
-        shopLandingPageViewModel.parentCategories();
+        shopLandingPageViewModel.parentCategories(ShopLandingActivity.this);
         shopLandingPageViewModel.getParentCategoryListResponseLiveData().observe(ShopLandingActivity.this, new Observer<ParentCategoryListResponse>() {
             @Override
             public void onChanged(ParentCategoryListResponse parentCategoryListResponse) {
@@ -975,7 +982,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
         subCategoryBYParentCatID.setParentCategoryId(id);
 
-        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID);
+        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID,ShopLandingActivity.this);
         shopLandingPageViewModel.getChildCategories().observe(this, new Observer<SubCategoryBYParentCatIDResponse>() {
             @Override
             public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
@@ -1014,7 +1021,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         DELIVERED,
         PAID,
         CANCEL,
-        ALL
+        ALL,
+        CHAT
     }
 
     //listener for selecting parent and child category items...

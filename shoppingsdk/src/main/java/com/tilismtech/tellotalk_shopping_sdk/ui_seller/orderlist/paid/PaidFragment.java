@@ -99,7 +99,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
 
-        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -125,7 +125,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("5"); //for received order list
 
-        orderListViewModel.orderByStatus(orderByStatus);
+        orderListViewModel.orderByStatus(orderByStatus,getActivity());
         orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
@@ -212,7 +212,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus("5");
 
-        orderListViewModel.viewFullOrder(viewFullOrder);
+        orderListViewModel.viewFullOrder(viewFullOrder,getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
@@ -402,7 +402,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
                     updateRiderInfo.setOrderId(String.valueOf(orderId));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo);
+                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -461,7 +461,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
                     updateRiderInfo.setOrderId(String.valueOf(position));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo);
+                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -518,7 +518,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
                 updateOrderStatus.setContent(TextUtils.isEmpty(editText.getText().toString()) ? "" : editText.getText().toString());
 
 
-                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatus(updateOrderStatus,getActivity());
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
@@ -526,7 +526,7 @@ public class PaidFragment extends Fragment implements PaidAdapter.OnOrderClickLi
                             Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                             initReceivedItems();
 
-                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.allStatusCount(getActivity());
                             shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
                                 @Override
                                 public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {

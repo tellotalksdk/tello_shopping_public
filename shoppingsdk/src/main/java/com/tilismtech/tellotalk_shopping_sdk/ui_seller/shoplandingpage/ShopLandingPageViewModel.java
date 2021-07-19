@@ -1,5 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -62,8 +64,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get parent list from server as live data0
-    public void parentCategories() {
-        repository.postTogetParentCategories(parentCategoryListResponseMutableLiveData);
+    public void parentCategories(Context context) {
+        repository.postTogetParentCategories(parentCategoryListResponseMutableLiveData,context);
     }
 
     public LiveData<ParentCategoryListResponse> getParentCategoryListResponseLiveData() {
@@ -71,8 +73,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //getChildCategoryListResponse by parent ID
-    public void childCategoryByParentId(SubCategoryBYParentCatID parentID) {
-        repository.postTogetChildCategories(subCategoryBYParentCatIDResponseMutableLiveData, parentID);
+    public void childCategoryByParentId(SubCategoryBYParentCatID parentID,Context context) {
+        repository.postTogetChildCategories(subCategoryBYParentCatIDResponseMutableLiveData, parentID,context);
     }
 
     public LiveData<SubCategoryBYParentCatIDResponse> getChildCategories() {
@@ -80,8 +82,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //add new product
-    public void addNewProduct(AddNewProduct addNewProduct) {
-        repository.addNewProducts(addNewProductResponseMutableLiveData, addNewProduct);
+    public void addNewProduct(AddNewProduct addNewProduct,Context context) {
+        repository.addNewProducts(addNewProductResponseMutableLiveData, addNewProduct,context);
     }
 
     public LiveData<AddNewProductResponse> getNewProduct() {
@@ -89,8 +91,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //product for editing
-    public void productForEdit(ProductForEdit productForEdit) {
-        repository.productForEdit(productForEditMutableLiveData, productForEdit);
+    public void productForEdit(ProductForEdit productForEdit,Context context) {
+        repository.productForEdit(productForEditMutableLiveData, productForEdit,context);
     }
 
     public LiveData<ProductForEditResponse> getProductForEdit() {
@@ -98,8 +100,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get product list to show on product landing  page ...
-    public void productList(ProductList productList, String lastProductId) {
-        repository.productList(productListResponseMutableLiveData, productList, lastProductId);
+    public void productList(ProductList productList, String lastProductId,Context context) {
+        repository.productList(productListResponseMutableLiveData, productList, lastProductId,context);
     }
 
     public LiveData<ProductListResponse> getProductList() {
@@ -107,8 +109,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //update product
-    public void updateproduct(UpdateProduct updateProduct) {
-        repository.updateProduct(updateProductResponseMutableLiveData, updateProduct);
+    public void updateproduct(UpdateProduct updateProduct,Context context) {
+        repository.updateProduct(updateProductResponseMutableLiveData, updateProduct,context);
     }
 
     public LiveData<UpdateProductResponse> getProductUpdateResponse() {
@@ -116,8 +118,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //toggle product activeness
-    public void isProductActive(IsProductActive isProductActive) {
-        repository.updateProductStatus(isProductActiveResponseMutableLiveData, isProductActive);
+    public void isProductActive(IsProductActive isProductActive,Context context) {
+        repository.updateProductStatus(isProductActiveResponseMutableLiveData, isProductActive,context);
     }
 
     public LiveData<IsProductActiveResponse> getProductActiveResponse() {
@@ -125,8 +127,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get All Status Count
-    public void allStatusCount() {
-        repository.getAllStatusCount(getOrderStatusCountResponseMutableLiveData);
+    public void allStatusCount(Context context) {
+        repository.getAllStatusCount(getOrderStatusCountResponseMutableLiveData,context);
     }
 
     public MutableLiveData<GetOrderStatusCountResponse> getAllStatusCount() {
@@ -134,8 +136,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //delete Product Api
-    public void deleteProduct(DeleteProduct deleteProduct) {
-        repository.deleteProduct(deleteProductResponseMutableLiveData, deleteProduct);
+    public void deleteProduct(DeleteProduct deleteProduct,Context context) {
+        repository.deleteProduct(deleteProductResponseMutableLiveData, deleteProduct,context);
     }
 
     public MutableLiveData<DeleteProductResponse> deleteProductResponse() {
@@ -143,8 +145,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get shop name and image
-    public void shopImageAndName() {
-        repository.getShopNameAndImage(shopNameAndImageResponseMutableLiveData);
+    public void shopImageAndName(Context context) {
+        repository.getShopNameAndImage(shopNameAndImageResponseMutableLiveData,context);
     }
 
     public LiveData<ShopNameAndImageResponse> getShopNameAndImage() {
@@ -152,8 +154,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //get total products
-    public void shopTotalProducts() {
-        repository.getProductCount(totalProductResponseMutableLiveData);
+    public void shopTotalProducts(Context context) {
+        repository.getProductCount(totalProductResponseMutableLiveData,context);
     }
 
     public LiveData<TotalProductResponse> getShopTotalProducts() {
@@ -161,8 +163,8 @@ public class ShopLandingPageViewModel extends ViewModel {
     }
 
     //deleteproductImage
-    public void deleteProduct(DeleteProductImage deleteProductImage) {
-        repository.deleteProductImage(deleteProductImageMutableLiveData,deleteProductImage);
+    public void deleteProduct(DeleteProductImage deleteProductImage,Context context) {
+        repository.deleteProductImage(deleteProductImageMutableLiveData,deleteProductImage,context);
     }
 
     public LiveData<DeleteProductImageResponse> dPResponse() {

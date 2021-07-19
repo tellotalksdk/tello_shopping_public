@@ -18,6 +18,7 @@
 
 
     <application
+        android:name=".TelloApplication"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity

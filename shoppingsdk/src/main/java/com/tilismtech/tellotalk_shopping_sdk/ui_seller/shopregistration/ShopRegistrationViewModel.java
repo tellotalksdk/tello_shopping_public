@@ -1,5 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -51,17 +53,27 @@ public class ShopRegistrationViewModel extends ViewModel {
     }
 
     //updateuserimageandname
-    public void userImageandName(UpdateUserAndImage updateUserAndImage) {
-        repository.updateUserName_Image(updateUserAndImageResponseMutableLiveData, updateUserAndImage);
+    public void userImageandName(UpdateUserAndImage updateUserAndImage , Context context) {
+        repository.updateUserName_Image(updateUserAndImageResponseMutableLiveData, updateUserAndImage , context);
     }
 
     public LiveData<UpdateUserAndImageResponse> getUpdateUserImageResponse() {
         return updateUserAndImageResponseMutableLiveData;
     }
 
+    //updateusernameonly
+    public void userName(UpdateUserAndImage updateUserAndImage, Context context) {
+        repository.updateUserName(updateUserAndImageResponseMutableLiveData, updateUserAndImage,context);
+    }
+
+    public LiveData<UpdateUserAndImageResponse> getUserName() {
+        return updateUserAndImageResponseMutableLiveData;
+    }
+
+
     //verifyOTP
-    public void verifyOTP(String otp) {
-        repository.verifyOTP(verifyOtpResponseMutableLiveData, otp);
+    public void verifyOTP(String otp,Context context) {
+        repository.verifyOTP(verifyOtpResponseMutableLiveData, otp , context);
     }
 
     public LiveData<VerifyOtpResponse> getVerifyOtp() {
@@ -69,8 +81,8 @@ public class ShopRegistrationViewModel extends ViewModel {
     }
 
     //resendOTP
-    public void resendOTP() {
-        repository.resendOTP(resendOtpResponseMutableLiveData);
+    public void resendOTP(Context context) {
+        repository.resendOTP(resendOtpResponseMutableLiveData,context);
     }
 
     public LiveData<VerifyOtpResponse> getresendOtp() {

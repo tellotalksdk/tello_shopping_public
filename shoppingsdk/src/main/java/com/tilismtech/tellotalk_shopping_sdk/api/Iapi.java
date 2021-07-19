@@ -108,6 +108,18 @@ public interface Iapi {
                                                             @Part("profileId") RequestBody profileId,
                                                             @Part MultipartBody.Part profilePic);
 
+    //updateUserName
+    @Headers({
+            "Accept: application/json"
+    })
+    @Multipart
+    @POST("api/user/UpdateUserNameAndImage")
+    Call<UpdateUserAndImageResponse> updateUserName(@Header("Authorization") String token,
+                                                            @Part("firstName") RequestBody firstName,
+                                                            @Part("middleName") RequestBody middleName,
+                                                            @Part("lastName") RequestBody lastName,
+                                                            @Part("profileId") RequestBody profileId/*,
+                                                            @Part MultipartBody.Part profilePic*/);
 
     @Headers({"Accept: application/json",
             "Content-Type: application/json"}

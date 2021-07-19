@@ -24,7 +24,7 @@ import retrofit2.Callback;
 
 import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
-public class TokenRefreshAuthenthicator implements Authenticator {
+public class TokenRefreshAuthenthicator extends TelloApplication  implements Authenticator {
 
     @Nullable
     @Override
@@ -46,11 +46,11 @@ public class TokenRefreshAuthenthicator implements Authenticator {
         generateToken.setGrantPassword("basit@1234");
         generateToken.setGrantType("password");
         generateToken.setProfileId(Constant.PROFILE_ID);
-        generateToken.setFirstname(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getFirstName());
-        generateToken.setMiddlename(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getMiddleName());
-        generateToken.setLastname(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getLastName());
-        generateToken.setPhone(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber());
-        generateToken.setEmail(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getEmail());
+        generateToken.setFirstname(TelloPreferenceManager.getInstance(getApplicationContext()).getFirstName());
+        generateToken.setMiddlename(TelloPreferenceManager.getInstance(getApplicationContext()).getMiddleName());
+        generateToken.setLastname(TelloPreferenceManager.getInstance(getApplicationContext()).getLastName());
+        generateToken.setPhone(TelloPreferenceManager.getInstance(getApplicationContext()).getRegisteredNumber());
+        generateToken.setEmail(TelloPreferenceManager.getInstance(getApplicationContext()).getEmail());
 
         getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
             @Override
@@ -62,7 +62,7 @@ public class TokenRefreshAuthenthicator implements Authenticator {
                         if (gtResponse != null) {
                             if (gtResponse.getData() != null) {
                                 if (gtResponse.getData().getRequestList().getAccessToken() != null)
-                                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
+                                    TelloPreferenceManager.getInstance(getApplicationContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
                             }
                         }
                     } else {

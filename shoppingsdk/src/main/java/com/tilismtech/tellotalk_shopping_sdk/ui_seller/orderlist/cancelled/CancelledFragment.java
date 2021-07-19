@@ -98,7 +98,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
 
-        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -128,7 +128,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("6"); //for received order list
 
-        orderListViewModel.orderByStatus(orderByStatus);
+        orderListViewModel.orderByStatus(orderByStatus,getActivity());
         orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
@@ -218,7 +218,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus("6");
 
-        orderListViewModel.viewFullOrder(viewFullOrder);
+        orderListViewModel.viewFullOrder(viewFullOrder,getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
@@ -410,14 +410,14 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     updateRiderInfo.setOrderId(String.valueOf(orderId));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo);
+                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
                             if (updateRiderInfoResponse != null) {
                                 dialog.dismiss();
                                 initReceivedItems();
-                                shopLandingPageViewModel.allStatusCount();
+                                shopLandingPageViewModel.allStatusCount(getActivity());
                                 shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
                                     @Override
                                     public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -476,7 +476,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     updateRiderInfo.setOrderId(String.valueOf(position));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo);
+                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -533,14 +533,14 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                 updateOrderStatus.setProfileId(Constant.PROFILE_ID);
                 updateOrderStatus.setStatus(String.valueOf(status));
 
-                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatus(updateOrderStatus,getActivity());
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
                         if (updateOrderStatusResponse != null) {
                             Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                             initReceivedItems();
-                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.allStatusCount(getActivity());
                             shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
                                 @Override
                                 public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {

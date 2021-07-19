@@ -89,7 +89,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
 
-        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -112,7 +112,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
 
     private void initReceivedItems() {
 
-        orderListViewModel.AllOrders(Constant.PROFILE_ID);
+        orderListViewModel.AllOrders(Constant.PROFILE_ID,getActivity());
         orderListViewModel.getOrders().observe(getActivity(), new Observer<GetAllOrderResponse>() {
             @Override
             public void onChanged(GetAllOrderResponse getAllOrderResponse) {
@@ -198,7 +198,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus(String.valueOf(orderStatus));
 
-        orderListViewModel.viewFullOrder(viewFullOrder);
+        orderListViewModel.viewFullOrder(viewFullOrder,getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {

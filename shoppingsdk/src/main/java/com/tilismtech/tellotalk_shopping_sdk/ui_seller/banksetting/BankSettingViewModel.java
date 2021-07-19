@@ -1,5 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.banksetting;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -55,8 +57,8 @@ public class BankSettingViewModel extends ViewModel {
     }
 
     //post bank details
-    public void addBankDetails(AddBank addBank) {
-        repository.addBank(addBankResponseMutableLiveData, addBank);
+    public void addBankDetails(AddBank addBank,Context context) {
+        repository.addBank(addBankResponseMutableLiveData, addBank,context);
     }
 
     public MutableLiveData<AddBankResponse> getBankDetailResponse() {
@@ -65,8 +67,8 @@ public class BankSettingViewModel extends ViewModel {
 
     //post wallet details
 
-    public void addWalletDetails(AddWallet addWallet) {
-        repository.addWallet(addWalletResponseMutableLiveData, addWallet);
+    public void addWalletDetails(AddWallet addWallet, Context context) {
+        repository.addWallet(addWalletResponseMutableLiveData, addWallet,context);
     }
 
     public MutableLiveData<AddWalletResponse> getWalletDetailResponse() {
@@ -74,8 +76,8 @@ public class BankSettingViewModel extends ViewModel {
     }
 
     //get user bank detail list
-    public void UserBankList() {
-        repository.getClientBankDetails(getUserBankDetailResponseMutableLiveData);
+    public void UserBankList(Context context) {
+        repository.getClientBankDetails(getUserBankDetailResponseMutableLiveData,context);
     }
 
     public MutableLiveData<GetUserBankDetailResponse> getUserBankList() {
@@ -83,8 +85,8 @@ public class BankSettingViewModel extends ViewModel {
     }
 
     //get user wallet details list
-    public void UserWalletList() {
-        repository.getClientWalletDetails(clientWalletDetailResponseMutableLiveData);
+    public void UserWalletList(Context context) {
+        repository.getClientWalletDetails(clientWalletDetailResponseMutableLiveData,context);
     }
 
     public MutableLiveData<ClientWalletDetailResponse> getUserWalletList() {
@@ -92,8 +94,8 @@ public class BankSettingViewModel extends ViewModel {
     }
 
     //delete bank and wallet
-    public void deleteBankorWallet(DeleteCardorWallet deleteCardorWallet) {
-        repository.deleteCardorWallet(deleteBankResponseMutableLiveData, deleteCardorWallet);
+    public void deleteBankorWallet(DeleteCardorWallet deleteCardorWallet,Context context) {
+        repository.deleteCardorWallet(deleteBankResponseMutableLiveData, deleteCardorWallet,context);
     }
 
     public MutableLiveData<DeleteBankResponse> getdeleteBankorWallet() {

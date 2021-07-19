@@ -191,7 +191,7 @@ public class BankSettingFragment extends Fragment {
                     addBank.setIsdefault("1");
                     addBank.setNameOfOwner(account_title.getText().toString());
                     addBank.setProfileId(Constant.PROFILE_ID);
-                    bankSettingViewModel.addBankDetails(addBank);
+                    bankSettingViewModel.addBankDetails(addBank, getActivity());
                     bankSettingViewModel.getBankDetailResponse().observe(getActivity(), new Observer<AddBankResponse>() {
                         @Override
                         public void onChanged(AddBankResponse addBankResponse) {
@@ -232,7 +232,7 @@ public class BankSettingFragment extends Fragment {
                     addWallet.setAccountNumber(account_mobile_number.getText().toString());
                     addWallet.setCnic(account_cnic.getText().toString());
                     addWallet.setProfileId(Constant.PROFILE_ID);
-                    bankSettingViewModel.addWalletDetails(addWallet);
+                    bankSettingViewModel.addWalletDetails(addWallet, getActivity());
                     bankSettingViewModel.getWalletDetailResponse().observe(getActivity(), new Observer<AddWalletResponse>() {
                         @Override
                         public void onChanged(AddWalletResponse addBankResponse) {
@@ -250,7 +250,7 @@ public class BankSettingFragment extends Fragment {
 
     private void populateBankWalletDetails() {
         bankSettingViewModel.getUserBankList().removeObservers(getActivity());
-        bankSettingViewModel.UserBankList();
+        bankSettingViewModel.UserBankList(getActivity());
         bankSettingViewModel.getUserBankList().observe(getActivity(), new Observer<GetUserBankDetailResponse>() {
             @Override
             public void onChanged(GetUserBankDetailResponse getUserBankDetailResponse) {
@@ -281,7 +281,7 @@ public class BankSettingFragment extends Fragment {
                                         deleteCardorWallet.setId(String.valueOf(getUserBankDetailResponse.getData().getRequestList().get(finalI).getId()));
                                         deleteCardorWallet.setProfileId(Constant.PROFILE_ID);
 
-                                        bankSettingViewModel.deleteBankorWallet(deleteCardorWallet);
+                                        bankSettingViewModel.deleteBankorWallet(deleteCardorWallet, getActivity());
                                         bankSettingViewModel.getdeleteBankorWallet().observe(getActivity(), new Observer<DeleteBankResponse>() {
                                             @Override
                                             public void onChanged(DeleteBankResponse deleteBankResponse) {
@@ -302,7 +302,7 @@ public class BankSettingFragment extends Fragment {
             }
         });
         bankSettingViewModel.getUserWalletList().removeObservers(getActivity());
-        bankSettingViewModel.UserWalletList();
+        bankSettingViewModel.UserWalletList(getActivity());
         bankSettingViewModel.getUserWalletList().observe(getActivity(), new Observer<ClientWalletDetailResponse>() {
             @Override
             public void onChanged(ClientWalletDetailResponse clientWalletDetailResponse) {
@@ -330,7 +330,7 @@ public class BankSettingFragment extends Fragment {
                                         deleteCardorWallet.setId(String.valueOf(clientWalletDetailResponse.getData().getRequestList().get(finalI).getId()));
                                         deleteCardorWallet.setProfileId(Constant.PROFILE_ID);
 
-                                        bankSettingViewModel.deleteBankorWallet(deleteCardorWallet);
+                                        bankSettingViewModel.deleteBankorWallet(deleteCardorWallet, getActivity());
                                         bankSettingViewModel.getdeleteBankorWallet().observe(getActivity(), new Observer<DeleteBankResponse>() {
                                             @Override
                                             public void onChanged(DeleteBankResponse deleteBankResponse) {

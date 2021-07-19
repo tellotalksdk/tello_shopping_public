@@ -95,7 +95,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
 
-        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -121,7 +121,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("2"); //for received order list
 
-        orderListViewModel.orderByStatus(orderByStatus);
+        orderListViewModel.orderByStatus(orderByStatus,getActivity());
         orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
@@ -192,7 +192,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    CaptureScreenShot(bitmap,flash);
+                    CaptureScreenShot(bitmap, flash);
                 } else {
                     captureScreenShot(bitmap, flash);
                 }
@@ -205,7 +205,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus("2");
 
-        orderListViewModel.viewFullOrder(viewFullOrder);
+        orderListViewModel.viewFullOrder(viewFullOrder, getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
@@ -274,7 +274,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         dialog.show();
     }
 
-    private void CaptureScreenShot(Bitmap bitmap,LinearLayout flash) {
+    private void CaptureScreenShot(Bitmap bitmap, LinearLayout flash) {
         OutputStream fos;
 
         try {
@@ -376,13 +376,13 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         Button continue_status = dialogCongratulation.findViewById(R.id.continue_status);
         Button cancel_status = dialogCongratulation.findViewById(R.id.cancel_status);
         TextView dialogMessage = dialogCongratulation.findViewById(R.id.dialogMsg);
-        EditText editText= dialogCongratulation.findViewById(R.id.reasonForCancellation);
+        EditText editText = dialogCongratulation.findViewById(R.id.reasonForCancellation);
 
-        if(status == 3) {
+        if (status == 3) {
             dialogMessage.setText("After clicking on continue button the order status will be changed to Dispatch...");
             editText.setVisibility(View.GONE);
 
-        }else{
+        } else {
             dialogMessage.setText("After clicking on continue button the order status will be changed to Cancel...");
             editText.setVisibility(View.VISIBLE);
 
@@ -398,14 +398,14 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 updateOrderStatus.setContent(TextUtils.isEmpty(editText.getText().toString()) ? "" : editText.getText().toString());
 
 
-                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatus(updateOrderStatus, getActivity());
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
                         if (updateOrderStatusResponse != null) {
                             Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                             initReceivedItems();
-                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.allStatusCount(getActivity());
                             shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
                                 @Override
                                 public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -428,7 +428,6 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 dialogCongratulation.dismiss();
             }
         });
-
 
 
     }

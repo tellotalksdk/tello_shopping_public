@@ -104,7 +104,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
 
         //this will update the order list all tabs status counts
-        shopLandingPageViewModel.allStatusCount();
+        shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
             @Override
             public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {
@@ -131,7 +131,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("1"); //for received order list
 
-        orderListViewModel.orderByStatus(orderByStatus);
+        orderListViewModel.orderByStatus(orderByStatus, getActivity());
         orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
@@ -161,8 +161,8 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
     public void OnViewFullOrderListener(int orderId) {
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
         LinearLayout flash, productDetailLL;
-        //Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        Dialog dialog = new Dialog(getActivity());
+        // Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -227,7 +227,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus("1");
 
-        orderListViewModel.viewFullOrder(viewFullOrder);
+        orderListViewModel.viewFullOrder(viewFullOrder, getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
@@ -396,7 +396,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         updateOrderStatus.setProfileId(Constant.PROFILE_ID);
         updateOrderStatus.setStatus(status);
 
-        orderListViewModel.updateOrderStatus(updateOrderStatus);
+        orderListViewModel.updateOrderStatus(updateOrderStatus, getActivity());
         orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
             @Override
             public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
@@ -429,7 +429,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                 updateOrderStatus.setContent("");
 
 
-                orderListViewModel.updateOrderStatus(updateOrderStatus);
+                orderListViewModel.updateOrderStatus(updateOrderStatus, getActivity());
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
@@ -437,7 +437,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                             Toast.makeText(getActivity(), "Order Has been moved...", Toast.LENGTH_SHORT).show();
                             initReceivedItems();
 
-                            shopLandingPageViewModel.allStatusCount();
+                            shopLandingPageViewModel.allStatusCount(getActivity());
                             shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
                                 @Override
                                 public void onChanged(GetOrderStatusCountResponse getOrderStatusCountResponse) {

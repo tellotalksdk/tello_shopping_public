@@ -124,11 +124,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private List<String> parentCategories, childCategories;
     private List<ChildCategory> childCategoryList;
     private Dialog dialog;
-    private String lastProductId = "0";
+    private String lastProductId = "0", parentCat_maintain, childCat_maintain; //maintain word is used for maintaining parent and child last selection whenever edit dialog is open...
     private EditText et_VideoUrl;
     List<ProductListResponse.Request> productListAppend, dummy;
     List<String> imageIds;
     String video, document;
+    ArrayAdapter<String> spinnerArrayAdapter;
+    ArrayAdapter<String> spinnerArrayAdapter2;
 
 
     @Override
@@ -252,7 +254,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
                             LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                             loadingDialog.showDialog();
-                            shopLandingPageViewModel.addNewProduct(addNewProduct);
+                            shopLandingPageViewModel.addNewProduct(addNewProduct, getActivity());
                             // shopLandingPageViewModel.getNewProduct().removeObservers(getActivity());
                             shopLandingPageViewModel.getNewProduct().observe(getActivity(), new Observer<AddNewProductResponse>() {
                                 @Override
@@ -407,7 +409,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     }
 
     private void setShopNameAndImage() {
-        shopLandingPageViewModel.shopImageAndName();
+        shopLandingPageViewModel.shopImageAndName(getActivity());
         shopLandingPageViewModel.getShopNameAndImage().observe(getActivity(), new Observer<ShopNameAndImageResponse>() {
             @Override
             public void onChanged(ShopNameAndImageResponse shopNameAndImageResponse) {
@@ -449,7 +451,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         productList.setProfileId(Constant.PROFILE_ID);
         LoadingDialog loadingDialog = new LoadingDialog(getActivity());
 
-        shopLandingPageViewModel.productList(productList, lastProductId); //initially first set of product will be fecthed
+        shopLandingPageViewModel.productList(productList, lastProductId, getActivity()); //initially first set of product will be fecthed
         shopLandingPageViewModel.getProductList().observe(getViewLifecycleOwner(), new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
@@ -502,7 +504,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     }
 
     private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {
-        shopLandingPageViewModel.parentCategories();
+        shopLandingPageViewModel.parentCategories(getActivity());
         shopLandingPageViewModel.getParentCategoryListResponseLiveData().observe(getActivity(), new Observer<ParentCategoryListResponse>() {
             @Override
             public void onChanged(ParentCategoryListResponse parentCategoryListResponse) {
@@ -514,7 +516,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         parentCategories.add(parentCategoryListResponse.getData().getRequestList().get(i).getTitle());
                     }
 
-                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, parentCategories);
+                    spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, parentCategories);
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                     parentSpinner.setAdapter(spinnerArrayAdapter);
 //                    parentSpinneredit.setAdapter(spinnerArrayAdapter);
@@ -525,14 +527,48 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 }
             }
         });
+    }
 
+    private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner, String parentName, String childName) {
+        shopLandingPageViewModel.parentCategories(getActivity());
+        shopLandingPageViewModel.getParentCategoryListResponseLiveData().observe(getActivity(), new Observer<ParentCategoryListResponse>() {
+            @Override
+            public void onChanged(ParentCategoryListResponse parentCategoryListResponse) {
+                if (parentCategoryListResponse != null) {
+                    //populate spinner here...
+                    parentCategories = new ArrayList<>();
+
+                    for (int i = 0; i < parentCategoryListResponse.getData().getRequestList().size(); i++) {
+                        parentCategories.add(parentCategoryListResponse.getData().getRequestList().get(i).getTitle());
+                    }
+
+                    spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, parentCategories);
+                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                    parentSpinner.setAdapter(spinnerArrayAdapter);
+//                    parentSpinneredit.setAdapter(spinnerArrayAdapter);
+
+                    int parent_Spinner = spinnerArrayAdapter.getPosition(parentName);
+                    parentSpinneredit.setSelection(parent_Spinner);
+
+                         /*
+
+
+                            int child_Spinner = spinnerArrayAdapter2.getPosition(childCat_maintain);
+                            childSpinneredit.setSelection(child_Spinner);*/
+
+                    // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Null", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void uploadChildCategory(String id, Spinner childSpinner, boolean isForEdit) {
         SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
         subCategoryBYParentCatID.setParentCategoryId(id);
 
-        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID);
+        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID, getActivity());
         shopLandingPageViewModel.getChildCategories().observe(this, new Observer<SubCategoryBYParentCatIDResponse>() {
             @Override
             public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
@@ -549,13 +585,45 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle());
                         }
 
-                        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
-                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                        spinnerArrayAdapter2 = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
+                        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                         if (isForEdit) { // load child categories when edit dialog open
-                            childSpinneredit.setAdapter(spinnerArrayAdapter);
+                            childSpinneredit.setAdapter(spinnerArrayAdapter2);
                         } else {   // load child category when add new product diualog is open
-                            childSpinner.setAdapter(spinnerArrayAdapter);
+                            childSpinner.setAdapter(spinnerArrayAdapter2);
                         }
+                    }
+                }
+            }
+        });
+    }
+
+    private void uploadChildCategory(String id, Spinner childSpinnere, boolean isForEdit, String childName) {
+        SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
+        subCategoryBYParentCatID.setParentCategoryId(id);
+
+        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID, getActivity());
+        shopLandingPageViewModel.getChildCategories().observe(getViewLifecycleOwner(), new Observer<SubCategoryBYParentCatIDResponse>() {
+            @Override
+            public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
+                if (subCategoryBYParentCatIDResponse != null) {
+                    childCategories = new ArrayList<>();
+                    childCategoryList = new ArrayList<>();
+
+                    //  Toast.makeText(ShopLandingActivity.this, "status : " + subCategoryBYParentCatIDResponse.getData().getRequestList().size(), Toast.LENGTH_SHORT).show();
+                    childCategoryList.clear();
+                    if (subCategoryBYParentCatIDResponse.getData().getRequestList() != null && subCategoryBYParentCatIDResponse.getData().getRequestList().size() > 0) {
+
+                        for (int i = 0; i < subCategoryBYParentCatIDResponse.getData().getRequestList().size(); i++) {
+                            childCategoryList.add(new ChildCategory(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getId(), subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle()));
+                            childCategories.add(subCategoryBYParentCatIDResponse.getData().getRequestList().get(i).getTitle());
+                        }
+
+                        spinnerArrayAdapter2 = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
+                        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                        childSpinneredit.setAdapter(spinnerArrayAdapter2);
+                        int parent_Spinner = spinnerArrayAdapter.getPosition(childName);
+                        childSpinneredit.setSelection(parent_Spinner);
                     }
                 }
             }
@@ -739,10 +807,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
         parentSpinneredit = dialog.findViewById(R.id.parentSpinner);
         childSpinneredit = dialog.findViewById(R.id.childSpinner);
+
+        uploadParentCategory(parentSpinneredit, childSpinneredit);
         parentSpinneredit.setOnItemSelectedListener(onItemSelectedListenerEDit);
         childSpinneredit.setOnItemSelectedListener(onItemSelectedListenerEDit);
 
-        uploadParentCategory(parentSpinneredit, childSpinneredit);
+
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -775,9 +845,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             String path = et_VideoUrl.getText().toString();
                             String segments[] = path.split(".com/");
 
-                            if(segments.length > 1) {
+                            if (segments.length > 1) {
                                 document = segments[1];
-                            }else{
+                            } else {
                                 document = "";
                             }
 
@@ -818,7 +888,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
 
                             // loadingDialog.showDialog();
-                            shopLandingPageViewModel.updateproduct(updateProduct);
+                            shopLandingPageViewModel.updateproduct(updateProduct, getActivity());
                             shopLandingPageViewModel.getProductUpdateResponse().observe(getActivity(), new Observer<UpdateProductResponse>() {
                                 @Override
                                 public void onChanged(UpdateProductResponse updateProductResponse) {
@@ -957,11 +1027,17 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (response.isSuccessful()) {
                         ProductForEditResponse productForEditResponse = response.body();
                         if (productForEditResponse != null) {
-                            //shopLandingPageViewModel.dPResponse().removeObservers(getActivity());
-                            Log.i("TAG", "trigger :::");
 
                             parentCategoryId = productForEditResponse.getData().getRequestList().getParentProductCategoryId();
                             childCategoryId = productForEditResponse.getData().getRequestList().getProductCategoryid();
+                            parentCat_maintain = productForEditResponse.getData().getRequestList().getParentCategoryName();
+                            childCat_maintain = productForEditResponse.getData().getRequestList().getProductCategoryName();
+
+                            Log.i("TAG", "onResponse: " + parentCat_maintain);
+                            Log.i("TAG", "onResponse: " + childCat_maintain);
+
+                            uploadParentCategory(parentSpinneredit, childSpinneredit, parentCat_maintain, childCat_maintain);
+                            //uploadChildCategory(parentCategoryId, childSpinneredit, true, childCat_maintain);
 
                             productName.setText(productForEditResponse.getData().getRequestList().getTitle());
                             productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
@@ -986,18 +1062,24 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                         @Override
                                         public void onClick(View v) {
                                             //Toast.makeText(getActivity(), "Deleted....." +imageIds.get(LLimages_edit.indexOfChild(inflater) - 1) , Toast.LENGTH_SHORT).show();
+                                            loadingDialog.showDialog();
                                             DeleteProductImage deleteProductImage = new DeleteProductImage();
                                             deleteProductImage.setImageId(imageIds.get(LLimages_edit.indexOfChild(inflater) - 1).toString());
                                             deleteProductImage.setProductId(String.valueOf(productID));
                                             deleteProductImage.setProfileId(Constant.PROFILE_ID);
 
-                                            shopLandingPageViewModel.deleteProduct(deleteProductImage);
-                                            shopLandingPageViewModel.dPResponse().observe(getActivity(), new Observer<DeleteProductImageResponse>() {
+                                            shopLandingPageViewModel.deleteProduct(deleteProductImage, getActivity());
+                                            shopLandingPageViewModel.dPResponse().removeObservers(getViewLifecycleOwner());
+                                            shopLandingPageViewModel.dPResponse().observe(getViewLifecycleOwner(), new Observer<DeleteProductImageResponse>() {
                                                 @Override
                                                 public void onChanged(DeleteProductImageResponse responseBody) {
                                                     if (responseBody != null) {
                                                         Toast.makeText(getActivity(), "Image Removed Successfully...", Toast.LENGTH_SHORT).show();
                                                         LLimages_edit.removeView(inflater);
+                                                        loadingDialog.dismissDialog();
+                                                    } else {
+                                                        Toast.makeText(getActivity(), "Image Not Removed.Please Try Again", Toast.LENGTH_SHORT).show();
+                                                        loadingDialog.dismissDialog();
                                                     }
                                                 }
                                             });
@@ -1031,7 +1113,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         DeleteProduct deleteProduct = new DeleteProduct();
         deleteProduct.setProductId(String.valueOf(productID));
         deleteProduct.setProfileId(Constant.PROFILE_ID);
-        shopLandingPageViewModel.deleteProduct(deleteProduct);
+        shopLandingPageViewModel.deleteProduct(deleteProduct, getActivity());
         shopLandingPageViewModel.deleteProductResponse().observe(getActivity(), new Observer<DeleteProductResponse>() {
             @Override
             public void onChanged(DeleteProductResponse deleteProductResponse) {
@@ -1054,7 +1136,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         isProductActive.setProductId(String.valueOf(position));
         isProductActive.setProductStatus(isActive ? "Y" : "N");
         isProductActive.setProfileId(Constant.PROFILE_ID);
-        shopLandingPageViewModel.isProductActive(isProductActive);
+        shopLandingPageViewModel.isProductActive(isProductActive, getActivity());
         shopLandingPageViewModel.getProductActiveResponse().observe(getActivity(), new Observer<IsProductActiveResponse>() {
             @Override
             public void onChanged(IsProductActiveResponse isProductActiveResponse) {
@@ -1115,7 +1197,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         productForEdit.setProfileId(Constant.PROFILE_ID);
         productForEdit.setProductId(String.valueOf(productID));
 
-        shopLandingPageViewModel.productForEdit(productForEdit);
+        shopLandingPageViewModel.productForEdit(productForEdit, getActivity());
         shopLandingPageViewModel.getProductForEdit().observe(getActivity(), new Observer<ProductForEditResponse>() {
             @Override
             public void onChanged(ProductForEditResponse productForEditResponse) {
@@ -1175,7 +1257,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     @Override
     public void onShareProductLink(String productLink) {
-        Toast.makeText(getActivity(), "" + productLink, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "" + productLink, Toast.LENGTH_SHORT).show();
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -1246,7 +1328,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == parentSpinneredit.getId()) {
                 parentCategoryId = String.valueOf(parentSpinneredit.getSelectedItemPosition() + 1);
-                uploadChildCategory(parentCategory, childSpinner, true);
+                uploadChildCategory(parentCategoryId, childSpinneredit, true);
             }
 
             if (parent.getId() == childSpinneredit.getId()) {

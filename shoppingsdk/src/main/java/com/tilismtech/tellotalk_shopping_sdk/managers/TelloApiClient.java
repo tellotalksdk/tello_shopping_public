@@ -75,7 +75,7 @@ public class TelloApiClient {
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
                     }
-                  //  context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                    //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {
@@ -125,18 +125,18 @@ public class TelloApiClient {
                             if (gtResponse.getData() != null) {
                                 if (gtResponse.getData().getRequestList().getAccessToken() != null)
 
-                                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
+                                    TelloPreferenceManager.getInstance(myCtx).saveAccessToken(gtResponse.getData().getRequestList().getAccessToken());
 
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveRegisteredNumber(generateToken.getPhone());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveFirstName(generateToken.getFirstname());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveMiddleName(generateToken.getMiddlename());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveLastName(generateToken.getLastname());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveEmail(generateToken.getEmail());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveProfileId(generateToken.getProfileId());
-                                TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
+                                TelloPreferenceManager.getInstance(myCtx).saveRegisteredNumber(generateToken.getPhone());
+                                TelloPreferenceManager.getInstance(myCtx).saveFirstName(generateToken.getFirstname());
+                                TelloPreferenceManager.getInstance(myCtx).saveMiddleName(generateToken.getMiddlename());
+                                TelloPreferenceManager.getInstance(myCtx).saveLastName(generateToken.getLastname());
+                                TelloPreferenceManager.getInstance(myCtx).saveEmail(generateToken.getEmail());
+                                TelloPreferenceManager.getInstance(myCtx).saveProfileId(generateToken.getProfileId());
+                                TelloPreferenceManager.getInstance(myCtx).saveOwnerName(generateToken.getFirstname() + " " + generateToken.getMiddlename());
 
                                 Constant c = new Constant();
-                                c.setProfileId(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId());
+                                c.setProfileId(TelloPreferenceManager.getInstance(myCtx).getProfileId());
                                 c.setContactNumber(generateToken.getPhone());
                                 onSuccessListener.onSuccess(gtResponse);
                             }
@@ -157,7 +157,7 @@ public class TelloApiClient {
     }
 
     public static boolean isShopExist(String profileId, Context context) {
-        getRetrofitClient().isShopExist("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), profileId).enqueue(new Callback<ShopExistResponse>() {
+        getRetrofitClient().isShopExist("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), profileId).enqueue(new Callback<ShopExistResponse>() {
             @Override
             public void onResponse(Call<ShopExistResponse> call, Response<ShopExistResponse> response) {
                 if (response != null) {

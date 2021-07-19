@@ -54,6 +54,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImag
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopRegisterResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingFragment;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
@@ -129,8 +130,8 @@ public class ShopRegistrationFragment extends Fragment {
         d9.setText(String.valueOf(mN.charAt(8)));
         d10.setText(String.valueOf(mN.charAt(9)));
         d11.setText(String.valueOf(mN.charAt(10)));
-        mobileNumberReflection = new StringBuilder("92 " + mN.charAt(1) + mN.charAt(2) + mN.charAt(3) + " " + mN.charAt(4) + mN.charAt(5) + mN.charAt(6) + " "+ mN.charAt(7) + mN.charAt(8) + mN.charAt(9) + mN.charAt(10));
-       // mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
+        mobileNumberReflection = new StringBuilder("92 " + mN.charAt(1) + mN.charAt(2) + mN.charAt(3) + " " + mN.charAt(4) + mN.charAt(5) + mN.charAt(6) + " " + mN.charAt(7) + mN.charAt(8) + mN.charAt(9) + mN.charAt(10));
+        // mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
 
 
         //region requestforpin
@@ -188,7 +189,7 @@ public class ShopRegistrationFragment extends Fragment {
             public void onClick(View v) {
                 if (checkOTP()) {
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
-                    shopRegistrationViewModel.verifyOTP(otp);
+                    shopRegistrationViewModel.verifyOTP(otp, getActivity());
                     shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
@@ -199,7 +200,7 @@ public class ShopRegistrationFragment extends Fragment {
                                     navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                 //   navController.navigate(R.id.shopSettingFragment);
+                                    navController.navigate(R.id.shopSettingFragment);
                                 }
                             }
                         }
@@ -222,7 +223,7 @@ public class ShopRegistrationFragment extends Fragment {
                     requestAgain.setClickable(false);
                     startCountDown();
                     counter++;
-                    shopRegistrationViewModel.resendOTP();
+                    shopRegistrationViewModel.resendOTP(getActivity());
                     shopRegistrationViewModel.getresendOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
@@ -973,7 +974,32 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //here we call api for set user name and image ...
-                LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                if (TextUtils.isEmpty(userShopname.getText().toString())) {
+                    Toast.makeText(getActivity(), "User name can not be empty...", Toast.LENGTH_SHORT).show();
+                } else {
+                    UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
+                    updateUserAndImage.setFirstName(userShopname.getText().toString());
+                    updateUserAndImage.setMiddleName(" ");
+                    updateUserAndImage.setLastName(" ");
+                    updateUserAndImage.setProfileId(Constant.PROFILE_ID);
+                    updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
+                    shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(getViewLifecycleOwner()); //need to remove observer here to stop multiple call of apis
+                    LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+                    loadingDialog.showDialog();
+                    shopRegistrationViewModel.userImageandName(updateUserAndImage, getActivity());
+                    shopRegistrationViewModel.getUpdateUserImageResponse().observe(getViewLifecycleOwner(), new Observer<UpdateUserAndImageResponse>() {
+                        @Override
+                        public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                            if (updateUserAndImageResponse != null) {
+                                // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+                                loadingDialog.dismissDialog();
+                            } else {
+                                loadingDialog.dismissDialog();
+                            }
+                        }
+                    });
+                }
+     /*           LoadingDialog loadingDialog = new LoadingDialog(getActivity());
                 UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
                 if (TextUtils.isEmpty(userShopname.getText().toString())) {
                     Toast.makeText(getActivity(), "Shop Owner Name Required...", Toast.LENGTH_SHORT).show();
@@ -997,7 +1023,7 @@ public class ShopRegistrationFragment extends Fragment {
                             loadingDialog.dismissDialog();
                         }
                     }
-                });
+                });*/
             }
         });
         //endregion
