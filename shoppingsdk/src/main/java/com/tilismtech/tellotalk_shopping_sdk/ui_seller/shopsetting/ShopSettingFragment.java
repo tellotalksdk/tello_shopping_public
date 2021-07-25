@@ -767,8 +767,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                                 Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
                                 // progressBar.setVisibility(View.GONE);
                                 loadingDialog.dismissDialog();
+                                TelloPreferenceManager.getInstance(getActivity()).savecongratsStatus(true);
                                 getActivity().finish();
-                                startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                                startActivity(new Intent(getActivity(), ShopLandingActivity.class).putExtra("congrats_dialog_to_show",true));
 
                             } else {
                                 progressBar.setVisibility(View.GONE);

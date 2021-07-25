@@ -1,5 +1,6 @@
 package com.tilismtech.tellotalk_shopping_sdk.managers;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
@@ -23,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.tilismtech.tellotalk_shopping_sdk.TelloApplication.getApplication;
 import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
 public class TelloApiClient {
@@ -75,7 +77,7 @@ public class TelloApiClient {
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
                     }
-                    //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                   // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {
@@ -165,10 +167,11 @@ public class TelloApiClient {
                         try {
                             if (response.body().getData().get(0).getIsShopExist()) {
                                 isshopExist = true;
-                                context.startActivity(new Intent(context, ShopLandingActivity.class));
+                                TelloPreferenceManager.getInstance(getApplication()).savecongratsStatus(false);
+                                context.startActivity(new Intent(context, ShopLandingActivity.class).putExtra("congrats_dialog_to_show", false));
                             } else {
                                 isshopExist = false;
-                                context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                                context.startActivity(new Intent(context, ShopRegistrationActivity.class).putExtra("congrats_dialog_to_show", true));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

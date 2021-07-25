@@ -163,9 +163,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         initRV(); // this recycler view set product list on screen
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
+        dialogCongratulation = new Dialog(getActivity());
 
         //this button show only first time when there is np product list
-
         addProduct_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -393,6 +393,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
+        //append recycler view on scroll via pagination...
         recycler_add_product.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -405,6 +406,39 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 }
             }
         });
+
+       /* Intent intent = getActivity().getIntent();
+        boolean congrats = intent.getBooleanExtra("congrats_dialog_to_show", false);
+      */
+
+        if (TelloPreferenceManager.getInstance(getActivity()).getcongratsStatus() == false) {
+            dialogCongratulation.dismiss();
+        } else {
+
+            dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialogCongratulation.setContentView(R.layout.dialog_congratulation);
+            dialogCongratulation.show();
+
+            ImageView iv_close = dialogCongratulation.findViewById(R.id.iv_close);
+            Button getStarted_btn = dialogCongratulation.findViewById(R.id.getStarted_btn);
+
+            iv_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogCongratulation.dismiss();
+                }
+            });
+
+            getStarted_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogCongratulation.dismiss();
+                }
+            });
+
+            TelloPreferenceManager.getInstance(getActivity()).savecongratsStatus(false);
+            loadingDialog.dismissDialog();
+        }
 
     }
 
@@ -470,30 +504,34 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         shopLandingPageViewModel.getProductList().removeObservers(getActivity());
 
                     } else {
-                        dialogCongratulation = new Dialog(getActivity());
-                        dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        dialogCongratulation.setContentView(R.layout.dialog_congratulation);
-                        dialogCongratulation.show();
 
-                        ImageView iv_close = dialogCongratulation.findViewById(R.id.iv_close);
-                        Button getStarted_btn = dialogCongratulation.findViewById(R.id.getStarted_btn);
 
-                        iv_close.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogCongratulation.dismiss();
-                            }
-                        });
+                           /* dialogCongratulation = new Dialog(getActivity());
+                            dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            dialogCongratulation.setContentView(R.layout.dialog_congratulation);
+                            dialogCongratulation.show();
 
-                        getStarted_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogCongratulation.dismiss();
-                            }
-                        });
+                            ImageView iv_close = dialogCongratulation.findViewById(R.id.iv_close);
+                            Button getStarted_btn = dialogCongratulation.findViewById(R.id.getStarted_btn);
 
+                            iv_close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogCongratulation.dismiss();
+                                }
+                            });
+
+                            getStarted_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogCongratulation.dismiss();
+                                }
+                            });
+
+                            loadingDialog.dismissDialog();*/
                         loadingDialog.dismissDialog();
                         addProduct_btn.setVisibility(View.VISIBLE);
+
                     }
                 }
                 loadingDialog.dismissDialog();

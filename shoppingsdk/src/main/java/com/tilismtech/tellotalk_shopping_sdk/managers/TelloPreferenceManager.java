@@ -15,6 +15,8 @@ public class TelloPreferenceManager {
     public static final String MIDDLE_NAME = "middle_name";
     public static final String LAST_NAME = "last_name";
     public static final String EMAIL = "email";
+    public static final String CONGRATZ = "congrat_dialog";
+
 
     private final SharedPreferences.Editor editor;
     private final SharedPreferences sharedPreferences;
@@ -32,7 +34,6 @@ public class TelloPreferenceManager {
     }
 
     //firstname
-
     public void saveFirstName(String firstName) {
         editor.putString(FIRST_NAME, firstName);
         editor.apply();
@@ -43,7 +44,6 @@ public class TelloPreferenceManager {
     }
 
     //middle name
-
     public void saveMiddleName(String middleName) {
         editor.putString(MIDDLE_NAME, middleName);
         editor.apply();
@@ -54,7 +54,6 @@ public class TelloPreferenceManager {
     }
 
     //last name
-
     public void saveLastName(String lastName) {
         editor.putString(LAST_NAME, lastName);
         editor.apply();
@@ -124,6 +123,18 @@ public class TelloPreferenceManager {
     public String getProfileId() {
         return sharedPreferences.getString(PROFILE_ID, "");
     }
+
+    //setdialog to show just once
+    public void savecongratsStatus(boolean isFirstTime) {
+        editor.putBoolean(CONGRATZ, isFirstTime);
+        editor.apply();
+    }
+
+    public boolean getcongratsStatus() {
+        return sharedPreferences.getBoolean(CONGRATZ, false);
+    }
+
+
 
     void clearAll() {
         editor.clear().apply();

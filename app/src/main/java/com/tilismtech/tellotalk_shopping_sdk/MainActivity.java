@@ -50,10 +50,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                 TelloApiClient.initializeShoppingSDK(MainActivity.this, pI.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com");
-
+                TelloApiClient.initializeShoppingSDK(MainActivity.this, pI.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com");
             }
         });
 

@@ -157,6 +157,8 @@
                     android:gravity="center|left"
                     android:hint="* Account Title"
                     android:inputType="text"
+                    android:maxLength="50"
+                    android:singleLine="true"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
                     android:textSize="14sp" />
@@ -198,6 +200,8 @@
                     android:hint="* Account Number"
                     android:inputType="number"
                     android:paddingLeft="10dp"
+                    android:maxLength="50"
+                    android:singleLine="true"
                     android:paddingBottom="25dp"
                     android:textSize="14sp" />
 
@@ -484,6 +488,8 @@
                     android:background="@null"
                     android:gravity="center|left"
                     android:hint="* Account Title"
+                    android:maxLength="50"
+                    android:singleLine="true"
                     android:inputType="text"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
@@ -524,7 +530,8 @@
                     android:background="@null"
                     android:gravity="center|left"
                     android:hint="* Mobile Number"
-                    android:inputType="text"
+                    android:maxLength="11"
+                    android:inputType="number"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
                     android:textSize="14sp" />
@@ -564,7 +571,8 @@
                     android:background="@null"
                     android:gravity="center|left"
                     android:hint="* CNIC"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:maxLength="13"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
                     android:textSize="14sp" />

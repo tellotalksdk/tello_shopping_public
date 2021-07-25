@@ -177,10 +177,7 @@ public class BankSettingFragment extends Fragment {
         continue_btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RL1.setVisibility(View.GONE);
-                RL2.setVisibility(View.GONE);
-                RL3.setVisibility(View.VISIBLE);
-                RL4.setVisibility(View.GONE);
+
 
                 //here we set api for adding bank details
 
@@ -201,9 +198,12 @@ public class BankSettingFragment extends Fragment {
                             }
                         }
                     });
+                    RL1.setVisibility(View.GONE);
+                    RL2.setVisibility(View.GONE);
+                    RL3.setVisibility(View.VISIBLE);
+                    RL4.setVisibility(View.GONE);
                 }
-
-
+                
             }
         });
 
@@ -221,10 +221,7 @@ public class BankSettingFragment extends Fragment {
         continue_btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RL1.setVisibility(View.GONE);
-                RL2.setVisibility(View.GONE);
-                RL3.setVisibility(View.VISIBLE);
-                RL4.setVisibility(View.GONE);
+
 
                 if (checkWalletValidation()) {
                     AddWallet addWallet = new AddWallet();
@@ -242,6 +239,10 @@ public class BankSettingFragment extends Fragment {
                             }
                         }
                     });
+                    RL1.setVisibility(View.GONE);
+                    RL2.setVisibility(View.GONE);
+                    RL3.setVisibility(View.VISIBLE);
+                    RL4.setVisibility(View.GONE);
                 }
             }
         });

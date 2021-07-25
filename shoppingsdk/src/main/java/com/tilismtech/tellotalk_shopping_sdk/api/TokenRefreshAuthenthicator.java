@@ -24,7 +24,7 @@ import retrofit2.Callback;
 
 import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
-public class TokenRefreshAuthenthicator extends TelloApplication  implements Authenticator {
+public class TokenRefreshAuthenthicator extends TelloApplication implements Authenticator {
 
     @Nullable
     @Override

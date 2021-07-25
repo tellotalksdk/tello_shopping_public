@@ -89,7 +89,7 @@ public class ShopRegistrationFragment extends Fragment {
     StringBuilder mobileNumberReflection;
     ArrayList<String> mobileOpt = new ArrayList<>();
     ShopRegistrationViewModel shopRegistrationViewModel;
-    boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11;
+    boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11, isOTP_one, isOTP_two, isOTP_three;
     Dialog dialogImage;
     Uri imageUri;
     String filePath = "", otp, mN;
@@ -116,6 +116,10 @@ public class ShopRegistrationFragment extends Fragment {
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
         // Toast.makeText(getActivity(), "number" +  TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber(), Toast.LENGTH_SHORT).show();
 
+    /*    Intent intent = getActivity().getIntent();
+        boolean congrats = intent.getBooleanExtra("congrats_dialog_to_show", false);
+        Toast.makeText(getActivity(), "" + congrats, Toast.LENGTH_SHORT).show();
+*/
 
         mN = String.valueOf(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber());
 
@@ -897,6 +901,28 @@ public class ShopRegistrationFragment extends Fragment {
             }
         });
 
+        otp_one.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isOTP_two) {
+                        isOTP_two = false;
+                    } else {
+                        otp_one.clearFocus();
+                        otp_three.requestFocus();
+                        otp_three.setCursorVisible(true);
+                        if (otp_three.getText().length() == 0) {
+                            otp_three.setSelection(0);
+                        } else {
+                            otp_three.setSelection(1);
+                        }
+                        isOTP_one = true;
+                    }
+                }
+                return false;
+            }
+        });
+
         otp_two.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -928,6 +954,28 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        otp_two.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isOTP_three) {
+                        isOTP_three = false;
+                    } else {
+                        otp_two.clearFocus();
+                        otp_one.requestFocus();
+                        otp_one.setCursorVisible(true);
+                        if (otp_one.getText().length() == 0) {
+                            otp_one.setSelection(0);
+                        } else {
+                            otp_one.setSelection(1);
+                        }
+                        isOTP_two = true;
+                    }
+                }
+                return false;
             }
         });
 
@@ -965,6 +1013,28 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        otp_three.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (isOTP_one) {
+                        isOTP_one = false;
+                    } else {
+                        otp_three.clearFocus();
+                        otp_two.requestFocus();
+                        otp_two.setCursorVisible(true);
+                        if (otp_two.getText().length() == 0) {
+                            otp_two.setSelection(0);
+                        } else {
+                            otp_two.setSelection(1);
+                        }
+                        isOTP_three = true;
+                    }
+                }
+                return false;
             }
         });
         //endregion
