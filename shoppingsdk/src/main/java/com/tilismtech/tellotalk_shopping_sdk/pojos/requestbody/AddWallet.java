@@ -17,6 +17,17 @@ public class AddWallet {
     @SerializedName("accountFrom")
     @Expose
     private String accountFrom;
+    @SerializedName("nameOfOwner")
+    @Expose
+    private String nameOfOwner;
+
+    public String getNameOfOwner() {
+        return nameOfOwner;
+    }
+
+    public void setNameOfOwner(String nameOfOwner) {
+        this.nameOfOwner = nameOfOwner;
+    }
 
     public String getProfileId() {
         return profileId;

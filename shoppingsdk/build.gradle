@@ -1,12 +1,16 @@
 plugins {
     id 'com.android.library'
+    id 'com.github.dcendents.android-maven'
 }
 
 /*apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'*/
-//group = 'com.tilismtech.tellotalk_shopping_sdk'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.tilismtech.tellotalk_shopping_sdk'*/
 
-group = 'com.github.Sharje3l'
+/*group = 'com.github.Sharje3l'
+version = '0.0.1'*/
+
+group = 'com.tilismtech.tellotalk_shopping_sdk'
 version = '0.0.1'
 
 android {
@@ -78,6 +82,7 @@ dependencies {
     api 'de.hdodenhof:circleimageview:3.1.0'
 
     api 'com.google.android.gms:play-services-maps:17.0.1'
+  //  api 'com.vanniktech:emoji-google:0.7.0'
 
     //copied
     myConfig 'androidx.appcompat:appcompat:1.1.0'

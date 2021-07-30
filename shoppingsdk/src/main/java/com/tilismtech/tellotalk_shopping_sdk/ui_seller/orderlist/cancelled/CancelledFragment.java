@@ -128,7 +128,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("6"); //for received order list
 
-        orderListViewModel.orderByStatus(orderByStatus,getActivity());
+        orderListViewModel.orderByStatus(orderByStatus, getActivity());
         orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
@@ -218,7 +218,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus("6");
 
-        orderListViewModel.viewFullOrder(viewFullOrder,getActivity());
+        orderListViewModel.viewFullOrder(viewFullOrder, getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
@@ -410,7 +410,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     updateRiderInfo.setOrderId(String.valueOf(orderId));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
+                    orderListViewModel.updateRiderInfo(updateRiderInfo, getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -461,6 +461,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
 
         etRiderName.setText(request.getRiderName().toString());
         etRiderNumber.setText(request.getRiderContact().toString());
+        etRiderTracking.setText(request.getOrderTrackingId().toString());
 
         Button done = dialog.findViewById(R.id.confirmRiderbtn);
         done.setOnClickListener(new View.OnClickListener() {
@@ -476,7 +477,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     updateRiderInfo.setOrderId(String.valueOf(position));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
+                    orderListViewModel.updateRiderInfo(updateRiderInfo, getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -499,6 +500,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
 
     @Override
     public void OnStatusChange(int status, int OrderID) {
+        //Toast.makeText(getActivity(), "hello " + status, Toast.LENGTH_SHORT).show();
         dialogCongratulation = new Dialog(getActivity());
         dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialogCongratulation.setContentView(R.layout.dialog_order_status_confirmation);
@@ -528,12 +530,14 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
         continue_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Toast.makeText(getActivity(), "dsada", Toast.LENGTH_SHORT).show();
                 UpdateOrderStatus updateOrderStatus = new UpdateOrderStatus();
                 updateOrderStatus.setOrderId(String.valueOf(OrderID));
                 updateOrderStatus.setProfileId(Constant.PROFILE_ID);
                 updateOrderStatus.setStatus(String.valueOf(status));
+                updateOrderStatus.setContent("");
 
-                orderListViewModel.updateOrderStatus(updateOrderStatus,getActivity());
+                orderListViewModel.updateOrderStatus(updateOrderStatus, getActivity());
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {

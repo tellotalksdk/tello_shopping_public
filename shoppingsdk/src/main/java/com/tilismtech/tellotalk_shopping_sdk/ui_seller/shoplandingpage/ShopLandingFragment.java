@@ -27,6 +27,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,8 +44,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
@@ -70,6 +73,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditRe
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
@@ -126,11 +130,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Dialog dialog;
     private String lastProductId = "0", parentCat_maintain, childCat_maintain; //maintain word is used for maintaining parent and child last selection whenever edit dialog is open...
     private EditText et_VideoUrl;
+    private ProgressBar progressBar;
     List<ProductListResponse.Request> productListAppend, dummy;
     List<String> imageIds;
     String video, document;
     ArrayAdapter<String> spinnerArrayAdapter;
     ArrayAdapter<String> spinnerArrayAdapter2;
+    private boolean isForEditMaintaince;
 
 
     @Override
@@ -164,6 +170,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
         dialogCongratulation = new Dialog(getActivity());
+        progressBar = view.findViewById(R.id.progressBar);
 
         //this button show only first time when there is np product list
         addProduct_btn.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +277,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                         filePaths.clear();
                                         loadingDialog.dismissDialog();
                                         dialogAddProduct.dismiss();
-
+                                        shopLandingPageViewModel.shopTotalProducts(getActivity());
+                                        // ShopLandingActivity shopLandingActivity = new ShopLandingActivity();
+                                        // shopLandingActivity.setTotalProductOnActionBar();
                                         navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
 
                                     } else {
@@ -402,6 +411,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     // Toast.makeText(getActivity(), "end of recycler ...", Toast.LENGTH_SHORT).show();
                     //initRV();
+                    progressBar.setVisibility(View.GONE);
                     updateRecyclerView();
                 }
             }
@@ -468,6 +478,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             productListAppend.addAll(productListResponse.getData().getRequestList());
                             productListAdapter.notifyDataSetChanged();
                             lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -636,7 +647,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         });
     }
 
-    private void uploadChildCategory(String id, Spinner childSpinnere, boolean isForEdit, String childName) {
+    private void uploadChildCategory(String id, Spinner childSpinneredit, boolean isForEdit, String childName) {
         SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
         subCategoryBYParentCatID.setParentCategoryId(id);
 
@@ -660,7 +671,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         spinnerArrayAdapter2 = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, childCategories);
                         spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                         childSpinneredit.setAdapter(spinnerArrayAdapter2);
-                        int parent_Spinner = spinnerArrayAdapter.getPosition(childName);
+                        int parent_Spinner = spinnerArrayAdapter2.getPosition(childName);
                         childSpinneredit.setSelection(parent_Spinner);
                     }
                 }
@@ -911,7 +922,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         if ((et_VideoUrl.getText().toString().contains("www.youtube.com") && !document.equals("")) || TextUtils.isEmpty(et_VideoUrl.getText().toString())) {
                             UpdateProduct updateProduct = new UpdateProduct();
                             updateProduct.setTitle(productName.getText().toString());
-                            updateProduct.setDiscountPrice(discountedPrice.getText().toString());
+                            updateProduct.setDiscountPrice(!TextUtils.isEmpty(discountedPrice.getText().toString()) ? discountedPrice.getText().toString()  : "0");
                             updateProduct.setPrice(originalPrice.getText().toString());
                             updateProduct.setProductId(String.valueOf(productID));
                             updateProduct.setProfileId(Constant.PROFILE_ID);
@@ -958,16 +969,16 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     return false;
                 }
 
-                if (TextUtils.isEmpty(discountedPrice.getText().toString())) {
+          /*      if (TextUtils.isEmpty(discountedPrice.getText().toString())) {
                     Toast.makeText(getActivity(), "Discounted Price Field is empty...", Toast.LENGTH_SHORT).show();
                     return false;
-                }
+                }*/
 
-                if (TextUtils.isEmpty(skucodeoptional.getText().toString())) {
+          /*      if (TextUtils.isEmpty(skucodeoptional.getText().toString())) {
                     Toast.makeText(getActivity(), "SKU Code Field is empty...", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-
+*/
                 if (TextUtils.isEmpty(originalPrice.getText().toString())) {
                     Toast.makeText(getActivity(), "Original Price Field is empty...", Toast.LENGTH_SHORT).show();
                     return false;
@@ -1058,7 +1069,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });*/
 
-        getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
+        getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(getActivity()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
             @Override
             public void onResponse(Call<ProductForEditResponse> call, Response<ProductForEditResponse> response) {
                 if (response != null) {
@@ -1074,8 +1085,9 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             Log.i("TAG", "onResponse: " + parentCat_maintain);
                             Log.i("TAG", "onResponse: " + childCat_maintain);
 
+                            isForEditMaintaince = true;
                             uploadParentCategory(parentSpinneredit, childSpinneredit, parentCat_maintain, childCat_maintain);
-                            //uploadChildCategory(parentCategoryId, childSpinneredit, true, childCat_maintain);
+                            //   uploadChildCategory(parentCategoryId, childSpinneredit, true, childCat_maintain);
 
                             productName.setText(productForEditResponse.getData().getRequestList().getTitle());
                             productCategory.setText(productForEditResponse.getData().getRequestList().getProductCategoryName());
@@ -1242,6 +1254,15 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 if (productForEditResponse != null) {
                     List<String> images = new ArrayList<>();
 
+                    video = productForEditResponse.getData().getRequestList().getVideoLink();
+                    button.setVisibility(View.GONE);
+
+                    if (video.contains("www.youtube.com")) {
+                        images.add("https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80");
+                        // button.setVisibility(View.GONE);
+                    }
+
+
                     if (productForEditResponse.getData().getRequestList().getProductImageDTO() != null) {
                         for (int i = 0; i < productForEditResponse.getData().getRequestList().getProductImageDTO().size(); i++) {
                             images.add(productForEditResponse.getData().getRequestList().getProductImageDTO().get(i).getImageURL());
@@ -1277,6 +1298,26 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
 
                 }
+            }
+        });
+
+        viewPager2.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position != 0)
+                    button.setVisibility(View.GONE);
+                else
+                    button.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
@@ -1366,7 +1407,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == parentSpinneredit.getId()) {
                 parentCategoryId = String.valueOf(parentSpinneredit.getSelectedItemPosition() + 1);
-                uploadChildCategory(parentCategoryId, childSpinneredit, true);
+                if (isForEditMaintaince) {
+                    uploadChildCategory(parentCategoryId, childSpinneredit, true, childCat_maintain);
+                } else {
+                    uploadChildCategory(parentCategoryId, childSpinneredit, true);
+                }
+
             }
 
             if (parent.getId() == childSpinneredit.getId()) {

@@ -101,6 +101,17 @@ public class ClientWalletDetailResponse {
         @SerializedName("AccountFrom")
         @Expose
         private String accountFrom;
+        @SerializedName("nameOfOwner")
+        @Expose
+        private String nameOfOwner;
+
+        public String getNameOfOwner() {
+            return nameOfOwner;
+        }
+
+        public void setNameOfOwner(String nameOfOwner) {
+            this.nameOfOwner = nameOfOwner;
+        }
 
         public Integer getId() {
             return id;

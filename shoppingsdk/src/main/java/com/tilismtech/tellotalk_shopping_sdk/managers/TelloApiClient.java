@@ -77,7 +77,7 @@ public class TelloApiClient {
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
                     }
-                   // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+            //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {

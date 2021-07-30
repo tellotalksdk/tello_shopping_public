@@ -161,13 +161,13 @@
         <ImageView
             android:id="@+id/edit_rider_info"
             android:visibility="gone"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:layout_below="@+id/address"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="16dp"
             android:layout_toRightOf="@+id/addRiderInfo1"
             android:layout_marginStart="5dp"
-            android:src="@drawable/ic_edit_order_list"/>
+            android:src="@drawable/ic_edit_three"/>
 
         <Spinner
             android:id="@+id/spinner_moveto"

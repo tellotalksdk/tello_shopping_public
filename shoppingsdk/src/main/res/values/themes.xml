@@ -34,7 +34,10 @@
         <item name="android:background">@drawable/bg_spinner</item>
     </style>
 
-
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#AFAAAA</item>
+        <item name="colorControlActivated">#E60000</item>
+    </style>
 
 
 </resources>

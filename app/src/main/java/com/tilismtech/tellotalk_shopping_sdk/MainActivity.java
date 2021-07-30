@@ -1,6 +1,7 @@
 package com.tilismtech.tellotalk_shopping_sdk;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button, client;
     EditText fN, mN, lN, cN, pI;
+    com.google.android.material.switchmaterial.SwitchMaterial  toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         lN = findViewById(R.id.lName);
         cN = findViewById(R.id.contact);
         pI = findViewById(R.id.profileid);
+        toggle = findViewById(R.id.toggle);
 
 
         button = findViewById(R.id.button);
@@ -58,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ClientHomeActivity.class));
+            }
+        });
+
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatDelegate
+                        .setDefaultNightMode(
+                                AppCompatDelegate
+                                        .MODE_NIGHT_YES);
             }
         });
 

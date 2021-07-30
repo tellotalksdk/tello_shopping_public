@@ -67,10 +67,10 @@
             android:layout_height="24dp"
             android:paddingBottom="3dp"
             android:src="@drawable/ic_address"
+            android:visibility="gone"
             android:layout_toLeftOf="@+id/lldetail"
             android:layout_alignBottom="@+id/address"
             android:layout_toRightOf="@+id/address"/>
-
 
 
         <LinearLayout

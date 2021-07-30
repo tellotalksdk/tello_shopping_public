@@ -335,7 +335,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="SKU Code"
+                    android:hint="Product Qty"
                     android:gravity="center|left"
                     android:id="@+id/et_SKU"
                     android:paddingLeft="10dp"

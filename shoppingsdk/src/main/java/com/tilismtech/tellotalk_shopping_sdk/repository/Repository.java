@@ -823,7 +823,7 @@ public class Repository {
     //endregion
 
     //region getAllStatusCount
-    public void getAllStatusCount(MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData,Context context) {
+    public void getAllStatusCount(MutableLiveData<GetOrderStatusCountResponse> getOrderStatusCountResponseMutableLiveData, Context context) {
         getRetrofitClient().getOrderAllStatusCount("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<GetOrderStatusCountResponse>() {
             @Override
             public void onResponse(Call<GetOrderStatusCountResponse> call, Response<GetOrderStatusCountResponse> response) {
@@ -846,7 +846,7 @@ public class Repository {
     //endregion
 
     //region postTiming
-    public void postTiming(MutableLiveData<ShopTimingResponse> shopTimingResponseMutableLiveData, ShopTiming shopTiming,Context context) {
+    public void postTiming(MutableLiveData<ShopTimingResponse> shopTimingResponseMutableLiveData, ShopTiming shopTiming, Context context) {
         getRetrofitClient().postTiming("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), shopTiming).enqueue(new Callback<ShopTimingResponse>() {
             @Override
             public void onResponse(Call<ShopTimingResponse> call, Response<ShopTimingResponse> response) {
@@ -873,7 +873,7 @@ public class Repository {
     //endregion
 
     //region postBranchAddress
-    public void addBranchAddress(MutableLiveData<AddBranchAddressResponse> addBranchAddressResponseMutableLiveData, AddBranchAddress addBranchAddress,Context context) {
+    public void addBranchAddress(MutableLiveData<AddBranchAddressResponse> addBranchAddressResponseMutableLiveData, AddBranchAddress addBranchAddress, Context context) {
         getRetrofitClient().addBranchAddress("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), addBranchAddress).enqueue(new Callback<AddBranchAddressResponse>() {
             @Override
             public void onResponse(Call<AddBranchAddressResponse> call, Response<AddBranchAddressResponse> response) {
@@ -895,7 +895,7 @@ public class Repository {
     //endregion
 
     //region updateBranchAddress
-    public void updateBranchAddress(MutableLiveData<UpdateBranchAddressResponse> updateBranchAddressResponseMutableLiveData, UpdateBranchAddress updateBranchAddress,Context context) {
+    public void updateBranchAddress(MutableLiveData<UpdateBranchAddressResponse> updateBranchAddressResponseMutableLiveData, UpdateBranchAddress updateBranchAddress, Context context) {
         getRetrofitClient().updateBranchAddress("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), updateBranchAddress).enqueue(new Callback<UpdateBranchAddressResponse>() {
             @Override
             public void onResponse(Call<UpdateBranchAddressResponse> call, Response<UpdateBranchAddressResponse> response) {
@@ -917,7 +917,7 @@ public class Repository {
     //endregion
 
     //region deleteBranchAddress
-    public void deleteBranchAddress(MutableLiveData<DeleteBranchAddressResponse> deleteBranchAddressMutableLiveData, DeleteBranchAddress deleteBranchAddress,Context context) {
+    public void deleteBranchAddress(MutableLiveData<DeleteBranchAddressResponse> deleteBranchAddressMutableLiveData, DeleteBranchAddress deleteBranchAddress, Context context) {
         getRetrofitClient().deleteBranchAddress("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), deleteBranchAddress).enqueue(new Callback<DeleteBranchAddressResponse>() {
             @Override
             public void onResponse(Call<DeleteBranchAddressResponse> call, Response<DeleteBranchAddressResponse> response) {
@@ -939,7 +939,7 @@ public class Repository {
     //endregion
 
     //region deleteProduct
-    public void deleteProduct(MutableLiveData<DeleteProductResponse> deleteProductResponseMutableLiveData, DeleteProduct deleteProduct,Context context) {
+    public void deleteProduct(MutableLiveData<DeleteProductResponse> deleteProductResponseMutableLiveData, DeleteProduct deleteProduct, Context context) {
         getRetrofitClient().deleteProduct("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), deleteProduct).enqueue(new Callback<DeleteProductResponse>() {
             @Override
             public void onResponse(Call<DeleteProductResponse> call, Response<DeleteProductResponse> response) {
@@ -960,7 +960,7 @@ public class Repository {
     //endregion
 
     //region deleteProductImage
-    public void deleteProductImage(MutableLiveData<DeleteProductImageResponse> deleteProduct, DeleteProductImage deleteProductImage,Context context) {
+    public void deleteProductImage(MutableLiveData<DeleteProductImageResponse> deleteProduct, DeleteProductImage deleteProductImage, Context context) {
         getRetrofitClient().deleteProductImage("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), deleteProductImage).enqueue(new Callback<DeleteProductImageResponse>() {
             @Override
             public void onResponse(Call<DeleteProductImageResponse> call, Response<DeleteProductImageResponse> response) {
@@ -999,7 +999,7 @@ public class Repository {
     //endregion
 
     //region addWallet
-    public void addWallet(MutableLiveData<AddWalletResponse> addWalletResponseMutableLiveData, AddWallet addWallet,Context context) {
+    public void addWallet(MutableLiveData<AddWalletResponse> addWalletResponseMutableLiveData, AddWallet addWallet, Context context) {
         getRetrofitClient().addWallet("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), addWallet).enqueue(new Callback<AddWalletResponse>() {
             @Override
             public void onResponse(Call<AddWalletResponse> call, Response<AddWalletResponse> response) {
@@ -1019,7 +1019,7 @@ public class Repository {
     //endregion
 
     //region addBank
-    public void addBank(MutableLiveData<AddBankResponse> addBankResponseMutableLiveData, AddBank addBank,Context context) {
+    public void addBank(MutableLiveData<AddBankResponse> addBankResponseMutableLiveData, AddBank addBank, Context context) {
         getRetrofitClient().addBank("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), addBank).enqueue(new Callback<AddBankResponse>() {
             @Override
             public void onResponse(Call<AddBankResponse> call, Response<AddBankResponse> response) {
@@ -1040,7 +1040,7 @@ public class Repository {
     //endregion
 
     //region deleteCardorWallet
-    public void deleteCardorWallet(MutableLiveData<DeleteBankResponse> deleteBankResponseMutableLiveData, DeleteCardorWallet deleteCardorWallet,Context context) {
+    public void deleteCardorWallet(MutableLiveData<DeleteBankResponse> deleteBankResponseMutableLiveData, DeleteCardorWallet deleteCardorWallet, Context context) {
         getRetrofitClient().deleteWalletorCard("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), deleteCardorWallet).enqueue(new Callback<DeleteBankResponse>() {
             @Override
             public void onResponse(Call<DeleteBankResponse> call, Response<DeleteBankResponse> response) {
@@ -1060,7 +1060,7 @@ public class Repository {
     //endregion
 
     //region getClientWalletDetail
-    public void getClientWalletDetails(MutableLiveData<ClientWalletDetailResponse> clientWalletDetailResponseMutableLiveData,Context context) {
+    public void getClientWalletDetails(MutableLiveData<ClientWalletDetailResponse> clientWalletDetailResponseMutableLiveData, Context context) {
         getRetrofitClient().getClientWalletDetails("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<ClientWalletDetailResponse>() {
             @Override
             public void onResponse(Call<ClientWalletDetailResponse> call, Response<ClientWalletDetailResponse> response) {
@@ -1080,7 +1080,7 @@ public class Repository {
     //endregion
 
     //region getClientBankDetail
-    public void getClientBankDetails(MutableLiveData<GetUserBankDetailResponse> getUserBankDetailResponseMutableLiveData,Context context) {
+    public void getClientBankDetails(MutableLiveData<GetUserBankDetailResponse> getUserBankDetailResponseMutableLiveData, Context context) {
         getRetrofitClient().getUserbankDetails("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<GetUserBankDetailResponse>() {
             @Override
             public void onResponse(Call<GetUserBankDetailResponse> call, Response<GetUserBankDetailResponse> response) {

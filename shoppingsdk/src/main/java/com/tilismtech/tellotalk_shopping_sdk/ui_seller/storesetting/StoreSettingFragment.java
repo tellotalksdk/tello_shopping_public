@@ -40,7 +40,7 @@ import java.util.List;
 
 public class StoreSettingFragment extends Fragment {
 
-    private ImageView ic_delete, ic_edit, addnewaddress, addbranchaddress, iv_top_image;
+    private ImageView ic_delete, ic_edit, addnewaddress, addbranchaddress, iv_top_image ;
     private EditText registeredShopNumber, et_street, et_city, et_province, et_country, et_shop_url;
     private LinearLayout addressRL;
     private RelativeLayout addedAddress;
@@ -71,7 +71,7 @@ public class StoreSettingFragment extends Fragment {
         branchIds = new ArrayList<>();
         GetShopDetail getShopDetail = new GetShopDetail();
         getShopDetail.setProfileId(Constant.PROFILE_ID);
-        storeSettingViewModel.postShopDetail(getShopDetail,getActivity());
+        storeSettingViewModel.postShopDetail(getShopDetail, getActivity());
         storeSettingViewModel.getShopDetail().observe(getActivity(), new Observer<GetShopDetailResponse>() {
             @Override
             public void onChanged(GetShopDetailResponse getShopDetailResponse) {
@@ -80,7 +80,12 @@ public class StoreSettingFragment extends Fragment {
                     et_shop_url.setText(getShopDetailResponse.getData().getRequestList().getShopURl());
                     shopId = getShopDetailResponse.getData().getRequestList().getShopId();
 
-                    Glide.with(getActivity()).load(getShopDetailResponse.getData().getRequestList().getShopProfile()).into(iv_top_image);
+                    if (getShopDetailResponse.getData().getRequestList().getShopProfile().equals("")) {
+                        iv_top_image.setImageDrawable(getResources().getDrawable(R.drawable.banner_img));
+                    } else {
+                        Glide.with(getActivity()).load(getShopDetailResponse.getData().getRequestList().getShopProfile()).placeholder(R.drawable.banner_img).into(iv_top_image);
+                    }
+
                     addMainBranchAddress(getShopDetailResponse.getData().getRequestList());
 
 
@@ -152,7 +157,7 @@ public class StoreSettingFragment extends Fragment {
                             addBranchAddress.setCountry(et_country.getText().toString());
                             addBranchAddress.setLine1(et_street.getText().toString());
 
-                            storeSettingViewModel.addBranchAddress(addBranchAddress,getActivity());
+                            storeSettingViewModel.addBranchAddress(addBranchAddress, getActivity());
                             storeSettingViewModel.getAddBranchAddress().observe(getActivity(), new Observer<AddBranchAddressResponse>() {
                                 @Override
                                 public void onChanged(AddBranchAddressResponse addBranchAddressResponse) {
@@ -234,7 +239,7 @@ public class StoreSettingFragment extends Fragment {
                                         deleteBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 2));
                                         deleteBranchAddress.setProfileId(Constant.PROFILE_ID);
 
-                                        storeSettingViewModel.deleteBranchAddress(deleteBranchAddress,getActivity());
+                                        storeSettingViewModel.deleteBranchAddress(deleteBranchAddress, getActivity());
                                         storeSettingViewModel.getDeleteBranchAddress().observe(getActivity(), new Observer<DeleteBranchAddressResponse>() {
                                             @Override
                                             public void onChanged(DeleteBranchAddressResponse deleteBranchAddressResponse) {
@@ -273,7 +278,7 @@ public class StoreSettingFragment extends Fragment {
                                 TextUtils.isEmpty(et_country.getText().toString())) {
                             Toast.makeText(getActivity(), "Some Fields are missing...", Toast.LENGTH_SHORT).show();
                         } else {
-                            storeSettingViewModel.updateBranchAddress(updateBranchAddress,getActivity());
+                            storeSettingViewModel.updateBranchAddress(updateBranchAddress, getActivity());
                             storeSettingViewModel.getUpdateBranchAddress().observe(getActivity(), new Observer<UpdateBranchAddressResponse>() {
                                 @Override
                                 public void onChanged(UpdateBranchAddressResponse updateBranchAddressResponse) {

@@ -43,7 +43,7 @@ public class BankSettingFragment extends Fragment {
     private RelativeLayout RL1, RL2, RL4;
     private LinearLayout RL3;
     private Button continue_btn_1, continue_btn_2, continue_btn_3, continue_btn_4, btn_wallet;
-    private ImageView iv_back, iv_back1;
+    private ImageView iv_back, iv_back1, iv_back_two;
     private boolean isbankClicked, iswalletClicked;
     private EditText account_title, account_number, account_title_wallet, account_mobile_number, account_cnic;
     private BankSettingViewModel bankSettingViewModel;
@@ -77,6 +77,7 @@ public class BankSettingFragment extends Fragment {
         spinner_bank_names = view.findViewById(R.id.spinner_bank_names);
         account_mobile_number = view.findViewById(R.id.account_mobile_number);
         spinner_wallet_names = view.findViewById(R.id.spinner_wallet_names);
+        iv_back_two = view.findViewById(R.id.iv_back_two);
         bankSettingViewModel = new ViewModelProvider(this).get(BankSettingViewModel.class);
         banks = new ArrayList<>();
         wallets = new ArrayList<>();
@@ -112,6 +113,16 @@ public class BankSettingFragment extends Fragment {
             public void onClick(View v) {
                 RL2.setVisibility(View.GONE);
                 RL1.setVisibility(View.VISIBLE);
+            }
+        });
+
+        iv_back_two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RL1.setVisibility(View.VISIBLE);
+                RL2.setVisibility(View.GONE);
+                RL3.setVisibility(View.GONE);
+                RL4.setVisibility(View.GONE);
             }
         });
 
@@ -203,7 +214,7 @@ public class BankSettingFragment extends Fragment {
                     RL3.setVisibility(View.VISIBLE);
                     RL4.setVisibility(View.GONE);
                 }
-                
+
             }
         });
 
@@ -229,6 +240,7 @@ public class BankSettingFragment extends Fragment {
                     addWallet.setAccountNumber(account_mobile_number.getText().toString());
                     addWallet.setCnic(account_cnic.getText().toString());
                     addWallet.setProfileId(Constant.PROFILE_ID);
+                    addWallet.setNameOfOwner(account_title_wallet.getText().toString());
                     bankSettingViewModel.addWalletDetails(addWallet, getActivity());
                     bankSettingViewModel.getWalletDetailResponse().observe(getActivity(), new Observer<AddWalletResponse>() {
                         @Override
@@ -319,7 +331,7 @@ public class BankSettingFragment extends Fragment {
                                 ImageView ic_delete = inflater.findViewById(R.id.ic_delete);
 
                                 name.setText(clientWalletDetailResponse.getData().getRequestList().get(i).getAccountFrom());
-                                title.setText(clientWalletDetailResponse.getData().getRequestList().get(i).getProfileId());
+                                title.setText(clientWalletDetailResponse.getData().getRequestList().get(i).getNameOfOwner());
                                 accountnumber.setText(clientWalletDetailResponse.getData().getRequestList().get(i).getAccountNumber());
 
                                 int finalI = i;

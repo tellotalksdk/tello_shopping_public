@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -64,10 +65,25 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.productcategory.setText(request.getProduct_Category_Name());
         holder.productTitle.setText(request.getTitle());
         holder.isActive.setChecked(request.getProductStatus().equals("Y") ? true : false);
+        holder.ratingBar.setRating(Float.parseFloat(request.getProductRating()));
 
-        if(String.valueOf(request.getDiscountPrice()).equals("0")){
+        double diff = request.getDiscountPrice().doubleValue() - request.getPrice().doubleValue();
+        double div = diff / request.getPrice().doubleValue();
+        double finalResult = div * 100;
+        // String.format("%.5f", b));
+        holder.discount_percentage.setText(String.valueOf(Integer.valueOf((int) finalResult) + "%"));
+
+      /*  if(Double.parseDouble(request.getProductRating() )== 0.0){
+            holder.ratingBar.setVisibility(View.GONE);
+        }else {
+            holder.ratingBar.setRating(Float.parseFloat(request.getProductRating()));
+        }*/
+
+        if (String.valueOf(request.getDiscountPrice()).equals("0")) {
             holder.originalprice.setVisibility(View.GONE);
             holder.discountedprice.setText(String.valueOf(request.getPrice()));
+            holder.discount_percentage.setVisibility(View.GONE);
+            holder.ic_label.setVisibility(View.GONE);
         }
 
         Glide.with(myCtx).
@@ -85,10 +101,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public class ProductItemVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView productTitle, originalprice, discountedprice, productcategory;
+        TextView productTitle, originalprice, discountedprice, productcategory, discount_percentage;
         Switch isActive;
-        ImageView productImage, open_edit_details, shareProductLink;
+        ImageView productImage, open_edit_details, shareProductLink , ic_label;
         CardView viewProductDetail;
+        RatingBar ratingBar;
         OnProductEditorClickDialog onProductEditorClickDialog;
 
         public ProductItemVH(@NonNull View itemView, OnProductEditorClickDialog onProductEditorClickDialog) {
@@ -103,10 +120,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             open_edit_details = itemView.findViewById(R.id.open_edit_details);
             viewProductDetail = itemView.findViewById(R.id.viewProductDetail);
             shareProductLink = itemView.findViewById(R.id.shareProductLink);
+            ic_label = itemView.findViewById(R.id.discountLabel);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
+            discount_percentage = itemView.findViewById(R.id.discount_percentage);
             this.onProductEditorClickDialog = onProductEditorClickDialog;
 
             shareProductLink.setOnClickListener(this);
             open_edit_details.setOnClickListener(this);
+            productImage.setOnClickListener(this);
             itemView.setOnClickListener(this);
             isActive.setOnClickListener(this);
             viewProductDetail.setOnClickListener(this);
@@ -118,7 +139,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId(), getAdapterPosition());
             } else if (v.getId() == R.id.isActive) {
                 this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(), isActive.isChecked());
-            } else if (v.getId() == R.id.viewProductDetail) {
+            } else if (v.getId() == R.id.productImage) {
                 this.onProductEditorClickDialog.onOpenProductDetailDialog(productList.get(getAdapterPosition()).getProductId());
             } else if (v.getId() == R.id.shareProductLink) {
                 this.onProductEditorClickDialog.onShareProductLink(productList.get(getAdapterPosition()).getProductLink());

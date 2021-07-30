@@ -121,6 +121,9 @@ public class ShopRegistrationFragment extends Fragment {
         Toast.makeText(getActivity(), "" + congrats, Toast.LENGTH_SHORT).show();
 */
 
+        userShopname.setText(TelloPreferenceManager.getInstance(getActivity()).getFirstName());
+
+
         mN = String.valueOf(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber());
 
         d1.setText(String.valueOf(mN.charAt(0)));
@@ -173,7 +176,7 @@ public class ShopRegistrationFragment extends Fragment {
                                 if ("-6".equals(shopRegisterResponse.getStatus())) {
                                     Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "" +/* shopRegisterResponse.getStatusDetail()*/ "OTP send successfully...", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
@@ -188,10 +191,12 @@ public class ShopRegistrationFragment extends Fragment {
         //endregion
 
         //region done_btn
+        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
         done_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkOTP()) {
+                    loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
                     shopRegistrationViewModel.verifyOTP(otp, getActivity());
                     shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
@@ -201,8 +206,10 @@ public class ShopRegistrationFragment extends Fragment {
                                 if (verifyOtpResponse.getStatus().equals("0")) {
                                     Toast.makeText(getActivity(), "OTP verified...", Toast.LENGTH_SHORT).show();
                                     //getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
+                                    loadingDialog.dismissDialog();
                                     navController.navigate(R.id.shopSettingFragment);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
+                                    loadingDialog.dismissDialog();
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                     navController.navigate(R.id.shopSettingFragment);
                                 }

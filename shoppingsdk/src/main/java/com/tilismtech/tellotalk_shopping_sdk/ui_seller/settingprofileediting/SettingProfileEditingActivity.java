@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
@@ -59,6 +60,8 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class SettingProfileEditingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,7 +69,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     NavHostFragment navHostFragment;
     NavController navController;
     View horizontalLine1, horizontalLine2, horizontalLine3;
-    TextView tv_storesettings, tv_bank, tv_personal, rating_number;
+    TextView tv_storesettings, tv_bank, tv_personal, rating_number, tv_edit;
     com.google.android.material.tabs.TabLayout tab1;
     ImageView iv_imageedit, iv_profile;
     ShopRegistrationViewModel shopRegistrationViewModel;
@@ -79,6 +82,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     EditText shopOwnername;
     NetworkReceiver networkReceiver;
     LoadingDialog loadingDialog1;
+    boolean toggle;
 
 
     @Override
@@ -101,6 +105,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         bankRL = findViewById(R.id.bankRL);
         shopOwnername = findViewById(R.id.user_name);
         rating_number = findViewById(R.id.rating_number);
+        tv_edit = findViewById(R.id.tv_edit);
 
         NoInternetDetection loadingDialog = new NoInternetDetection(this);
         networkReceiver = new NetworkReceiver(loadingDialog);
@@ -131,16 +136,32 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         tv_storesettings.setOnClickListener(this);
         storeSettingRL.setOnClickListener(this);
         bankRL.setOnClickListener(this);
-
         iv_imageedit = findViewById(R.id.iv_edit);
+
+        tv_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (toggle) {
+                    tv_edit.setVisibility(View.VISIBLE);
+                    iv_imageedit.setVisibility(View.GONE);
+                    toggle = false;
+                } else {
+                    tv_edit.setVisibility(View.GONE);
+                    iv_imageedit.setVisibility(View.VISIBLE);
+                    toggle = true;
+                }
+
+            }
+        });
+
+
         iv_imageedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
                 if (TextUtils.isEmpty(shopOwnername.getText().toString())) {
                     Toast.makeText(SettingProfileEditingActivity.this, "User name can not be empty...", Toast.LENGTH_SHORT).show();
                 } else {
-
-
 
 
                     UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
@@ -149,37 +170,41 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     updateUserAndImage.setLastName(" ");
                     updateUserAndImage.setProfileId(Constant.PROFILE_ID);
                     updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
+                    iv_imageedit.setVisibility(View.GONE);
+                    tv_edit.setVisibility(View.VISIBLE);
+                    toggle = true;
+
 
                     if (TextUtils.isEmpty(filePath)) { //run when only name is given........
-                        shopRegistrationViewModel.getUserName().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
-
 
                         shopRegistrationViewModel.userName(updateUserAndImage, SettingProfileEditingActivity.this);
                         shopRegistrationViewModel.getUserName().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
                             @Override
                             public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                                 if (updateUserAndImageResponse != null) {
-                                    // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
-
+                                    Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
                                 } else {
 
                                 }
+                                Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
                             }
+
                         });
                     } else {
-                        shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(SettingProfileEditingActivity.this); //need to remove observer here to stop multiple call of apis
-                        LoadingDialog loadingDialog = new LoadingDialog(SettingProfileEditingActivity.this);
-                        loadingDialog1.showDialog();
+
+
                         shopRegistrationViewModel.userImageandName(updateUserAndImage, SettingProfileEditingActivity.this);
                         shopRegistrationViewModel.getUpdateUserImageResponse().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
                             @Override
                             public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                                 if (updateUserAndImageResponse != null) {
-                                    // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+
+                                    Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
 
                                 } else {
 
                                 }
+                                Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
                             }
                         });
                     }
@@ -250,12 +275,29 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     if (shopOwnername.getText().toString().equals(" ")) {
                         shopOwnername.setHint("Your Name Required...");
                     }
-                    rating_number.setText(getShopDetailResponse.getData().getRequestList().getShopRating());
 
-                    Glide.with(SettingProfileEditingActivity.this).
+                    if(!getShopDetailResponse.getData().getRequestList().getShopRating().equals("")) {
+                        DecimalFormat df = new DecimalFormat("#.#");
+                        df.setRoundingMode(RoundingMode.CEILING);
+                        rating_number.setText(df.format(Double.parseDouble(getShopDetailResponse.getData().getRequestList().getShopRating())));
+                    }else
+                        rating_number.setText("No Rating");
+
+                    RequestOptions myOptions = new RequestOptions()
+                            .override(100, 100);
+
+                    Glide.with(SettingProfileEditingActivity.this)
+                            .asBitmap()
+                            .apply(myOptions)
+                            .placeholder(R.drawable.ic_avatar)
+                            .load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage())
+                            .into(iv_profile);
+
+                  /*  Glide.with(SettingProfileEditingActivity.this).
                             load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage()).
                             thumbnail(0.05f).
-                            into(iv_profile);
+                            placeholder(R.drawable.ic_avatar)
+                            .into(iv_profile);*/
 
                 }
             }
@@ -406,17 +448,17 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             filePath = getPath(SettingProfileEditingActivity.this, imageUri);
             Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
 
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
-                Uri selectedImage = data.getData();
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-                iv_profile.setImageBitmap(resized);
+            //  if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+            Uri selectedImage = data.getData();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+            iv_profile.setImageBitmap(resized);
+            // }
 
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
