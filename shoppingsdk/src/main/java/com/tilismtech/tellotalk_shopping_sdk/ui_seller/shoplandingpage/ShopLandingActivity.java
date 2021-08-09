@@ -94,6 +94,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private LinearLayout Lineartabbar;
     private HorizontalScrollView orderListtabbar;
     private LinearLayout LLtabbar;
+
     private RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
     private TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
     private TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
