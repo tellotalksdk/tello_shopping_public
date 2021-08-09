@@ -93,6 +93,7 @@ public class ShopRegistrationFragment extends Fragment {
     Dialog dialogImage;
     Uri imageUri;
     String filePath = "", otp, mN;
+    boolean toggle;
 
 
     @Override
@@ -1051,56 +1052,64 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //here we call api for set user name and image ...
-                if (TextUtils.isEmpty(userShopname.getText().toString())) {
-                    Toast.makeText(getActivity(), "User name can not be empty...", Toast.LENGTH_SHORT).show();
-                } else {
-                    UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
-                    updateUserAndImage.setFirstName(userShopname.getText().toString());
-                    updateUserAndImage.setMiddleName(" ");
-                    updateUserAndImage.setLastName(" ");
-                    updateUserAndImage.setProfileId(Constant.PROFILE_ID);
-                    updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
-                    shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(getViewLifecycleOwner()); //need to remove observer here to stop multiple call of apis
-                    LoadingDialog loadingDialog = new LoadingDialog(getActivity());
-                    loadingDialog.showDialog();
-                    shopRegistrationViewModel.userImageandName(updateUserAndImage, getActivity());
-                    shopRegistrationViewModel.getUpdateUserImageResponse().observe(getViewLifecycleOwner(), new Observer<UpdateUserAndImageResponse>() {
-                        @Override
-                        public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
-                            if (updateUserAndImageResponse != null) {
-                                // Toast.makeText(SettingProfileEditingActivity.this, updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
-                                loadingDialog.dismissDialog();
-                            } else {
-                                loadingDialog.dismissDialog();
-                            }
-                        }
-                    });
-                }
-     /*           LoadingDialog loadingDialog = new LoadingDialog(getActivity());
-                UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
-                if (TextUtils.isEmpty(userShopname.getText().toString())) {
-                    Toast.makeText(getActivity(), "Shop Owner Name Required...", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                updateUserAndImage.setFirstName(userShopname.getText().toString());
-                updateUserAndImage.setMiddleName(" ");
-                updateUserAndImage.setLastName(" ");
-                updateUserAndImage.setProfileId(Constant.PROFILE_ID);
-                updateUserAndImage.setProfilePic(filePath);
-                loadingDialog.showDialog();
-                shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(getActivity()); //need to remove observer here to stop multiple call of apis
-                shopRegistrationViewModel.userImageandName(updateUserAndImage);
-                shopRegistrationViewModel.getUpdateUserImageResponse().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
-                    @Override
-                    public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
-                        if (updateUserAndImageResponse != null) {
-                            loadingDialog.dismissDialog();
-                            Toast.makeText(getActivity(), "" + updateUserAndImageResponse.getStatusDetail(), Toast.LENGTH_SHORT);
+
+                if (toggle) {
+
+                    if (TextUtils.isEmpty(userShopname.getText().toString())) {
+                        Toast.makeText(getActivity(), "User name can not be empty...", Toast.LENGTH_SHORT).show();
+                    } else {
+
+
+                        UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
+                        updateUserAndImage.setFirstName(userShopname.getText().toString());
+                        updateUserAndImage.setMiddleName(" ");
+                        updateUserAndImage.setLastName(" ");
+                        updateUserAndImage.setProfileId(Constant.PROFILE_ID);
+                        updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
+
+
+                        if (TextUtils.isEmpty(filePath)) { //run when only name is given........
+
+                            shopRegistrationViewModel.userName(updateUserAndImage, getActivity());
+                            shopRegistrationViewModel.getUserName().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
+                                @Override
+                                public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                                    if (updateUserAndImageResponse != null) {
+                                        Toast.makeText(getActivity(), "Profile Updated Successfully...", Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                    }
+                                }
+
+                            });
                         } else {
-                            loadingDialog.dismissDialog();
+                            shopRegistrationViewModel.userImageandName(updateUserAndImage, getActivity());
+                            shopRegistrationViewModel.getUpdateUserImageResponse().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
+                                @Override
+                                public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                                    if (updateUserAndImageResponse != null) {
+                                        Toast.makeText(getActivity(), "Profile Updated Successfully...", Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                    }
+                                }
+                            });
                         }
+
+
+                        userShopname.setEnabled(false);
+                        iv_user_image.setEnabled(false);
+                        iv_user_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit_three));
+                        toggle = false;
                     }
-                });*/
+                } else {
+                    userShopname.setEnabled(true);
+                    iv_user_image.setEnabled(true);
+                    iv_user_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit));
+                    toggle = true;
+                }
+
+
             }
         });
         //endregion
@@ -1124,7 +1133,9 @@ public class ShopRegistrationFragment extends Fragment {
         });
         //endregion
 
-        Utility.hideKeyboard(getActivity(), view);
+        Utility.hideKeyboard(
+
+                getActivity(), view);
     }
 
     private void checkPermissions() {
@@ -1295,7 +1306,7 @@ public class ShopRegistrationFragment extends Fragment {
         iv_editImage = view.findViewById(R.id.iv_editImage);
         userShopname = view.findViewById(R.id.userShopname);
         spinner_operator = view.findViewById(R.id.spinner_operator);
-        iv_user_image = view.findViewById(R.id.iv_user_image);
+        iv_user_image = view.findViewById(R.id.profileImage);
         termOfUse = view.findViewById(R.id.toc);
         termOfUse.setPaintFlags(termOfUse.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -1311,6 +1322,8 @@ public class ShopRegistrationFragment extends Fragment {
         d10 = view.findViewById(R.id.d10);
         d11 = view.findViewById(R.id.d11);
 
+        userShopname.setEnabled(false);
+        iv_user_image.setEnabled(false);
 
     }
 
@@ -1404,7 +1417,8 @@ public class ShopRegistrationFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1: //pick and set image from gallery

@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:hint="mobile number"
-        android:text="03350221182" />
+        android:text="03334545621" />
 
 
     <EditText
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:hint="profile id"
-        android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A99" />
+        android:text="03334545621" />
 
 
     <Button

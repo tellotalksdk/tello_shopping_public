@@ -158,7 +158,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         iv_imageedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
+
                 if (TextUtils.isEmpty(shopOwnername.getText().toString())) {
                     Toast.makeText(SettingProfileEditingActivity.this, "User name can not be empty...", Toast.LENGTH_SHORT).show();
                 } else {
@@ -276,11 +276,11 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                         shopOwnername.setHint("Your Name Required...");
                     }
 
-                    if(!getShopDetailResponse.getData().getRequestList().getShopRating().equals("")) {
+                    if (!getShopDetailResponse.getData().getRequestList().getShopRating().equals("")) {
                         DecimalFormat df = new DecimalFormat("#.#");
                         df.setRoundingMode(RoundingMode.CEILING);
                         rating_number.setText(df.format(Double.parseDouble(getShopDetailResponse.getData().getRequestList().getShopRating())));
-                    }else
+                    } else
                         rating_number.setText("No Rating");
 
                     RequestOptions myOptions = new RequestOptions()

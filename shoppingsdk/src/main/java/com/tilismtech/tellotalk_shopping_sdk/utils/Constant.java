@@ -5,8 +5,8 @@ import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 
 public class Constant {
 
-   //  public static String BASE_URL = "https://www.tilismtechservices.com/ShoppingSDK_staging/";
-    public static String BASE_URL = "http://172.16.10.52/abc/"; //ye waley url sy images upload honey ky baad show nahy hoty
+     public static String BASE_URL = "https://www.tilismtechservices.com/ShoppingSDK_staging/";
+ //  public static String BASE_URL = "http://172.16.10.52/abc/"; //ye waley url sy images upload honey ky baad show nahy hoty
 
     public static String PROFILE_ID = TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getProfileId();
     public static String CONTACT_NUMBER = TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber();
