@@ -99,6 +99,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         loadingDialog1 = new LoadingDialog(SettingProfileEditingActivity.this);
+       getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         personalInfoRL = findViewById(R.id.personalInfoRL);
         storeSettingRL = findViewById(R.id.storeSettingRL);

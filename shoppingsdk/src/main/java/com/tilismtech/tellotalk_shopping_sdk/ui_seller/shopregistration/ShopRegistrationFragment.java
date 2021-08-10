@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +42,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -94,6 +97,7 @@ public class ShopRegistrationFragment extends Fragment {
     Uri imageUri;
     String filePath = "", otp, mN;
     boolean toggle;
+    ScrollView scrollView;
 
 
     @Override
@@ -112,7 +116,7 @@ public class ShopRegistrationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initViews(view);
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
         // Toast.makeText(getActivity(), "number" +  TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber(), Toast.LENGTH_SHORT).show();
@@ -199,6 +203,7 @@ public class ShopRegistrationFragment extends Fragment {
                 if (checkOTP()) {
                     loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
+                    done_btn.setEnabled(false);
                     shopRegistrationViewModel.verifyOTP(otp, getActivity());
                     shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
                         @Override
@@ -209,10 +214,12 @@ public class ShopRegistrationFragment extends Fragment {
                                     //getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                                     loadingDialog.dismissDialog();
                                     navController.navigate(R.id.shopSettingFragment);
+                                    done_btn.setEnabled(true);
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     loadingDialog.dismissDialog();
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                     navController.navigate(R.id.shopSettingFragment);
+                                    done_btn.setEnabled(true);
                                 }
                             }
                         }
@@ -1099,13 +1106,17 @@ public class ShopRegistrationFragment extends Fragment {
 
                         userShopname.setEnabled(false);
                         iv_user_image.setEnabled(false);
-                        iv_user_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit_three));
+                        iv_editImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit_three));
+                        userShopname.setTextColor(getResources().getColor(R.color.disable_textfield));
+                        ImageViewCompat.setImageTintList(iv_user_image, ColorStateList.valueOf(getResources().getColor(R.color.disable_textfield)));
                         toggle = false;
                     }
                 } else {
                     userShopname.setEnabled(true);
                     iv_user_image.setEnabled(true);
-                    iv_user_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit));
+                    iv_editImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit));
+                    userShopname.setTextColor(getResources().getColor(R.color.enable_textfield));
+                    ImageViewCompat.setImageTintList(iv_user_image, ColorStateList.valueOf(getResources().getColor(R.color.enable_textfield)));
                     toggle = true;
                 }
 
@@ -1133,9 +1144,14 @@ public class ShopRegistrationFragment extends Fragment {
         });
         //endregion
 
-        Utility.hideKeyboard(
+        Utility.hideKeyboard(getActivity(), view);
 
-                getActivity(), view);
+        termOfUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "url not available", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void checkPermissions() {
@@ -1309,6 +1325,9 @@ public class ShopRegistrationFragment extends Fragment {
         iv_user_image = view.findViewById(R.id.profileImage);
         termOfUse = view.findViewById(R.id.toc);
         termOfUse.setPaintFlags(termOfUse.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        scrollView = view.findViewById(R.id.scrollView);
+        scrollView.requestFocus();
+
 
         d1 = view.findViewById(R.id.d1);
         d2 = view.findViewById(R.id.d2);

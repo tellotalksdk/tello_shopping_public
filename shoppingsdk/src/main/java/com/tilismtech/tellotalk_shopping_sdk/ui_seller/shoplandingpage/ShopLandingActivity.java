@@ -94,7 +94,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private LinearLayout Lineartabbar;
     private HorizontalScrollView orderListtabbar;
     private LinearLayout LLtabbar;
-
+    private int fillCount;
     private RelativeLayout received, accepted, dispatched, delivered, paid, cancel, all;
     private TextView deliveryStatus, number, deliveryStatus1, number1, deliveryStatus2, number2, deliveryStatus3, number3;
     private TextView deliveryStatus4, number4, deliveryStatus5, number5, deliveryStatus6, number6;
@@ -345,7 +345,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                             Linkify.addLinks(et_VideoUrl, Linkify.ALL);
                             LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
                             loadingDialog.showDialog();
-                            shopLandingPageViewModel.addNewProduct(addNewProduct,ShopLandingActivity.this);
+                            shopLandingPageViewModel.addNewProduct(addNewProduct, ShopLandingActivity.this);
                             shopLandingPageViewModel.getNewProduct().removeObservers(ShopLandingActivity.this);
                             shopLandingPageViewModel.getNewProduct().observe(ShopLandingActivity.this, new Observer<AddNewProductResponse>() {
                                 @Override
@@ -477,7 +477,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
 
@@ -485,7 +484,62 @@ public class ShopLandingActivity extends AppCompatActivity {
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // orderListtabbar.setVisibility(View.GONE);
+
+                LLtabbar.setVisibility(View.VISIBLE);
+
+                productList.setTextColor(Color.BLACK);
+                productList.setBackgroundColor(Color.TRANSPARENT);
+
+                orderList.setTextColor(Color.BLACK);
+                orderList.setBackgroundColor(Color.TRANSPARENT);
+
+                chat.setTextColor(Color.WHITE);
+                chat.setBackground(getResources().getDrawable(R.drawable.bg_text_right_rounded));
+
+                Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
+
+                //addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+                //setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+
+                addProduct.setVisibility(View.GONE);
+                setting.setVisibility(View.GONE);
+                LL1.setVisibility(View.VISIBLE);
+                tv_addproducts.setVisibility(View.GONE);
+
+                if (!simpleSearchView.isIconified()) {
+                    simpleSearchView.setIconified(true);
+                }
+
+
+                switch (currentTab) {
+                    case RECEIVED:
+                        navController.navigate(R.id.receivedFragment);
+                        break;
+                    case ACCEPTED:
+                        navController.navigate(R.id.acceptedFragment);
+                        break;
+                    case DISPATCHED:
+                        navController.navigate(R.id.dispatchedFragment);
+                        break;
+                    case DELIVERED:
+                        navController.navigate(R.id.deliveredFragment);
+                        break;
+                    case PAID:
+                        navController.navigate(R.id.paidFragment);
+                        break;
+                    case CANCEL:
+                        navController.navigate(R.id.cancelledFragment);
+                        break;
+                    case ALL:
+                        navController.navigate(R.id.allFragment);
+                        break;
+                }
+
+
+
+
+                //chat work which will done later....
+                /*        // orderListtabbar.setVisibility(View.GONE);
                 LLtabbar.setVisibility(View.GONE);
 
                 productList.setTextColor(Color.BLACK);
@@ -499,9 +553,9 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                 Lineartabbar.setBackground(getResources().getDrawable(R.drawable.bg_tab));
 
-             /*   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+             *//*   addProduct.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
                 setting.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
-*/
+*//*
 
                 addProduct.setVisibility(View.GONE);
                 setting.setVisibility(View.GONE);
@@ -512,8 +566,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                     simpleSearchView.setIconified(true);
                 }
 
-              //  currentTab = CurrentTab.CHAT;
-                navController.navigate(R.id.chat);
+                //  currentTab = CurrentTab.CHAT;
+                navController.navigate(R.id.chat);*/
             }
         });
 
@@ -983,7 +1037,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         SubCategoryBYParentCatID subCategoryBYParentCatID = new SubCategoryBYParentCatID();
         subCategoryBYParentCatID.setParentCategoryId(id);
 
-        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID,ShopLandingActivity.this);
+        shopLandingPageViewModel.childCategoryByParentId(subCategoryBYParentCatID, ShopLandingActivity.this);
         shopLandingPageViewModel.getChildCategories().observe(this, new Observer<SubCategoryBYParentCatIDResponse>() {
             @Override
             public void onChanged(SubCategoryBYParentCatIDResponse subCategoryBYParentCatIDResponse) {
@@ -1056,7 +1110,7 @@ public class ShopLandingActivity extends AppCompatActivity {
             if (buttonView.getId() == isActiveproduct.getId()) {
                 isActiveproduct.setChecked(isChecked);
                 productStatus = isActiveproduct.isChecked() ? "Y" : "N";
-                Toast.makeText(ShopLandingActivity.this, "" + isChecked, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ShopLandingActivity.this, "" + isChecked, Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -1127,7 +1181,12 @@ public class ShopLandingActivity extends AppCompatActivity {
                     }
                 }*/ else {
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    for (int i = 0; i < count; i++) {
+
+                    if(count > 5 ){
+                         fillCount = 5;
+                    }
+
+                    for (int i = 0; i < fillCount ; i++) {
                         View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                         iv = inflater.findViewById(R.id.iv);
                         imageUri = data.getClipData().getItemAt(i).getUri();
@@ -1139,7 +1198,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                         LLimages.addView(inflater);
                     }
                 }
-
 
             } else if (data.getData() != null) {
                 //  String imagePath = data.getData().getPath();

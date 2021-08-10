@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="enable_textfield">#3114AE</color>
+    <color name="enable_image">#3114AE</color>
+    <color name="disable_textfield">#004D40</color>
+    <color name="disable_image">#004D40</color>
+</resources>
