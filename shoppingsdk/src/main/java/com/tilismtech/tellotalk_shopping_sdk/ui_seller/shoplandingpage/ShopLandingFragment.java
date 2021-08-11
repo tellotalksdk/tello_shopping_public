@@ -695,7 +695,17 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     filepath = getImagePath(imageUri);
                     Log.i("TAG", "onActivityResult: " + filepath);
                     filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
-                    iv.setImageURI(imageUri);
+                    //  iv.setImageURI(imageUri);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                    iv.setImageBitmap(resized);
+
+
                     LLimages.addView(inflater);
                 }
 
@@ -710,7 +720,17 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 ImageView iv = inflater.findViewById(R.id.iv);
                 filepath = getImagePath(imageUri);
                 filePaths.add(filepath);
-                iv.setImageURI(imageUri);
+                //  iv.setImageURI(imageUri);
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                iv.setImageBitmap(resized);
+
                 LLimages.addView(inflater);
             }
         }
@@ -922,7 +942,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         if ((et_VideoUrl.getText().toString().contains("www.youtube.com") && !document.equals("")) || TextUtils.isEmpty(et_VideoUrl.getText().toString())) {
                             UpdateProduct updateProduct = new UpdateProduct();
                             updateProduct.setTitle(productName.getText().toString());
-                            updateProduct.setDiscountPrice(!TextUtils.isEmpty(discountedPrice.getText().toString()) ? discountedPrice.getText().toString()  : "0");
+                            updateProduct.setDiscountPrice(!TextUtils.isEmpty(discountedPrice.getText().toString()) ? discountedPrice.getText().toString() : "0");
                             updateProduct.setPrice(originalPrice.getText().toString());
                             updateProduct.setProductId(String.valueOf(productID));
                             updateProduct.setProfileId(Constant.PROFILE_ID);

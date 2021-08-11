@@ -27,10 +27,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -79,10 +81,10 @@ public class ShopRegistrationFragment extends Fragment {
     private final static int CAPTURE_IMAGE = 456;
     int counter = 0;
     Button requestforPin;
-    Button requestAgain, done_btn;
+    Button requestAgain, done_btn, done_btn1;
     String mobileNumber;
     NavController navController;
-    RelativeLayout RL;
+    RelativeLayout RL, RLpin;
     ImageView iv_back, iv_editImage, iv_user_image;
     TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown, termOfUse;
     EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
@@ -95,9 +97,10 @@ public class ShopRegistrationFragment extends Fragment {
     boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11, isOTP_one, isOTP_two, isOTP_three;
     Dialog dialogImage;
     Uri imageUri;
-    String filePath = "", otp, mN;
+    String filePath = "", otp, mN, operator;
     boolean toggle;
     ScrollView scrollView;
+    LinearLayout LL3, term;
 
 
     @Override
@@ -119,15 +122,8 @@ public class ShopRegistrationFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initViews(view);
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
-        // Toast.makeText(getActivity(), "number" +  TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber(), Toast.LENGTH_SHORT).show();
-
-    /*    Intent intent = getActivity().getIntent();
-        boolean congrats = intent.getBooleanExtra("congrats_dialog_to_show", false);
-        Toast.makeText(getActivity(), "" + congrats, Toast.LENGTH_SHORT).show();
-*/
 
         userShopname.setText(TelloPreferenceManager.getInstance(getActivity()).getFirstName());
-
 
         mN = String.valueOf(TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).getRegisteredNumber());
 
@@ -145,49 +141,130 @@ public class ShopRegistrationFragment extends Fragment {
         mobileNumberReflection = new StringBuilder("92 " + mN.charAt(1) + mN.charAt(2) + mN.charAt(3) + " " + mN.charAt(4) + mN.charAt(5) + mN.charAt(6) + " " + mN.charAt(7) + mN.charAt(8) + mN.charAt(9) + mN.charAt(10));
         // mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
 
+        spinner_operator.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getId() == R.id.spinner_operator) {
+                    operator = (String) parent.getItemAtPosition(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //region requestforpin
         requestforPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkValidation()) {
-                    RL.setVisibility(View.VISIBLE);
-                    requestforPin.setVisibility(View.GONE);
-                    requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
-                    requestAgain.setTextColor(Color.BLACK);
-                    requestAgain.setClickable(false);
-                    startCountDown();
-                    counter++;
-                    TelloPreferenceManager.getInstance(TelloApplication.getInstance().getContext()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
+
+                    if (operator.equals("Select")) {
+                        Toast.makeText(getActivity(), "Select your relevant operator...", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     //this will collect all digits from number fields...
                     mobileNumber = d1.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
+                    if (correctMobile(mobileNumber)) {
+                        Toast.makeText(getActivity(), "Mobile Number is invalid...", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
+                    if (mobileNumber.equals(TelloPreferenceManager.getInstance(getActivity()).getProfileId())) { //mean its a tello user no need for otp verification
+                        RL.setVisibility(View.VISIBLE);
+                        requestforPin.setVisibility(View.GONE);
+                        requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
+                        requestAgain.setTextColor(Color.BLACK);
+                        requestAgain.setClickable(false);
+                        startCountDown();
+                        counter++;
+                        countDown.setVisibility(View.INVISIBLE);
+                        requestAgain.setVisibility(View.INVISIBLE);
+                        RLpin.setVisibility(View.INVISIBLE);
+                        LL3.setVisibility(View.INVISIBLE);
+                        term.setVisibility(View.VISIBLE);
+                        done_btn1.setVisibility(View.VISIBLE);
 
-                    ShopRegister shopRegister = new ShopRegister();
-                    shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
-                    shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
-                    shopRegister.setRegisterPhone(mobileNumber.toString().trim());
-                    // shopRegister.setRegisterPhone("03330347473");
-                    shopRegister.setEmail("sharjeel@gmail.com");
-                    shopRegister.setShopCategoryId("1");
-                    shopRegister.setShopDescription("shopTesting");
-                    shopRegister.setShopName(et_shop_name.getText().toString());
 
-                    shopRegistrationViewModel.postShopRegister(shopRegister);
-                    shopRegistrationViewModel.getShopResponse().observe(getViewLifecycleOwner(), new Observer<ShopRegisterResponse>() {
-                        @Override
-                        public void onChanged(ShopRegisterResponse shopRegisterResponse) {
-                            if (shopRegisterResponse != null) {
-                                if ("-6".equals(shopRegisterResponse.getStatus())) {
-                                    Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                        TelloPreferenceManager.getInstance(getActivity()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
+
+                        ShopRegister shopRegister = new ShopRegister();
+                        shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
+                        shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
+                        shopRegister.setRegisterPhone(mobileNumber.toString().trim());
+                        // shopRegister.setRegisterPhone("03330347473");
+                        shopRegister.setEmail("sharjeel@gmail.com");
+                        shopRegister.setShopCategoryId("1");
+                        shopRegister.setShopDescription("shopTesting");
+                        shopRegister.setShopName(et_shop_name.getText().toString());
+
+                        shopRegistrationViewModel.postShopRegister(shopRegister);
+                        shopRegistrationViewModel.getShopResponse().observe(getViewLifecycleOwner(), new Observer<ShopRegisterResponse>() {
+                            @Override
+                            public void onChanged(ShopRegisterResponse shopRegisterResponse) {
+                                if (shopRegisterResponse != null) {
+                                    if ("-6".equals(shopRegisterResponse.getStatus())) {
+                                        //   Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        //   Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail() + "OTP send successfully...", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
-                                    Toast.makeText(getActivity(), "" +/* shopRegisterResponse.getStatusDetail()*/ "OTP send successfully...", Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    });
+                        });
+
+
+                    } else { //mean its not tello user show otp layout
+                        RL.setVisibility(View.VISIBLE);
+                        requestforPin.setVisibility(View.GONE);
+                        requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
+                        requestAgain.setTextColor(Color.BLACK);
+                        requestAgain.setClickable(false);
+                        startCountDown();
+                        counter++;
+
+                        countDown.setVisibility(View.VISIBLE);
+                        requestAgain.setVisibility(View.VISIBLE);
+                        RLpin.setVisibility(View.VISIBLE);
+                        LL3.setVisibility(View.VISIBLE);
+                        term.setVisibility(View.VISIBLE);
+
+                        done_btn1.setVisibility(View.GONE);
+
+                        TelloPreferenceManager.getInstance(getActivity()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
+
+
+                        ShopRegister shopRegister = new ShopRegister();
+                        shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
+                        shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
+                        shopRegister.setRegisterPhone(mobileNumber.toString().trim());
+                        // shopRegister.setRegisterPhone("03330347473");
+                        shopRegister.setEmail("sharjeel@gmail.com");
+                        shopRegister.setShopCategoryId("1");
+                        shopRegister.setShopDescription("shopTesting");
+                        shopRegister.setShopName(et_shop_name.getText().toString());
+
+                        shopRegistrationViewModel.postShopRegister(shopRegister);
+                        shopRegistrationViewModel.getShopResponse().observe(getViewLifecycleOwner(), new Observer<ShopRegisterResponse>() {
+                            @Override
+                            public void onChanged(ShopRegisterResponse shopRegisterResponse) {
+                                if (shopRegisterResponse != null) {
+                                    if ("-6".equals(shopRegisterResponse.getStatus())) {
+                                        Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), "" +/* shopRegisterResponse.getStatusDetail()*/ "OTP send successfully...", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    }
 
                 }
                 Utility.hideKeyboard(getActivity(), v);
@@ -203,7 +280,7 @@ public class ShopRegistrationFragment extends Fragment {
                 if (checkOTP()) {
                     loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
-                    done_btn.setEnabled(false);
+
                     shopRegistrationViewModel.verifyOTP(otp, getActivity());
                     shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
                         @Override
@@ -214,12 +291,12 @@ public class ShopRegistrationFragment extends Fragment {
                                     //getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                                     loadingDialog.dismissDialog();
                                     navController.navigate(R.id.shopSettingFragment);
-                                    done_btn.setEnabled(true);
+
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     loadingDialog.dismissDialog();
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                     navController.navigate(R.id.shopSettingFragment);
-                                    done_btn.setEnabled(true);
+
                                 }
                             }
                         }
@@ -227,6 +304,15 @@ public class ShopRegistrationFragment extends Fragment {
                     // getActivity().startActivity(new Intent(getActivity(), ShopLandingActivity.class));
                     // navController.navigate(R.id.shopSettingFragment);
                 }
+            }
+        });
+        //endregion
+
+        //region done_btn_for_tello_same_number
+        done_btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.shopSettingFragment);
             }
         });
         //endregion
@@ -1154,6 +1240,26 @@ public class ShopRegistrationFragment extends Fragment {
         });
     }
 
+    private boolean correctMobile(String mobileNumber) {
+
+        if (mobileNumber.indexOf(0) != '0') {
+            return false;
+        }
+
+        if (mobileNumber.indexOf(1) != '0' ||
+                mobileNumber.indexOf(1) != '1' ||
+                mobileNumber.indexOf(1) != '2' ||
+                mobileNumber.indexOf(1) != '3' ||
+                mobileNumber.indexOf(1) != '4'
+
+        ) {
+            return false;
+        }
+
+
+        return true;
+    }
+
     private void checkPermissions() {
         dialogImage = new Dialog(getActivity());
         dialogImage.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1327,6 +1433,10 @@ public class ShopRegistrationFragment extends Fragment {
         termOfUse.setPaintFlags(termOfUse.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         scrollView = view.findViewById(R.id.scrollView);
         scrollView.requestFocus();
+        RLpin = view.findViewById(R.id.RLpin);
+        LL3 = view.findViewById(R.id.LL3);
+        term = view.findViewById(R.id.term);
+        done_btn1 = view.findViewById(R.id.done_btn1);
 
 
         d1 = view.findViewById(R.id.d1);

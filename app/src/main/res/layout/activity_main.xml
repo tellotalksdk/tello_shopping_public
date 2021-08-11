@@ -3,24 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@drawable/bg_rounded_white_et"
-    android:padding="20dp"
+    android:gravity="center"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
     <com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress
-        android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
+        android:layout_height="wrap_content"
+        android:visibility="gone"></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
 
     <EditText
-        android:layout_marginTop="-150dp"
         android:id="@+id/fName"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:text="sharjeel"
-        android:hint="first Name" />
+        android:layout_marginTop="-150dp"
+        android:hint="first Name"
+        android:text="sharjeel" />
 
 
     <EditText
@@ -42,7 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:hint="mobile number"
-        android:text="03350221182" />
+        android:inputType="number"
+        android:text="923336699881" />
 
 
     <EditText
@@ -50,14 +51,15 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:hint="profile id"
-        android:text="3F64D77CB1BA4A3CA6CF9B9D786D4A99" />
+        android:text=""
+        android:visibility="gone" />
 
 
     <Button
         android:id="@+id/button"
-        android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:text="Getting Started Seller" />
 
     <Button
@@ -65,13 +67,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Getting Started Client"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
 </LinearLayout>

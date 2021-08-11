@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
-import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
-import com.tilismtech.tellotalk_shopping_sdk.ui_client.pojo.ShopItems;
+import com.tilismtech.tellotalk_shopping_sdk.ui_client.pojo_client.ShopItems;
 
 import java.util.List;
 

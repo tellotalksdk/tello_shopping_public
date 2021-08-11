@@ -1,8 +1,15 @@
-package com.tilismtech.tellotalk_shopping_sdk.ui_client.pojo;
+package com.tilismtech.tellotalk_shopping_sdk.ui_client.pojo_client;
 
 public class ShopItems {
-    private String productTitle, productDescription, categoryName, originalPrice, discountedPrice;
+    private String productTitle, productDescription, categoryName, originalPrice, discountedPrice, shareableLink;
 
+    public String getShareableLink() {
+        return shareableLink;
+    }
+
+    public void setShareableLink(String shareableLink) {
+        this.shareableLink = shareableLink;
+    }
 
     public ShopItems(String productTitle, String productDescription, String categoryName, String originalPrice, String discountedPrice) {
         this.productTitle = productTitle;

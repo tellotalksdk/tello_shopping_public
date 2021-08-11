@@ -76,6 +76,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndIma
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.ui_client.pojo_client.response.AllCatList_UnderShop;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import org.json.JSONException;
@@ -1139,5 +1140,28 @@ public class Repository {
     }
     //endregion
 
+
+    //Client Side API started....
+
+    public void getAllCategoryList_UnderShop(String ShopId, MutableLiveData<AllCatList_UnderShop> allCatList_underShopMutableLiveData, Context context) {
+        getRetrofitClient().getAllCategoryList_UnderShop(ShopId).enqueue(new Callback<AllCatList_UnderShop>() {
+            @Override
+            public void onResponse(Call<AllCatList_UnderShop> call, Response<AllCatList_UnderShop> response) {
+                if (response != null) {
+                    if (response.isSuccessful()) {
+                        allCatList_underShopMutableLiveData.setValue(response.body());
+                    }
+                } else {
+                    allCatList_underShopMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllCatList_UnderShop> call, Throwable t) {
+                t.printStackTrace();
+                allCatList_underShopMutableLiveData.setValue(null);
+            }
+        });
+    }
 
 }

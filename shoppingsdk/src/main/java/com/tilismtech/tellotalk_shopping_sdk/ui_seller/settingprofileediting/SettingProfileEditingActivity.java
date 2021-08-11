@@ -99,7 +99,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         loadingDialog1 = new LoadingDialog(SettingProfileEditingActivity.this);
-       getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         personalInfoRL = findViewById(R.id.personalInfoRL);
         storeSettingRL = findViewById(R.id.storeSettingRL);
@@ -107,6 +107,10 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         shopOwnername = findViewById(R.id.user_name);
         rating_number = findViewById(R.id.rating_number);
         tv_edit = findViewById(R.id.tv_edit);
+        iv_profile = findViewById(R.id.iv_profile);
+
+        shopOwnername.setEnabled(false);
+        iv_profile.setEnabled(false);
 
         NoInternetDetection loadingDialog = new NoInternetDetection(this);
         networkReceiver = new NetworkReceiver(loadingDialog);
@@ -143,12 +147,68 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             @Override
             public void onClick(View v) {
                 if (toggle) {
+
+                    if (TextUtils.isEmpty(shopOwnername.getText().toString())) {
+                        Toast.makeText(SettingProfileEditingActivity.this, "User name can not be empty...", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+
+
+                        UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
+                        updateUserAndImage.setFirstName(shopOwnername.getText().toString());
+                        updateUserAndImage.setMiddleName(" ");
+                        updateUserAndImage.setLastName(" ");
+                        updateUserAndImage.setProfileId(Constant.PROFILE_ID);
+                        updateUserAndImage.setProfilePic(TextUtils.isEmpty(filePath) ? "" : filePath);
+                        iv_imageedit.setVisibility(View.GONE);
+                        tv_edit.setVisibility(View.VISIBLE);
+
+
+                        if (TextUtils.isEmpty(filePath)) { //run when only name is given........
+
+                            shopRegistrationViewModel.userName(updateUserAndImage, SettingProfileEditingActivity.this);
+                            shopRegistrationViewModel.getUserName().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
+                                @Override
+                                public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                                    if (updateUserAndImageResponse != null) {
+                                        Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                    }
+                                }
+                            });
+                        } else {
+
+
+                            shopRegistrationViewModel.userImageandName(updateUserAndImage, SettingProfileEditingActivity.this);
+                            shopRegistrationViewModel.getUpdateUserImageResponse().observe(SettingProfileEditingActivity.this, new Observer<UpdateUserAndImageResponse>() {
+                                @Override
+                                public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
+                                    if (updateUserAndImageResponse != null) {
+                                        Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                    }
+                                }
+                            });
+                        }
+
+
+                    }
+
+
                     tv_edit.setVisibility(View.VISIBLE);
                     iv_imageedit.setVisibility(View.GONE);
+                    shopOwnername.setEnabled(false);
+                    iv_profile.setEnabled(false);
+                    tv_edit.setText("Edit");
                     toggle = false;
                 } else {
-                    tv_edit.setVisibility(View.GONE);
-                    iv_imageedit.setVisibility(View.VISIBLE);
+                    tv_edit.setVisibility(View.VISIBLE);
+                    iv_imageedit.setVisibility(View.GONE);
+                    shopOwnername.setEnabled(true);
+                    iv_profile.setEnabled(true);
+                    tv_edit.setText("Save");
                     toggle = true;
                 }
 
@@ -160,8 +220,9 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             @Override
             public void onClick(View v) {
 
-                if (TextUtils.isEmpty(shopOwnername.getText().toString())) {
+             /*   if (TextUtils.isEmpty(shopOwnername.getText().toString())) {
                     Toast.makeText(SettingProfileEditingActivity.this, "User name can not be empty...", Toast.LENGTH_SHORT).show();
+                    return;
                 } else {
 
 
@@ -183,13 +244,11 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                             @Override
                             public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                                 if (updateUserAndImageResponse != null) {
-                                    Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
+                                    Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT).show();
                                 } else {
 
                                 }
-                                Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
                             }
-
                         });
                     } else {
 
@@ -199,23 +258,19 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                             @Override
                             public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                                 if (updateUserAndImageResponse != null) {
-
-                                    Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
-
+                                    Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT).show();
                                 } else {
 
                                 }
-                                Toast.makeText(SettingProfileEditingActivity.this, "Profile updated successfully...", Toast.LENGTH_SHORT);
                             }
                         });
                     }
 
 
-                }
+                }*/
             }
         });
 
-        iv_profile = findViewById(R.id.iv_profile);
         iv_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

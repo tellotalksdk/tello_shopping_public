@@ -40,7 +40,7 @@ public class OrderListViewModel extends ViewModel {
 
     //viewFullOrder apis
     public void viewFullOrder(ViewFullOrder viewFullOrder, Context context) {
-        repository.viewFullOrder(viewFullOrderResponseMutableLiveData, viewFullOrder,context);
+        repository.viewFullOrder(viewFullOrderResponseMutableLiveData, viewFullOrder, context);
     }
 
     public MutableLiveData<ViewFullOrderResponse> getViewFullOrderResponse() {
@@ -48,8 +48,8 @@ public class OrderListViewModel extends ViewModel {
     }
 
     //updateRider Info apis
-    public void updateRiderInfo(UpdateRiderInfo updateRiderInfo,Context context) {
-        repository.updateRiderInfo(updateRiderInfoResponseMutableLiveData, updateRiderInfo,context);
+    public void updateRiderInfo(UpdateRiderInfo updateRiderInfo, Context context) {
+        repository.updateRiderInfo(updateRiderInfoResponseMutableLiveData, updateRiderInfo, context);
     }
 
     public MutableLiveData<UpdateRiderInfoResponse> getupdateRiderInfoResponse() {
@@ -57,8 +57,8 @@ public class OrderListViewModel extends ViewModel {
     }
 
     //order By Status
-    public void orderByStatus(OrderByStatus order,Context context) {
-        repository.getOrderbyStatus(getOrderByStatusResponseMutableLiveData, order,context);
+    public void orderByStatus(OrderByStatus order, Context context) {
+        repository.getOrderbyStatus(getOrderByStatusResponseMutableLiveData, order, context);
     }
 
     public MutableLiveData<GetOrderByStatusResponse> getOrderByStatusResponse() {
@@ -66,8 +66,8 @@ public class OrderListViewModel extends ViewModel {
     }
 
     //update Order Status -- move to apis
-    public void updateOrderStatus(UpdateOrderStatus order,Context context) {
-        repository.updateOrderStatus(updateOrderStatusResponseMutableLiveData, order,context);
+    public void updateOrderStatus(UpdateOrderStatus order, Context context) {
+        repository.updateOrderStatus(updateOrderStatusResponseMutableLiveData, order, context);
     }
 
     public MutableLiveData<UpdateOrderStatusResponse> updateOrderStatusResponse() {
@@ -75,14 +75,13 @@ public class OrderListViewModel extends ViewModel {
     }
 
     //getAllOrder to inside order list (All) tabs
-    public void AllOrders(String profileId,Context context) {
-        repository.getAllOrders(getAllOrderResponseMutableLiveData, profileId,context);
+    public void AllOrders(String profileId, Context context) {
+        repository.getAllOrders(getAllOrderResponseMutableLiveData, profileId, context);
     }
 
     public MutableLiveData<GetAllOrderResponse> getOrders() {
         return this.getAllOrderResponseMutableLiveData;
     }
-
 
 
 }

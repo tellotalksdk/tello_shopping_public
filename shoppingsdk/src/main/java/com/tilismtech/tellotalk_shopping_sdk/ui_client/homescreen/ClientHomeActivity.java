@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.OrderListViewModel;
 
 public class ClientHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     NavHostFragment navHostFragment;
@@ -25,11 +27,14 @@ public class ClientHomeActivity extends AppCompatActivity implements NavigationV
     ImageView drawerOpenClose;
     NavController navController;
     NavigationView navigationView;
+    HomeScreenViewModel homeScreenViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home);
+
+        homeScreenViewModel = new ViewModelProvider(this).get(HomeScreenViewModel.class);
 
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
@@ -52,6 +57,7 @@ public class ClientHomeActivity extends AppCompatActivity implements NavigationV
             }
         });
 
+        //homeScreenViewModel.AllCategoryListUnderShop("9");
 
     }
 

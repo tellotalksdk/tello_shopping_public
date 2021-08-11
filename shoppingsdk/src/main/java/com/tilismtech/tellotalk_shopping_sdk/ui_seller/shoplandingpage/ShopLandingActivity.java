@@ -310,28 +310,24 @@ public class ShopLandingActivity extends AppCompatActivity {
                 uploadProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
 
-                        if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
-                                TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
-                                TextUtils.isEmpty(et_Description.getText().toString()) ||
-                                TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
-                                TextUtils.isEmpty(et_SKU.getText().toString())
+                        if (checkValidation()
                         ) {
-                            Toast.makeText(ShopLandingActivity.this, "Some Fields are missing...", Toast.LENGTH_SHORT).show();
-                        } else {
 
-                            if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
-                                Toast.makeText(ShopLandingActivity.this, "Discounted price must be less than original price...", Toast.LENGTH_SHORT).show();
-                                return;
-                            } else if (Integer.parseInt(et_DiscountedPrice.getText().toString()) == Integer.parseInt(et_OriginalPrice.getText().toString())) {
-                                Toast.makeText(ShopLandingActivity.this, "Discounted price can not be same as original price...", Toast.LENGTH_SHORT).show();
-                                return;
+                            if (!TextUtils.isEmpty(et_DiscountedPrice.getText().toString())) {
+                                if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                    Toast.makeText(ShopLandingActivity.this, "Discounted price must be less than original price...", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else if (Integer.parseInt(et_DiscountedPrice.getText().toString()) == Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                    Toast.makeText(ShopLandingActivity.this, "Discounted price can not be same as original price...", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
                             }
 
 
                             AddNewProduct addNewProduct = new AddNewProduct();
-                            addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
+                            addNewProduct.setDiscount_Price(TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ? "0" : et_DiscountedPrice.getText().toString());
                             addNewProduct.setPrice(et_OriginalPrice.getText().toString());
                             addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
                             addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
@@ -534,8 +530,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                         navController.navigate(R.id.allFragment);
                         break;
                 }
-
-
 
 
                 //chat work which will done later....
@@ -951,6 +945,39 @@ public class ShopLandingActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkValidation() {
+
+        if (TextUtils.isEmpty(et_ProductTitle.getText().toString())) {
+            Toast.makeText(this, "Product Name is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        if (TextUtils.isEmpty(et_OriginalPrice.getText().toString())) {
+            Toast.makeText(this, "Original price is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        if (TextUtils.isEmpty(et_OriginalPrice.getText().toString())) {
+            Toast.makeText(this, "Original price is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(et_Description.getText().toString())) {
+            Toast.makeText(this, "Description is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(et_SKU.getText().toString())) {
+            Toast.makeText(this, "Product Qty is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        return true;
+    }
+
     private void setShopNameAndImage() {
         //LoadingDialog loadingDialog = new LoadingDialog(ShopLandingActivity.this);
         //loadingDialog.showDialog();
@@ -1124,7 +1151,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         if (requestCode == ALLOW_MULTIPLE_IMAGES && resultCode == RESULT_OK) {
             if (data.getClipData() != null) {
                 ImageView iv;
-              /*  int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                /*  int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                 for (int i = 0; i < count; i++) {
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     iv = inflater.findViewById(R.id.iv);
@@ -1136,7 +1163,6 @@ public class ShopLandingActivity extends AppCompatActivity {
                     iv.setImageURI(imageUri);
                     LLimages.addView(inflater);
                 }*/
-
                 // filepath = getPath(ShopLandingActivity.this, imageUri);
                 // filepath = getFileNameByUri(ShopLandingActivity.this, imageUri);
                 // filepath = getRealPathFromURI(ShopLandingActivity.this, imageUri);
@@ -1182,11 +1208,11 @@ public class ShopLandingActivity extends AppCompatActivity {
                 }*/ else {
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
 
-                    if(count > 5 ){
-                         fillCount = 5;
+                /*    if (count > 5) {
+                        fillCount = 5;
                     }
-
-                    for (int i = 0; i < fillCount ; i++) {
+*/
+                    for (int i = 0; i < count; i++) {
                         View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                         iv = inflater.findViewById(R.id.iv);
                         imageUri = data.getClipData().getItemAt(i).getUri();
@@ -1194,7 +1220,17 @@ public class ShopLandingActivity extends AppCompatActivity {
                         filepath = getImagePath(imageUri);
                         Log.i("TAG", "onActivityResult: " + filepath);
                         filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
-                        iv.setImageURI(imageUri);
+                        //iv.setImageURI(imageUri);
+
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                        iv.setImageBitmap(resized);
+
                         LLimages.addView(inflater);
                     }
                 }
@@ -1237,7 +1273,17 @@ public class ShopLandingActivity extends AppCompatActivity {
                     filepath = getImagePath(imageUri);
                     // filepath = getPath(ShopLandingActivity.this,imageUri);
                     filePaths.add(filepath);
-                    iv.setImageURI(imageUri);
+                    // iv.setImageURI(imageUri);
+
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                    iv.setImageBitmap(resized);
+
                     LLimages.addView(inflater);
                 }
 

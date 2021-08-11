@@ -23,6 +23,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GTResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_client.homescreen.ClientHomeActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button, client;
     EditText fN, mN, lN, cN, pI;
-    com.google.android.material.switchmaterial.SwitchMaterial  toggle;
+    com.google.android.material.switchmaterial.SwitchMaterial toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TelloApiClient.initializeShoppingSDK(MainActivity.this, pI.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com");
+                //Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
+
+                String mobNumber = ApplicationUtils.changeNumberFormat(cN.getText().toString(),true);
+                TelloApiClient.initializeShoppingSDK(MainActivity.this, mobNumber, fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), mobNumber, "Faiz@gmail.com");
             }
         });
 

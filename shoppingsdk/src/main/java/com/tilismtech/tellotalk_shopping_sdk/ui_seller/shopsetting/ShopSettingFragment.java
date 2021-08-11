@@ -394,7 +394,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         shopTiming.setProfileId(Constant.PROFILE_ID);
                         shopTiming.setDaysSetting(daysSettingList);
 
-                        shopSettingViewModel.postTiming(shopTiming,getActivity());
+                        shopSettingViewModel.postTiming(shopTiming, getActivity());
                         shopSettingViewModel.getUpdateTiming().observe(getActivity(), new Observer<ShopTimingResponse>() {
                             @Override
                             public void onChanged(ShopTimingResponse shopTimingResponse) {
@@ -659,7 +659,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         shopTiming.setProfileId(Constant.PROFILE_ID);
                         shopTiming.setDaysSetting(daysSettingList);
 
-                        shopSettingViewModel.postTiming(shopTiming,getActivity());
+                        shopSettingViewModel.postTiming(shopTiming, getActivity());
                         shopSettingViewModel.getUpdateTiming().observe(getActivity(), new Observer<ShopTimingResponse>() {
                             @Override
                             public void onChanged(ShopTimingResponse shopTimingResponse) {
@@ -769,7 +769,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                                 loadingDialog.dismissDialog();
                                 TelloPreferenceManager.getInstance(getActivity()).savecongratsStatus(true);
                                 getActivity().finish();
-                                startActivity(new Intent(getActivity(), ShopLandingActivity.class).putExtra("congrats_dialog_to_show",true));
+                                startActivity(new Intent(getActivity(), ShopLandingActivity.class).putExtra("congrats_dialog_to_show", true));
 
                             } else {
                                 progressBar.setVisibility(View.GONE);
@@ -829,7 +829,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         GetTimings getTimings = new GetTimings();
         getTimings.setProfileId(Constant.PROFILE_ID);
         getTimings.setShopId("7");
-        shopSettingViewModel.posttogetTimings(getTimings,getActivity());
+        shopSettingViewModel.posttogetTimings(getTimings, getActivity());
         shopSettingViewModel.gettimings().observe(getActivity(), new Observer<GetTimingsResponse>() {
             @Override
             public void onChanged(GetTimingsResponse getTimingsResponse) {
@@ -1070,10 +1070,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
-            imageUri = data.getData();
-            bannerImage.setImageURI(imageUri);
-            filePath = getPath(getActivity(), imageUri);
-            Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
 
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
                 Uri selectedImage = data.getData();
@@ -1085,8 +1081,21 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 }
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
                 bannerImage.setImageBitmap(resized);
+            } else {
+         /*       imageUri = data.getData();
+                bannerImage.setImageURI(imageUri);
+                filePath = getPath(getActivity(), imageUri);
+                Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);*/
+                Uri selectedImage = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                bannerImage.setImageBitmap(resized);
             }
-
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 
@@ -1560,7 +1569,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             Location myLocation = getLastKnownLocation();
 
             // For dropping a marker at a point on the Map
-            if(myLocation != null) {
+            if (myLocation != null) {
                 LatLng sydney = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                 googleMap.addMarker(new MarkerOptions().position(sydney).draggable(true));
 
@@ -1594,7 +1603,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
                 Latitude = String.valueOf(myLocation.getLatitude());
                 Longitude = String.valueOf(myLocation.getLongitude());
-            }else{
+            } else {
                 Latitude = String.valueOf(0);
                 Longitude = String.valueOf(0);
             }

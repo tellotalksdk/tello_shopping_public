@@ -116,6 +116,8 @@ public class TelloApiClient {
 
     //new and running api for token
     public static void generateTokenResponse(GenerateToken generateToken, Context myCtx, OnSuccessListener onSuccessListener) {
+
+       // generateToken.setPhone();
         getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
             @Override
             public void onResponse(Call<GTResponse> call, Response<GTResponse> response) {

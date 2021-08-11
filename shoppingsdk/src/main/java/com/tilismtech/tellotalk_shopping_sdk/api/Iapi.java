@@ -53,6 +53,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndIma
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.ui_client.pojo_client.response.AllCatList_UnderShop;
 
 import java.sql.SQLInvalidAuthorizationSpecException;
 import java.util.List;
@@ -115,10 +116,10 @@ public interface Iapi {
     @Multipart
     @POST("api/user/UpdateUserNameAndImage")
     Call<UpdateUserAndImageResponse> updateUserName(@Header("Authorization") String token,
-                                                            @Part("firstName") RequestBody firstName,
-                                                            @Part("middleName") RequestBody middleName,
-                                                            @Part("lastName") RequestBody lastName,
-                                                            @Part("profileId") RequestBody profileId/*,
+                                                    @Part("firstName") RequestBody firstName,
+                                                    @Part("middleName") RequestBody middleName,
+                                                    @Part("lastName") RequestBody lastName,
+                                                    @Part("profileId") RequestBody profileId/*,
                                                             @Part MultipartBody.Part profilePic*/);
 
     @Headers({"Accept: application/json",
@@ -389,5 +390,10 @@ public interface Iapi {
     @GET("api/user/getWalletList")
     Call<WalletListResponse> getWalletDetailList();
 
+
+    //Client Side Apis.....
+
+    @GET("api/Product/getAllCategoryListundershop")
+    Call<AllCatList_UnderShop> getAllCategoryList_UnderShop(@Query("ShopId") String ShopId);
 
 }

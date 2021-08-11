@@ -210,10 +210,10 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="Order List"
-            android:visibility="gone"
             android:textColor="@android:color/black"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
 
         <TextView

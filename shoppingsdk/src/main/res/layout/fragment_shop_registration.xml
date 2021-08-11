@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -72,7 +71,6 @@
                     android:scaleType="fitXY"
                     app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                     app:srcCompat="@drawable/ic_avatar" />
-
 
 
                 <EditText
@@ -491,6 +489,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/RLpin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/requestAgain"
@@ -626,25 +625,57 @@
 
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/done_btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLpin"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_btn"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="Done"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:visibility="visible" />
+
 
         </RelativeLayout>
 
         <Button
             android:id="@+id/requestforPin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@+id/LL1"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/rounded_btn"
-            android:paddingLeft="13dp"
-            android:paddingRight="13dp"
-            android:text="Request for PIN"
+            android:paddingLeft="23dp"
+            android:paddingRight="23dp"
+            android:text="Request"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:visibility="visible" />
+
+
+        <!--        <Button
+                    android:id="@+id/done_btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/rounded_btn"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:text="Done"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black"
+                    android:visibility="visible" />-->
 
 
     </RelativeLayout>
