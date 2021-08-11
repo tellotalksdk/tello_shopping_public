@@ -1072,6 +1072,10 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
 
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+                imageUri = data.getData();
+                bannerImage.setImageURI(imageUri);
+                filePath = getPath(getActivity(), imageUri);
+                Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
                 Uri selectedImage = data.getData();
                 Bitmap bitmap = null;
                 try {
@@ -1082,10 +1086,10 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
                 bannerImage.setImageBitmap(resized);
             } else {
-         /*       imageUri = data.getData();
+                imageUri = data.getData();
                 bannerImage.setImageURI(imageUri);
                 filePath = getPath(getActivity(), imageUri);
-                Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);*/
+                Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
                 Uri selectedImage = data.getData();
                 Bitmap bitmap = null;
                 try {
@@ -1093,8 +1097,15 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
                 bannerImage.setImageBitmap(resized);
+
+           /*     Bitmap photo = (Bitmap) data.getExtras().get("data");
+                bannerImage.setImageBitmap(photo);
+                imageUri = getImageUri(getActivity(), photo);
+                filePath = getRealPathFromURI(imageUri);
+                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);*/
+
             }
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {

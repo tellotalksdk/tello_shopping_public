@@ -77,7 +77,7 @@ public class TelloApiClient {
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
                     }
-            //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                    //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {
@@ -117,7 +117,7 @@ public class TelloApiClient {
     //new and running api for token
     public static void generateTokenResponse(GenerateToken generateToken, Context myCtx, OnSuccessListener onSuccessListener) {
 
-       // generateToken.setPhone();
+        // generateToken.setPhone();
         getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
             @Override
             public void onResponse(Call<GTResponse> call, Response<GTResponse> response) {
@@ -155,6 +155,7 @@ public class TelloApiClient {
 
             @Override
             public void onFailure(Call<GTResponse> call, Throwable t) {
+
                 t.printStackTrace();
             }
         });

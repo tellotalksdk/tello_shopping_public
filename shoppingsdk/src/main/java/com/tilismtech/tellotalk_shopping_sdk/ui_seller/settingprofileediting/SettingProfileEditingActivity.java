@@ -516,13 +516,14 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             iv_profile.setImageBitmap(resized);
             // }
 
-
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
                 Uri selectedImage = data.getData();
                 iv_profile.setImageURI(selectedImage);
-                filePath = getRealPathFromURI(selectedImage);
+                // filePath = getRealPathFromURI(selectedImage);
+                filePath = getPath(SettingProfileEditingActivity.this, selectedImage);
+
                 Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
                 Bitmap bitmap = null;
                 try {
@@ -538,6 +539,10 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                 imageUri = getImageUri(SettingProfileEditingActivity.this, photo);
                 filePath = getRealPathFromURI(imageUri);
                 Log.i("TAG", "onActivityResult: Capture Path : " + filePath);
+                iv_profile.setImageURI(imageUri);
+               /* imageUri = data.getData();
+
+                filePath = getPath(SettingProfileEditingActivity.this, imageUri);*/
             }
         }
 

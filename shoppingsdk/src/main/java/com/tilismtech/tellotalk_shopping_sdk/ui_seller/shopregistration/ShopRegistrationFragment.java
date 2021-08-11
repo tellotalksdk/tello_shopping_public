@@ -172,7 +172,7 @@ public class ShopRegistrationFragment extends Fragment {
                         Toast.makeText(getActivity(), "Mobile Number is invalid...", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    
+
                     if (mobileNumber.equals(TelloPreferenceManager.getInstance(getActivity()).getProfileId())) { //mean its a tello user no need for otp verification
                         RL.setVisibility(View.VISIBLE);
                         requestforPin.setVisibility(View.GONE);
@@ -278,7 +278,7 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkOTP()) {
-                    loadingDialog.showDialog();
+                    // loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
 
                     shopRegistrationViewModel.verifyOTP(otp, getActivity());
@@ -1152,6 +1152,8 @@ public class ShopRegistrationFragment extends Fragment {
                         Toast.makeText(getActivity(), "User name can not be empty...", Toast.LENGTH_SHORT).show();
                     } else {
 
+                        LoadingDialog loadingDialog1 = new LoadingDialog(getActivity());
+                        //loadingDialog1.showDialog();
 
                         UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();
                         updateUserAndImage.setFirstName(userShopname.getText().toString());
@@ -1164,11 +1166,13 @@ public class ShopRegistrationFragment extends Fragment {
                         if (TextUtils.isEmpty(filePath)) { //run when only name is given........
 
                             shopRegistrationViewModel.userName(updateUserAndImage, getActivity());
-                            shopRegistrationViewModel.getUserName().observe(getActivity(), new Observer<UpdateUserAndImageResponse>() {
+                            shopRegistrationViewModel.getUserName().observe(getViewLifecycleOwner(), new Observer<UpdateUserAndImageResponse>() {
                                 @Override
                                 public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                                     if (updateUserAndImageResponse != null) {
                                         Toast.makeText(getActivity(), "Profile Updated Successfully...", Toast.LENGTH_SHORT).show();
+                                        loadingDialog1.dismissDialog();
+                                        shopRegistrationViewModel.getUserName().removeObservers(getViewLifecycleOwner());
                                     } else {
 
                                     }
@@ -1182,6 +1186,9 @@ public class ShopRegistrationFragment extends Fragment {
                                 public void onChanged(UpdateUserAndImageResponse updateUserAndImageResponse) {
                                     if (updateUserAndImageResponse != null) {
                                         Toast.makeText(getActivity(), "Profile Updated Successfully...", Toast.LENGTH_SHORT).show();
+                                        loadingDialog1.dismissDialog();
+                                        shopRegistrationViewModel.getUpdateUserImageResponse().removeObservers(getViewLifecycleOwner());
+
                                     } else {
 
                                     }
@@ -1193,16 +1200,16 @@ public class ShopRegistrationFragment extends Fragment {
                         userShopname.setEnabled(false);
                         iv_user_image.setEnabled(false);
                         iv_editImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit_three));
-                        userShopname.setTextColor(getResources().getColor(R.color.disable_textfield));
-                        ImageViewCompat.setImageTintList(iv_user_image, ColorStateList.valueOf(getResources().getColor(R.color.disable_textfield)));
+                        //   userShopname.setTextColor(getResources().getColor(R.color.disable_textfield));
+                        //   ImageViewCompat.setImageTintList(iv_user_image, ColorStateList.valueOf(getResources().getColor(R.color.disable_textfield)));
                         toggle = false;
                     }
                 } else {
                     userShopname.setEnabled(true);
                     iv_user_image.setEnabled(true);
                     iv_editImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_edit));
-                    userShopname.setTextColor(getResources().getColor(R.color.enable_textfield));
-                    ImageViewCompat.setImageTintList(iv_user_image, ColorStateList.valueOf(getResources().getColor(R.color.enable_textfield)));
+                    //  userShopname.setTextColor(getResources().getColor(R.color.enable_textfield));
+                    //  ImageViewCompat.setImageTintList(iv_user_image, ColorStateList.valueOf(getResources().getColor(R.color.enable_textfield)));
                     toggle = true;
                 }
 
@@ -1583,6 +1590,17 @@ public class ShopRegistrationFragment extends Fragment {
                 }
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
                 iv_user_image.setImageBitmap(resized);
+            } else {
+            /*    Uri selectedImage = data.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                iv_user_image.setImageBitmap(resized);*/
+
             }
 
 
