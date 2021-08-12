@@ -24,22 +24,22 @@ public class WebViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("videoUrl");
         back = findViewById(R.id.back);
-       // Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
-       // webView1.loadUrl(id);
-      //  https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore
+        // Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
+        // webView1.loadUrl(id);
+        //  https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore
         String str = id;
         //Toast.makeText(this, "" + str, Toast.LENGTH_SHORT).show();
         //String result = str.substring(str.indexOf("=") + 1, str.indexOf("&"));
 
         String result = str.substring(str.indexOf("=") + 1, 43);
-        String myYouTubeVideoUrl = "https://www.youtube.com/embed/"+result+"?autoplay=1";
+        String myYouTubeVideoUrl = "https://www.youtube.com/embed/" + result + "?autoplay=1";
         //String myYouTubeVideoUrl = "https://www.youtube.com/embed/bGkd90PIMcQ";
 
         String dataUrl =
                 "<html>" +
                         "<body>" +
                         "<br>" +
-                        "<iframe width=\"100%\" height=\"100%\" src=\""+myYouTubeVideoUrl+"\" frameborder=\"0\" allowfullscreen/>" +
+                        "<iframe width=\"100%\" height=\"100%\" src=\"" + myYouTubeVideoUrl + "\" frameborder=\"0\" allowfullscreen/>" +
                         "</body>" +
                         "</html>";
 
