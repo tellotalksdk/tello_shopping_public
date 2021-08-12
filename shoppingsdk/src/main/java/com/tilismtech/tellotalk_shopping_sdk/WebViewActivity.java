@@ -29,8 +29,9 @@ public class WebViewActivity extends AppCompatActivity {
       //  https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore
         String str = id;
         //Toast.makeText(this, "" + str, Toast.LENGTH_SHORT).show();
-        String result = str.substring(str.indexOf("=") + 1, str.indexOf("&"));
+        //String result = str.substring(str.indexOf("=") + 1, str.indexOf("&"));
 
+        String result = str.substring(str.indexOf("=") + 1, 43);
         String myYouTubeVideoUrl = "https://www.youtube.com/embed/"+result+"?autoplay=1";
         //String myYouTubeVideoUrl = "https://www.youtube.com/embed/bGkd90PIMcQ";
 

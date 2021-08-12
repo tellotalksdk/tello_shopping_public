@@ -23,18 +23,23 @@
         android:usesCleartextTraffic="true"
         >
         <activity
+            android:screenOrientation="portrait"
             android:name=".WebViewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui_client.homescreen.ClientHomeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui_seller.settingprofileediting.SettingProfileEditingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui_seller.shoplandingpage.ShopLandingActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui_seller.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 

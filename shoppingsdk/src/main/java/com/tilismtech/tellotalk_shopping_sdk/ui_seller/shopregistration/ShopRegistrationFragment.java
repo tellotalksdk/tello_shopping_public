@@ -181,10 +181,10 @@ public class ShopRegistrationFragment extends Fragment {
                         requestAgain.setClickable(false);
                         startCountDown();
                         counter++;
-                        countDown.setVisibility(View.INVISIBLE);
-                        requestAgain.setVisibility(View.INVISIBLE);
-                        RLpin.setVisibility(View.INVISIBLE);
-                        LL3.setVisibility(View.INVISIBLE);
+                        countDown.setVisibility(View.GONE);
+                        requestAgain.setVisibility(View.GONE);
+                        RLpin.setVisibility(View.GONE);
+                        LL3.setVisibility(View.GONE);
                         term.setVisibility(View.VISIBLE);
                         done_btn1.setVisibility(View.VISIBLE);
 
@@ -218,7 +218,7 @@ public class ShopRegistrationFragment extends Fragment {
                         });
 
 
-                    } else { //mean its not tello user show otp layout
+                    } else { //mean its not tello user show otp layout and call sendotp request
                         RL.setVisibility(View.VISIBLE);
                         requestforPin.setVisibility(View.GONE);
                         requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
@@ -256,7 +256,17 @@ public class ShopRegistrationFragment extends Fragment {
                                     if ("-6".equals(shopRegisterResponse.getStatus())) {
                                         Toast.makeText(getActivity(), "" + shopRegisterResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(getActivity(), "" +/* shopRegisterResponse.getStatusDetail()*/ "OTP send successfully...", Toast.LENGTH_SHORT).show();
+                                        shopRegistrationViewModel.resendOTP(getActivity(), mobileNumber);
+                                        shopRegistrationViewModel.getresendOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
+                                            @Override
+                                            public void onChanged(VerifyOtpResponse verifyOtpResponse) {
+                                                if (verifyOtpResponse != null) {
+                                                    if (verifyOtpResponse.getStatus().equals("0")) {
+                                                        Toast.makeText(getActivity(), "" +/* shopRegisterResponse.getStatusDetail()*/ "OTP send successfully...", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }
+                                        });
                                     }
                                 } else {
                                     Toast.makeText(getActivity(), "Not Found...", Toast.LENGTH_SHORT).show();
