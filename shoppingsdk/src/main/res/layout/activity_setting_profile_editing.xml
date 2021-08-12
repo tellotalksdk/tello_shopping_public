@@ -63,8 +63,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_avatar"
                     app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:srcCompat="@drawable/ic_avatar" />
+                    />
 
          <!--       <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_profile"

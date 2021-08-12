@@ -281,7 +281,7 @@ public class ShopRegistrationFragment extends Fragment {
                     // loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
 
-                    shopRegistrationViewModel.verifyOTP(otp, getActivity());
+                    shopRegistrationViewModel.verifyOTP(otp, getActivity() , mobileNumber);
                     shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
@@ -321,14 +321,14 @@ public class ShopRegistrationFragment extends Fragment {
         requestAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (counter < 2) {
+                if (counter < 10) {
                     // here we call resend opt
                     requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
                     requestAgain.setTextColor(Color.BLACK);
                     requestAgain.setClickable(false);
                     startCountDown();
                     counter++;
-                    shopRegistrationViewModel.resendOTP(getActivity());
+                    shopRegistrationViewModel.resendOTP(getActivity() , mobileNumber);
                     shopRegistrationViewModel.getresendOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {

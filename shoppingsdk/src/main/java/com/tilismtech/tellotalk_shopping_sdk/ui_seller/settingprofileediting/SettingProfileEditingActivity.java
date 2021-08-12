@@ -342,12 +342,14 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     RequestOptions myOptions = new RequestOptions()
                             .override(100, 100);
 
-                    Glide.with(SettingProfileEditingActivity.this)
-                            .asBitmap()
-                            .apply(myOptions)
-                            .placeholder(R.drawable.ic_avatar)
-                            .load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage())
-                            .into(iv_profile);
+
+                    if (!getShopDetailResponse.getData().getRequestList().getShopOwnerImage().equals("")) {
+                        Glide.with(SettingProfileEditingActivity.this)
+                                .asBitmap()
+                                .apply(myOptions)
+                                .load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage())
+                                .into(iv_profile);
+                    }
 
                   /*  Glide.with(SettingProfileEditingActivity.this).
                             load(getShopDetailResponse.getData().getRequestList().getShopOwnerImage()).

@@ -316,8 +316,8 @@ public class Repository {
     //endregion
 
     //region verifyOtp
-    public void verifyOTP(MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData, String otp, Context context) {
-        getRetrofitClient().verifyOTP("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), Constant.CONTACT_NUMBER, otp).enqueue(new Callback<VerifyOtpResponse>() {
+    public void verifyOTP(MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData, String otp, Context context , String contact) {
+        getRetrofitClient().verifyOTP("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), contact, otp).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
             public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
                 if (response != null) {
@@ -336,9 +336,9 @@ public class Repository {
     //endregion
 
     //region reSendotp
-    public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp, Context context) {
+    public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp, Context context,String contact) {
         Constant constant = new Constant();
-        getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), constant.getContactNumber()).enqueue(new Callback<VerifyOtpResponse>() {
+        getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), contact).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
             public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
                 if (response != null) {
