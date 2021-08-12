@@ -281,7 +281,7 @@ public class ShopRegistrationFragment extends Fragment {
                     // loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
 
-                    shopRegistrationViewModel.verifyOTP(otp, getActivity() , mobileNumber);
+                    shopRegistrationViewModel.verifyOTP(otp, getActivity(), mobileNumber);
                     shopRegistrationViewModel.getVerifyOtp().observe(getViewLifecycleOwner(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
@@ -295,7 +295,7 @@ public class ShopRegistrationFragment extends Fragment {
                                 } else if (verifyOtpResponse.getStatus().equals("-1")) {
                                     loadingDialog.dismissDialog();
                                     Toast.makeText(getActivity(), verifyOtpResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                    navController.navigate(R.id.shopSettingFragment);
+                                    //  navController.navigate(R.id.shopSettingFragment);
 
                                 }
                             }
@@ -328,7 +328,7 @@ public class ShopRegistrationFragment extends Fragment {
                     requestAgain.setClickable(false);
                     startCountDown();
                     counter++;
-                    shopRegistrationViewModel.resendOTP(getActivity() , mobileNumber);
+                    shopRegistrationViewModel.resendOTP(getActivity(), mobileNumber);
                     shopRegistrationViewModel.getresendOtp().observe(getActivity(), new Observer<VerifyOtpResponse>() {
                         @Override
                         public void onChanged(VerifyOtpResponse verifyOtpResponse) {
