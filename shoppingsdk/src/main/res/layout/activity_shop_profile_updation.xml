@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fillViewport="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="10dp">
+
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/shopsetting"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_baseline_arrow_back"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/shopsetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/iv_back"
+                android:text="Shop Setting"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/addressRL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shopsetting"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_bg_color"
+                android:paddingTop="18dp"
+                android:paddingBottom="18dp">
+
+                <LinearLayout
+                    android:id="@+id/leftLLlabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Owner Name  :"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Cell Number :"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Shop Url :"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/middleLL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/leftLLlabel"
+                    android:orientation="vertical">
+
+
+                    <EditText
+                        android:id="@+id/et_OwnerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="false"
+                        android:text="khurram shehzad"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/et_OwnerNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="false"
+                        android:text="0333-03333333"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/et_OwnerShopUrl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/transparent"
+                        android:focusable="false"
+                        android:text="khuram-shehzad.tello.pk"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/subHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addressRL"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:text="Shop is created Successfully"
+                android:textColor="#32C8B3"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/setupShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subHead"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="6dp"
+                android:text="Please Setup Your Shop"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/country"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/setupShop"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_spinner"
+                android:entries="@array/countries" />
+
+            <Spinner
+                android:id="@+id/province"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/country"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_spinner"
+                android:entries="@array/province" />
+
+
+            <Spinner
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/province"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_spinner"
+                android:entries="@array/city" />
+
+
+            <!--<Spinner
+                android:id="@+id/area"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/city"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/custom_spinner"
+                android:entries="@array/area" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/aa"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_bg_color"
+                app:endIconMode="none">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Area"
+                    android:id="@+id/area"
+                    android:gravity="center|left"
+                    android:paddingStart="15dp"
+                    android:paddingBottom="25dp"
+                    android:textSize="14sp"
+                    android:text=""
+                    android:background="@null"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!--         <EditText
+                         android:id="@+id/area"
+                         android:layout_width="match_parent"
+                         android:layout_height="50dp"
+                         android:layout_below="@+id/city"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginTop="15dp"
+                         android:layout_marginEnd="20dp"
+                         android:background="@drawable/edit_text_bg_color"
+                         android:hint="Enter your area..."
+                         android:paddingStart="15dp"
+                         android:textSize="12sp" />-->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/aa"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_bg_color"
+                app:cardBackgroundColor="#EAEFF3"
+                app:cardCornerRadius="8dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/bannerImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_baseline_camera"
+                        android:scaleType="fitXY" />
+
+                </FrameLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mapCard"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_below="@+id/iv"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_bg_color"
+                app:cardBackgroundColor="#EAEFF3"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <FrameLayout
+                android:id="@+id/FL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mapCard"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp">
+
+
+                <LinearLayout
+                    android:id="@+id/iv_timings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:hint="Set Your Shop Timings"
+                    android:orientation="vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="15sp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_text_bg_color"
+                        android:hint="Set Your Shop Timings"
+                        android:paddingLeft="10dp"
+                        android:textSize="15sp"
+                        android:visibility="gone"></EditText>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_timings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="DuplicateIds"
+                        tools:listitem="@layout/rv_item_timings_layout" />
+
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/iv_image"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/calender" />
+
+                <ImageView
+                    android:id="@+id/iv_tim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:visibility="gone" />
+
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/colortheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/FL1"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/setColortext"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:clickable="false"
+                    android:gravity="center|left"
+                    android:paddingLeft="10dp"
+                    android:text="Set Your Website Themes"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_websitetheme"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="right|center"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_choosecolor" />
+
+                <LinearLayout
+                    android:id="@+id/cardColor"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center|left"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/rounded_corner_linear_layout"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/clr_choose"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+            <Button
+                android:id="@+id/saveAccountbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/colortheme"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/rounded_btn"
+                android:paddingLeft="75dp"
+                android:paddingRight="75dp"
+                android:text="Save"
+                android:textColor="@android:color/white" />
+
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/progressNBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/loader"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:src="@drawable/loading"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</ScrollView>

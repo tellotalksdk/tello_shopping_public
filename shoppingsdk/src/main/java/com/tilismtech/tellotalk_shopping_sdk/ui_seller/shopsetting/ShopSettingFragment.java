@@ -73,6 +73,8 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ColorChooserAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.TimingnAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.Gallery;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.MediaAttachment;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.Citiespojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
@@ -1056,8 +1058,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     }
 
     private void openGallery() {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, UPLOAD_IMAGE);
+       // Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+       // startActivityForResult(gallery, UPLOAD_IMAGE);
+        Intent intent = new Intent(getActivity(), Gallery.class);
+        intent.putExtra("title", "Select media");
+        intent.putExtra("mode", 1); //try on 1 and 3
+        intent.putExtra("maxSelection", 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent, UPLOAD_IMAGE);
     }
 
     private void openCamera() {
@@ -1071,7 +1079,22 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
 
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+            List<Uri> uris = null;
+            ArrayList<MediaAttachment> attachments = null;
+            if (uris == null) {
+                uris = new ArrayList<>();
+            }
+            if (attachments == null) {
+                attachments = new ArrayList<>();
+            }
+            attachments = data.getParcelableArrayListExtra("result");
+
+            bannerImage.setImageURI(attachments.get(0).getFileUri());
+            //filePath = getRealPathFromURI(attachments.get(0).getFileUri());
+            filePath = attachments.get(0).getFileUri().getPath();
+            Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+
+      /*      if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
                 imageUri = data.getData();
                 bannerImage.setImageURI(imageUri);
                 filePath = getPath(getActivity(), imageUri);
@@ -1100,13 +1123,13 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
                 bannerImage.setImageBitmap(resized);
 
-           /*     Bitmap photo = (Bitmap) data.getExtras().get("data");
+           *//*     Bitmap photo = (Bitmap) data.getExtras().get("data");
                 bannerImage.setImageBitmap(photo);
                 imageUri = getImageUri(getActivity(), photo);
                 filePath = getRealPathFromURI(imageUri);
-                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);*/
+                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);*//*
 
-            }
+            }*/
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 
@@ -1694,4 +1717,5 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
 }

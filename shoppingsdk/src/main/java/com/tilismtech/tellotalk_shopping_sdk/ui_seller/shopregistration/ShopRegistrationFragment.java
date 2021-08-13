@@ -53,6 +53,8 @@ import androidx.navigation.Navigation;
 
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.Gallery;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.MediaAttachment;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopRegister;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
@@ -70,6 +72,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1553,8 +1556,14 @@ public class ShopRegistrationFragment extends Fragment {
     }
 
     private void openGallery() {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, UPLOAD_IMAGE);
+        //Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        //startActivityForResult(gallery, UPLOAD_IMAGE);
+        Intent intent = new Intent(getActivity(), Gallery.class);
+        intent.putExtra("title", "Select media");
+        intent.putExtra("mode", 1); //try on 1 and 3
+        intent.putExtra("maxSelection", 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent, UPLOAD_IMAGE);
     }
 
     private void openCamera() {
@@ -1585,7 +1594,22 @@ public class ShopRegistrationFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
-            imageUri = data.getData();
+            List<Uri> uris = null;
+            ArrayList<MediaAttachment> attachments = null;
+            if (uris == null) {
+                uris = new ArrayList<>();
+            }
+            if (attachments == null) {
+                attachments = new ArrayList<>();
+            }
+            attachments = data.getParcelableArrayListExtra("result");
+
+            iv_user_image.setImageURI(attachments.get(0).getFileUri());
+            //filePath = getRealPathFromURI(attachments.get(0).getFileUri());
+            filePath = attachments.get(0).getFileUri().getPath();
+            Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+
+           /* imageUri = data.getData();
             iv_user_image.setImageURI(imageUri);
             filePath = getPath(getActivity(), imageUri);
             Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
@@ -1601,7 +1625,7 @@ public class ShopRegistrationFragment extends Fragment {
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
                 iv_user_image.setImageBitmap(resized);
             } else {
-            /*    Uri selectedImage = data.getData();
+            *//*    Uri selectedImage = data.getData();
                 Bitmap bitmap = null;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
@@ -1609,10 +1633,10 @@ public class ShopRegistrationFragment extends Fragment {
                     e.printStackTrace();
                 }
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-                iv_user_image.setImageBitmap(resized);*/
+                iv_user_image.setImageBitmap(resized);*//*
 
             }
-
+*/
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 

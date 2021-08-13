@@ -44,8 +44,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.tabs.TabLayout;
 import com.tilismtech.tellotalk_shopping_sdk.R;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.Gallery;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.MediaAttachment;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateUserAndImage;
@@ -62,6 +65,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingProfileEditingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -100,6 +105,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         navController = navHostFragment.getNavController();
         loadingDialog1 = new LoadingDialog(SettingProfileEditingActivity.this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        Fresco.initialize(this);
 
         personalInfoRL = findViewById(R.id.personalInfoRL);
         storeSettingRL = findViewById(R.id.storeSettingRL);
@@ -470,8 +476,14 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     }
 
     private void openGallery() {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, UPLOAD_IMAGE);
+        //  Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        //  startActivityForResult(gallery, UPLOAD_IMAGE);
+        Intent intent = new Intent(SettingProfileEditingActivity.this, Gallery.class);
+        intent.putExtra("title", "Select media");
+        intent.putExtra("mode", 1); //try on 1 and 3
+        intent.putExtra("maxSelection", 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent, UPLOAD_IMAGE);
     }
 
     private void openCamera() {
@@ -501,7 +513,23 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
-            imageUri = data.getData();
+
+            List<Uri> uris = null;
+            ArrayList<MediaAttachment> attachments = null;
+            if (uris == null) {
+                uris = new ArrayList<>();
+            }
+            if (attachments == null) {
+                attachments = new ArrayList<>();
+            }
+            attachments = data.getParcelableArrayListExtra("result");
+
+            iv_profile.setImageURI(attachments.get(0).getFileUri());
+            //filePath = getRealPathFromURI(attachments.get(0).getFileUri());
+            filePath = attachments.get(0).getFileUri().getPath();
+            Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+
+            /*        imageUri = data.getData();
             iv_profile.setImageURI(imageUri);
             filePath = getPath(SettingProfileEditingActivity.this, imageUri);
             Log.i("TAG", "onActivityResult: Gallery Upload Path" + filePath);
@@ -516,7 +544,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             }
             Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
             iv_profile.setImageBitmap(resized);
-            // }
+            // }*/
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 
