@@ -51,8 +51,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.Gallery;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.MediaAttachment;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
@@ -121,6 +124,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_landing);
+        Fresco.initialize(this);
 
         NoInternetDetection loadingDialog = new NoInternetDetection(this);
         networkReceiver = new NetworkReceiver(loadingDialog);
@@ -275,11 +279,18 @@ public class ShopLandingActivity extends AppCompatActivity {
                 chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
+                        Intent intent = new Intent(ShopLandingActivity.this, Gallery.class);
+                        intent.putExtra("title", "Select media");
+                        intent.putExtra("mode", 1); //try on 1 and 3
+                        intent.putExtra("maxSelection", 5);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivityForResult(intent, ALLOW_MULTIPLE_IMAGES);
+
+                       /* Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                         intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);*/
                     }
                 });
 
@@ -1149,9 +1160,35 @@ public class ShopLandingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ALLOW_MULTIPLE_IMAGES && resultCode == RESULT_OK) {
-            if (data.getClipData() != null) {
+
+            List<Uri> uris = null;
+            ArrayList<MediaAttachment> attachments = null;
+            if (uris == null) {
+                uris = new ArrayList<>();
+            }
+            if (attachments == null) {
+                attachments = new ArrayList<>();
+            }
+            attachments = data.getParcelableArrayListExtra("result");
+            int count = attachments.size();
+            ImageView iv;
+
+            for (int i = 0; i < count; i++) {
+                View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                iv = inflater.findViewById(R.id.iv);
+                imageUri = attachments.get(i).getFileUri();
+                Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                filepath = attachments.get(i).getFileUri().getPath();
+                Log.i("TAG", "onActivityResult: " + filepath);
+                filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+                iv.setImageURI(imageUri);
+                LLimages.addView(inflater);
+            }
+
+            //region oldimagework
+           /* if (data.getClipData() != null) {
                 ImageView iv;
-                /*  int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                *//*  int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                 for (int i = 0; i < count; i++) {
                     View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                     iv = inflater.findViewById(R.id.iv);
@@ -1162,7 +1199,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                     filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
                     iv.setImageURI(imageUri);
                     LLimages.addView(inflater);
-                }*/
+                }*//*
                 // filepath = getPath(ShopLandingActivity.this, imageUri);
                 // filepath = getFileNameByUri(ShopLandingActivity.this, imageUri);
                 // filepath = getRealPathFromURI(ShopLandingActivity.this, imageUri);
@@ -1191,7 +1228,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                         iv.setImageBitmap(resized);
                         LLimages.addView(view);
                     }
-                } /*else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                } *//*else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     Toast.makeText(ShopLandingActivity.this, " android 11 or greater...", Toast.LENGTH_SHORT).show();
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                     for (int i = 0; i < count; i++) {
@@ -1205,13 +1242,13 @@ public class ShopLandingActivity extends AppCompatActivity {
                         iv.setImageURI(imageUri);
                         LLimages.addView(inflater);
                     }
-                }*/ else {
+                }*//* else {
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
 
-                /*    if (count > 5) {
+                *//*    if (count > 5) {
                         fillCount = 5;
                     }
-*/
+*//*
                     for (int i = 0; i < count; i++) {
                         View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                         iv = inflater.findViewById(R.id.iv);
@@ -1287,7 +1324,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                     LLimages.addView(inflater);
                 }
 
-            }
+            }*/
+            //end region
         }
     }
 

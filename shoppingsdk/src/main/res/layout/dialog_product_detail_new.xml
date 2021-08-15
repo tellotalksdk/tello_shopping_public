@@ -75,6 +75,13 @@
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/edit_text_bg_color" />
 
+            <LinearLayout
+                android:id="@+id/addindicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" />
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                 android:id="@+id/dots_indicator"
@@ -82,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:dotsColor="@android:color/holo_blue_dark"
                 app:dotsCornerRadius="8dp"
                 app:dotsSize="10dp"
@@ -466,8 +473,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="130dp"
-            android:backgroundTint="@android:color/white"
-            android:background="@drawable/play_button" />
+            android:background="@drawable/play_button"
+            android:backgroundTint="@android:color/white" />
 
     </RelativeLayout>
 </ScrollView>

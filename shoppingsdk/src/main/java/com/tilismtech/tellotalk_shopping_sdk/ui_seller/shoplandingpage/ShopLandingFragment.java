@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -54,6 +56,8 @@ import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.WebViewActivity;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ProductListAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.ViewPagerAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.Gallery;
+import com.tilismtech.tellotalk_shopping_sdk.gallery.MediaAttachment;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
@@ -137,6 +141,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     ArrayAdapter<String> spinnerArrayAdapter;
     ArrayAdapter<String> spinnerArrayAdapter2;
     private boolean isForEditMaintaince;
+    TextView[] dots;
 
 
     @Override
@@ -189,11 +194,19 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
+                        Intent intent = new Intent(getActivity(), Gallery.class);
+                        intent.putExtra("title", "Select media");
+                        intent.putExtra("mode", 1); //try on 1 and 3
+                        intent.putExtra("maxSelection", 5);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivityForResult(intent, ALLOW_MULTIPLE_IMAGES);
+
+
+                        /* Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                         intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES);*/
                     }
                 });
 
@@ -684,7 +697,33 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         super.onActivityResult(requestCode, resultCode, data);
         //FOR ADD PRODUCT DIALOG this will run on a Add Product button when there is No product in shop
         if (requestCode == ALLOW_MULTIPLE_IMAGES && resultCode == RESULT_OK) {
-            if (data.getClipData() != null) {
+
+            List<Uri> uris = null;
+            ArrayList<MediaAttachment> attachments = null;
+            if (uris == null) {
+                uris = new ArrayList<>();
+            }
+            if (attachments == null) {
+                attachments = new ArrayList<>();
+            }
+            attachments = data.getParcelableArrayListExtra("result");
+            int count = attachments.size();
+            ImageView iv;
+
+            for (int i = 0; i < count; i++) {
+                View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                iv = inflater.findViewById(R.id.iv);
+                imageUri = attachments.get(i).getFileUri();
+                Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                filepath = attachments.get(i).getFileUri().getPath();
+                Log.i("TAG", "onActivityResult: " + filepath);
+                filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+                iv.setImageURI(imageUri);
+                LLimages.addView(inflater);
+            }
+
+
+          /*  if (data.getClipData() != null) {
                 ImageView iv;
                 int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                 for (int i = 0; i < count; i++) {
@@ -732,14 +771,41 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 iv.setImageBitmap(resized);
 
                 LLimages.addView(inflater);
-            }
+                }*/
+
         }
 
         //FOR EDIT PRODUCT DIALOG
 
         if (requestCode == ALLOW_MULTIPLE_IMAGES_EDIT && resultCode == RESULT_OK) {
+
+            List<Uri> uris = null;
+            ArrayList<MediaAttachment> attachments = null;
+            if (uris == null) {
+                uris = new ArrayList<>();
+            }
+            if (attachments == null) {
+                attachments = new ArrayList<>();
+            }
+            attachments = data.getParcelableArrayListExtra("result");
+            int count = attachments.size();
+            ImageView iv;
+
+            for (int i = 0; i < count; i++) {
+                View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
+                iv = inflater.findViewById(R.id.iv);
+                imageUri = attachments.get(i).getFileUri();
+                Log.i("TAG", "onActivityResult: " + imageUri.getPath());
+                filepath = attachments.get(i).getFileUri().getPath();
+                Log.i("TAG", "onActivityResult: " + filepath);
+                filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+                iv.setImageURI(imageUri);
+                LLimages_edit.addView(inflater);
+            }
+
+
             //===
-            if (data.getClipData() != null) {
+     /*       if (data.getClipData() != null) {
                 if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
                     int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                     for (int i = 0; i < count; i++) {
@@ -816,7 +882,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             //===
 
             //old
-            /*      if (data.getClipData() != null) {
+            if (data.getClipData() != null) {
 
                 ImageView iv;
                 int count = data.getClipData().getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
@@ -885,11 +951,19 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(getActivity(), Gallery.class);
+                intent.putExtra("title", "Select media");
+                intent.putExtra("mode", 1); //try on 1 and 3
+                intent.putExtra("maxSelection", 5);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, ALLOW_MULTIPLE_IMAGES_EDIT);
+
+
+                /*Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES_EDIT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), ALLOW_MULTIPLE_IMAGES_EDIT);*/
             }
         });
 
@@ -1228,12 +1302,14 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         TextView et_ProductName, et_ProductID, et_OriginalPrice, et_DiscountedPrice;
         androidx.viewpager.widget.ViewPager viewPager2;
         DotsIndicator dotsIndicator;
+        LinearLayout addindicator;
+
 
         dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_new);
         Button button = dialog.findViewById(R.id.open);
-
+        addindicator = dialog.findViewById(R.id.addindicator);
 
         et_ProductName = dialog.findViewById(R.id.et_ProductName);
         et_ProductID = dialog.findViewById(R.id.et_ProductID);
@@ -1280,6 +1356,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (video.contains("www.youtube.com")) {
                         images.add("https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80");
                         // button.setVisibility(View.GONE);
+                        dots = new TextView[productForEditResponse.getData().getRequestList().getProductImageDTO().size() + 1];
+                        dotsindicator(dots.length, addindicator);
+                    } else {
+                        dots = new TextView[productForEditResponse.getData().getRequestList().getProductImageDTO().size()];
+                        dotsindicator(dots.length, addindicator);
                     }
 
 
@@ -1319,6 +1400,15 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
                 }
             }
+
+            private void dotsindicator(int totalDots, LinearLayout addindicator) {
+                for (int i = 0; i < totalDots; i++) {
+                    dots[i] = new TextView(getActivity());
+                    dots[i].setText(Html.fromHtml("&#9679"));
+                    dots[i].setTextSize(18);
+                    addindicator.addView(dots[i]);
+                }
+            }
         });
 
         viewPager2.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -1329,10 +1419,25 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
             @Override
             public void onPageSelected(int position) {
+                {
+                    selectedIndicator(position, dots.length);
+                }
+
+
                 if (position != 0)
                     button.setVisibility(View.GONE);
                 else
                     button.setVisibility(View.VISIBLE);
+            }
+
+            private void selectedIndicator(int position, int length) {
+                for (int i = 0; i < length; i++) {
+                    if (i == position) {
+                        dots[i].setTextColor(Color.BLACK);
+                    } else {
+                        dots[i].setTextColor(Color.YELLOW);
+                    }
+                }
             }
 
             @Override
@@ -1340,6 +1445,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
             }
         });
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
