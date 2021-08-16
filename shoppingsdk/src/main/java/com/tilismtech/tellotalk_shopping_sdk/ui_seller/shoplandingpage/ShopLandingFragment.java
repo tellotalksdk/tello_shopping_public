@@ -1356,6 +1356,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (video.contains("www.youtube.com")) {
                         images.add("https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80");
                         // button.setVisibility(View.GONE);
+
                         dots = new TextView[productForEditResponse.getData().getRequestList().getProductImageDTO().size() + 1];
                         dotsindicator(dots.length, addindicator);
                     } else {
@@ -1402,6 +1403,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
 
             private void dotsindicator(int totalDots, LinearLayout addindicator) {
+                addindicator.removeAllViews();
                 for (int i = 0; i < totalDots; i++) {
                     dots[i] = new TextView(getActivity());
                     dots[i].setText(Html.fromHtml("&#9679"));
@@ -1435,7 +1437,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (i == position) {
                         dots[i].setTextColor(Color.BLACK);
                     } else {
-                        dots[i].setTextColor(Color.YELLOW);
+                        dots[i].setTextColor(Color.GRAY);
                     }
                 }
             }

@@ -70,6 +70,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYPar
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.receiver.NetworkReceiver;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoprofileupdation.ShopProfileUpdationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
@@ -229,7 +230,13 @@ public class ShopLandingActivity extends AppCompatActivity {
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+
+                        if (item.getItemId() == R.id.one) {
+                            Intent intent = new Intent(ShopLandingActivity.this, ShopProfileUpdationActivity.class);
+                            startActivity(intent);
+                        }
+
+                        // Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -1172,16 +1179,29 @@ public class ShopLandingActivity extends AppCompatActivity {
             attachments = data.getParcelableArrayListExtra("result");
             int count = attachments.size();
             ImageView iv;
+            ImageView ic_delete;
 
             for (int i = 0; i < count; i++) {
                 View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                 iv = inflater.findViewById(R.id.iv);
+                ic_delete = inflater.findViewById(R.id.ic_delete);
                 imageUri = attachments.get(i).getFileUri();
                 Log.i("TAG", "onActivityResult: " + imageUri.getPath());
                 filepath = attachments.get(i).getFileUri().getPath();
                 Log.i("TAG", "onActivityResult: " + filepath);
-                filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
+                filePaths.add(i, filepath); //getting multiple image file path and save all selected image path in string array
                 iv.setImageURI(imageUri);
+                int currentItem = i;
+
+                ic_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(ShopLandingActivity.this, "clicked... " + currentItem, Toast.LENGTH_SHORT).show();
+                        filePaths.remove(currentItem);
+                        LLimages.removeView(inflater);
+                    }
+                });
+
                 LLimages.addView(inflater);
             }
 

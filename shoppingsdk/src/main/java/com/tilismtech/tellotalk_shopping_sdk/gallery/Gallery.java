@@ -46,8 +46,8 @@ public class Gallery extends AppCompatActivity {
         selectionTitle = 0;
         ViewPager viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+//        TabLayout tabLayout = findViewById(R.id.tabs);
+  //      tabLayout.setupWithViewPager(viewPager);
         OpenGallery.selected.clear();
         OpenGallery.imagesSelected.clear();
     }

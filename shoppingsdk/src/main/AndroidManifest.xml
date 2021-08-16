@@ -16,7 +16,12 @@
         android:name=".TelloApplication"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui_seller.shoprofileupdation.ShopProfileUpdationActivity"></activity>
+        <activity
+            android:name=".ui_seller.shoprofileupdation.ShopProfileUpdationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
         <activity
             android:name=".WebViewActivity"
             android:screenOrientation="portrait"
