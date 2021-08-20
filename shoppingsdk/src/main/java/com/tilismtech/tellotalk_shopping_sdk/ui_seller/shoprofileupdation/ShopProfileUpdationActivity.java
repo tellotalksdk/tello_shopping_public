@@ -86,6 +86,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSetting
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
@@ -174,6 +175,11 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         et_OwnerName.setText(TelloPreferenceManager.getInstance(activity).getOwnerName());
         et_OwnerNumber.setText(TelloPreferenceManager.getInstance(activity).getRegisteredNumber());
         et_OwnerShopUrl.setText(TelloPreferenceManager.getInstance(activity).getShopUri());
+
+        if (!ApplicationUtils.isNetworkConnected(ShopProfileUpdationActivity.this)) {
+            Toast.makeText(ShopProfileUpdationActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         showTimings();
         setThemeColors();
@@ -438,7 +444,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        ActivityCompat.requestPermissions(activity,new String[]{
+                                        ActivityCompat.requestPermissions(activity, new String[]{
                                                 Manifest.permission.READ_EXTERNAL_STORAGE,
                                                 Manifest.permission.CAMERA,
                                                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -451,7 +457,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                                 AlertDialog alertDialog = builder.create();
                                 alertDialog.show();
                             } else { //ye lines for the very first time chalein gy jab app start hongy
-                                ActivityCompat.requestPermissions(activity,new String[]{
+                                ActivityCompat.requestPermissions(activity, new String[]{
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
                                         Manifest.permission.CAMERA,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -482,7 +488,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        ActivityCompat.requestPermissions(activity,new String[]{
+                                        ActivityCompat.requestPermissions(activity, new String[]{
                                                 Manifest.permission.READ_EXTERNAL_STORAGE,
                                                 Manifest.permission.CAMERA,
                                                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -495,7 +501,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                                 AlertDialog alertDialog = builder.create();
                                 alertDialog.show();
                             } else { //ye lines for the very first time chalein gy jab app start hongy
-                                ActivityCompat.requestPermissions(activity,new String[]{
+                                ActivityCompat.requestPermissions(activity, new String[]{
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
                                         Manifest.permission.CAMERA,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -520,7 +526,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.popBackStack();
+                finish();
             }
         });
 
@@ -742,7 +748,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                     shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
                     shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
 
-                    shopSettingViewModel.postShopSettingDetails(shopBasicSetting,activity);
+                    shopSettingViewModel.postShopSettingDetails(shopBasicSetting, activity);
                     LoadingDialog loadingDialog = new LoadingDialog(activity);
                     loadingDialog.showDialog();
                     // progressBar.setVisibility(View.VISIBLE);
@@ -754,9 +760,9 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                                 Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
                                 // progressBar.setVisibility(View.GONE);
                                 loadingDialog.dismissDialog();
-                                TelloPreferenceManager.getInstance(activity).savecongratsStatus(true);
+                                TelloPreferenceManager.getInstance(activity).savecongratsStatus(false);
                                 activity.finish();
-                               // startActivity(new Intent(activity, ShopLandingActivity.class).putExtra("congrats_dialog_to_show", true));
+                                // startActivity(new Intent(activity, ShopLandingActivity.class).putExtra("congrats_dialog_to_show", true));
 
                             } else {
                                 progressBar.setVisibility(View.GONE);

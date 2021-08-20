@@ -79,6 +79,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImage
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
@@ -920,6 +921,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     public void onOpenProductEditor(int productID, int adapterPosition) {
         //  Toast.makeText(getActivity(), "" + productID, Toast.LENGTH_SHORT).show();
 
+        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -983,6 +989,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 if (checkEditDialogFieldsValidation()) {
                     {
                         //every thing fine post edit api
+
+                        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         if (!TextUtils.isEmpty(et_VideoUrl.getText().toString())) {
                             String path = et_VideoUrl.getText().toString();
@@ -1089,6 +1100,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         tv_deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 deleteProduct(productID, dialog, adapterPosition);
             }
         });
@@ -1206,24 +1223,24 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                         @Override
                                         public void onClick(View v) {
                                             //Toast.makeText(getActivity(), "Deleted....." +imageIds.get(LLimages_edit.indexOfChild(inflater) - 1) , Toast.LENGTH_SHORT).show();
-                                            loadingDialog.showDialog();
+                                            LoadingDialog loadingDialog1 = new LoadingDialog(getActivity());
                                             DeleteProductImage deleteProductImage = new DeleteProductImage();
                                             deleteProductImage.setImageId(imageIds.get(LLimages_edit.indexOfChild(inflater) - 1).toString());
                                             deleteProductImage.setProductId(String.valueOf(productID));
                                             deleteProductImage.setProfileId(Constant.PROFILE_ID);
 
                                             shopLandingPageViewModel.deleteProduct(deleteProductImage, getActivity());
-                                            shopLandingPageViewModel.dPResponse().removeObservers(getViewLifecycleOwner());
                                             shopLandingPageViewModel.dPResponse().observe(getViewLifecycleOwner(), new Observer<DeleteProductImageResponse>() {
                                                 @Override
                                                 public void onChanged(DeleteProductImageResponse responseBody) {
                                                     if (responseBody != null) {
                                                         Toast.makeText(getActivity(), "Image Removed Successfully...", Toast.LENGTH_SHORT).show();
                                                         LLimages_edit.removeView(inflater);
-                                                        loadingDialog.dismissDialog();
+                                                        loadingDialog1.dismissDialog();
+                                                        shopLandingPageViewModel.dPResponse().removeObservers(getViewLifecycleOwner());
                                                     } else {
                                                         Toast.makeText(getActivity(), "Image Not Removed.Please Try Again", Toast.LENGTH_SHORT).show();
-                                                        loadingDialog.dismissDialog();
+                                                        loadingDialog1.dismissDialog();
                                                     }
                                                 }
                                             });
@@ -1299,6 +1316,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
     @Override
     public void onOpenProductDetailDialog(int productID) {
+
+        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         TextView et_ProductName, et_ProductID, et_OriginalPrice, et_DiscountedPrice;
         androidx.viewpager.widget.ViewPager viewPager2;
         DotsIndicator dotsIndicator;
@@ -1466,6 +1489,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     public void onShareProductLink(String productLink) {
         //Toast.makeText(getActivity(), "" + productLink, Toast.LENGTH_SHORT).show();
 
+        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, productLink);
@@ -1483,6 +1511,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (buttonView.getId() == isActiveproduct.getId()) {
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 isActiveproduct.setChecked(isChecked);
                 productStatus = isActiveproduct.isChecked() ? "Y" : "N";
                 //  Toast.makeText(getActivity(), "" + isChecked, Toast.LENGTH_SHORT).show();

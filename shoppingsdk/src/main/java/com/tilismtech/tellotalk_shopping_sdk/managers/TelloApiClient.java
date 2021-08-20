@@ -7,7 +7,9 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.FirstPartyScopes;
 import com.google.gson.Gson;
+import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
 import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AccessTokenPojo;
@@ -18,7 +20,9 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopExistRespons
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingFragment;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +56,7 @@ public class TelloApiClient {
         context.startActivity(new Intent(context, ShopRegistrationActivity.class));
     }
 
-    public static boolean initializeShoppingSDK(Context context, String profileId, String firstName, String middleName, String lastName, String phone, String email) {
+    public static boolean initializeShoppingSDK(Context context, String profileId, String firstName, String middleName, String lastName, String phone, String email, LoadingDialog loadingDialog) {
         boolean isUserAvailable = false;
 
         GenerateToken generateToken = new GenerateToken();
@@ -67,6 +71,10 @@ public class TelloApiClient {
         generateToken.setPhone(phone);
         generateToken.setEmail(email);
 
+        if (!ApplicationUtils.isNetworkConnected(context)) {
+            Toast.makeText(context, "" + context.getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+        }
+
         try {//03350221182
             generateTokenResponse(generateToken, context, new OnSuccessListener() {
                 @Override
@@ -74,8 +82,13 @@ public class TelloApiClient {
                     GTResponse gtResponseError = (GTResponse) object;
                     if ("-6".equals(gtResponseError.getStatus().toString())) {
                         Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissDialog();
+                    } else if ("-1".equals(gtResponseError.getStatus().toString())) {
+                        Toast.makeText(context, "No Internet Connection...", Toast.LENGTH_SHORT).show();
+                        loadingDialog.dismissDialog();
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
+                        loadingDialog.dismissDialog();
                     }
                     //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
@@ -155,7 +168,9 @@ public class TelloApiClient {
 
             @Override
             public void onFailure(Call<GTResponse> call, Throwable t) {
-
+                GTResponse message = new GTResponse();
+                message.setStatus("-1");
+                onSuccessListener.onSuccess(message);
                 t.printStackTrace();
             }
         });

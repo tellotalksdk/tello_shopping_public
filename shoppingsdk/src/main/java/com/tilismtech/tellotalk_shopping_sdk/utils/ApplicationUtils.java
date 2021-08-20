@@ -1,5 +1,11 @@
 package com.tilismtech.tellotalk_shopping_sdk.utils;
 
+import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+import androidx.fragment.app.FragmentActivity;
+
 public class ApplicationUtils {
 
     public static String changeNumberFormat(String mobNumber,boolean flag){
@@ -17,6 +23,13 @@ public class ApplicationUtils {
         }
         return mobNumber;
     }
+
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
 
 
 }

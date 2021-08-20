@@ -71,6 +71,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResp
 import com.tilismtech.tellotalk_shopping_sdk.receiver.NetworkReceiver;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoprofileupdation.ShopProfileUpdationActivity;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
@@ -264,6 +265,12 @@ public class ShopLandingActivity extends AppCompatActivity {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                    Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 startActivity(new Intent(ShopLandingActivity.this, SettingProfileEditingActivity.class));
             }
         });
@@ -272,6 +279,12 @@ public class ShopLandingActivity extends AppCompatActivity {
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                    Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 dialogAddProduct = new Dialog(ShopLandingActivity.this);
                 dialogAddProduct.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -405,6 +418,13 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // orderListtabbar.setVisibility(View.GONE);
+
+                if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                    Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 LLtabbar.setVisibility(View.GONE);
 
                 productList.setTextColor(Color.WHITE);
@@ -440,6 +460,12 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //  orderListtabbar.setVisibility(View.VISIBLE);
+
+                if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                    Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 LLtabbar.setVisibility(View.VISIBLE);
 
                 productList.setTextColor(Color.BLACK);
@@ -498,6 +524,11 @@ public class ShopLandingActivity extends AppCompatActivity {
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                    Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 LLtabbar.setVisibility(View.VISIBLE);
 

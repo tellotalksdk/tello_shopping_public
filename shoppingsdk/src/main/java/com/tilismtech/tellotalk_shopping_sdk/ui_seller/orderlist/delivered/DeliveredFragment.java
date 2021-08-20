@@ -55,6 +55,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderRes
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.OrderListViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingPageViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.io.File;
@@ -97,6 +98,12 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
+        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            horizontalProgressBar.setVisibility(View.GONE);
+            return;
+        }
 
         shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {

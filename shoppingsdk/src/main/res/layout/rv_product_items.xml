@@ -201,7 +201,8 @@
                     android:layout_marginStart="10dp"
                     android:numStars="5"
                     android:stepSize="1"
-                    android:theme="@style/RatingBar" />
+                    android:theme="@style/RatingBar"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/ratingNUmber"

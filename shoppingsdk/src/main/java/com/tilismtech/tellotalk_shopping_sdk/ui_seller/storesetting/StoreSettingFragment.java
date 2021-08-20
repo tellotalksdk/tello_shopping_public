@@ -32,6 +32,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddress
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBranchAddressResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateBranchAddressResponse;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
@@ -40,7 +41,7 @@ import java.util.List;
 
 public class StoreSettingFragment extends Fragment {
 
-    private ImageView ic_delete, ic_edit, addnewaddress, addbranchaddress, iv_top_image ;
+    private ImageView ic_delete, ic_edit, addnewaddress, addbranchaddress, iv_top_image;
     private EditText registeredShopNumber, et_street, et_city, et_province, et_country, et_shop_url;
     private LinearLayout addressRL;
     private RelativeLayout addedAddress;
@@ -103,6 +104,12 @@ public class StoreSettingFragment extends Fragment {
         addnewaddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 View inflater = getLayoutInflater().inflate(R.layout.add_address_layout, null);
                 addressRL.addView(inflater);
 
@@ -139,6 +146,7 @@ public class StoreSettingFragment extends Fragment {
                     }
                 });
 
+
                 addbranchaddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -149,6 +157,11 @@ public class StoreSettingFragment extends Fragment {
                                 TextUtils.isEmpty(et_country.getText().toString())) {
                             Toast.makeText(getActivity(), "Some Fields are missing...", Toast.LENGTH_SHORT).show();
                         } else {
+
+                            if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                                Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
                             AddBranchAddress addBranchAddress = new AddBranchAddress();
                             addBranchAddress.setProfileId(Constant.PROFILE_ID);
@@ -193,6 +206,7 @@ public class StoreSettingFragment extends Fragment {
         ic_delete.setVisibility(View.GONE);
         ic_edit.setVisibility(View.GONE);
         addbranchaddress.setVisibility(View.GONE);
+        addbranchaddress.setVisibility(View.GONE);
 
         et_street.setText(requestList.getArea());
         et_city.setText(requestList.getCity());
@@ -205,14 +219,14 @@ public class StoreSettingFragment extends Fragment {
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 View inflater = getLayoutInflater().inflate(R.layout.add_address_layout, null);
-                addressRL.addView(inflater);
+                // addressRL.addView(inflater);
 
-                et_street = inflater.findViewById(R.id.et_street);
-                et_city = inflater.findViewById(R.id.et_city);
-                et_province = inflater.findViewById(R.id.et_province);
-                et_country = inflater.findViewById(R.id.et_country);
-                ic_delete = inflater.findViewById(R.id.ic_delete);
-                ic_edit = inflater.findViewById(R.id.ic_edit);
+                EditText et_street = inflater.findViewById(R.id.et_street);
+                EditText et_city = inflater.findViewById(R.id.et_city);
+                EditText et_province = inflater.findViewById(R.id.et_province);
+                EditText et_country = inflater.findViewById(R.id.et_country);
+                ImageView ic_delete = inflater.findViewById(R.id.ic_delete);
+                ImageView ic_edit = inflater.findViewById(R.id.ic_edit);
                 addbranchaddress = inflater.findViewById(R.id.addbranchaddress);
 
                 et_street.setText(requestList.getBranchAddress().get(i).getLine1());
@@ -226,6 +240,12 @@ public class StoreSettingFragment extends Fragment {
                 ic_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+
+                        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Delete Address...")
@@ -264,6 +284,13 @@ public class StoreSettingFragment extends Fragment {
                 ic_edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+
                         UpdateBranchAddress updateBranchAddress = new UpdateBranchAddress();
                         updateBranchAddress.setProfileId(Constant.PROFILE_ID);
                         updateBranchAddress.setCity(et_city.getText().toString());
@@ -271,6 +298,7 @@ public class StoreSettingFragment extends Fragment {
                         updateBranchAddress.setCountry(et_country.getText().toString());
                         updateBranchAddress.setLine1(et_street.getText().toString());
                         updateBranchAddress.setId(branchIds.get(addressRL.indexOfChild(inflater) - 2));
+
 
                         if (TextUtils.isEmpty(et_street.getText().toString()) ||
                                 TextUtils.isEmpty(et_city.getText().toString()) ||
@@ -292,6 +320,7 @@ public class StoreSettingFragment extends Fragment {
                         }
                     }
                 });
+                addressRL.addView(inflater);
 
             }
 

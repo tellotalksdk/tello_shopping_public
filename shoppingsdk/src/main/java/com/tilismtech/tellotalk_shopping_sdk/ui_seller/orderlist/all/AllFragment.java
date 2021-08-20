@@ -47,6 +47,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderRes
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.OrderListViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingPageViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.io.File;
@@ -88,6 +89,12 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
+
+        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            horizontalProgressBar.setVisibility(View.GONE);
+            return;
+        }
 
         shopLandingPageViewModel.allStatusCount(getActivity());
         shopLandingPageViewModel.getAllStatusCount().observe(getActivity(), new Observer<GetOrderStatusCountResponse>() {
@@ -205,6 +212,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                 //  Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
+                    et_order.setText( viewFullOrderResponse.getData().getRequestList().getOrderNo());
 
                     if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("1")) {
                         et_orderStatus.setText("Received");

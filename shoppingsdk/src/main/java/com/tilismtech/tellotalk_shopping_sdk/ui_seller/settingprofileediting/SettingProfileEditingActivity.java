@@ -56,7 +56,9 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailRes
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateUserAndImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.receiver.NetworkReceiver;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoprofileupdation.ShopProfileUpdationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
@@ -154,10 +156,17 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
             public void onClick(View v) {
                 if (toggle) {
 
+
                     if (TextUtils.isEmpty(shopOwnername.getText().toString())) {
                         Toast.makeText(SettingProfileEditingActivity.this, "User name can not be empty...", Toast.LENGTH_SHORT).show();
                         return;
                     } else {
+
+
+                        if (!ApplicationUtils.isNetworkConnected(SettingProfileEditingActivity.this)) {
+                            Toast.makeText(SettingProfileEditingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
 
                         UpdateUserAndImage updateUserAndImage = new UpdateUserAndImage();

@@ -33,6 +33,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDeta
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBankResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetUserBankDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
 import java.util.ArrayList;
@@ -165,6 +166,13 @@ public class BankSettingFragment extends Fragment {
         continue_btn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (isbankClicked) {
                     RL1.setVisibility(View.GONE);
                     RL2.setVisibility(View.VISIBLE);
@@ -190,9 +198,17 @@ public class BankSettingFragment extends Fragment {
             public void onClick(View v) {
 
 
+
                 //here we set api for adding bank details
 
                 if (checkBankValidation()) {
+
+
+                    if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                        Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     AddBank addBank = new AddBank();
                     addBank.setAccountFrom(spinner_bank_names.getSelectedItem().toString());
                     addBank.setAccountNumber(account_number.getText().toString());
@@ -222,6 +238,13 @@ public class BankSettingFragment extends Fragment {
         continue_btn_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 RL1.setVisibility(View.VISIBLE);
                 RL2.setVisibility(View.GONE);
                 RL3.setVisibility(View.GONE);
@@ -235,6 +258,12 @@ public class BankSettingFragment extends Fragment {
 
 
                 if (checkWalletValidation()) {
+
+                    if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                        Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     AddWallet addWallet = new AddWallet();
                     addWallet.setAccountFrom(spinner_wallet_names.getSelectedItem().toString());
                     addWallet.setAccountNumber(account_mobile_number.getText().toString());

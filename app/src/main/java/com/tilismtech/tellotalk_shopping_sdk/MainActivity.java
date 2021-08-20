@@ -25,6 +25,7 @@ import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandi
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button button, client;
     EditText fN, mN, lN, cN, pI;
     com.google.android.material.switchmaterial.SwitchMaterial toggle;
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         cN = findViewById(R.id.contact);
         pI = findViewById(R.id.profileid);
         toggle = findViewById(R.id.toggle);
+        loadingDialog = new LoadingDialog(MainActivity.this);
 
 
         button = findViewById(R.id.button);
@@ -55,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
-                TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com");
+                // Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
+                loadingDialog.showDialog();
+                TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
             }
         });
 

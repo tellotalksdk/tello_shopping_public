@@ -88,6 +88,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsRespon
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
@@ -743,6 +744,11 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         !TextUtils.isEmpty(filePath.toString()) &&
                         !TextUtils.isEmpty(colorTheme.toString())
                 ) {
+
+                    if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                        Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     shopBasicSetting.setProfileId(Constant.PROFILE_ID);
                     shopBasicSetting.setShop_Theme(colorTheme);

@@ -3,9 +3,9 @@
     <item
         android:id="@+id/one"
         android:title="Shop Setting" />
-    <item
+<!--    <item
         android:id="@+id/two"
-        android:title="Share Shop Via Link"/>
+        android:title="Share Shop Via Link"/>-->
 <!--    <item
         android:id="@+id/three"
         android:title="Three"/>-->

@@ -64,6 +64,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.VerifyOtpRespons
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingFragment;
+import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
@@ -169,6 +170,11 @@ public class ShopRegistrationFragment extends Fragment {
                         return;
                     }
 
+                    if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                        Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     //this will collect all digits from number fields...
                     mobileNumber = d1.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
                     if (correctMobile(mobileNumber)) {
@@ -177,6 +183,8 @@ public class ShopRegistrationFragment extends Fragment {
                     }
 
                     if (mobileNumber.equals(TelloPreferenceManager.getInstance(getActivity()).getProfileId())) { //mean its a tello user no need for otp verification
+
+                        TelloPreferenceManager.getInstance(getActivity()).saveRegisteredNumber(mobileNumber);
                         RL.setVisibility(View.VISIBLE);
                         requestforPin.setVisibility(View.GONE);
                         requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
@@ -222,6 +230,8 @@ public class ShopRegistrationFragment extends Fragment {
 
 
                     } else { //mean its not tello user show otp layout and call sendotp request
+                        TelloPreferenceManager.getInstance(getActivity()).saveRegisteredNumber(mobileNumber);
+
                         RL.setVisibility(View.VISIBLE);
                         requestforPin.setVisibility(View.GONE);
                         requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
@@ -291,6 +301,11 @@ public class ShopRegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkOTP()) {
+
+                    if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                        Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    }
+
                     // loadingDialog.showDialog();
                     otp = otp_one.getText().toString().trim() + otp_two.getText().toString().trim() + otp_three.getText().toString().trim();
 
@@ -325,6 +340,10 @@ public class ShopRegistrationFragment extends Fragment {
         done_btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 navController.navigate(R.id.shopSettingFragment);
             }
         });
@@ -336,6 +355,13 @@ public class ShopRegistrationFragment extends Fragment {
             public void onClick(View v) {
                 if (counter < 10) {
                     // here we call resend opt
+
+                    if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                        Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
                     requestAgain.setBackgroundDrawable(getResources().getDrawable(R.drawable.edit_text_bg_color));
                     requestAgain.setTextColor(Color.BLACK);
                     requestAgain.setClickable(false);
@@ -1165,6 +1191,11 @@ public class ShopRegistrationFragment extends Fragment {
                         Toast.makeText(getActivity(), "User name can not be empty...", Toast.LENGTH_SHORT).show();
                     } else {
 
+                        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         LoadingDialog loadingDialog1 = new LoadingDialog(getActivity());
                         //loadingDialog1.showDialog();
 
@@ -1255,6 +1286,12 @@ public class ShopRegistrationFragment extends Fragment {
         termOfUse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Toast.makeText(getActivity(), "url not available", Toast.LENGTH_SHORT).show();
             }
         });
