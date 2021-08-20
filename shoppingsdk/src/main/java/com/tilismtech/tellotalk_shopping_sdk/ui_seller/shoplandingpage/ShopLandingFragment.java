@@ -710,18 +710,35 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             attachments = data.getParcelableArrayListExtra("result");
             int count = attachments.size();
             ImageView iv;
+            ImageView ic_delete;
+
 
             for (int i = 0; i < count; i++) {
                 View inflater = getLayoutInflater().inflate(R.layout.image_item_for_multiple_images, null);
                 iv = inflater.findViewById(R.id.iv);
+                ic_delete = inflater.findViewById(R.id.ic_delete);
                 imageUri = attachments.get(i).getFileUri();
                 Log.i("TAG", "onActivityResult: " + imageUri.getPath());
-                filepath = attachments.get(i).getFileUri().getPath();
+                String filepath = attachments.get(i).getFileUri().getPath();
                 Log.i("TAG", "onActivityResult: " + filepath);
                 filePaths.add(filepath); //getting multiple image file path and save all selected image path in string array
                 iv.setImageURI(imageUri);
+
+                int currentItem = i;
+
+                ic_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        filePaths.size();
+                        filePaths.remove(filepath);
+                        LLimages.removeView(inflater);
+                    }
+                });
+
                 LLimages.addView(inflater);
             }
+
+
 
 
           /*  if (data.getClipData() != null) {
@@ -1293,6 +1310,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     @Override
     public void isActiveproduct(int position, boolean isActive) {
         //  Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
+
+        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         IsProductActive isProductActive = new IsProductActive();
         isProductActive.setProductId(String.valueOf(position));
         isProductActive.setProductStatus(isActive ? "Y" : "N");

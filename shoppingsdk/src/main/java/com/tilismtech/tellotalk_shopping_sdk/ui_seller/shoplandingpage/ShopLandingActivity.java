@@ -233,8 +233,14 @@ public class ShopLandingActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
 
                         if (item.getItemId() == R.id.one) {
-                            Intent intent = new Intent(ShopLandingActivity.this, ShopProfileUpdationActivity.class);
-                            startActivity(intent);
+
+                            if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                                Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Intent intent = new Intent(ShopLandingActivity.this, ShopProfileUpdationActivity.class);
+                                startActivity(intent);
+                            }
                         }
 
                         // Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -345,6 +351,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                         if (checkValidation()
                         ) {
+
 
                             if (!TextUtils.isEmpty(et_DiscountedPrice.getText().toString())) {
                                 if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
@@ -1218,7 +1225,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 ic_delete = inflater.findViewById(R.id.ic_delete);
                 imageUri = attachments.get(i).getFileUri();
                 Log.i("TAG", "onActivityResult: " + imageUri.getPath());
-                filepath = attachments.get(i).getFileUri().getPath();
+
+                String filepath = attachments.get(i).getFileUri().getPath();
                 Log.i("TAG", "onActivityResult: " + filepath);
                 filePaths.add(i, filepath); //getting multiple image file path and save all selected image path in string array
                 iv.setImageURI(imageUri);
@@ -1227,8 +1235,8 @@ public class ShopLandingActivity extends AppCompatActivity {
                 ic_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(ShopLandingActivity.this, "clicked... " + currentItem, Toast.LENGTH_SHORT).show();
-                        filePaths.remove(currentItem);
+                        filePaths.size();
+                        filePaths.remove(filepath);
                         LLimages.removeView(inflater);
                     }
                 });

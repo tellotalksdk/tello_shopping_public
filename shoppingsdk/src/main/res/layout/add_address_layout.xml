@@ -84,7 +84,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
-                android:hint="11-E DHA street"
+                android:hint="Type Your Street Address Here..."
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -95,7 +95,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
-                android:hint="Karachi"
+                android:hint="Type Your City Here..."
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -106,7 +106,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
-                android:hint="Sindh"
+                android:hint="Type Your Province Here..."
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -117,7 +117,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
-                android:hint="Pakistan"
+                android:hint="Type Your Country Here..."
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 

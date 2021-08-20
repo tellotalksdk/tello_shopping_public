@@ -20,7 +20,7 @@
         android:layout_height="?actionBarSize"
         android:layout_marginTop="-150dp"
         android:hint="first Name"
-        android:text="" />
+        android:text="Sharjeel" />
 
 
     <EditText
@@ -43,7 +43,7 @@
         android:layout_height="?actionBarSize"
         android:hint="mobile number"
         android:inputType="number"
-        android:text="" />
+        android:text="03336699881" />
 
 
     <EditText

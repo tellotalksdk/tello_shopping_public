@@ -66,8 +66,10 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:paddingBottom="3dp"
+            android:paddingTop="3dp"
             android:src="@drawable/ic_address"
             android:visibility="gone"
+            android:layout_alignTop="@+id/address"
             android:layout_toLeftOf="@+id/lldetail"
             android:layout_alignBottom="@+id/address"
             android:layout_toRightOf="@+id/address"/>

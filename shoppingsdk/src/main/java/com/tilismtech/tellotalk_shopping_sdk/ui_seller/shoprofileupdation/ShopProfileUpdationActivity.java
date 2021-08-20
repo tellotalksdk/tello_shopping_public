@@ -526,6 +526,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             //   Toast.makeText(activity, "ndsajkld", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

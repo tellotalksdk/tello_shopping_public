@@ -93,13 +93,14 @@
                     android:layout_height="22dp"
                     android:layout_alignParentStart="true"
                     android:padding="2dp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_share_two" />
 
                 <ImageView
                     android:id="@+id/shareProductLink"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentStart="true"
                     android:padding="2dp"
                     android:src="@drawable/ic_share_one" />
 

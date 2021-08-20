@@ -84,6 +84,13 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
         holder.iv_locate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //   Toast.makeText(myCtx, "" + receivedItemPojo.getReason(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.cancelReasonbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Toast.makeText(myCtx, "" + receivedItemPojo.getReason(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -126,7 +133,7 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if(cancelledItems != null) {
+            if (cancelledItems != null) {
                 cancelledItems.clear();
                 cancelledItems.addAll((List) results.values);
                 notifyDataSetChanged();
@@ -141,6 +148,7 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
         OnOrderClickListener onOrderClickListener;
         ImageView edit_rider_info;
         ImageView iv_locate;
+        Button cancelReasonbtn;
 
 
         public CancelledItemViewHolder(@NonNull View itemView, OnOrderClickListener onOrderClickListener) {
@@ -159,6 +167,7 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
             spinner_moveto = itemView.findViewById(R.id.spinner_moveto);
             addRiderInfo1 = itemView.findViewById(R.id.addRiderInfo1);
             edit_rider_info = itemView.findViewById(R.id.edit_rider_info);
+            cancelReasonbtn = itemView.findViewById(R.id.cancelReasonbtn);
 
             this.onOrderClickListener = onOrderClickListener;
             viewFull.setOnClickListener(this);
@@ -209,9 +218,9 @@ public class CancelledAdapter extends RecyclerView.Adapter<CancelledAdapter.Canc
             } else if (v.getId() == R.id.addRiderInfo) {
                 onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.orderStatus) {
-               // onOrderClickListener.OnStatusChange(5, cancelledItems.get(getAdapterPosition()).getOrderid());
+                // onOrderClickListener.OnStatusChange(5, cancelledItems.get(getAdapterPosition()).getOrderid());
             } else if (v.getId() == R.id.edit_rider_info) {
-                onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid(),cancelledItems.get(getAdapterPosition()));
+                onOrderClickListener.OnRiderInfoUpdateListener(cancelledItems.get(getAdapterPosition()).getOrderid(), cancelledItems.get(getAdapterPosition()));
             }
         }
     }
