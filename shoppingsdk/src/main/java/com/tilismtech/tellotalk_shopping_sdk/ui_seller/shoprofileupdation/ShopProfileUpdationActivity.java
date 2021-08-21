@@ -57,6 +57,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -77,15 +78,18 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.Citiespojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ColorChooserPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.CountriesPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.StatePojo;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
@@ -140,22 +144,66 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
     private LinearLayout cardView;
     private List<String> Countries, States, Cities;
     private int CountryId, StateId, CityId;
-    StatePojo statePojo;
-    CountriesPojo countriesPojo;
-    Citiespojo citiespojo;
-    String mondayOpenTimings, mondayCloseTimings, tuesdayOpenTimings, tuesdayCloseTimings, wednesdayOpenTimings, wednesdayCloseTimings, thrusdayOpenTimings, thrusdayCloseTimings, fridayOpenTimings, fridayCloseTimings, saturdayOpenTimings, saturdayCloseTimings, sundayOpenTimings, sundayCloseTimings;
-    ArrayAdapter<String> openTimingAdapter;
+    private StoreSettingViewModel storeSettingViewModel;
+    private StatePojo statePojo;
+    private CountriesPojo countriesPojo;
+    private Citiespojo citiespojo;
+    private String mondayOpenTimings, mondayCloseTimings, tuesdayOpenTimings, tuesdayCloseTimings, wednesdayOpenTimings, wednesdayCloseTimings, thrusdayOpenTimings, thrusdayCloseTimings, fridayOpenTimings, fridayCloseTimings, saturdayOpenTimings, saturdayCloseTimings, sundayOpenTimings, sundayCloseTimings;
+    private ArrayAdapter<String> openTimingAdapter;
     private GoogleMap mMap;
     private CustomMapView mapView;
-    LocationManager mLocationManager;
-
+    private LocationManager mLocationManager;
+    private String m_City, m_Country, m_State, m_Area, m_ShopUri;
+    private ArrayAdapter<String> countryAdapter;
+    private ArrayAdapter<String> provinceAdapter;
+    private ArrayAdapter<String> cityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_profile_updation);
         View view = findViewById(android.R.id.content).getRootView();
+        storeSettingViewModel = new ViewModelProvider(this).get(StoreSettingViewModel.class);
+
         initViews(view);
+
+
+        GetShopDetail getShopDetail = new GetShopDetail();
+        getShopDetail.setProfileId(Constant.PROFILE_ID);
+
+        storeSettingViewModel.postShopDetail(getShopDetail, this);
+        storeSettingViewModel.getShopDetail().observe(this, new Observer<GetShopDetailResponse>() {
+            @Override
+            public void onChanged(GetShopDetailResponse getShopDetailResponse) {
+                if (getShopDetailResponse != null) {
+                    m_City = getShopDetailResponse.getData().getRequestList().getCity();
+                    m_Country = getShopDetailResponse.getData().getRequestList().getCountry();
+                    m_State = getShopDetailResponse.getData().getRequestList().getProvince();
+                    m_Area = getShopDetailResponse.getData().getRequestList().getArea();
+                    m_ShopUri = getShopDetailResponse.getData().getRequestList().getShopURl();
+
+                    int spinnerPosition = countryAdapter.getPosition(m_Country);
+                    country.setSelection(spinnerPosition);
+
+                    int spinnerPosition1 = provinceAdapter.getPosition(m_State);
+                    province.setSelection(spinnerPosition1);
+
+                    int spinnerPosition2 = cityAdapter.getPosition(m_City);
+                    city.setSelection(spinnerPosition2);
+
+                    et_OwnerShopUrl.setText(m_ShopUri);
+                    area.setText(m_Area);
+
+                    Glide.with(ShopProfileUpdationActivity.this)
+                            .load(getShopDetailResponse.getData().getRequestList().getShopProfile()).placeholder(R.drawable.banner_img).into(bannerImage);
+
+                /*    Country = m_Country;
+                    Province = m_State;
+                    City = m_City;*/
+                }
+            }
+        });
+
 
         mapView.onCreate(savedInstanceState);
 
@@ -174,7 +222,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         Gson gson = new Gson();
         et_OwnerName.setText(TelloPreferenceManager.getInstance(activity).getOwnerName());
         et_OwnerNumber.setText(TelloPreferenceManager.getInstance(activity).getRegisteredNumber());
-        et_OwnerShopUrl.setText(TelloPreferenceManager.getInstance(activity).getShopUri());
+
 
         if (!ApplicationUtils.isNetworkConnected(ShopProfileUpdationActivity.this)) {
             Toast.makeText(ShopProfileUpdationActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
@@ -205,17 +253,19 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         }
 
 
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Countries);
+        countryAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Countries);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
         country.setAdapter(countryAdapter);
         country.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
-        ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, States);
+
+        provinceAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, States);
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
         province.setAdapter(provinceAdapter);
         province.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
+
+        cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
         city.setAdapter(cityAdapter);
         city.setOnItemSelectedListener(onItemSelectedListenerAddress);
@@ -526,7 +576,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   Toast.makeText(activity, "ndsajkld", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(activity, "ndsajkld", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -732,7 +782,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                         !TextUtils.isEmpty(Country) &&
                         !TextUtils.isEmpty(Province) &&
                         !TextUtils.isEmpty(City) &&
-                        !TextUtils.isEmpty(filePath.toString()) &&
+                        /*   !TextUtils.isEmpty(filePath.toString()) &&*/
                         !TextUtils.isEmpty(colorTheme.toString())
                 ) {
 
@@ -1429,6 +1479,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 //Toast.makeText(activity, "" + CountryId, Toast.LENGTH_SHORT).show();
 
                 //here we set updated states
+/*
                 States.clear();
                 States.add(0, "Select State");
                 for (int i = 1; i < statePojo.getStates().size(); i++) {
@@ -1441,6 +1492,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                 province.setAdapter(provinceAdapter);
                 province.setOnItemSelectedListener(onItemSelectedListenerAddress);
+*/
 
 
             }
@@ -1455,10 +1507,10 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 StateId = (int) parent.getItemIdAtPosition(position);
                 //  StateId = Integer.parseInt(statePojo.getStates().get(position).getId());
                 //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
-                Cities.clear();
-                Cities.add(0, "Select City");
+          //      Cities.clear();
+          //      Cities.add(0, "Select City");
                 //  Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
-                for (int i = 1; i < citiespojo.getCities().size(); i++) {
+   /*             for (int i = 1; i < citiespojo.getCities().size(); i++) {
 
                     if (Integer.parseInt(citiespojo.getCities().get(i).getState_id()) == StateId) {
                         Cities.add(citiespojo.getCities().get(i).getName());
@@ -1470,7 +1522,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
                 cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
                 city.setAdapter(cityAdapter);
-                city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+                city.setOnItemSelectedListener(onItemSelectedListenerAddress);*/
 
 
                 //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();

@@ -399,6 +399,7 @@ public class Repository {
             @Override
             public void onFailure(Call<ShopBasicSettingResponse> call, Throwable t) {
                 t.printStackTrace();
+                shopBasicSettingResponseMutableLiveData.setValue(null);
             }
         });
         System.out.println();
