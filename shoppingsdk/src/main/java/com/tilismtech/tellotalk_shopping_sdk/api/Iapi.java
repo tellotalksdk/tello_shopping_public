@@ -176,7 +176,7 @@ public interface Iapi {
                                             @Body ShopRegister shopRegister
     );*/
 
-    //shopsetting
+    //shopsetting_Image
 
     @Headers({
             "Accept: application/json"
@@ -197,6 +197,25 @@ public interface Iapi {
                                                        @Part("longitude") RequestBody Long
     );
 
+    //shopsetting_WithOut_Image
+
+    @Headers({
+            "Accept: application/json"
+    })
+    @Multipart
+    @POST("api/shop/ShopSettingwithImage")
+    Call<ShopBasicSettingResponse> setShopBasicSetting_WithOut_Image(@Header("Authorization") String token,
+                                                       @Part("shippingFee") RequestBody ShippingFee,
+                                                       @Part("tax") RequestBody tax,
+                                                       @Part("province") RequestBody Province,
+                                                       @Part("area") RequestBody Area,
+                                                       @Part("city") RequestBody City,
+                                                       @Part("country") RequestBody Country,
+                                                       @Part("shopTheme") RequestBody Shop_Theme,
+                                                       @Part("profileId") RequestBody ProfileId,
+                                                       @Part("latitude") RequestBody Lat,
+                                                       @Part("longitude") RequestBody Long
+    );
 
     //get all product categories list
     @GET("api/Product/ProductCategoryList")

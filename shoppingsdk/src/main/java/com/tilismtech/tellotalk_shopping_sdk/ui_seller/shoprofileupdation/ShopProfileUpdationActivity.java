@@ -194,8 +194,14 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                     et_OwnerShopUrl.setText(m_ShopUri);
                     area.setText(m_Area);
 
-                    Glide.with(ShopProfileUpdationActivity.this)
-                            .load(getShopDetailResponse.getData().getRequestList().getShopProfile()).placeholder(R.drawable.banner_img).into(bannerImage);
+                    if (getShopDetailResponse.getData().getRequestList().getShopProfile().equals("")) {
+                        //do nothing
+                    } else {
+                        Glide.with(ShopProfileUpdationActivity.this)
+                                .load(getShopDetailResponse.getData().getRequestList().getShopProfile()).into(bannerImage);
+                    }
+
+                    TelloPreferenceManager.getInstance(ShopProfileUpdationActivity.this).saveShopURI(m_ShopUri);
 
                 /*    Country = m_Country;
                     Province = m_State;
@@ -786,41 +792,72 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                         !TextUtils.isEmpty(colorTheme.toString())
                 ) {
 
-                    shopBasicSetting.setProfileId(Constant.PROFILE_ID);
-                    shopBasicSetting.setShop_Theme(colorTheme);
-                    // shopBasicSetting.setShopProfile(imageUri); //image
-                    shopBasicSetting.setShopProfile(filePath); //image
-                    shopBasicSetting.setTax("0");
-                    shopBasicSetting.setShippingFee("0");
-                    shopBasicSetting.setCountry(Country);
-                    shopBasicSetting.setProvince(Province);
-                    shopBasicSetting.setCity(City);
-                    shopBasicSetting.setArea(area.getText().toString());
-                    shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
-                    shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
 
-                    shopSettingViewModel.postShopSettingDetails(shopBasicSetting, activity);
-                    LoadingDialog loadingDialog = new LoadingDialog(activity);
-                    loadingDialog.showDialog();
-                    // progressBar.setVisibility(View.VISIBLE);
-                    shopSettingViewModel.getShopSettingResponse().observe((LifecycleOwner) activity, new Observer<ShopBasicSettingResponse>() {
-                        @Override
-                        public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
-                            if (shopBasicSettingResponse != null) {
-                                //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
-                                // progressBar.setVisibility(View.GONE);
-                                loadingDialog.dismissDialog();
-                                TelloPreferenceManager.getInstance(activity).savecongratsStatus(false);
-                                activity.finish();
-                                // startActivity(new Intent(activity, ShopLandingActivity.class).putExtra("congrats_dialog_to_show", true));
+                    if (TextUtils.isEmpty(filePath.toString())) { //here we call same api but without ShopProfile Key
+                        shopBasicSetting.setProfileId(Constant.PROFILE_ID);
+                        shopBasicSetting.setShop_Theme(colorTheme);
+                        // shopBasicSetting.setShopProfile(imageUri); //image
+                        shopBasicSetting.setShopProfile(filePath); //image
+                        shopBasicSetting.setTax("0");
+                        shopBasicSetting.setShippingFee("0");
+                        shopBasicSetting.setCountry(Country);
+                        shopBasicSetting.setProvince(Province);
+                        shopBasicSetting.setCity(City);
+                        shopBasicSetting.setArea(area.getText().toString());
+                        shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
+                        shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
 
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
+                        shopSettingViewModel.postShopSettingDetailsWithOutImage(shopBasicSetting, activity);
+                        LoadingDialog loadingDialog = new LoadingDialog(activity);
+                        loadingDialog.showDialog();
+                        // progressBar.setVisibility(View.VISIBLE);
+                        shopSettingViewModel.getShopSettingResponseWithOutImage().observe((LifecycleOwner) activity, new Observer<ShopBasicSettingResponse>() {
+                            @Override
+                            public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
+                                if (shopBasicSettingResponse != null) {
+                                    loadingDialog.dismissDialog();
+                                    TelloPreferenceManager.getInstance(activity).savecongratsStatus(false);
+                                    activity.finish();
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
+                                    loadingDialog.dismissDialog();
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else { //here we call same api but with image
+                        shopBasicSetting.setProfileId(Constant.PROFILE_ID);
+                        shopBasicSetting.setShop_Theme(colorTheme);
+                        shopBasicSetting.setShopProfile(filePath); //image
+                        shopBasicSetting.setTax("0");
+                        shopBasicSetting.setShippingFee("0");
+                        shopBasicSetting.setCountry(Country);
+                        shopBasicSetting.setProvince(Province);
+                        shopBasicSetting.setCity(City);
+                        shopBasicSetting.setArea(area.getText().toString());
+                        shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
+                        shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
+
+                        shopSettingViewModel.postShopSettingDetails(shopBasicSetting, activity);
+                        LoadingDialog loadingDialog = new LoadingDialog(activity);
+                        loadingDialog.showDialog();
+                        shopSettingViewModel.getShopSettingResponse().observe((LifecycleOwner) activity, new Observer<ShopBasicSettingResponse>() {
+                            @Override
+                            public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
+                                if (shopBasicSettingResponse != null) {
+                                    Toast.makeText(activity, "Your Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
+                                    loadingDialog.dismissDialog();
+                                    TelloPreferenceManager.getInstance(activity).savecongratsStatus(false);
+                                    activity.finish();
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(activity, "Some thing went wrong try again....", Toast.LENGTH_SHORT).show();
+                                    loadingDialog.dismissDialog();
+                                }
+                            }
+                        });
+                    }
+
 
                 } else {
                     Toast.makeText(activity, "Some fields are missing...", Toast.LENGTH_SHORT).show();
@@ -833,7 +870,6 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
 
     private void initViews(View view) {
 
-        //navController = Navigation.findNavController(view);
         saveAccountbtn = view.findViewById(R.id.saveAccountbtn);
         iv_timings = view.findViewById(R.id.iv_timings);
         iv_websitetheme = view.findViewById(R.id.iv_websitetheme);
@@ -1029,7 +1065,6 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 } else {
                     Toast.makeText(activity, "Permission Not Granted...", Toast.LENGTH_SHORT).show();
                 }
-
 
         }
     }
@@ -1507,8 +1542,8 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 StateId = (int) parent.getItemIdAtPosition(position);
                 //  StateId = Integer.parseInt(statePojo.getStates().get(position).getId());
                 //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
-          //      Cities.clear();
-          //      Cities.add(0, "Select City");
+                //      Cities.clear();
+                //      Cities.add(0, "Select City");
                 //  Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
    /*             for (int i = 1; i < citiespojo.getCities().size(); i++) {
 

@@ -71,9 +71,9 @@ public class TelloApiClient {
         generateToken.setPhone(phone);
         generateToken.setEmail(email);
 
-        if (!ApplicationUtils.isNetworkConnected(context)) {
+     /*   if (!ApplicationUtils.isNetworkConnected(context)) {
             Toast.makeText(context, "" + context.getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         try {//03350221182
             generateTokenResponse(generateToken, context, new OnSuccessListener() {
@@ -84,13 +84,13 @@ public class TelloApiClient {
                         Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
                         loadingDialog.dismissDialog();
                     } else if ("-1".equals(gtResponseError.getStatus().toString())) {
-                        Toast.makeText(context, "No Internet Connection...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "" + context.getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
                         loadingDialog.dismissDialog();
                     } else {
                         isShopExist(Constant.PROFILE_ID, context);
                         loadingDialog.dismissDialog();
                     }
-                    //        context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                    // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {

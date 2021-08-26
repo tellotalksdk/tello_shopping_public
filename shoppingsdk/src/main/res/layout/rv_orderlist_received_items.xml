@@ -33,7 +33,7 @@
             android:layout_marginEnd="10dp"
             android:text="Accept"
             android:textColor="#226EE8"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView

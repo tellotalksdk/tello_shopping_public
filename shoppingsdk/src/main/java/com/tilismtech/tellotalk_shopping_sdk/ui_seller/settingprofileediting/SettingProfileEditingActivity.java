@@ -295,35 +295,51 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
 
         tab1 = findViewById(R.id.tab1);
         tab1.getTabAt(0).select();
-        tab1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
+        if (!ApplicationUtils.isNetworkConnected(SettingProfileEditingActivity.this)) {
+            Toast.makeText(SettingProfileEditingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
 
-                switch (tab.getPosition()) {
-                    case 0:
-                        navController.navigate(R.id.storeSettingFragment);
-                        break;
-                    case 1:
-                        navController.navigate(R.id.bankSettingFragment);
-                        break;
-                }
+            return;
+        } else {
+            // tab1.getTabAt(0).select();
+
+            tab1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+
+                    switch (tab.getPosition()) {
+                        case 0:
+                            if (!ApplicationUtils.isNetworkConnected(SettingProfileEditingActivity.this)) {
+                                Toast.makeText(SettingProfileEditingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            navController.navigate(R.id.storeSettingFragment);
+                            break;
+                        case 1:
+                            if (!ApplicationUtils.isNetworkConnected(SettingProfileEditingActivity.this)) {
+                                Toast.makeText(SettingProfileEditingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            navController.navigate(R.id.bankSettingFragment);
+                            break;
+                    }
               /*  if (tab.getPosition() == 0) {
                     navController.navigate(R.id.storeSettingFragment);
                 } else if (tab.getPosition() == 1) {
                     navController.navigate(R.id.bankSettingFragment);
                 }*/
-            }
+                }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-            }
+                }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
+                }
+            });
+        }
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -558,7 +574,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
-                Uri selectedImage = data.getData();
+        /*        Uri selectedImage = data.getData();
                 iv_profile.setImageURI(selectedImage);
                 // filePath = getRealPathFromURI(selectedImage);
                 filePath = getPath(SettingProfileEditingActivity.this, selectedImage);
@@ -571,7 +587,14 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                     e.printStackTrace();
                 }
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-                iv_profile.setImageBitmap(resized);
+                iv_profile.setImageBitmap(resized);*/
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                iv_profile.setImageBitmap(photo);
+                imageUri = getImageUri(SettingProfileEditingActivity.this, photo);
+                filePath = getRealPathFromURI(imageUri);
+                Log.i("TAG", "onActivityResult: Capture Path : " + filePath);
+                iv_profile.setImageURI(imageUri);
+
             } else { //other than marshmallow
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 iv_profile.setImageBitmap(photo);

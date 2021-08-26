@@ -148,8 +148,8 @@
                 android:text="Shop is created Successfully"
                 android:textColor="#32C8B3"
                 android:textSize="22sp"
-                android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/setupShop"
@@ -162,8 +162,8 @@
                 android:text="Please Setup Your Shop"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
-                android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/country"
@@ -213,28 +213,28 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/aa"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/city"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:paddingTop="5dp"
-                android:layout_below="@+id/city"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
+                android:paddingTop="5dp"
                 app:endIconMode="none">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/area"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="Area"
-                    android:id="@+id/area"
+                    android:background="@null"
                     android:gravity="center|left"
+                    android:hint="Area"
+                    android:inputType="text"
                     android:paddingStart="15dp"
                     android:paddingBottom="25dp"
-                    android:textSize="14sp"
                     android:text=""
-                    android:background="@null"
-                    android:inputType="text" />
+                    android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -304,8 +304,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/mapView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />

@@ -69,8 +69,6 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
     public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
     private int totalSumofAllOrderAmount = 0;
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +117,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
 
     private void initReceivedItems() {
 
-        orderListViewModel.AllOrders(Constant.PROFILE_ID,getActivity());
+        orderListViewModel.AllOrders(Constant.PROFILE_ID, getActivity());
         orderListViewModel.getOrders().observe(getActivity(), new Observer<GetAllOrderResponse>() {
             @Override
             public void onChanged(GetAllOrderResponse getAllOrderResponse) {
@@ -192,7 +190,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    CaptureScreenShot(bitmap,flash);
+                    CaptureScreenShot(bitmap, flash);
                 } else {
                     captureScreenShot(bitmap, flash);
                 }
@@ -205,14 +203,14 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus(String.valueOf(orderStatus));
 
-        orderListViewModel.viewFullOrder(viewFullOrder,getActivity());
+        orderListViewModel.viewFullOrder(viewFullOrder, getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
                 //  Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
                     et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
-                    et_order.setText( viewFullOrderResponse.getData().getRequestList().getOrderNo());
+                    et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
 
                     if (viewFullOrderResponse.getData().getRequestList().getOrderStatus().equals("1")) {
                         et_orderStatus.setText("Received");
@@ -286,7 +284,7 @@ public class AllFragment extends Fragment implements AllAdapter.OnOrderClickList
 
     }
 
-    private void CaptureScreenShot(Bitmap bitmap,LinearLayout flash) {
+    private void CaptureScreenShot(Bitmap bitmap, LinearLayout flash) {
         OutputStream fos;
 
         try {

@@ -111,6 +111,17 @@ public class GetAllOrderResponse {
         @SerializedName("CompleteAddress")
         @Expose
         private String completeAddress;
+        @SerializedName("qty")
+        @Expose
+        private String quantity;
+
+        public String getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(String quantity) {
+            this.quantity = quantity;
+        }
 
         public Integer getOrderid() {
             return orderid;

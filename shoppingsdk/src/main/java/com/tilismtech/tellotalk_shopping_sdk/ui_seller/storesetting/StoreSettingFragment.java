@@ -47,8 +47,9 @@ public class StoreSettingFragment extends Fragment {
     private RelativeLayout addedAddress;
     private String shopId, addressId;
     private List<String> branchIds; //we need to store branch id to update and delete these ids...
-    StoreSettingViewModel storeSettingViewModel;
-    NavController navController;
+    private StoreSettingViewModel storeSettingViewModel;
+    private NavController navController;
+    private LinearLayout linearAddBranch;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -336,5 +337,6 @@ public class StoreSettingFragment extends Fragment {
         et_shop_url = view.findViewById(R.id.et_shop_url);
         registeredShopNumber = view.findViewById(R.id.registeredShopNumber);
         iv_top_image = view.findViewById(R.id.iv_top_image);
+        linearAddBranch = view.findViewById(R.id.linearAddBranch);
     }
 }

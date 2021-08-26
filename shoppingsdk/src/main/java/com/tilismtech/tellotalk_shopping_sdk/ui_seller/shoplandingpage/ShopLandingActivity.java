@@ -236,14 +236,27 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                             if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
                                 Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
-
                             } else {
                                 Intent intent = new Intent(ShopLandingActivity.this, ShopProfileUpdationActivity.class);
                                 startActivity(intent);
                             }
                         }
 
-                        // Toast.makeText(ShopLandingActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+
+                        if (item.getItemId() == R.id.two) {
+                            if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
+                                Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            }
+
+                            Intent sendIntent = new Intent();
+                            sendIntent.setAction(Intent.ACTION_SEND);
+                            sendIntent.putExtra(Intent.EXTRA_TEXT, TelloPreferenceManager.getInstance(ShopLandingActivity.this).getShopUri());
+                            sendIntent.setType("text/plain");
+
+                            Intent shareIntent = Intent.createChooser(sendIntent, null);
+                            startActivity(shareIntent);
+                        }
+
                         return true;
                     }
                 });

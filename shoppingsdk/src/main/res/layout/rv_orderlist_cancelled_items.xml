@@ -31,7 +31,7 @@
             android:layout_toLeftOf="@+id/orderStatus"
             android:text="Reason"
             android:textAllCaps="false"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:layout_marginTop="0.5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/bg_rounded_white_days_timings"
@@ -46,7 +46,7 @@
             android:layout_marginEnd="10dp"
             android:text="Cancelled"
             android:textColor="#D00C0C"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView

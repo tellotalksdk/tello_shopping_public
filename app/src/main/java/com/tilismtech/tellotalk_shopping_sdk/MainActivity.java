@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.Objects;
 import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloApiClient;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
@@ -59,10 +61,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
-                loadingDialog.showDialog();
-                TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
+
+
+                    loadingDialog.showDialog();
+                    TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
+
             }
         });
+
 
         client.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,4 +88,81 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    private boolean checkValidation() {
+
+        if (TextUtils.isEmpty(fN.getText().toString())) {
+            Toast.makeText(this, "Name is empty...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (TextUtils.isEmpty(cN.getText().toString())) {
+            Toast.makeText(this, "Phone Number is empty...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (correctMobile(cN.getText().toString()) == false) {
+            Toast.makeText(this, "Mobile Number is Incorrect", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        if (cN.length() != 11) {
+            Toast.makeText(this, "Please Dial an valid number...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        return true;
+    }
+
+    private boolean correctMobile(String mobileNumber) {
+
+        if (mobileNumber.charAt(0) != '0') {
+            return false;
+        }
+
+
+        if (mobileNumber.charAt(1) != '3') {
+            return false;
+        }
+
+        if (mobileNumber.charAt(2) != '0') {
+            return false;
+        }
+
+        if (mobileNumber.charAt(2) != '1') {
+            return false;
+        }
+
+        if (mobileNumber.charAt(2) != '2') {
+            return false;
+        }
+
+        if (mobileNumber.charAt(2) != '3') {
+            return false;
+        }
+
+        if (mobileNumber.charAt(2) != '4') {
+            return false;
+        }
+
+
+//        if (mobileNumber.charAt(2) != '0' ||
+//                mobileNumber.charAt(2) != '1' ||
+//                mobileNumber.charAt(2) != '2' ||
+//                mobileNumber.charAt(2) != '3' ||
+//                mobileNumber.charAt(2) != '4'
+//
+//        ) {
+//            return false;
+//        }else{
+//            return true;
+//        }
+
+        return true;
+
+    }
+
+
 }

@@ -30,7 +30,7 @@ public class ShopSettingViewModel extends ViewModel {
         this.colorThemeResponseMutableLiveData = new MutableLiveData<>();
     }
 
-    //shop setting
+    //shop setting with Image
     public void postShopSettingDetails(ShopBasicSetting shopBasicSetting, Context myContext) {
         repository.setShopBasicSetting(shopBasicSettingResponseMutableLiveData, shopBasicSetting, myContext);
     }
@@ -39,10 +39,20 @@ public class ShopSettingViewModel extends ViewModel {
         return shopBasicSettingResponseMutableLiveData;
     }
 
+    //shop setting without Image
+    public void postShopSettingDetailsWithOutImage(ShopBasicSetting shopBasicSetting, Context myContext) {
+        repository.setShopBasicSettingWithOutImage(shopBasicSettingResponseMutableLiveData, shopBasicSetting, myContext);
+    }
+
+    public MutableLiveData<ShopBasicSettingResponse> getShopSettingResponseWithOutImage() {
+        return shopBasicSettingResponseMutableLiveData;
+    }
+
+
     //get timing
 
-    public void posttogetTimings(GetTimings getTimings,Context context) {
-        repository.getTimings(getTimingsResponseMutableLiveData, getTimings,context);
+    public void posttogetTimings(GetTimings getTimings, Context context) {
+        repository.getTimings(getTimingsResponseMutableLiveData, getTimings, context);
     }
 
     public MutableLiveData<GetTimingsResponse> gettimings() {
@@ -50,8 +60,8 @@ public class ShopSettingViewModel extends ViewModel {
     }
 
     //post timing
-    public void postTiming(ShopTiming shopTiming,Context context) {
-        repository.postTiming(shopTimingResponseMutableLiveData, shopTiming,context);
+    public void postTiming(ShopTiming shopTiming, Context context) {
+        repository.postTiming(shopTimingResponseMutableLiveData, shopTiming, context);
     }
 
     public MutableLiveData<ShopTimingResponse> getUpdateTiming() {

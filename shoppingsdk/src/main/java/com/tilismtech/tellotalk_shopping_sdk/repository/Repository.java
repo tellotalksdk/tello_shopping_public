@@ -407,6 +407,57 @@ public class Repository {
     }
     //endregion
 
+    //region shopBasicSetting
+    public void setShopBasicSettingWithOutImage(MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData, ShopBasicSetting shopBasicSetting, Context myContext) {
+
+        //  boundary = UUID.randomUUID().toString();
+
+        File file = new File(shopBasicSetting.getShopProfile());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part ShopProfile = MultipartBody.Part.createFormData("shopProfile", file.getName(), requestBody); //for send an image as multipart
+
+        RequestBody ShippingFee = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShippingFee());
+        RequestBody tax = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getTax());
+        RequestBody Province = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getProvince());
+        RequestBody Area = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getArea());
+        RequestBody City = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getCity());
+        RequestBody Country = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getCountry());
+        RequestBody Shop_Theme = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShop_Theme());
+        RequestBody ProfileId = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getProfileId());
+        RequestBody Lat = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getLat());
+        RequestBody Long = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getLong());
+
+        getRetrofitClient().setShopBasicSetting_WithOut_Image("Bearer " + TelloPreferenceManager.getInstance(myContext).getAccessToken(),
+                 ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId, Lat, Long
+        ).enqueue(new Callback<ShopBasicSettingResponse>() {
+            @Override
+            public void onResponse(Call<ShopBasicSettingResponse> call, Response<ShopBasicSettingResponse> response) {
+                if (response.body() != null) {
+                    if (response.isSuccessful()) {
+                        ShopBasicSettingResponse shopBasicSettingResponse = response.body();
+                        shopBasicSettingResponseMutableLiveData.setValue(shopBasicSettingResponse);
+                    }
+                } else {
+                    Log.i("TAG", "onResponse: " + response.code()); //500 code occur but run
+                    shopBasicSettingResponseMutableLiveData.setValue(null);
+                }
+
+                Log.i("TAG", "Error: " + response.errorBody());
+                Log.i("TAG", "Error: " + response.raw());
+
+            }
+
+            @Override
+            public void onFailure(Call<ShopBasicSettingResponse> call, Throwable t) {
+                t.printStackTrace();
+                shopBasicSettingResponseMutableLiveData.setValue(null);
+            }
+        });
+        System.out.println();
+
+    }
+    //endregion
+
     //region getTimings
     public void getTimings(MutableLiveData<GetTimingsResponse> getTimingsResponseMutableLiveData, GetTimings getTimings, Context context) {
         getRetrofitClient().getShopTiming("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), getTimings.getProfileId()).enqueue(new Callback<GetTimingsResponse>() {

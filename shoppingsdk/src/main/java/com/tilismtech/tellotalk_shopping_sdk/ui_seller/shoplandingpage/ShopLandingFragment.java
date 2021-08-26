@@ -125,7 +125,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private Uri imageUri;
     private String filepath;
     private List<String> filePaths;
-    private TextView tv_deleteProduct, et_Category, et_SubCategory, et_YoutubeLink, et_productDescription;
+    private TextView tv_deleteProduct, et_Category, et_SubCategory, et_YoutubeLink, et_productDescription, et_Productqty;
     private LoadingDialog loadingDialog;
     private EditText et_OriginalPrice, et_DiscountedPrice, et_SKU, et_Description, et_ProductTitle;
     private Spinner parentSpinner, childSpinner, parentSpinneredit, childSpinneredit;
@@ -1366,6 +1366,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         et_SubCategory = dialog.findViewById(R.id.et_SubCategory);
         et_YoutubeLink = dialog.findViewById(R.id.et_YoutubeLink);
         et_productDescription = dialog.findViewById(R.id.et_productDescription);
+        et_Productqty = dialog.findViewById(R.id.et_Productqty);
         viewPager2 = dialog.findViewById(R.id.viewPager);
 
         dotsIndicator = dialog.findViewById(R.id.dots_indicator);
@@ -1434,6 +1435,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     et_YoutubeLink.setText(productForEditResponse.getData().getRequestList().getVideoLink());
                     et_productDescription.setText(productForEditResponse.getData().getRequestList().getSummary());
                     video = productForEditResponse.getData().getRequestList().getVideoLink();
+                    et_Productqty.setText(productForEditResponse.getData().getRequestList().getSku());
 
                     if (video.contains("www.youtube.com")) {
                         if (!URLUtil.isValidUrl(video)) {

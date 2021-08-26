@@ -19,8 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_marginTop="-150dp"
-        android:hint="first Name"
-        android:text="Sharjeel" />
+        android:hint="Enter Your Name Here..."
+        android:maxLength="25"
+        android:text="Gaba International" />
 
 
     <EditText
@@ -41,9 +42,10 @@
         android:id="@+id/contact"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:hint="mobile number"
+        android:hint="Enter Your Contact Number Here..."
         android:inputType="number"
-        android:text="03336699881" />
+        android:maxLength="11"
+        android:text="03232155875" />
 
 
     <EditText

@@ -114,6 +114,8 @@ public class AllAdapter extends RecyclerView.Adapter<AllAdapter.AllStatusItemVie
             // holder.edit_rider_info.setVisibility(View.GONE);
         }
 
+        holder.quantity.setText("Qty ." + receivedItemPojo.getQuantity());
+
 
         if (receivedItemPojo.getOrderStatus() == 1) {
             holder.orderStat.setText("Received");
