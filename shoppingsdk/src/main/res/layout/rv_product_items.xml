@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="4dp"
-
+                android:layout_margin="4dp"
+                android:paddingLeft="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Samsung Galaxy S8 specs"

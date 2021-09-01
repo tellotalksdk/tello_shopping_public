@@ -17,7 +17,7 @@
             android:id="@+id/RL1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
 
 
             <TextView
@@ -91,7 +91,7 @@
             android:id="@+id/RL2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -158,9 +158,9 @@
                     android:hint="* Account Title"
                     android:inputType="text"
                     android:maxLength="50"
-                    android:singleLine="true"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
+                    android:singleLine="true"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -199,10 +199,10 @@
                     android:gravity="center|left"
                     android:hint="* Account Number"
                     android:inputType="number"
-                    android:paddingLeft="10dp"
                     android:maxLength="50"
-                    android:singleLine="true"
+                    android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
+                    android:singleLine="true"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -234,12 +234,11 @@
                 android:background="@drawable/rounded_btn"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
-                android:textSize="18sp"
                 android:text="Continue"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
-          
 
             <View
                 android:id="@+id/bottomLine"
@@ -422,8 +421,8 @@
                 android:paddingRight="50dp"
                 android:text="Continue"
                 android:textAllCaps="false"
-                android:textSize="18sp"
                 android:textColor="@android:color/white"
+                android:textSize="18sp"
                 android:visibility="gone" />
 
 
@@ -499,11 +498,11 @@
                     android:background="@null"
                     android:gravity="center|left"
                     android:hint="* Account Title"
-                    android:maxLength="50"
-                    android:singleLine="true"
                     android:inputType="text"
+                    android:maxLength="50"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
+                    android:singleLine="true"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -541,8 +540,8 @@
                     android:background="@null"
                     android:gravity="center|left"
                     android:hint="* Mobile Number"
-                    android:maxLength="11"
                     android:inputType="number"
+                    android:maxLength="11"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
                     android:textSize="14sp" />
@@ -619,8 +618,8 @@
                 android:paddingRight="60dp"
                 android:text="Continue"
                 android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
 
         </RelativeLayout>
@@ -639,8 +638,8 @@
             android:paddingRight="60dp"
             android:text="Continue"
             android:textAllCaps="false"
-            android:textSize="18sp"
             android:textColor="@android:color/white"
+            android:textSize="18sp"
             android:visibility="gone" />
 
 

@@ -317,7 +317,7 @@
             android:layout_below="@+id/tab1"
             android:layout_marginTop="10dp"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph_editing">
+            app:navGraph="@navigation/setting_graph">
 
 
         </androidx.fragment.app.FragmentContainerView>

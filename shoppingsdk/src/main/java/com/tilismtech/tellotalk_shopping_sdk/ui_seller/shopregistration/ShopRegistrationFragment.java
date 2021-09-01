@@ -83,28 +83,28 @@ public class ShopRegistrationFragment extends Fragment {
 
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
-    int counter = 0;
-    Button requestforPin;
-    Button requestAgain, done_btn, done_btn1;
-    String mobileNumber;
-    NavController navController;
-    RelativeLayout RL, RLpin;
-    ImageView iv_back, iv_editImage, iv_user_image;
-    TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown, termOfUse;
-    EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
-    boolean isEditable;
-    Spinner spinner_operator;
-    String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$"; //regex for shop name must be in alphanumeric format...
-    StringBuilder mobileNumberReflection;
-    ArrayList<String> mobileOpt = new ArrayList<>();
-    ShopRegistrationViewModel shopRegistrationViewModel;
-    boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11, isOTP_one, isOTP_two, isOTP_three;
-    Dialog dialogImage;
-    Uri imageUri;
-    String filePath = "", otp, mN, operator;
-    boolean toggle;
-    ScrollView scrollView;
-    LinearLayout LL3, term;
+    private int counter = 0;
+    private Button requestforPin;
+    private Button requestAgain, done_btn, done_btn1;
+    private String mobileNumber;
+    private NavController navController;
+    private RelativeLayout RL, RLpin;
+    private ImageView iv_back, iv_editImage, iv_user_image;
+    private TextView tv_shop_name, store_name_link_one, store_name_link_two, insertDigitreflection, your_number, countDown, termOfUse;
+    private EditText et_shop_name, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, otp_one, otp_two, otp_three, userShopname;
+    private boolean isEditable;
+    private Spinner spinner_operator;
+    private String regex = "^[a-z0-9\\s|A-Z0-9\\s|a-zA-Z\\s]+$"; //regex for shop name must be in alphanumeric format...
+    private StringBuilder mobileNumberReflection;
+    private ArrayList<String> mobileOpt = new ArrayList<>();
+    private ShopRegistrationViewModel shopRegistrationViewModel;
+    private boolean isD1, isD2, isD3, isD4, isD5, isD6, isD7, isD8, isD9, isD10, isD11, isOTP_one, isOTP_two, isOTP_three;
+    private Dialog dialogImage;
+    private Uri imageUri;
+    private String filePath = "", otp, mN, operator;
+    private boolean toggle;
+    private ScrollView scrollView;
+    private LinearLayout LL3, term;
 
 
     @Override
@@ -194,9 +194,9 @@ public class ShopRegistrationFragment extends Fragment {
                         counter++;
                         countDown.setVisibility(View.GONE);
                         requestAgain.setVisibility(View.GONE);
-                        RLpin.setVisibility(View.GONE);
-                        LL3.setVisibility(View.GONE);
-                        term.setVisibility(View.VISIBLE);
+                        RLpin.setVisibility(View.INVISIBLE);
+                        //  LL3.setVisibility(View.GONE);
+                        //  term.setVisibility(View.VISIBLE);
                         done_btn1.setVisibility(View.VISIBLE);
 
 
@@ -254,8 +254,7 @@ public class ShopRegistrationFragment extends Fragment {
                         ShopRegister shopRegister = new ShopRegister();
                         shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
                         shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
-                        shopRegister.setRegisterPhone(mobileNumber.toString().trim());
-                        // shopRegister.setRegisterPhone("03330347473");
+                        shopRegister.setRegisterPhone(mobileNumber);
                         shopRegister.setEmail("sharjeel@gmail.com");
                         shopRegister.setShopCategoryId("1");
                         shopRegister.setShopDescription("shopTesting");

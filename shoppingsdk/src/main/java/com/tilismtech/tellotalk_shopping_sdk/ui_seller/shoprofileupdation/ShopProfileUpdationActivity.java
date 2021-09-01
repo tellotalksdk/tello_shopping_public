@@ -82,9 +82,11 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.CityListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProvinceListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopTimingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
@@ -99,6 +101,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
 public class ShopProfileUpdationActivity extends AppCompatActivity implements ColorChooserAdapter.OnColorChooserListener, OnMapReadyCallback {
 
@@ -188,8 +196,8 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                     int spinnerPosition1 = provinceAdapter.getPosition(m_State);
                     province.setSelection(spinnerPosition1);
 
-                    int spinnerPosition2 = cityAdapter.getPosition(m_City);
-                    city.setSelection(spinnerPosition2);
+                    /*int spinnerPosition2 = cityAdapter.getPosition(m_City);
+                    city.setSelection(spinnerPosition2);*/
 
                     et_OwnerShopUrl.setText(m_ShopUri);
                     area.setText(m_Area);
@@ -246,6 +254,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         statePojo = gson.fromJson(stateFileString, StatePojo.class);
         citiespojo = gson.fromJson(cityFileString, Citiespojo.class);
 
+
         for (int i = 0; i < countriesPojo.getCountries().size(); i++) {
             Countries.add(countriesPojo.getCountries().get(i).getName());
         }
@@ -254,10 +263,9 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
             States.add(statePojo.getStates().get(i).getName());
         }
 
-        for (int i = 0; i < citiespojo.getCities().size(); i++) {
+      /*  for (int i = 0; i < citiespojo.getCities().size(); i++) {
             Cities.add(citiespojo.getCities().get(i).getName());
-        }
-
+        }*/
 
         countryAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Countries);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
@@ -271,10 +279,10 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         province.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
 
-        cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
+ /*       cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
         city.setAdapter(cityAdapter);
-        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+        city.setOnItemSelectedListener(onItemSelectedListenerAddress);*/
 
         iv_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -866,7 +874,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
         });
 
 
-    }
+    }/**/
 
     private void initViews(View view) {
 
@@ -1540,7 +1548,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
 
                 Province = (String) parent.getItemAtPosition(position);
                 StateId = (int) parent.getItemIdAtPosition(position);
-                //  StateId = Integer.parseInt(statePojo.getStates().get(position).getId());
+                // StateId = Integer.parseInt(statePojo.getStates().get(position).getId());
                 //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
                 //      Cities.clear();
                 //      Cities.add(0, "Select City");
@@ -1562,6 +1570,50 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
 
                 //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
                 // shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
+
+                Cities.clear();
+                Cities.size();
+                /*shopSettingViewModel.AllCitiesByProvince(String.valueOf(StateId));
+                shopSettingViewModel.getAllCitiesByProvinceID().observe(ShopProfileUpdationActivity.this, new Observer<CityListResponse>() {
+                    @Override
+                    public void onChanged(CityListResponse cityListResponse) {
+                        if (cityListResponse != null) {
+
+                            if (cityListResponse.getData().getRequestList().size() > 0) {
+                                for (int i = 0; i < cityListResponse.getData().getRequestList().size(); i++) {
+                                    Cities.add(cityListResponse.getData().getRequestList().get(i).getName());
+                                }
+                                ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
+                                cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                                city.setAdapter(cityAdapter);
+                                city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+                            }
+                        }
+                    }
+                });*/
+                getRetrofitClient().getAllCitiesByID(String.valueOf(StateId)).enqueue(new Callback<CityListResponse>() {
+                    @Override
+                    public void onResponse(Call<CityListResponse> call, Response<CityListResponse> response) {
+                        CityListResponse cityListResponse = response.body();
+
+                        for (int i = 0; i < cityListResponse.getData().getRequestList().size(); i++) {
+                            Cities.add(cityListResponse.getData().getRequestList().get(i).getName());
+                        }
+                        cityAdapter = new ArrayAdapter<String>(activity, R.layout.spinner_text, Cities);
+                        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                        city.setAdapter(cityAdapter);
+                        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+
+                        int spinnerPosition2 = cityAdapter.getPosition(m_City);
+                        city.setSelection(spinnerPosition2);
+                    }
+
+                    @Override
+                    public void onFailure(Call<CityListResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
             }
 
             //spinner for city
@@ -1574,6 +1626,8 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                 CityId = (int) parent.getItemIdAtPosition(position);
                 // Toast.makeText(activity, "" + CityId, Toast.LENGTH_SHORT).show();
                 // shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
+
+
             }
         }
 

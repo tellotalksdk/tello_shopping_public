@@ -3,8 +3,11 @@ package com.tilismtech.tellotalk_shopping_sdk.utils;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class ApplicationUtils {
 
@@ -28,6 +31,11 @@ public class ApplicationUtils {
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static boolean deviceHasGooglePlayServices(Context context) {
+        boolean flag = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == com.google.android.gms.common.ConnectionResult.SUCCESS;
+        return flag;
     }
 
 

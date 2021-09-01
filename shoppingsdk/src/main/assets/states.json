@@ -7,37 +7,42 @@
     },
     {
       "id": "1",
-      "name": "Sindh",
+      "name": "Azad Kashmir",
       "country_id": "166"
     },
     {
       "id": "2",
-      "name": "Punjab",
-      "country_id": "166"
-    },
-    {
-      "id": "3",
       "name": "Balochistan",
       "country_id": "166"
     },
     {
+      "id": "3",
+      "name": "Federally Administered Tribal Areas",
+      "country_id": "166"
+    },
+    {
       "id": "4",
-      "name": "Khyber Pakhtunkhwa",
+      "name": "Gilgit-Baltistan",
       "country_id": "166"
     },
     {
       "id": "5",
-      "name": "Azad Jammu and Kashmir",
+      "name": "Islamabad",
       "country_id": "166"
     },
     {
       "id": "6",
-      "name": "Gilgit Baltistan",
+      "name": "Khyber Pakhtunkhwa",
       "country_id": "166"
     },
     {
       "id": "7",
-      "name": "Federal Territory",
+      "name": "Punjab",
+      "country_id": "166"
+    },
+    {
+      "id": "8",
+      "name": "Sindh",
       "country_id": "166"
     }
   ]

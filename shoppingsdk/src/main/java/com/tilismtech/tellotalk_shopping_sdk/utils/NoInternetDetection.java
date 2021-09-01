@@ -22,30 +22,30 @@ public class NoInternetDetection {
 
     public void showDialog() {
 
-       try{
-           dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-           dialog.setContentView(R.layout.dialog_no_internet_detection);
-           Button btn = dialog.findViewById(R.id.getStarted_btn);
-           btn.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   dialog.dismiss();
-               }
-           });
-           ImageView imageView = dialog.findViewById(R.id.iv_close);
-           imageView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   dialog.dismiss();
-               }
-           });
+        try {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_no_internet_detection);
+            Button btn = dialog.findViewById(R.id.getStarted_btn);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            ImageView imageView = dialog.findViewById(R.id.iv_close);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
 
-           dialog.setCanceledOnTouchOutside(false);
-           dialog.show();
-       }catch (Exception io){
-           io.printStackTrace();
-       }
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        } catch (Exception io) {
+            io.printStackTrace();
+        }
     }
 
     public void dismissDialog() {

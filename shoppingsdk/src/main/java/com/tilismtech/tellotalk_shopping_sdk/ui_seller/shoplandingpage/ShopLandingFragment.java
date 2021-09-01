@@ -63,6 +63,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.ChildCategory;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.AddNewProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.DeleteProductImage;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetShopDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActive;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.IsProductActiveResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ProductForEdit;
@@ -72,6 +73,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateProduct;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductImageResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetShopDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
@@ -79,6 +81,8 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImage
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.SubCategoryBYParentCatIDResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.TotalProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.UpdateProductResponse;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoprofileupdation.ShopProfileUpdationActivity;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
@@ -136,6 +140,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private String lastProductId = "0", parentCat_maintain, childCat_maintain; //maintain word is used for maintaining parent and child last selection whenever edit dialog is open...
     private EditText et_VideoUrl;
     private ProgressBar progressBar;
+    private StoreSettingViewModel storeSettingViewModel;
+
     List<ProductListResponse.Request> productListAppend, dummy;
     List<String> imageIds;
     String video, document;
@@ -170,9 +176,11 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         productList = view.findViewById(R.id.productList);
         recycler_add_product = view.findViewById(R.id.recycler_add_product);
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
+        storeSettingViewModel = new ViewModelProvider(this).get(StoreSettingViewModel.class);
         addProduct_btn = view.findViewById(R.id.addProduct_btn);
         setShopNameAndImage();
         initRV(); // this recycler view set product list on screen
+        getShopUriAndSaveIt();
         uriList = new ArrayList<>();
         filePaths = new ArrayList<>();
         dialogCongratulation = new Dialog(getActivity());
@@ -182,6 +190,12 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         addProduct_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 dialogAddProduct = new Dialog(getActivity());
                 dialogAddProduct.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialogAddProduct.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -241,8 +255,13 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     public void onClick(View v) {
                         //Toast.makeText(ShopLandingActivity.this, "clickedd...", Toast.LENGTH_SHORT).show();
 
+                        if (!ApplicationUtils.isNetworkConnected(getActivity())) {
+                            Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+
                         if (TextUtils.isEmpty(et_OriginalPrice.getText().toString()) ||
-                                TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ||
                                 TextUtils.isEmpty(et_Description.getText().toString()) ||
                                 TextUtils.isEmpty(et_ProductTitle.getText().toString()) ||
                                 TextUtils.isEmpty(et_SKU.getText().toString())
@@ -250,17 +269,19 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                             Toast.makeText(getActivity(), "Some Fields are missing...", Toast.LENGTH_SHORT).show();
                         } else {
 
-                            if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
-                                Toast.makeText(getActivity(), "Discounted price must be less than original price...", Toast.LENGTH_SHORT).show();
-                                return;
-                            } else if (Integer.parseInt(et_DiscountedPrice.getText().toString()) == Integer.parseInt(et_OriginalPrice.getText().toString())) {
-                                Toast.makeText(getActivity(), "Discounted price can not be same as original price...", Toast.LENGTH_SHORT).show();
-                                return;
+                            if (!TextUtils.isEmpty(et_DiscountedPrice.getText().toString())) {
+                                if (Integer.parseInt(et_DiscountedPrice.getText().toString()) > Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                    Toast.makeText(getActivity(), "Discounted price must be less than original price...", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else if (Integer.parseInt(et_DiscountedPrice.getText().toString()) == Integer.parseInt(et_OriginalPrice.getText().toString())) {
+                                    Toast.makeText(getActivity(), "Discounted price can not be same as original price...", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
                             }
 
 
                             AddNewProduct addNewProduct = new AddNewProduct();
-                            addNewProduct.setDiscount_Price(et_DiscountedPrice.getText().toString());
+                            addNewProduct.setDiscount_Price(TextUtils.isEmpty(et_DiscountedPrice.getText().toString()) ? "0" : et_DiscountedPrice.getText().toString());
                             addNewProduct.setPrice(et_OriginalPrice.getText().toString());
                             addNewProduct.setProduct_Category_id(parentCategory); //parentCategory
                             addNewProduct.setSub_Product_Category_id(childCategory); //childCategory
@@ -464,6 +485,21 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             loadingDialog.dismissDialog();
         }
 
+    }
+
+    private void getShopUriAndSaveIt() {
+        GetShopDetail getShopDetail = new GetShopDetail();
+        getShopDetail.setProfileId(Constant.PROFILE_ID);
+        storeSettingViewModel.postShopDetail(getShopDetail, getActivity());
+        storeSettingViewModel.getShopDetail().observe(getActivity(), new Observer<GetShopDetailResponse>() {
+            @Override
+            public void onChanged(GetShopDetailResponse getShopDetailResponse) {
+                if (getShopDetailResponse != null) {
+                    String m_ShopUri = getShopDetailResponse.getData().getRequestList().getShopURl();
+                    TelloPreferenceManager.getInstance(getActivity()).saveShopURI(m_ShopUri);
+                }
+            }
+        });
     }
 
     private void setShopNameAndImage() {
@@ -1308,8 +1344,14 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     }
 
     @Override
-    public void isActiveproduct(int position, boolean isActive) {
+    public void isActiveproduct(int position, boolean isActive, int viewPosition) {
         //  Toast.makeText(getActivity(), " Position : " + position + " Product Status is : " + isActive, Toast.LENGTH_SHORT).show();
+
+        if (productListAppend.get(viewPosition).getProductStatus().equals("Y")) {
+            productListAppend.get(viewPosition).setProductStatus("N");
+        } else {
+            productListAppend.get(viewPosition).setProductStatus("Y");
+        }
 
         if (!ApplicationUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();

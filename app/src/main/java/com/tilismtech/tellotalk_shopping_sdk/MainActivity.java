@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.internal.Objects;
 import com.tilismtech.tellotalk_shopping_sdk.listeners.OnSuccessListener;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloApiClient;
@@ -30,7 +31,10 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Utility;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
+
 
     Button button, client;
     EditText fN, mN, lN, cN, pI;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+      //  Toast.makeText(this,"" + ApplicationUtils.deviceHasGooglePlayServices(MainActivity.this), Toast.LENGTH_SHORT).show();
 
         fN = findViewById(R.id.fName);
         mN = findViewById(R.id.mName);
@@ -63,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 // Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
 
 
-                    loadingDialog.showDialog();
-                    TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
-
+                loadingDialog.showDialog();
+                TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
+               // loadingDialog.dismissDialog();
             }
         });
 
@@ -87,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void deviceHasGooglePlayServices() {
+        boolean flag = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == com.google.android.gms.common.ConnectionResult.SUCCESS;
+        Toast.makeText(MainActivity.this,"" + flag , Toast.LENGTH_SHORT).show();
     }
 
     private boolean checkValidation() {

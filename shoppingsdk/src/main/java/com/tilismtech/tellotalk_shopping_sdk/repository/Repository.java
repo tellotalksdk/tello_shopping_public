@@ -42,6 +42,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddress
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddWalletResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.BankListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.CityListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBankResponse;
@@ -60,6 +61,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryLi
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProvinceListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopExistResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
@@ -316,7 +318,7 @@ public class Repository {
     //endregion
 
     //region verifyOtp
-    public void verifyOTP(MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData, String otp, Context context , String contact) {
+    public void verifyOTP(MutableLiveData<VerifyOtpResponse> verifyOtpResponseMutableLiveData, String otp, Context context, String contact) {
         getRetrofitClient().verifyOTP("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), contact, otp).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
             public void onResponse(Call<VerifyOtpResponse> call, Response<VerifyOtpResponse> response) {
@@ -336,7 +338,7 @@ public class Repository {
     //endregion
 
     //region reSendotp
-    public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp, Context context,String contact) {
+    public void resendOTP(MutableLiveData<VerifyOtpResponse> resendOtp, Context context, String contact) {
         Constant constant = new Constant();
         getRetrofitClient().resendOTP("Bearer " + TelloPreferenceManager.getInstance(context).getAccessToken(), contact).enqueue(new Callback<VerifyOtpResponse>() {
             @Override
@@ -355,6 +357,39 @@ public class Repository {
         });
     }
     //endregion
+
+    public void getAllProvincesByID(MutableLiveData<ProvinceListResponse> provinceListResponseMutableLiveData) {
+        getRetrofitClient().getAllProvinceByID().enqueue(new Callback<ProvinceListResponse>() {
+            @Override
+            public void onResponse(Call<ProvinceListResponse> call, Response<ProvinceListResponse> response) {
+                if (response != null)
+                    if (response.isSuccessful())
+                        provinceListResponseMutableLiveData.setValue(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<ProvinceListResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getAllCitiesBYProvinceID(MutableLiveData<CityListResponse> cityListResponseMutableLiveData, String stateID) {
+        getRetrofitClient().getAllCitiesByID(stateID).enqueue(new Callback<CityListResponse>() {
+            @Override
+            public void onResponse(Call<CityListResponse> call, Response<CityListResponse> response) {
+                if (response != null)
+                    if (response.isSuccessful())
+                        cityListResponseMutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<CityListResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
 
     //region shopBasicSetting
     public void setShopBasicSetting(MutableLiveData<ShopBasicSettingResponse> shopBasicSettingResponseMutableLiveData, ShopBasicSetting shopBasicSetting, Context myContext) {
@@ -428,7 +463,7 @@ public class Repository {
         RequestBody Long = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getLong());
 
         getRetrofitClient().setShopBasicSetting_WithOut_Image("Bearer " + TelloPreferenceManager.getInstance(myContext).getAccessToken(),
-                 ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId, Lat, Long
+                ShippingFee, tax, Province, Area, City, Country, Shop_Theme, ProfileId, Lat, Long
         ).enqueue(new Callback<ShopBasicSettingResponse>() {
             @Override
             public void onResponse(Call<ShopBasicSettingResponse> call, Response<ShopBasicSettingResponse> response) {

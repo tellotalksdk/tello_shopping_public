@@ -11,33 +11,39 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:name=".TelloApplication"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ui_seller.shoprofileupdation.ShopProfileUpdationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
-        </activity>
         <activity
             android:name=".WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".ui_client.homescreen.ClientHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".ui_seller.settingprofileediting.SettingProfileEditingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+           />
+
         <activity
             android:name=".ui_seller.shoplandingpage.ShopLandingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".ui_seller.shopregistration.ShopRegistrationActivity"
             android:screenOrientation="portrait"

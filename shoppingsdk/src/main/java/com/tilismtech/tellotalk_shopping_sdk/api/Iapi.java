@@ -20,6 +20,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddBranchAddress
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddNewProductResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.AddWalletResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.BankListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.CityListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ClientWalletDetailResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.DeleteBankResponse;
@@ -38,6 +39,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ParentCategoryLi
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductCategoryListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductForEditResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProductListResponse;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ProvinceListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopExistResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopNameAndImageResponse;
@@ -146,6 +148,22 @@ public interface Iapi {
 
     //end Otp apis
 
+
+    //get All Provinces By ID
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
+    @GET("api/State/getState?CountryID=1")
+    Call<ProvinceListResponse> getAllProvinceByID();
+
+    //get All Cities by providing specific ID
+    @Headers({"Accept: application/json",
+            "Content-Type: application/json"}
+    )
+    @GET("api/Area/GetDistrict")
+    Call<CityListResponse> getAllCitiesByID(@Query("stateId") String stateId);
+
+
     //getShopNameImageAPI
     @Headers({"Accept: application/json",
             "Content-Type: application/json"}
@@ -205,16 +223,16 @@ public interface Iapi {
     @Multipart
     @POST("api/shop/ShopSettingwithImage")
     Call<ShopBasicSettingResponse> setShopBasicSetting_WithOut_Image(@Header("Authorization") String token,
-                                                       @Part("shippingFee") RequestBody ShippingFee,
-                                                       @Part("tax") RequestBody tax,
-                                                       @Part("province") RequestBody Province,
-                                                       @Part("area") RequestBody Area,
-                                                       @Part("city") RequestBody City,
-                                                       @Part("country") RequestBody Country,
-                                                       @Part("shopTheme") RequestBody Shop_Theme,
-                                                       @Part("profileId") RequestBody ProfileId,
-                                                       @Part("latitude") RequestBody Lat,
-                                                       @Part("longitude") RequestBody Long
+                                                                     @Part("shippingFee") RequestBody ShippingFee,
+                                                                     @Part("tax") RequestBody tax,
+                                                                     @Part("province") RequestBody Province,
+                                                                     @Part("area") RequestBody Area,
+                                                                     @Part("city") RequestBody City,
+                                                                     @Part("country") RequestBody Country,
+                                                                     @Part("shopTheme") RequestBody Shop_Theme,
+                                                                     @Part("profileId") RequestBody ProfileId,
+                                                                     @Part("latitude") RequestBody Lat,
+                                                                     @Part("longitude") RequestBody Long
     );
 
     //get all product categories list

@@ -538,7 +538,7 @@
         android:layout_below="@+id/LLtabbar"
         android:layout_marginTop="10dp"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph_two" />
+        app:navGraph="@navigation/shop_landing_graph" />
 
     <include
         layout="@layout/dialog_powered_by_tellotalk"

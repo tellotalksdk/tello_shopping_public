@@ -103,7 +103,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class ProductItemVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView productTitle, originalprice, discountedprice, productcategory, discount_percentage;
         Switch isActive;
-        ImageView productImage, open_edit_details, shareProductLink , ic_label;
+        ImageView productImage, open_edit_details, shareProductLink, ic_label;
         CardView viewProductDetail;
         RatingBar ratingBar;
         OnProductEditorClickDialog onProductEditorClickDialog;
@@ -138,7 +138,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             if (v.getId() == R.id.open_edit_details) {
                 this.onProductEditorClickDialog.onOpenProductEditor(productList.get(getAdapterPosition()).getProductId(), getAdapterPosition());
             } else if (v.getId() == R.id.isActive) {
-                this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(), isActive.isChecked());
+                this.onProductEditorClickDialog.isActiveproduct(productList.get(getAdapterPosition()).getProductId(), isActive.isChecked(),getAdapterPosition());
             } else if (v.getId() == R.id.productImage) {
                 this.onProductEditorClickDialog.onOpenProductDetailDialog(productList.get(getAdapterPosition()).getProductId());
             } else if (v.getId() == R.id.shareProductLink) {
@@ -151,7 +151,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public interface OnProductEditorClickDialog {
         void onOpenProductEditor(int position, int adapterPosition);
 
-        void isActiveproduct(int position, boolean isActive);
+        void isActiveproduct(int position, boolean isActive , int adapterPosition);
 
         void onOpenProductDetailDialog(int position);
 

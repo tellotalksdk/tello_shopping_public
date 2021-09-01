@@ -83,6 +83,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.StatePojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.GetTimings;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopBasicSetting;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.ShopTiming;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.CityListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ColorThemeResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetTimingsResponse;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ShopBasicSettingResponse;
@@ -98,8 +99,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
+import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
 public class ShopSettingFragment extends Fragment implements ColorChooserAdapter.OnColorChooserListener, OnMapReadyCallback {
 
@@ -140,10 +146,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private List<String> ColorList;
     public ShopTiming.DaysSetting mondaySetting, tuesdaySetting, wednesdaySetting, thrusdaySetting, fridaySetting, saturdaySetting, sundaySetting;
     private String colorTheme = "";
+    private CardView mapCard;
     ShopBasicSetting shopBasicSetting;
     private LinearLayout cardView;
     private List<String> Countries, States, Cities;
     private int CountryId, StateId, CityId;
+    private ArrayAdapter<String> cityAdapter;
     StatePojo statePojo;
     CountriesPojo countriesPojo;
     Citiespojo citiespojo;
@@ -171,6 +179,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
+
+        if (ApplicationUtils.deviceHasGooglePlayServices(getActivity())) {
+            mapCard.setVisibility(View.VISIBLE);
+        } else {
+            removeMapIfDeviceHasNotGooglePlayService();
+        }
 
         mapView.onCreate(savedInstanceState);
 
@@ -210,9 +224,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             States.add(statePojo.getStates().get(i).getName());
         }
 
-        for (int i = 0; i < citiespojo.getCities().size(); i++) {
+     /*   for (int i = 0; i < citiespojo.getCities().size(); i++) {
             Cities.add(citiespojo.getCities().get(i).getName());
-        }
+        }*/
 
 
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Countries);
@@ -225,10 +239,10 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         province.setAdapter(provinceAdapter);
         province.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
+       /* ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
         city.setAdapter(cityAdapter);
-        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+        city.setOnItemSelectedListener(onItemSelectedListenerAddress);*/
 
         iv_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -350,7 +364,6 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 friday_CloseAt.setEnabled(false);
                 saturday_CloseAt.setEnabled(false);
                 sunday_CloseAt.setEnabled(false);*/
-
 
                 monday_OpenAt.setOnItemSelectedListener(onItemSelectedListener);
                 monday_CloseAt.setOnItemSelectedListener(onItemSelectedListener);
@@ -760,8 +773,10 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     shopBasicSetting.setProvince(Province);
                     shopBasicSetting.setCity(City);
                     shopBasicSetting.setArea(area.getText().toString());
-                    shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
-                    shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
+                    //  shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
+                    //  shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
+                    shopBasicSetting.setLat("12.12");
+                    shopBasicSetting.setLong("12.12");
 
                     shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
                     LoadingDialog loadingDialog = new LoadingDialog(getActivity());
@@ -772,7 +787,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         public void onChanged(ShopBasicSettingResponse shopBasicSettingResponse) {
                             if (shopBasicSettingResponse != null) {
                                 //Toast.makeText(activity, "Hurray ... Your Shop has been created successfully" + shopBasicSettingResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(activity, "You Shop Has Been Set Successfully...", Toast.LENGTH_SHORT).show();
                                 // progressBar.setVisibility(View.GONE);
                                 loadingDialog.dismissDialog();
                                 TelloPreferenceManager.getInstance(getActivity()).savecongratsStatus(true);
@@ -793,6 +808,11 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         });
 
 
+    }
+
+    private void removeMapIfDeviceHasNotGooglePlayService() {
+        mapCard.setVisibility(View.GONE);
+        // ApplicationUtils.deviceHasGooglePlayServices(getActivity());
     }
 
     static String getJsonFromAssets(Context context, String fileName) {
@@ -910,9 +930,16 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         daysSettingList = new ArrayList<>();
         ColorList = new ArrayList<>();
         cardView = view.findViewById(R.id.cardColor);
+        mapCard = view.findViewById(R.id.mapCard);
         Countries = new ArrayList<>();
         States = new ArrayList<>();
         Cities = new ArrayList<>();
+
+        Cities.add(0, "Select City");
+        cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+        city.setAdapter(cityAdapter);
+        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
 
 
         mondaySetting = new ShopTiming().new DaysSetting();
@@ -1064,8 +1091,8 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     }
 
     private void openGallery() {
-       // Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-       // startActivityForResult(gallery, UPLOAD_IMAGE);
+        // Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        // startActivityForResult(gallery, UPLOAD_IMAGE);
         Intent intent = new Intent(getActivity(), Gallery.class);
         intent.putExtra("title", "Select media");
         intent.putExtra("mode", 1); //try on 1 and 3
@@ -1472,19 +1499,35 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 Cities.clear();
                 Cities.add(0, "Select City");
                 //  Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
-                for (int i = 1; i < citiespojo.getCities().size(); i++) {
+          /*      for (int i = 1; i < citiespojo.getCities().size(); i++) {
 
                     if (Integer.parseInt(citiespojo.getCities().get(i).getState_id()) == StateId) {
                         Cities.add(citiespojo.getCities().get(i).getName());
                         Log.i("TAG", "onItemSelected: " + citiespojo.getCities().get(i).getName());
                     }
 
-                }
+                }*/
 
-                ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
-                cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                city.setAdapter(cityAdapter);
-                city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+                getRetrofitClient().getAllCitiesByID(String.valueOf(StateId)).enqueue(new Callback<CityListResponse>() {
+                    @Override
+                    public void onResponse(Call<CityListResponse> call, Response<CityListResponse> response) {
+                        CityListResponse cityListResponse = response.body();
+
+                        for (int i = 1; i < cityListResponse.getData().getRequestList().size(); i++) {
+                            Cities.add(cityListResponse.getData().getRequestList().get(i).getName());
+                        }
+
+                        cityAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Cities);
+                        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                        city.setAdapter(cityAdapter);
+                        city.setOnItemSelectedListener(onItemSelectedListenerAddress);
+                    }
+
+                    @Override
+                    public void onFailure(Call<CityListResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
 
 
                 //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
