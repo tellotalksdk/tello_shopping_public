@@ -199,7 +199,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                     /*int spinnerPosition2 = cityAdapter.getPosition(m_City);
                     city.setSelection(spinnerPosition2);*/
 
-                    et_OwnerShopUrl.setText(m_ShopUri);
+                    et_OwnerShopUrl.setText(m_ShopUri+".tellocast.com");
                     area.setText(m_Area);
 
                     if (getShopDetailResponse.getData().getRequestList().getShopProfile().equals("")) {
@@ -209,7 +209,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
                                 .load(getShopDetailResponse.getData().getRequestList().getShopProfile()).into(bannerImage);
                     }
 
-                    TelloPreferenceManager.getInstance(ShopProfileUpdationActivity.this).saveShopURI(m_ShopUri);
+                    TelloPreferenceManager.getInstance(ShopProfileUpdationActivity.this).saveShopURI(m_ShopUri+".tellocast.com");
 
                 /*    Country = m_Country;
                     Province = m_State;
@@ -1606,6 +1606,7 @@ public class ShopProfileUpdationActivity extends AppCompatActivity implements Co
 
                         int spinnerPosition2 = cityAdapter.getPosition(m_City);
                         city.setSelection(spinnerPosition2);
+                        City = m_City;
                     }
 
                     @Override

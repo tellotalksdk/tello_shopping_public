@@ -177,10 +177,7 @@ public class ShopRegistrationFragment extends Fragment {
 
                     //this will collect all digits from number fields...
                     mobileNumber = d1.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
-                    if (correctMobile(mobileNumber)) {
-                        Toast.makeText(getActivity(), "Mobile Number is invalid...", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    correctMobile(mobileNumber);
 
                     if (mobileNumber.equals(TelloPreferenceManager.getInstance(getActivity()).getProfileId())) { //mean its a tello user no need for otp verification
 
@@ -202,9 +199,15 @@ public class ShopRegistrationFragment extends Fragment {
 
                         TelloPreferenceManager.getInstance(getActivity()).saveShopURI(store_name_link_one.getText().toString() + store_name_link_two.getText().toString());
 
+                        String str = store_name_link_one.getText().toString();
+
+                        if (str.charAt(str.length() - 1) == '.') {
+                            str = str.replace(str.substring(str.length() - 1), "");
+                        }
+
                         ShopRegister shopRegister = new ShopRegister();
                         shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
-                        shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
+                        shopRegister.setShopURl(str);
                         shopRegister.setRegisterPhone(mobileNumber.toString().trim());
                         // shopRegister.setRegisterPhone("03330347473");
                         shopRegister.setEmail("sharjeel@gmail.com");
@@ -253,7 +256,7 @@ public class ShopRegistrationFragment extends Fragment {
 
                         ShopRegister shopRegister = new ShopRegister();
                         shopRegister.setProfileId(Constant.PROFILE_ID); //for testing shop regoistration
-                        shopRegister.setShopURl(store_name_link_one.getText().toString().trim() + "tello.pk");
+                        shopRegister.setShopURl(store_name_link_one.getText().toString().trim());
                         shopRegister.setRegisterPhone(mobileNumber);
                         shopRegister.setEmail("sharjeel@gmail.com");
                         shopRegister.setShopCategoryId("1");
@@ -1296,24 +1299,16 @@ public class ShopRegistrationFragment extends Fragment {
         });
     }
 
-    private boolean correctMobile(String mobileNumber) {
+    private void correctMobile(String mobileNumber) {
 
-        if (mobileNumber.indexOf(0) != '0') {
-            return false;
+        String regex = "([0][3][0-5][0-5][0-9][0-9][0-9][0-9][0-9][0-9][0-9])";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(mobileNumber);
+        if (m.matches()) {
+           // Toast.makeText(getActivity(), "Found Match", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Number Not Valid", Toast.LENGTH_SHORT).show();
         }
-
-        if (mobileNumber.indexOf(1) != '0' ||
-                mobileNumber.indexOf(1) != '1' ||
-                mobileNumber.indexOf(1) != '2' ||
-                mobileNumber.indexOf(1) != '3' ||
-                mobileNumber.indexOf(1) != '4'
-
-        ) {
-            return false;
-        }
-
-
-        return true;
     }
 
     private void checkPermissions() {

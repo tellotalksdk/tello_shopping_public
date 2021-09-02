@@ -92,6 +92,7 @@
                     android:layout_marginTop="10dp"
                     android:text="ORDER SUMMARY"
                     android:textSize="13sp"
+                    android:textColor="@android:color/holo_green_dark"
                     android:textStyle="bold" />
 
 
@@ -231,7 +232,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="-5dp"
                     android:text="PRODUCT DETAIL"
+                    android:textColor="@android:color/holo_green_dark"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -256,6 +259,7 @@
                     android:layout_marginTop="10dp"
                     android:text="SELLER INFO"
                     android:textSize="13sp"
+                    android:textColor="@android:color/holo_green_dark"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -393,6 +397,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
@@ -439,8 +444,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="-10dp"
                     android:text="BUYER INFO"
+                    android:textColor="@android:color/holo_green_dark"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 

@@ -79,7 +79,7 @@ public class StoreSettingFragment extends Fragment {
             public void onChanged(GetShopDetailResponse getShopDetailResponse) {
                 if (getShopDetailResponse != null) {
                     // Toast.makeText(getActivity(), "" + getShopDetailResponse.getStatusDetail() + getShopDetailResponse.getData().getRequestList().getBranchAddress().size(), Toast.LENGTH_SHORT).show();
-                    et_shop_url.setText(getShopDetailResponse.getData().getRequestList().getShopURl());
+                    et_shop_url.setText(getShopDetailResponse.getData().getRequestList().getShopURl()+".tellocast.com");
                     shopId = getShopDetailResponse.getData().getRequestList().getShopId();
 
                     if (getShopDetailResponse.getData().getRequestList().getShopProfile().equals("")) {

@@ -61,6 +61,7 @@ import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AcceptedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.ReceivedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ItemDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
@@ -73,6 +74,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.ViewFullOrderRes
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.OrderListViewModel;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingActivity;
 import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandingPageViewModel;
+import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoprofileupdation.ShopProfileUpdationActivity;
 import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 
@@ -274,7 +276,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                             //productDetailLL.addView();
                             View inflater = getLayoutInflater().inflate(R.layout.product_detail, null);
 
-                            totalSumofAllOrderAmount += Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount());
+                            totalSumofAllOrderAmount += Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getSubTotal());
 
                             EditText et_ProductName = inflater.findViewById(R.id.et_ProductName);
                             EditText et_ProductPrice = inflater.findViewById(R.id.et_ProductPrice);
@@ -362,6 +364,10 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                         stringItemDetailHashMap.put(String.valueOf(i), itemDetail);
                     }
 
+                    String str = viewFullOrderResponse.getData().getRequestList().getOrderNo();
+                    String[] arrOfStr = str.split("-");
+
+
                     stringItemDetailHashMap.size();
                     int total = 0;
 
@@ -369,7 +375,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                             getActivity().getApplicationContext().getResources().getDrawableForDensity(R.drawable.favicon,
                                     DisplayMetrics.DENSITY_280)) + "</img>\n" +
                             "[L]\n" +
-                            "[C]<b>" + " www.telloshop.com.pk" + "</b>\n" +
+                            "[C]<b>" + TelloPreferenceManager.getInstance(getActivity()).getShopUri() + "</b>\n" +
                             "[C]  Mob No. " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
 
                             //    "[L]<b> Seller Name </b>\n   " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + "\n" +
@@ -379,9 +385,9 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                             "[L] Name: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + "\n" +
                             "[L] Contact: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile() + "\n" +
                             "[L] Address: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress() + "\n" +
-                            "[L] Order# " + viewFullOrderResponse.getData().getRequestList().getOrderNo() + "\n" +
+                            "[L] Order# " + arrOfStr[0] + "\n" +
                             "[L]\n" +
-                            "[C]--------------------------------'\n";
+                            "[C]--------------------------------\n";
 
                     //Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getNoOfUnits())
                     //stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount()

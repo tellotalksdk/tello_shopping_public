@@ -32,8 +32,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="10dp"
             android:text="Cancelled"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:visibility="gone"

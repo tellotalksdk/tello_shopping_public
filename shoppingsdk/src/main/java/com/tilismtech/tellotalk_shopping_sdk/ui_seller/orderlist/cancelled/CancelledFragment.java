@@ -240,7 +240,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                         for (int i = 0; i < viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(); i++) {
                             //productDetailLL.addView();
                             View inflater = getLayoutInflater().inflate(R.layout.product_detail, null);
-                            totalSumofAllOrderAmount += Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getDiscount());
+                            totalSumofAllOrderAmount += Integer.parseInt(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getSubTotal());
 
                             EditText et_ProductName = inflater.findViewById(R.id.et_ProductName);
                             EditText et_ProductPrice = inflater.findViewById(R.id.et_ProductPrice);
@@ -267,7 +267,7 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     }
 
 
-                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAccountTitle());
+                    et_SellerName.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName());
                     et_SellerMobileNumber.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile());
                     et_SellerAddress.setText(viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getAddress());
                     et_SellerIBAN.setText(viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getAccountNumber());

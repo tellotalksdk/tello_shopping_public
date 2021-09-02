@@ -250,7 +250,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                             Intent sendIntent = new Intent();
                             sendIntent.setAction(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_TEXT, TelloPreferenceManager.getInstance(ShopLandingActivity.this).getShopUri());
+                            sendIntent.putExtra(Intent.EXTRA_TEXT, TelloPreferenceManager.getInstance(ShopLandingActivity.this).getShopUri()+".tellocast.com");
                             sendIntent.setType("text/plain");
 
                             Intent shareIntent = Intent.createChooser(sendIntent, null);
