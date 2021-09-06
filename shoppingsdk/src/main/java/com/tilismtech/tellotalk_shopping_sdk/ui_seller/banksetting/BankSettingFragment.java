@@ -50,6 +50,7 @@ public class BankSettingFragment extends Fragment {
     private BankSettingViewModel bankSettingViewModel;
     private List<String> banks, wallets;
     private Spinner spinner_bank_names, spinner_wallet_names;
+    private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableBanks, searchableWallets;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +80,8 @@ public class BankSettingFragment extends Fragment {
         account_mobile_number = view.findViewById(R.id.account_mobile_number);
         spinner_wallet_names = view.findViewById(R.id.spinner_wallet_names);
         iv_back_two = view.findViewById(R.id.iv_back_two);
+        searchableBanks = view.findViewById(R.id.searchableBanks);
+        searchableWallets = view.findViewById(R.id.searchableWallets);
         bankSettingViewModel = new ViewModelProvider(this).get(BankSettingViewModel.class);
         banks = new ArrayList<>();
         wallets = new ArrayList<>();
@@ -198,7 +201,6 @@ public class BankSettingFragment extends Fragment {
             public void onClick(View v) {
 
 
-
                 //here we set api for adding bank details
 
                 if (checkBankValidation()) {
@@ -210,7 +212,7 @@ public class BankSettingFragment extends Fragment {
                     }
 
                     AddBank addBank = new AddBank();
-                    addBank.setAccountFrom(spinner_bank_names.getSelectedItem().toString());
+                    addBank.setAccountFrom(searchableBanks.getSelectedItem().toString());
                     addBank.setAccountNumber(account_number.getText().toString());
                     addBank.setIsdefault("1");
                     addBank.setNameOfOwner(account_title.getText().toString());
@@ -265,7 +267,7 @@ public class BankSettingFragment extends Fragment {
                     }
 
                     AddWallet addWallet = new AddWallet();
-                    addWallet.setAccountFrom(spinner_wallet_names.getSelectedItem().toString());
+                    addWallet.setAccountFrom(searchableWallets.getSelectedItem().toString());
                     addWallet.setAccountNumber(account_mobile_number.getText().toString());
                     addWallet.setCnic(account_cnic.getText().toString());
                     addWallet.setProfileId(Constant.PROFILE_ID);
@@ -447,8 +449,8 @@ public class BankSettingFragment extends Fragment {
                 }
                 ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, banks);
                 spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                spinner_bank_names.setAdapter(spinnerArrayAdapter);
-
+                // spinner_bank_names.setAdapter(spinnerArrayAdapter);
+                searchableBanks.setAdapter(spinnerArrayAdapter);
             }
         });
     }
@@ -467,7 +469,8 @@ public class BankSettingFragment extends Fragment {
 
                 ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, wallets);
                 spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                spinner_wallet_names.setAdapter(spinnerArrayAdapter);
+                //spinner_wallet_names.setAdapter(spinnerArrayAdapter);
+                searchableWallets.setAdapter(spinnerArrayAdapter);
             }
         });
     }

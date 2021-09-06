@@ -105,6 +105,7 @@ public class ShopRegistrationFragment extends Fragment {
     private boolean toggle;
     private ScrollView scrollView;
     private LinearLayout LL3, term;
+    private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableOperator;
 
 
     @Override
@@ -142,14 +143,41 @@ public class ShopRegistrationFragment extends Fragment {
         d9.setText(String.valueOf(mN.charAt(8)));
         d10.setText(String.valueOf(mN.charAt(9)));
         d11.setText(String.valueOf(mN.charAt(10)));
+
         mobileNumberReflection = new StringBuilder("92 " + mN.charAt(1) + mN.charAt(2) + mN.charAt(3) + " " + mN.charAt(4) + mN.charAt(5) + mN.charAt(6) + " " + mN.charAt(7) + mN.charAt(8) + mN.charAt(9) + mN.charAt(10));
         // mobileNumberReflection = new StringBuilder("92 xxx xxx xxxx");
+
+        ArrayList<String> operatorlist = new ArrayList<>();
+        operatorlist.add("Select Operator");
+        operatorlist.add("Telenor");
+        operatorlist.add("Ufone");
+        operatorlist.add("Warid");
+        operatorlist.add("Zong");
+        operatorlist.add("Jazz");
+
+
 
         spinner_operator.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (parent.getId() == R.id.spinner_operator) {
                     operator = (String) parent.getItemAtPosition(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        searchableOperator.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, operatorlist));
+        searchableOperator.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getId() == R.id.searchableOperator) {
+                    operator = (String) parent.getItemAtPosition(position);
+                   // Toast.makeText(getActivity(), "" + operator, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -177,7 +205,11 @@ public class ShopRegistrationFragment extends Fragment {
 
                     //this will collect all digits from number fields...
                     mobileNumber = d1.getText().toString() + d2.getText().toString() + d3.getText().toString() + d4.getText().toString() + d5.getText().toString() + d6.getText().toString() + d7.getText().toString() + d8.getText().toString() + d9.getText().toString() + d10.getText().toString() + d11.getText().toString();
-                    correctMobile(mobileNumber);
+
+                    if (ApplicationUtils.isValidNumber(mobileNumber) == false) {
+                        Toast.makeText(getActivity(), "Please enter valid number...", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     if (mobileNumber.equals(TelloPreferenceManager.getInstance(getActivity()).getProfileId())) { //mean its a tello user no need for otp verification
 
@@ -191,7 +223,7 @@ public class ShopRegistrationFragment extends Fragment {
                         counter++;
                         countDown.setVisibility(View.GONE);
                         requestAgain.setVisibility(View.GONE);
-                        RLpin.setVisibility(View.INVISIBLE);
+                        RLpin.setVisibility(View.GONE);
                         //  LL3.setVisibility(View.GONE);
                         //  term.setVisibility(View.VISIBLE);
                         done_btn1.setVisibility(View.VISIBLE);
@@ -1305,7 +1337,7 @@ public class ShopRegistrationFragment extends Fragment {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(mobileNumber);
         if (m.matches()) {
-           // Toast.makeText(getActivity(), "Found Match", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Found Match", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), "Number Not Valid", Toast.LENGTH_SHORT).show();
         }
@@ -1488,6 +1520,7 @@ public class ShopRegistrationFragment extends Fragment {
         LL3 = view.findViewById(R.id.LL3);
         term = view.findViewById(R.id.term);
         done_btn1 = view.findViewById(R.id.done_btn1);
+        searchableOperator = view.findViewById(R.id.searchableOperator);
 
 
         d1 = view.findViewById(R.id.d1);

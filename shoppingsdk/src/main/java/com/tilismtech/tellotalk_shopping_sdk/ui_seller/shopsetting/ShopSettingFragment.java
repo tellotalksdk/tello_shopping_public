@@ -160,6 +160,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private GoogleMap mMap;
     private CustomMapView mapView;
     LocationManager mLocationManager;
+    private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableCountry, searchableState, searchableCity;
 
 
     @Override
@@ -224,10 +225,9 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             States.add(statePojo.getStates().get(i).getName());
         }
 
-     /*   for (int i = 0; i < citiespojo.getCities().size(); i++) {
+        for (int i = 0; i < citiespojo.getCities().size(); i++) {
             Cities.add(citiespojo.getCities().get(i).getName());
-        }*/
-
+        }
 
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, Countries);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
@@ -243,6 +243,15 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
         city.setAdapter(cityAdapter);
         city.setOnItemSelectedListener(onItemSelectedListenerAddress);*/
+
+
+        //new searchable spinner
+        searchableCountry.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, Countries));
+        searchableCountry.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
+        searchableState.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, States));
+        searchableState.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
+        searchableCity.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, Cities));
+        searchableCity.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
 
         iv_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -924,6 +933,11 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         et_OwnerNumber = view.findViewById(R.id.et_OwnerNumber);
         iv_image = view.findViewById(R.id.iv_image);
         mapView = (CustomMapView) view.findViewById(R.id.mapView);
+        searchableCountry = view.findViewById(R.id.searchableCountry);
+        searchableState = view.findViewById(R.id.searchableProvince);
+        searchableCity = view.findViewById(R.id.searchableCities);
+
+
         shopBasicSetting = new ShopBasicSetting();
         shopTiming = new ShopTiming();
         shopTiming.setProfileId(Constant.PROFILE_ID);
@@ -1448,6 +1462,106 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             }
 
 
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    //this work for searchable view spinner...
+    AdapterView.OnItemSelectedListener onItemSelectedListenerAddressSearchable = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            //spinner for country
+            if (parent.getId() == searchableCountry.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+                Country = (String) parent.getItemAtPosition(position);
+                //CountryId = (int) parent.getItemIdAtPosition(position);
+                CountryId = Integer.parseInt(countriesPojo.getCountries().get(position).getId());
+                //Toast.makeText(activity, "" + CountryId, Toast.LENGTH_SHORT).show();
+
+                //here we set updated states
+                States.clear();
+                States.add(0, "Select State");
+                for (int i = 1; i < statePojo.getStates().size(); i++) {
+                    if (Integer.parseInt(statePojo.getStates().get(i).getCountryId()) == CountryId) {
+                        States.add(statePojo.getStates().get(i).getName());
+                    }
+                }
+
+       /*         ArrayAdapter<String> provinceAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, States);
+                provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
+                province.setAdapter(provinceAdapter);
+                province.setOnItemSelectedListener(onItemSelectedListenerAddress);
+*/
+                searchableState.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, States));
+                searchableState.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
+
+            }
+
+            //spinner for province
+            if (parent.getId() == searchableState.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+
+                Province = (String) parent.getItemAtPosition(position);
+                StateId = (int) parent.getItemIdAtPosition(position);
+                //  StateId = Integer.parseInt(statePojo.getStates().get(position).getId());
+                //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
+                Cities.clear();
+                Cities.add(0, "Select City");
+                //  Toast.makeText(activity, String.valueOf(StateId), Toast.LENGTH_SHORT).show();
+          /*      for (int i = 1; i < citiespojo.getCities().size(); i++) {
+
+                    if (Integer.parseInt(citiespojo.getCities().get(i).getState_id()) == StateId) {
+                        Cities.add(citiespojo.getCities().get(i).getName());
+                        Log.i("TAG", "onItemSelected: " + citiespojo.getCities().get(i).getName());
+                    }
+
+                }*/
+
+                getRetrofitClient().getAllCitiesByID(String.valueOf(StateId)).enqueue(new Callback<CityListResponse>() {
+                    @Override
+                    public void onResponse(Call<CityListResponse> call, Response<CityListResponse> response) {
+                        CityListResponse cityListResponse = response.body();
+
+                        for (int i = 1; i < cityListResponse.getData().getRequestList().size(); i++) {
+                            Cities.add(cityListResponse.getData().getRequestList().get(i).getName());
+                        }
+
+                        searchableCity.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, Cities));
+                        searchableCity.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<CityListResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
+
+                //Toast.makeText(activity, "" + StateId, Toast.LENGTH_SHORT).show();
+                // shopBasicSetting.setProvince((String) parent.getItemAtPosition(position));
+            }
+
+            //spinner for city
+
+            if (parent.getId() == searchableCity.getId()) {
+                if (parent.getItemIdAtPosition(position) == 0) {
+                    return;
+                }
+                City = (String) parent.getItemAtPosition(position);
+                CityId = (int) parent.getItemIdAtPosition(position);
+                // Toast.makeText(activity, "" + CityId, Toast.LENGTH_SHORT).show();
+                // shopBasicSetting.setCity((String) parent.getItemAtPosition(position));
+            }
         }
 
         @Override

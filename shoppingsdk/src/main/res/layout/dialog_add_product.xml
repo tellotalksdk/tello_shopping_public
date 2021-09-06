@@ -113,6 +113,16 @@
                 android:background="@drawable/edit_text_bg_color"
                 android:orientation="vertical">
 
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/searchableIndustry"
+                    android:layout_below="@+id/country"
+                    android:entries="@array/province"
+                    android:background="@drawable/bg_spinner"
+                    />
+
+
                 <Spinner
                     android:id="@+id/parentSpinner"
                     android:layout_width="match_parent"
@@ -121,6 +131,7 @@
                     android:background="@drawable/bg_spinner"
                     android:text="Khan-store.tello.com"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     android:textStyle="bold" />
 
                 <TextView
@@ -143,6 +154,16 @@
                 android:background="@drawable/edit_text_bg_color"
                 android:orientation="vertical">
 
+
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/searchableCategory"
+                    android:layout_below="@+id/country"
+                    android:entries="@array/province"
+                    android:background="@drawable/bg_spinner"
+                    />
+
                 <Spinner
                     android:id="@+id/childSpinner"
                     android:layout_width="match_parent"
@@ -151,6 +172,7 @@
                     android:background="@drawable/bg_spinner"
                     android:text="Khan-store.tello.com"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     android:textStyle="bold" />
 
                 <TextView

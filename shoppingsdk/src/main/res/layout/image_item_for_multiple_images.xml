@@ -18,13 +18,13 @@
 
     <ImageView
         android:id="@+id/ic_delete"
-        android:tint="@android:color/holo_red_dark"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
         android:layout_gravity="right"
         android:layout_marginTop="7dp"
         android:layout_marginRight="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_delete" />
+        android:src="@drawable/cancel"
+        />
 
 </FrameLayout>

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     EditText fN, mN, lN, cN, pI;
     com.google.android.material.switchmaterial.SwitchMaterial toggle;
     LoadingDialog loadingDialog;
+    com.tilismtech.tellotalk_shopping_sdk.utils.PinEntryEditText pinEntryEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         cN = findViewById(R.id.contact);
         pI = findViewById(R.id.profileid);
         toggle = findViewById(R.id.toggle);
+        pinEntryEditText = findViewById(R.id.testPin);
         loadingDialog = new LoadingDialog(MainActivity.this);
 
 
@@ -68,10 +70,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
 
-
                 loadingDialog.showDialog();
                 TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
-               // loadingDialog.dismissDialog();
             }
         });
 

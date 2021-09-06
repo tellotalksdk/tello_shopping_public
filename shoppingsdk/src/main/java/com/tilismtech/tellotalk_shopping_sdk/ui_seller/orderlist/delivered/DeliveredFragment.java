@@ -1,9 +1,11 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.orderlist.delivered;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,14 +37,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dantsu.escposprinter.EscPosPrinter;
+import com.dantsu.escposprinter.connection.bluetooth.BluetoothConnection;
+import com.dantsu.escposprinter.connection.bluetooth.BluetoothPrintersConnections;
+import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.AcceptedAdapter;
 import com.tilismtech.tellotalk_shopping_sdk.adapters.orderListadapters.DeliveredAdapter;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
+import com.tilismtech.tellotalk_shopping_sdk.pojos.ItemDetail;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.ReceivedItemPojo;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.OrderByStatus;
 import com.tilismtech.tellotalk_shopping_sdk.pojos.requestbody.UpdateOrderStatus;
@@ -61,20 +72,23 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOrderClickListener {
 
+    public static final int PERMISSION_BLUETOOTH = 1;
     RecyclerView recycler_delivered_orders;
     DeliveredAdapter deliveredAdapter;
     List<ReceivedItemPojo> receivedItemPojos;
     OrderListViewModel orderListViewModel;
-    ImageView screenShot;
+    ImageView screenShot, printer;
     ScrollView scroller;
     ShopLandingPageViewModel shopLandingPageViewModel;
     EditText etRiderName, etRiderNumber, etRiderTracking;
+    private ViewFullOrderResponse viewFullOrderResponseForPrint;
     public com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress horizontalProgressBar;
     Dialog dialogCongratulation;
     private int totalSumofAllOrderAmount = 0;
@@ -131,7 +145,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         orderByStatus.setProfileId(Constant.PROFILE_ID);
         orderByStatus.setStatus("4"); //for received order list
 
-        orderListViewModel.orderByStatus(orderByStatus,getActivity());
+        orderListViewModel.orderByStatus(orderByStatus, getActivity());
         orderListViewModel.getOrderByStatusResponse().observe(getActivity(), new Observer<GetOrderByStatusResponse>() {
             @Override
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
@@ -187,6 +201,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         et_BuyerIBAN = dialog.findViewById(R.id.et_BuyerIBAN);
         productDetailLL = dialog.findViewById(R.id.productDetailLL);
         flash = dialog.findViewById(R.id.linear);
+        printer = dialog.findViewById(R.id.printer);
         flash.setVisibility(View.GONE);
 
 
@@ -203,7 +218,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                 Bitmap bitmap = getBitmapFromView(scroller, scroller.getChildAt(0).getHeight(), scroller.getChildAt(0).getWidth());
                 // screenShot.setImageBitmap(bitmap);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    CaptureScreenShot(bitmap,flash);
+                    CaptureScreenShot(bitmap, flash);
                 } else {
                     captureScreenShot(bitmap, flash);
                 }
@@ -216,12 +231,14 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         viewFullOrder.setProfileId(Constant.PROFILE_ID);
         viewFullOrder.setOrderStatus("4");
 
-        orderListViewModel.viewFullOrder(viewFullOrder,getActivity());
+        orderListViewModel.viewFullOrder(viewFullOrder, getActivity());
         orderListViewModel.getViewFullOrderResponse().observe(getActivity(), new Observer<ViewFullOrderResponse>() {
             @Override
             public void onChanged(ViewFullOrderResponse viewFullOrderResponse) {
                 // Toast.makeText(getActivity(), "order : " + viewFullOrderResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                 if (viewFullOrderResponse.getData().getRequestList() != null) {
+                    viewFullOrderResponseForPrint = viewFullOrderResponse;
+
                     et_order.setText(viewFullOrderResponse.getData().getRequestList().getOrderNo());
                     et_orderStatus.setText("Delivered");
                     et_orderDate.setText(" " + viewFullOrderResponse.getData().getRequestList().getOrderDate());
@@ -272,6 +289,13 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
             }
         });
 
+        printer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printReceipt(viewFullOrderResponseForPrint);
+            }
+        });
+
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -284,7 +308,80 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         dialog.show();
     }
 
-    private void CaptureScreenShot(Bitmap bitmap,LinearLayout flash) {
+    private void printReceipt(ViewFullOrderResponse viewFullOrderResponse) {
+
+
+        try {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.BLUETOOTH}, PERMISSION_BLUETOOTH);
+            } else {
+                BluetoothConnection connection = BluetoothPrintersConnections.selectFirstPaired();
+                if (connection != null) {
+                    EscPosPrinter printer = new EscPosPrinter(connection, 203, 48f, 32);
+                    HashMap<String, ItemDetail> stringItemDetailHashMap = new HashMap<String, ItemDetail>();
+
+                    for (int i = 0; i < viewFullOrderResponse.getData().getRequestList().getProductsDetails().size(); i++) {
+                        ItemDetail itemDetail = new ItemDetail(viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getQuantity(), viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getSubTotal(), viewFullOrderResponse.getData().getRequestList().getProductsDetails().get(i).getTitle());
+                        stringItemDetailHashMap.put(String.valueOf(i), itemDetail);
+                    }
+
+                    String str = viewFullOrderResponse.getData().getRequestList().getOrderNo();
+                    String[] arrOfStr = str.split("-");
+
+
+                    stringItemDetailHashMap.size();
+                    int total = 0;
+
+                    String text1 = "[C]<img width=500 height=600>" + PrinterTextParserImg.bitmapToHexadecimalString(printer,
+                            getActivity().getApplicationContext().getResources().getDrawableForDensity(R.drawable.favicon,
+                                    DisplayMetrics.DENSITY_280)) + "</img>\n" +
+                            "[L]\n" +
+                            "[C]<b>" + TelloPreferenceManager.getInstance(getActivity()).getShopUri()+".tellocast.com" + "</b>\n" +
+                            "[C]  Mob No. " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
+
+                            //    "[L]<b> Seller Name </b>\n   " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + "\n" +
+                            //    "[L]<b> Seller Contact </b>\n   " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
+                            "[C]" + viewFullOrderResponse.getData().getRequestList().getOrderDate() + "\n\n" +
+                            "[C]--------------------------------\n" +
+                            "[L] Name: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + "\n" +
+                            "[L] Contact: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile() + "\n" +
+                            "[L] Address: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress() + "\n" +
+                            "[L] Order# " + arrOfStr[0] + "\n" +
+                            "[L]\n" +
+                            "[C]--------------------------------\n";
+
+                    //Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getNoOfUnits())
+                    //stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount()
+                    for (int i = 0; i < stringItemDetailHashMap.size(); i++) {
+                        text1 += "[L]<b>" + stringItemDetailHashMap.get(String.valueOf(i)).getProductName() + "</b>\n" +
+                                "[L]" + Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getNoOfUnits()) + "pcs[R] Rs. " + Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount()) + "\n";
+
+                        total += Integer.valueOf(stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount());
+                    }
+
+                    text1 += "[C]==============================\n" +
+                            "[L]TOTAL[R] Rs." + total + "\n" +
+                            "[C]==============================\n" +
+                            "[L]\n" +
+                            "[L]\n" +
+                            "[L]\n";
+
+
+
+                    printer.printFormattedText(text1);
+
+
+                } else {
+                    Toast.makeText(getActivity(), "No printer was connected! Try Again or Paired Printer", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Log.e("APP", "Can't print", e);
+        }
+    }
+
+
+    private void CaptureScreenShot(Bitmap bitmap, LinearLayout flash) {
         OutputStream fos;
 
         try {
@@ -405,7 +502,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                     updateRiderInfo.setOrderId(String.valueOf(orderId));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
+                    orderListViewModel.updateRiderInfo(updateRiderInfo, getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -474,7 +571,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                     updateRiderInfo.setOrderId(String.valueOf(position));
                     updateRiderInfo.setProfileId(Constant.PROFILE_ID);
 
-                    orderListViewModel.updateRiderInfo(updateRiderInfo,getActivity());
+                    orderListViewModel.updateRiderInfo(updateRiderInfo, getActivity());
                     orderListViewModel.getupdateRiderInfoResponse().observe(getActivity(), new Observer<UpdateRiderInfoResponse>() {
                         @Override
                         public void onChanged(UpdateRiderInfoResponse updateRiderInfoResponse) {
@@ -515,12 +612,10 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
         } else if (status == 2) {
             dialogMessage.setText("After clicking on continue button the order status will be changed to Accept...");
             editText.setVisibility(View.GONE);
-        } else if(status == 3 ) {
+        } else if (status == 3) {
             dialogMessage.setText("After clicking on continue button the order status will be changed to Dispatch...");
             editText.setVisibility(View.GONE);
         }
-
-
 
 
         continue_status.setOnClickListener(new View.OnClickListener() {
@@ -533,7 +628,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                 updateOrderStatus.setContent(TextUtils.isEmpty(editText.getText().toString()) ? "" : editText.getText().toString());
 
 
-                orderListViewModel.updateOrderStatus(updateOrderStatus,getActivity());
+                orderListViewModel.updateOrderStatus(updateOrderStatus, getActivity());
                 orderListViewModel.updateOrderStatusResponse().observe(getActivity(), new Observer<UpdateOrderStatusResponse>() {
                     @Override
                     public void onChanged(UpdateOrderStatusResponse updateOrderStatusResponse) {
@@ -563,9 +658,6 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                 dialogCongratulation.dismiss();
             }
         });
-
-
-
 
 
     }

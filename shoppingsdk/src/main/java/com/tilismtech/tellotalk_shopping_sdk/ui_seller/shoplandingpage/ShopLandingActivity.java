@@ -116,6 +116,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private Uri imageUri;
     private List<String> filePaths;
     private List<ChildCategory> childCategoryList;
+    private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableIndustry, searchableCategory;
 
     //these fields hide when onsearch is pressed
     ImageView profileImage;
@@ -152,6 +153,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         LLtabbar = findViewById(R.id.LLtabbar);
         // orderListtabbar.setVisibility(View.GONE);
         LLtabbar.setVisibility(View.GONE);
+
 
         deliveryStatus = findViewById(R.id.deliveryStatus);
         deliveryStatus1 = findViewById(R.id.deliveryStatus1);
@@ -250,7 +252,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                             Intent sendIntent = new Intent();
                             sendIntent.setAction(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_TEXT, TelloPreferenceManager.getInstance(ShopLandingActivity.this).getShopUri()+".tellocast.com");
+                            sendIntent.putExtra(Intent.EXTRA_TEXT, TelloPreferenceManager.getInstance(ShopLandingActivity.this).getShopUri() + ".tellocast.com");
                             sendIntent.setType("text/plain");
 
                             Intent shareIntent = Intent.createChooser(sendIntent, null);
@@ -346,7 +348,16 @@ public class ShopLandingActivity extends AppCompatActivity {
                 parentSpinner.setOnItemSelectedListener(onItemSelectedListener);
                 childSpinner.setOnItemSelectedListener(onItemSelectedListener);
 
+                // uploadParentCategory(parentSpinner, childSpinner);
+
+
+                searchableIndustry = dialogAddProduct.findViewById(R.id.searchableIndustry);
+                searchableCategory = dialogAddProduct.findViewById(R.id.searchableCategory);
+                searchableIndustry.setOnItemSelectedListener(onItemSelectedListenerSearchable);
+                searchableCategory.setOnItemSelectedListener(onItemSelectedListener);
+
                 uploadParentCategory(parentSpinner, childSpinner);
+
 
                 iv_back_addproduct = dialogAddProduct.findViewById(R.id.iv_back);
                 iv_back_addproduct.setOnClickListener(new View.OnClickListener() {
@@ -1095,8 +1106,8 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onChanged(TotalProductResponse totalProductResponse) {
                 if (totalProductResponse != null) {
-                    if (totalProductResponse.getData().getRequestList().getRequestList() != null) {
-                        totalProducts.setText(totalProductResponse.getData().getRequestList().getRequestList().get(0).getProductCount() + " " + "Products");
+                    if (totalProductResponse.getData().getRequestList() != null) {
+                        totalProducts.setText(totalProductResponse.getData().getRequestList().get(0).getProductCount() + " " + "Products");
                     }
                 }
             }
@@ -1118,8 +1129,8 @@ public class ShopLandingActivity extends AppCompatActivity {
 
                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(ShopLandingActivity.this, R.layout.spinner_text, parentCategories);
                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
-                    parentSpinner.setAdapter(spinnerArrayAdapter);
-
+                    //  parentSpinner.setAdapter(spinnerArrayAdapter);
+                    searchableIndustry.setAdapter(spinnerArrayAdapter);
                     // Toast.makeText(ShopLandingActivity.this, "product is : " +  parentCategoryListResponse.getData().getRequestList().get(0).getColumn1(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ShopLandingActivity.this, "Null", Toast.LENGTH_SHORT).show();
@@ -1188,6 +1199,28 @@ public class ShopLandingActivity extends AppCompatActivity {
             if (parent.getId() == childSpinner.getId()) {
                 // childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
                 childCategory = String.valueOf(childCategoryList.get(childSpinner.getSelectedItemPosition()).getSubCategoryNumber());
+                //  Toast.makeText(ShopLandingActivity.this, "" + childCategory, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    //listener for searchable industry and their corresponding category
+    AdapterView.OnItemSelectedListener onItemSelectedListenerSearchable = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.getId() == searchableIndustry.getId()) {
+                parentCategory = String.valueOf(searchableIndustry.getSelectedItemPosition() + 1);
+                uploadChildCategory(parentCategory, searchableCategory);
+            }
+
+            if (parent.getId() == searchableCategory.getId()) {
+                // childCategory = String.valueOf(childSpinner.getSelectedItemPosition() + 1);
+                childCategory = String.valueOf(childCategoryList.get(searchableCategory.getSelectedItemPosition()).getSubCategoryNumber());
                 //  Toast.makeText(ShopLandingActivity.this, "" + childCategory, Toast.LENGTH_SHORT).show();
             }
         }

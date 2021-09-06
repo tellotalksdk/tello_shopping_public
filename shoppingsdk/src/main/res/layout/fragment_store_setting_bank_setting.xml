@@ -135,13 +135,26 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_spinner" />
+                android:background="@drawable/bg_spinner"
+                android:visibility="gone" />
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/searchableBanks"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/you2"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_spinner"
+                android:entries="@array/province" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/PN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/spinner_bank_names"
+                android:layout_below="@+id/searchableBanks"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
@@ -197,7 +210,7 @@
                     android:layout_height="50dp"
                     android:background="@null"
                     android:gravity="center|left"
-                    android:hint="* Account Number"
+                    android:hint="* Account Number (PK40 MEZN 0000 0011 2345 6702)"
                     android:inputType="number"
                     android:maxLength="50"
                     android:paddingLeft="10dp"
@@ -477,13 +490,25 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_spinner" />
+                android:background="@drawable/bg_spinner"
+                android:visibility="gone" />
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/searchableWallets"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/you3"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_spinner"
+                android:entries="@array/province" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/SWN"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/spinner_wallet_names"
+                android:layout_below="@+id/searchableWallets"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"

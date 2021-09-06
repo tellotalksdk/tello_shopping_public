@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,9 +22,9 @@
         android:layout_marginTop="-150dp"
         android:hint="Enter Your Name Here..."
         android:maxLength="25"
-        android:text="Syed Basit Ali" />
-   <!-- Gaba International
--->
+        android:text="ss" />
+    <!-- Gaba International
+ -->
     <EditText
         android:id="@+id/mName"
         android:layout_width="match_parent"
@@ -46,8 +47,8 @@
         android:inputType="number"
         android:maxLength="11"
         android:text="03350221182" />
-<!--
-    03350221182-->
+    <!--
+        03350221182-->
     <EditText
         android:id="@+id/profileid"
         android:layout_width="match_parent"
@@ -55,6 +56,30 @@
         android:hint="profile id"
         android:text=""
         android:visibility="gone" />
+
+    <com.tilismtech.tellotalk_shopping_sdk.utils.PinEntryEditText
+        android:id="@+id/testPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:cursorVisible="false"
+        android:digits="1234567890"
+        android:gravity="center"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="5"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:textIsSelectable="false"
+        android:textSize="21sp"
+        android:visibility="gone"
+        app:pinBackgroundDrawable="@drawable/roundcorner_edittext_bg_sdk"
+
+        app:pinLineColors="@color/white" />
 
 
     <Button

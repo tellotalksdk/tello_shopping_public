@@ -172,16 +172,54 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_spinner"
+                android:visibility="gone"
                 android:entries="@array/countries" />
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/searchableCountry"
+                android:layout_below="@+id/country"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:entries="@array/province"
+                android:background="@drawable/bg_spinner"
+                />
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/searchableProvince"
+                android:layout_below="@+id/searchableCountry"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:entries="@array/province"
+                android:background="@drawable/bg_spinner"
+                />
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/searchableCities"
+                android:layout_below="@+id/searchableProvince"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:entries="@array/province"
+                android:background="@drawable/bg_spinner"
+                />
 
             <Spinner
                 android:id="@+id/province"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/country"
+                android:layout_below="@+id/searchableCountry"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="gone"
                 android:background="@drawable/bg_spinner"
                 android:entries="@array/province" />
 
@@ -194,6 +232,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="gone"
                 android:background="@drawable/bg_spinner"
                 android:entries="@array/city" />
 
@@ -215,7 +254,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:paddingTop="5dp"
-                android:layout_below="@+id/city"
+                android:layout_below="@+id/searchableCities"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/edit_text_bg_color"
@@ -256,7 +295,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/aa"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/edit_text_bg_color"
                 app:cardBackgroundColor="#EAEFF3"

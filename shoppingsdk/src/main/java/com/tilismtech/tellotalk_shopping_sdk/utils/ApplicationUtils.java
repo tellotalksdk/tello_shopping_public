@@ -9,6 +9,9 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ApplicationUtils {
 
     public static String changeNumberFormat(String mobNumber,boolean flag){
@@ -36,6 +39,18 @@ public class ApplicationUtils {
     public static boolean deviceHasGooglePlayServices(Context context) {
         boolean flag = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == com.google.android.gms.common.ConnectionResult.SUCCESS;
         return flag;
+    }
+
+    public static boolean isValidNumber(String number){
+        String regex = "([0][3][0-5][0-5][0-9][0-9][0-9][0-9][0-9][0-9][0-9])"; //regex for valid 11 digit pakistani numbers
+        String str = number;
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(str);
+        if (m.matches()) {
+           return true;
+        } else {
+          return false;
+        }
     }
 
 

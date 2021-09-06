@@ -61,6 +61,8 @@
         <item>Ufone</item>
         <item>Telenor</item>
         <item>Jazz</item>
+        <item>Warid</item>
+        <item>Zong</item>
     </string-array>
 
     <string-array name="province">
