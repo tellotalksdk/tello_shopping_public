@@ -54,6 +54,8 @@ import com.bumptech.glide.Glide;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tilismtech.tellotalk_shopping_sdk.R;
 import com.tilismtech.tellotalk_shopping_sdk.TelloApplication;
+import com.tilismtech.tellotalk_shopping_sdk.api.Iapi;
+import com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient;
 import com.tilismtech.tellotalk_shopping_sdk.gallery.Gallery;
 import com.tilismtech.tellotalk_shopping_sdk.gallery.MediaAttachment;
 import com.tilismtech.tellotalk_shopping_sdk.managers.TelloPreferenceManager;
@@ -79,12 +81,22 @@ import com.tilismtech.tellotalk_shopping_sdk.utils.NoInternetDetection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.tilismtech.tellotalk_shopping_sdk.api.RetrofitClient.getRetrofitClient;
 
 
 public class ShopLandingActivity extends AppCompatActivity {
@@ -95,7 +107,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private ImageView iv_close, iv_back_addproduct, menuDots;
     private Button getStarted_btn, uploadProduct;
     private Dialog dialogCongratulation, dialogAddProduct;
-    private TextView productList, orderList, chat;
+    private TextView productList, orderList, chat, tvCounter;
     private LinearLayout Lineartabbar;
     private HorizontalScrollView orderListtabbar;
     private LinearLayout LLtabbar;
@@ -145,6 +157,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         productList = findViewById(R.id.productList);
         filePaths = new ArrayList<>();
         currentTab = CurrentTab.RECEIVED;
+        tvCounter = findViewById(R.id.tvCounter);
 
 
         simpleSearchView = findViewById(R.id.simpleSearchView);
@@ -174,6 +187,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         LL1 = findViewById(R.id.linearTopsearch);
         menuDots = findViewById(R.id.menuDots);
 
+
+        shopLandingPageViewModel.allStatusCount(ShopLandingActivity.this);
         shopLandingPageViewModel.allStatusCount(ShopLandingActivity.this);
         shopLandingPageViewModel.getAllStatusCount().observe(this, new Observer<GetOrderStatusCountResponse>() {
             @Override
@@ -187,9 +202,48 @@ public class ShopLandingActivity extends AppCompatActivity {
                     number4.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getPaid()));
                     number5.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getCancel()));
                     number6.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getAll()));
+                    tvCounter.setText(String.valueOf(getOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved()));
                 }
             }
         });
+
+        final Handler handler = new Handler();
+        final int delay = 5000; // 1000 milliseconds == 1 second
+
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                getRetrofitClient().getOrderAllStatusCount("Bearer " + TelloPreferenceManager.getInstance(ShopLandingActivity.this).getAccessToken(), Constant.PROFILE_ID).enqueue(new Callback<GetOrderStatusCountResponse>() {
+                    @Override
+                    public void onResponse(Call<GetOrderStatusCountResponse> call, Response<GetOrderStatusCountResponse> response) {
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                GetOrderStatusCountResponse GetOrderStatusCountResponse = response.body();
+
+                                number.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved()));
+                                number1.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getAccept()));
+                                number2.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getDispatch()));
+                                number3.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getDelieverd()));
+                                number4.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getPaid()));
+                                number5.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getCancel()));
+                                number6.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getAll()));
+                                tvCounter.setText(String.valueOf(GetOrderStatusCountResponse.getData().getRequestList().get(0).getRecieved()));
+                            }
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetOrderStatusCountResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
 
 
         profileImage = findViewById(R.id.profileImage);
@@ -234,7 +288,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        if (item.getItemId() == R.id.one) {
+                       /* if (item.getItemId() == R.id.one) {
 
                             if (!ApplicationUtils.isNetworkConnected(ShopLandingActivity.this)) {
                                 Toast.makeText(ShopLandingActivity.this, "" + getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
@@ -242,7 +296,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                                 Intent intent = new Intent(ShopLandingActivity.this, ShopProfileUpdationActivity.class);
                                 startActivity(intent);
                             }
-                        }
+                        }*/
 
 
                         if (item.getItemId() == R.id.two) {

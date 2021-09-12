@@ -16,7 +16,8 @@ public class TelloPreferenceManager {
     public static final String LAST_NAME = "last_name";
     public static final String EMAIL = "email";
     public static final String CONGRATZ = "congrat_dialog";
-
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
 
     private final SharedPreferences.Editor editor;
     private final SharedPreferences sharedPreferences;
@@ -134,6 +135,25 @@ public class TelloPreferenceManager {
         return sharedPreferences.getBoolean(CONGRATZ, false);
     }
 
+
+    public void savelatitude(String latitude) {
+        editor.putString(LATITUDE, latitude);
+        editor.apply();
+    }
+
+    public String getlatitude() {
+        return sharedPreferences.getString(LATITUDE, "");
+    }
+
+
+    public void savelongitude(String longitude) {
+        editor.putString(LONGITUDE, longitude);
+        editor.apply();
+    }
+
+    public String getLongitude() {
+        return sharedPreferences.getString(LONGITUDE, "");
+    }
 
 
     void clearAll() {

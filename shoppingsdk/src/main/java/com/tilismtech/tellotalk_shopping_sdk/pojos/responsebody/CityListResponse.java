@@ -90,6 +90,12 @@ public class CityListResponse {
         @SerializedName("name")
         @Expose
         private String name;
+        @SerializedName("label")
+        @Expose
+        private String label;
+        @SerializedName("value")
+        @Expose
+        private String value;
 
         public Integer getId() {
             return id;

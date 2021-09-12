@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="60dp"
+    android:background="@drawable/top_rounded_corners_40dp"
+    android:paddingTop="20dp">
+
+    <TextView
+        android:id="@+id/mainHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Update Your Address"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/subHead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainHead"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="you have successfully created store"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/wholeLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subHead"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/etStreet"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:hint="Enter your complete address..."
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etCity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:hint="Enter city"
+            android:inputType="text"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etProvince"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:hint="Enter province"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etCountry"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg_color"
+            android:hint="Enter country"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textSize="14sp" />
+
+
+        <Button
+            android:id="@+id/confirmRiderbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/wholeLL"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_btn"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Done"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

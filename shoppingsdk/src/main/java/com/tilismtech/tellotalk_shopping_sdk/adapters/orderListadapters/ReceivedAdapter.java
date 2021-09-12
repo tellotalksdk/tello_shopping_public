@@ -106,8 +106,11 @@ public class ReceivedAdapter extends RecyclerView.Adapter<ReceivedAdapter.Receiv
                 filterlist.addAll(requestItemsFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
+                String filterPattern1 = constraint.toString().toLowerCase().trim();
                 for (GetOrderByStatusResponse.Request item : requestItemsFull) {
                     if (String.valueOf(item.getOrderno()).toLowerCase().contains(filterPattern)) {
+                        filterlist.add(item);
+                    } else if (String.valueOf(item.getMobile()).toLowerCase().contains(filterPattern)) {
                         filterlist.add(item);
                     }
                 }

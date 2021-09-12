@@ -17,7 +17,7 @@
             android:id="@+id/RL1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <TextView
@@ -91,7 +91,7 @@
             android:id="@+id/RL2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -211,7 +211,7 @@
                     android:background="@null"
                     android:gravity="center|left"
                     android:hint="* Account Number (PK40 MEZN 0000 0011 2345 6702)"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:maxLength="50"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"

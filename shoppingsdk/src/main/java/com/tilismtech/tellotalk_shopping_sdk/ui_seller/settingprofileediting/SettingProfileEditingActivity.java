@@ -35,9 +35,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,6 +94,7 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
     NetworkReceiver networkReceiver;
     LoadingDialog loadingDialog1;
     boolean toggle;
+    RatingBar ratingBar;
 
 
     @Override
@@ -108,6 +113,8 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         loadingDialog1 = new LoadingDialog(SettingProfileEditingActivity.this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         Fresco.initialize(this);
+        ratingBar = findViewById(R.id.ratingBar);
+        ratingBar.setRating(5.0f);
 
         personalInfoRL = findViewById(R.id.personalInfoRL);
         storeSettingRL = findViewById(R.id.storeSettingRL);
@@ -150,6 +157,14 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
         storeSettingRL.setOnClickListener(this);
         bankRL.setOnClickListener(this);
         iv_imageedit = findViewById(R.id.iv_edit);
+
+  /*      AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+        blinkanimation.setDuration(300); // duration - half a second
+        blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        blinkanimation.setRepeatCount(1000); // Repeat animation infinitely
+        blinkanimation.setRepeatMode(Animation.RESTART);
+
+        iv_profile.setAnimation(blinkanimation);*/
 
         tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override

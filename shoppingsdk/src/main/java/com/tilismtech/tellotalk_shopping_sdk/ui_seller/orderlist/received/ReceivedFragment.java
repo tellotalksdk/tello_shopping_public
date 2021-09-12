@@ -83,6 +83,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -367,39 +368,42 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                     String str = viewFullOrderResponse.getData().getRequestList().getOrderNo();
                     String[] arrOfStr = str.split("-");
 
+                    String date = parseDateToddMMyyyy(viewFullOrderResponse.getData().getRequestList().getOrderDate());
+                //    Toast.makeText(getActivity(), "" + date, Toast.LENGTH_SHORT).show();
 
                     stringItemDetailHashMap.size();
                     int total = 0;
 
-                    String text1 = "[C]<img width=500 height=600>" + PrinterTextParserImg.bitmapToHexadecimalString(printer,
+                    String text1 = "[C]<img width=700 height=700>" + PrinterTextParserImg.bitmapToHexadecimalString(printer,
                             getActivity().getApplicationContext().getResources().getDrawableForDensity(R.drawable.favicon,
                                     DisplayMetrics.DENSITY_280)) + "</img>\n" +
-                            "[L]\n" +
-                            "[C]<b>" + TelloPreferenceManager.getInstance(getActivity()).getShopUri() + "</b>\n" +
-                            "[C]  Mob No. " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
+                            "[C]Powered By Tello Talk\n\n" +
+                            "[C]<b>" + TelloPreferenceManager.getInstance(getActivity()).getShopUri() + ".tellocast.com</b>\n" +
+                            "[C] Tello : " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
+                            "[C]" + date + "\n" +
+                            "[C]<b> Order# " + arrOfStr[0] + "</b>\n" +
+                            //   "[C]" + viewFullOrderResponse.getData().getRequestList().getOrderDate() + "\n\n" +
 
                             //    "[L]<b> Seller Name </b>\n   " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + "\n" +
                             //    "[L]<b> Seller Contact </b>\n   " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
-                            "[C]" + viewFullOrderResponse.getData().getRequestList().getOrderDate() + "\n\n" +
+
                             "[C]--------------------------------\n" +
                             "[L] Name: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMiddleName() + "\n" +
-                            "[L] Contact: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile() + "\n" +
+                            "[L] Tello: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getMobile() + "\n" +
                             "[L] Address: " + viewFullOrderResponse.getData().getRequestList().getBuyerDetails().get(0).getCompleteAddress() + "\n" +
-                            "[L] Order# " + arrOfStr[0] + "\n" +
-                            "[L]\n" +
                             "[C]--------------------------------\n";
 
                     //Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getNoOfUnits())
                     //stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount()
                     for (int i = 0; i < stringItemDetailHashMap.size(); i++) {
                         text1 += "[L]<b>" + stringItemDetailHashMap.get(String.valueOf(i)).getProductName() + "</b>\n" +
-                                "[L]" + Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getNoOfUnits()) + "pcs[R] Rs. " + Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount()) + "\n";
+                                "[L]" + Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getNoOfUnits()) + " Pcs[R] Rs. " + Integer.parseInt(stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount()) + "\n";
 
                         total += Integer.valueOf(stringItemDetailHashMap.get(String.valueOf(i)).getTotalAmount());
                     }
 
                     text1 += "[C]==============================\n" +
-                            "[L]TOTAL[R] Rs." + total + "\n" +
+                            "[L]<b>TOTAL</b>[R]<b> Rs." + total + "</b>\n" +
                             "[C]==============================\n" +
                             "[L]\n" +
                             "[L]\n" +
@@ -439,6 +443,34 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         } catch (Exception e) {
             Log.e("APP", "Can't print", e);
         }
+    }
+
+
+    public String parseDateToddMMyyyy(String time) {
+        String inputPattern = "MM/dd/yyyy HH:mm:ss";
+        String outputPattern = "MMM/dd/yyyy h:mm a";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    private String changeNumberToMonth(String orderDate) {
+
+        if (orderDate.charAt(0) == '9') {
+            orderDate.replaceFirst("9", "September");
+        }
+
+        return orderDate;
     }
 
     private void CaptureScreenShot(Bitmap bitmap, LinearLayout flash) {

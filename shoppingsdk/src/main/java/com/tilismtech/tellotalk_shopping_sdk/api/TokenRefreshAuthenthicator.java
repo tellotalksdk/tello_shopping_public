@@ -46,11 +46,11 @@ public class TokenRefreshAuthenthicator extends TelloApplication implements Auth
         generateToken.setGrantPassword("basit@1234");
         generateToken.setGrantType("password");
         generateToken.setProfileId(Constant.PROFILE_ID);
-        generateToken.setFirstname(TelloPreferenceManager.getInstance(getApplicationContext()).getFirstName());
-        generateToken.setMiddlename(TelloPreferenceManager.getInstance(getApplicationContext()).getMiddleName());
-        generateToken.setLastname(TelloPreferenceManager.getInstance(getApplicationContext()).getLastName());
-        generateToken.setPhone(TelloPreferenceManager.getInstance(getApplicationContext()).getRegisteredNumber());
-        generateToken.setEmail(TelloPreferenceManager.getInstance(getApplicationContext()).getEmail());
+        generateToken.setFirstname(TelloPreferenceManager.getInstance(getContext()).getFirstName());
+        generateToken.setMiddlename(TelloPreferenceManager.getInstance(getContext()).getMiddleName());
+        generateToken.setLastname(TelloPreferenceManager.getInstance(getContext()).getLastName());
+        generateToken.setPhone(TelloPreferenceManager.getInstance(getContext()).getRegisteredNumber());
+        generateToken.setEmail(TelloPreferenceManager.getInstance(getContext()).getEmail());
 
         getRetrofitClient().generateToken(generateToken).enqueue(new Callback<GTResponse>() {
             @Override

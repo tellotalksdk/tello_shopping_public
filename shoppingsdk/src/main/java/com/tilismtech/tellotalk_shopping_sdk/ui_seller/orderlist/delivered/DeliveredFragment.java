@@ -336,7 +336,7 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                             getActivity().getApplicationContext().getResources().getDrawableForDensity(R.drawable.favicon,
                                     DisplayMetrics.DENSITY_280)) + "</img>\n" +
                             "[L]\n" +
-                            "[C]<b>" + TelloPreferenceManager.getInstance(getActivity()).getShopUri()+".tellocast.com" + "</b>\n" +
+                            "[C]<b>" + TelloPreferenceManager.getInstance(getActivity()).getShopUri() + ".tellocast.com" + "</b>\n" +
                             "[C]  Mob No. " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMobile() + "\n" +
 
                             //    "[L]<b> Seller Name </b>\n   " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getFirstName() + " " + viewFullOrderResponse.getData().getRequestList().getSellerDetails().get(0).getMiddleName() + "\n" +
@@ -365,7 +365,6 @@ public class DeliveredFragment extends Fragment implements DeliveredAdapter.OnOr
                             "[L]\n" +
                             "[L]\n" +
                             "[L]\n";
-
 
 
                     printer.printFormattedText(text1);

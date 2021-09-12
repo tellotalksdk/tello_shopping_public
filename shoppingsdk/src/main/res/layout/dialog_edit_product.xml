@@ -143,6 +143,15 @@
                     android:background="@drawable/edit_text_bg_color"
                     android:orientation="vertical">
 
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/searchableIndustryForEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/country"
+                        android:background="@drawable/bg_spinner"
+                        android:visibility="visible" />
+
+
                     <Spinner
                         android:id="@+id/parentSpinner"
                         android:layout_width="match_parent"
@@ -151,7 +160,8 @@
                         android:background="@drawable/bg_spinner"
                         android:text="Khan-store.tello.com"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -171,6 +181,16 @@
                     android:background="@drawable/edit_text_bg_color"
                     android:orientation="vertical">
 
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/searchableCategoryForEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/country"
+                        android:background="@drawable/bg_spinner"
+                        android:visibility="visible" />
+
+
                     <Spinner
                         android:id="@+id/childSpinner"
                         android:layout_width="match_parent"
@@ -179,7 +199,8 @@
                         android:background="@drawable/bg_spinner"
                         android:text="Khan-store.tello.com"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -194,59 +215,75 @@
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/hor"
+            <FrameLayout
+                android:id="@+id/hor1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/categorySelection"
-                android:layout_marginStart="12dp"
-                android:fillViewport="true">
+                android:layout_below="@+id/categorySelection">
 
-                <LinearLayout
-                    android:id="@+id/LLimages"
+                <HorizontalScrollView
+                    android:id="@+id/hor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/edittext2"
-                    android:orientation="horizontal"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
+                    android:layout_below="@+id/categorySelection"
+                    android:layout_marginStart="12dp"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:id="@+id/LLimages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/edittext2"
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
 
 
-                    <ImageView
-                        android:id="@+id/chooseMultipleProducts"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/edit_text_bg_color"
-                        android:padding="40dp"
-                        android:src="@drawable/ic_baseline_add_circle_outline" />
+                        <ImageView
+                            android:id="@+id/chooseMultipleProducts"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/edit_text_bg_color"
+                            android:padding="40dp"
+                            android:src="@drawable/ic_baseline_add_circle_outline" />
 
 
-                </LinearLayout>
-            </HorizontalScrollView>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <ImageView
+                    android:id="@+id/forwardIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/forward"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/youtube"
-                android:layout_marginStart="10dp"
-
-                android:layout_marginEnd="10dp"
-                android:paddingTop="5dp"
-                android:layout_below="@+id/hor"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_below="@+id/hor1"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
+                android:paddingTop="5dp"
                 app:endIconMode="none">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_VideoUrl"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="Youtube Video Product Url"
+                    android:background="@null"
                     android:gravity="center|left"
-                    android:id="@+id/et_VideoUrl"
+                    android:hint="Youtube Video Product Url"
+                    android:inputType="text"
                     android:paddingLeft="10dp"
                     android:paddingBottom="25dp"
-                    android:textSize="14sp"
-                    android:background="@null"
-                    android:inputType="text" />
+                    android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -256,8 +293,8 @@
                 android:layout_height="50dp"
                 android:layout_below="@+id/youtube"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:paddingTop="5dp"
                 app:endIconMode="none">
@@ -394,9 +431,9 @@
                     android:gravity="center|left"
                     android:hint="Description"
                     android:inputType="textMultiLine"
-                    android:text=""
                     android:paddingLeft="10dp"
                     android:paddingBottom="22dp"
+                    android:text=""
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>

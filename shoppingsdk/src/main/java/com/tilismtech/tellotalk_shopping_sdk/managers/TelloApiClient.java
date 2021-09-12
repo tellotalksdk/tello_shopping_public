@@ -90,7 +90,7 @@ public class TelloApiClient {
                         isShopExist(Constant.PROFILE_ID, context);
                         loadingDialog.dismissDialog();
                     }
-                    // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                   // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {

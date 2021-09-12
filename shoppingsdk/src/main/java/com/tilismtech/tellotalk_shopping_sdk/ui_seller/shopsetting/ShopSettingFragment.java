@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -19,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,6 +52,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -92,8 +97,11 @@ import com.tilismtech.tellotalk_shopping_sdk.ui_seller.shoplandingpage.ShopLandi
 import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
 import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -111,6 +119,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
     private final static int UPLOAD_IMAGE = 123;
     private final static int CAPTURE_IMAGE = 456;
+    final int PIC_CROP = 11;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private FrameLayout FL1;
     private RecyclerView recycler_timings;
@@ -133,6 +142,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     private Dialog dialogImage;
     private Uri imageUri;
     private TextView setColortext;
+    private TextView tvMonday, tvTuesday, tvWednesday, tvThrusday, tvFriday, tvSaturday, tvSunday;
     private Spinner monday_OpenAt, tuesday_OpenAt, wednesday_OpenAt, thrusday_OpenAt, friday_OpenAt, saturday_OpenAt, sunday_OpenAt;
     private Spinner monday_CloseAt, tuesday_CloseAt, wednesday_CloseAt, thrusday_CloseAt, friday_CloseAt, saturday_CloseAt, sunday_CloseAt;
     public Activity activity;
@@ -162,6 +172,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     LocationManager mLocationManager;
     private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableCountry, searchableState, searchableCity;
 
+
+    //uCrop
+    private boolean lockAspectRatio = false, setBitmapMaxWidthHeight = false;
+    private int ASPECT_RATIO_X = 16, ASPECT_RATIO_Y = 9, bitmapMaxWidth = 1000, bitmapMaxHeight = 1000;
+    private int IMAGE_COMPRESSION = 80;
+    public static String fileName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -247,6 +263,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
         //new searchable spinner
         searchableCountry.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, Countries));
+        searchableCountry.setSelection(1);
         searchableCountry.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
         searchableState.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_text, States));
         searchableState.setOnItemSelectedListener(onItemSelectedListenerAddressSearchable);
@@ -261,6 +278,14 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setContentView(R.layout.dialog_shop_settings);
+
+                tvMonday = dialog.findViewById(R.id.tvMonday);
+                tvTuesday = dialog.findViewById(R.id.tvTueday);
+                tvWednesday = dialog.findViewById(R.id.tvWednesday);
+                tvThrusday = dialog.findViewById(R.id.tvThrusday);
+                tvFriday = dialog.findViewById(R.id.tvFriday);
+                tvSaturday = dialog.findViewById(R.id.tvSaturday);
+                tvSunday = dialog.findViewById(R.id.tvSunday);
 
                 updateTimingbtn = dialog.findViewById(R.id.updateTimingbtn);
 
@@ -303,6 +328,54 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 fridaySwitch.setChecked(fri);
                 saturdaySwitch.setChecked(sat);
                 sundaySwitch.setChecked(sun);
+
+                if (!mon) {
+                    tvMonday.setPaintFlags(tvMonday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvMonday.setPaintFlags(0);
+                }
+
+                if (!tue) {
+                    tvTuesday.setPaintFlags(tvTuesday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvTuesday.setPaintFlags(0);
+                }
+
+
+                if (!wed) {
+                    tvWednesday.setPaintFlags(tvWednesday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvWednesday.setPaintFlags(0);
+                }
+
+
+                if (!thrus) {
+                    tvThrusday.setPaintFlags(tvThrusday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvThrusday.setPaintFlags(0);
+                }
+
+
+                if (!fri) {
+                    tvFriday.setPaintFlags(tvFriday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvFriday.setPaintFlags(0);
+                }
+
+
+                if (!sat) {
+                    tvSaturday.setPaintFlags(tvSaturday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvSaturday.setPaintFlags(0);
+                }
+
+
+                if (!sun) {
+                    tvSunday.setPaintFlags(tvSunday.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    tvSunday.setPaintFlags(0);
+                }
+
 
                 ArrayAdapter<String> openTimingAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_text, getActivity().getResources().getStringArray(R.array.opens_at));
                 openTimingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down vieww
@@ -498,6 +571,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                         } else {
                             dialogImage.dismiss();
                             openGallery();
+                            //openCropper();
                         }
                     }
                 });
@@ -784,8 +858,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     shopBasicSetting.setArea(area.getText().toString());
                     //  shopBasicSetting.setLat(TextUtils.isEmpty(Latitude) ? "" : Latitude);
                     //  shopBasicSetting.setLong(TextUtils.isEmpty(Longitude) ? "" : Longitude);
-                    shopBasicSetting.setLat("12.12");
-                    shopBasicSetting.setLong("12.12");
+                    shopBasicSetting.setLat(Latitude);
+                    shopBasicSetting.setLong(Longitude);
+
+                    TelloPreferenceManager.getInstance(getActivity()).savelatitude(Latitude);
+                    TelloPreferenceManager.getInstance(getActivity()).savelongitude(Longitude);
+
 
                     shopSettingViewModel.postShopSettingDetails(shopBasicSetting, getActivity());
                     LoadingDialog loadingDialog = new LoadingDialog(getActivity());
@@ -818,6 +896,10 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
 
 
     }
+
+    private void openCropper() {
+    }
+
 
     private void removeMapIfDeviceHasNotGooglePlayService() {
         mapCard.setVisibility(View.GONE);
@@ -1039,6 +1121,37 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
         }
     }
 
+    private void performCrop(Uri picUri) {
+        try {
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+
+            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties here
+            cropIntent.putExtra("crop", true);
+            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 128);
+            cropIntent.putExtra("outputY", 128);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, PIC_CROP);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            // display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
     private void setMapCurrentLocation() {
         if (checkLocationPermission()) {
             mMap.setMyLocationEnabled(true);
@@ -1124,7 +1237,76 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            Uri uri = UCrop.getOutput(data);
+            Log.i("TAG", "onActivityResult: " + uri);
+            bannerImage.setImageURI(uri);
+        }
+
+        switch (requestCode) {
+            case UPLOAD_IMAGE:
+                if (resultCode == RESULT_OK) {
+                    List<Uri> uris = null;
+                    ArrayList<MediaAttachment> attachments = null;
+                    if (uris == null) {
+                        uris = new ArrayList<>();
+                    }
+                    if (attachments == null) {
+                        attachments = new ArrayList<>();
+                    }
+                    attachments = data.getParcelableArrayListExtra("result");
+
+                    // bannerImage.setImageURI(attachments.get(0).getFileUri());
+                    //filePath = getRealPathFromURI(attachments.get(0).getFileUri());
+                    filePath = attachments.get(0).getFileUri().getPath();
+                    Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
+
+
+                    cropImage(attachments.get(0).getFileUri(), new File(attachments.get(0).getFileUri().getPath()));
+                }
+                break;
+            case CAPTURE_IMAGE:
+                if (resultCode == RESULT_OK) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    // bannerImage.setImageBitmap(photo);
+                    imageUri = getImageUri(getActivity(), photo);
+                    filePath = getRealPathFromURI(imageUri);
+                    cropImage(imageUri, new File(filePath));
+                /*    Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath + "\n");
+                    Log.i("TAG", "onActivityResult: Capture Capture Path" + getRealPathFromURI(data.getData()));*/
+                }
+                break;
+            case 22:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        // get the returned data
+                        Bundle extras = data.getExtras();
+                        // get the cropped bitmap
+                        Bitmap selectedBitmap = extras.getParcelable("data");
+                        bannerImage.setImageBitmap(selectedBitmap);
+                    }
+                }
+                break;
+            case UCrop.RESULT_ERROR:
+                final Throwable cropError = UCrop.getError(data);
+                Log.e("TAG", "Crop error: " + cropError);
+                break;
+            default:
+                //do nothing
+        }
+
+       /* if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            if (data != null) {
+                // get the returned data
+                Bundle extras = data.getExtras();
+                // get the cropped bitmap
+                Bitmap selectedBitmap = extras.getParcelable("data");
+                bannerImage.setImageBitmap(selectedBitmap);
+            }
+        }*/
+
+
+/*        if (resultCode == RESULT_OK && requestCode == UPLOAD_IMAGE) { //Upload image from gallery
 
             List<Uri> uris = null;
             ArrayList<MediaAttachment> attachments = null;
@@ -1141,7 +1323,12 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             filePath = attachments.get(0).getFileUri().getPath();
             Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
 
-      /*      if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+
+            cropImage(attachments.get(0).getFileUri(), new File(attachments.get(0).getFileUri().getPath()));
+
+
+
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
                 imageUri = data.getData();
                 bannerImage.setImageURI(imageUri);
                 filePath = getPath(getActivity(), imageUri);
@@ -1170,18 +1357,18 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
                 bannerImage.setImageBitmap(resized);
 
-           *//*     Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
                 bannerImage.setImageBitmap(photo);
                 imageUri = getImageUri(getActivity(), photo);
                 filePath = getRealPathFromURI(imageUri);
-                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);*//*
+                Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
 
-            }*/
+            }
 
         } else if (resultCode == RESULT_OK && requestCode == CAPTURE_IMAGE) {
 
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
-             /*   Uri selectedImage = data.getData();
+                Uri selectedImage = data.getData();
                 bannerImage.setImageURI(selectedImage);
                 filePath = getPath(getActivity(),selectedImage);
                 Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
@@ -1192,7 +1379,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     e.printStackTrace();
                 }
                 Bitmap resized = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-                bannerImage.setImageBitmap(resized);*/
+                bannerImage.setImageBitmap(resized);
 
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 bannerImage.setImageBitmap(photo);
@@ -1207,7 +1394,53 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                 Log.i("TAG", "onActivityResult: Capture Capture Path" + filePath);
             }
 
+
+        }*/
+
+
+    }
+
+    private void cropImage(Uri sourceUri, File filename) {
+        //new File(getActivity().getCacheDir(), queryName(getActivity().getContentResolver(), sourceUri))
+        Uri destinationUri = Uri.fromFile(filename);
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionQuality(IMAGE_COMPRESSION);
+        options.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        options.setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        options.setActiveWidgetColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+
+        lockAspectRatio = true;
+        if (lockAspectRatio)
+            options.withAspectRatio(ASPECT_RATIO_X, ASPECT_RATIO_Y);
+
+        if (setBitmapMaxWidthHeight)
+            options.withMaxResultSize(bitmapMaxWidth, bitmapMaxHeight);
+
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .start(getActivity(), ShopSettingFragment.this);
+        //.start(getActivity(), ShopSettingFragment.this, 22);
+
+    }
+
+    private void handleUCropResult(Intent data) {
+        if (data == null) {
+            //setResultCancelled();
+            return;
         }
+        final Uri resultUri = UCrop.getOutput(data);
+        //setResultOk(resultUri);
+    }
+
+    private static String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        // assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
     }
 
     //for spinner selection...

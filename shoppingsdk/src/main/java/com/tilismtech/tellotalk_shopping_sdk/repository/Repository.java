@@ -450,7 +450,6 @@ public class Repository {
         File file = new File(shopBasicSetting.getShopProfile());
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part ShopProfile = MultipartBody.Part.createFormData("shopProfile", file.getName(), requestBody); //for send an image as multipart
-
         RequestBody ShippingFee = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getShippingFee());
         RequestBody tax = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getTax());
         RequestBody Province = RequestBody.create(MediaType.parse("text/plain"), shopBasicSetting.getProvince());
@@ -656,10 +655,10 @@ public class Repository {
 
         List<MultipartBody.Part> Product_Pic = getAllImages(updateProduct.getProduct_Pic());
 
-        /*    File file = new File(updateProduct.getProduct_Pic().get(0));
+    /*        File file = new File(updateProduct.getProduct_Pic().get(0));
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part Product_Pic = MultipartBody.Part.createFormData("Product_Pic", file.getName(), requestBody); //for send an image as multipart
-*/
+ */
         RequestBody Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getParentProductCategoryId());
         RequestBody Sub_Product_Category_id = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getProductCategoryId());
         RequestBody Title = RequestBody.create(MediaType.parse("text/plain"), updateProduct.getTitle());

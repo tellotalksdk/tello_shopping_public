@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,29 +12,107 @@
         android:paddingBottom="10dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card1"
+            android:id="@+id/uploadImage"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             app:cardCornerRadius="8dp">
 
-            <ImageView
-                android:id="@+id/iv_top_image"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/edit_text_bg_color"
-                android:scaleType="fitXY"
-                android:src="@drawable/bg_store_banner" />
+                android:layout_height="match_parent">
+
+
+                <ImageView
+                    android:id="@+id/iv_top_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_baseline_camera"
+                    android:scaleType="fitXY" />
+
+            </FrameLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/FL1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uploadImage"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp">
+
+
+            <LinearLayout
+                android:id="@+id/iv_timings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_bg_color"
+                android:hint="Set Your Shop Timings"
+                android:orientation="vertical"
+                android:paddingLeft="2dp"
+                android:paddingBottom="5dp"
+                android:textSize="15sp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edit_text_bg_color"
+                    android:hint="Set Your Shop Timings"
+                    android:paddingLeft="10dp"
+                    android:textSize="15sp"
+                    android:visibility="gone"></EditText>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_timings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="DuplicateIds"
+                    tools:listitem="@layout/rv_item_timings_layout" />
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/calender" />
+
+            <ImageView
+                android:id="@+id/iv_tim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/LL1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card1"
+            android:layout_below="@+id/FL1"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
@@ -140,7 +217,6 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/addedAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,7 +225,8 @@
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/edit_text_bg_color"
                 android:paddingTop="12dp"
-                android:paddingBottom="12dp">
+                android:paddingBottom="12dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/leftLLlabel"
@@ -305,7 +382,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:background="@drawable/edit_text_bg_color"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/addnewaddress"
