@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tilismtech.tellotalk_shopping_sdk">
+    package="com.tilismtech.tellotalk_shopping_sdk_app">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -8,7 +8,6 @@
 
 
     <application
-        android:name=".TelloApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
@@ -19,7 +18,7 @@
         android:theme="@style/Theme.TestApp">
 
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk.MainActivity"
+            android:name="com.tilismtech.tellotalk_shopping_sdk_app.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,14 +27,13 @@
         </activity>
 
         <activity
-            android:name=".ui_seller.shopregistration.ShopRegistrationActivity"
+            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.shoppingsdk.ui.shopRegistration.ShopRegistrationActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
 
 
     </application>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="60dp"
-    android:background="@drawable/top_rounded_corners_40dp"
+    android:background="@drawable/rounded_corner_linear_layout"
     android:paddingTop="20dp">
 
     <TextView
@@ -49,9 +49,39 @@
             android:layout_height="50dp"
             android:background="@drawable/edit_text_bg_color"
             android:hint="Enter your complete address..."
+            android:maxLength="99"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:textSize="14sp" />
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/searchableCountry"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/searchableCountry"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_spinner"
+            android:entries="@array/province" />
+
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/searchableProvince"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/searchableCountry"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_spinner"
+            android:entries="@array/province" />
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/searchableCity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/searchableCountry"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_spinner"
+            android:entries="@array/province" />
+
 
         <EditText
             android:id="@+id/etCity"
@@ -64,7 +94,8 @@
             android:maxLength="11"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etProvince"
@@ -76,7 +107,8 @@
             android:inputType="text"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etCountry"
@@ -88,7 +120,8 @@
             android:inputType="text"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
 
         <Button

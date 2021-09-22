@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/editingProfileFragment"
-        android:name="com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.EditingProfileFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.settingprofileediting.EditingProfileFragment"
         android:label="EditingProfileFragment"
         tools:layout="@layout/fragment_store_setting_profile_info"/>
     <fragment
         android:id="@+id/bankSettingFragment"
-        android:name="com.tilismtech.tellotalk_shopping_sdk.ui_seller.banksetting.BankSettingFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.banksetting.BankSettingFragment"
         android:label="BankSettingFragment"
         tools:layout="@layout/fragment_store_setting_bank_setting"/>
     <fragment
         android:id="@+id/storeSettingFragment"
-        android:name="com.tilismtech.tellotalk_shopping_sdk.ui_seller.storesetting.StoreSettingFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.storesetting.StoreSettingFragment"
         android:label="StoreSettingFragment"
         tools:layout="@layout/fragment_store_setting_store_settings"
         />

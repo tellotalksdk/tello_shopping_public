@@ -63,6 +63,16 @@
             android:textSize="13sp"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:id="@+id/totalItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/customerName"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+        </LinearLayout>
+
         <TextView
             android:id="@+id/address"
             android:layout_width="200dp"
@@ -71,6 +81,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:text="Unit 304 3rd Unit Floor \n Parsa Tower,PECHS sharah e faisal "
             android:textColor="@android:color/black"
             android:textSize="12sp" />
@@ -82,6 +93,7 @@
             android:layout_alignBottom="@+id/address"
             android:layout_toLeftOf="@+id/lldetail"
             android:layout_toRightOf="@+id/address"
+            android:visibility="invisible"
             android:paddingBottom="3dp"
             android:src="@drawable/ic_address" />
 
@@ -133,7 +145,7 @@
             android:id="@+id/addRiderInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/address"
+            android:layout_below="@+id/totalItems"
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
@@ -147,7 +159,7 @@
             android:id="@+id/addRiderInfo1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/address"
+            android:layout_below="@+id/totalItems"
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
@@ -162,7 +174,7 @@
             android:id="@+id/edit_rider_info"
             android:layout_width="13dp"
             android:layout_height="13dp"
-            android:layout_below="@+id/address"
+            android:layout_below="@+id/totalItems"
             android:layout_marginStart="5dp"
             android:layout_marginTop="16dp"
             android:layout_toLeftOf="@+id/spinner_moveto"
@@ -174,7 +186,7 @@
             android:id="@+id/spinner_moveto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/address"
+            android:layout_below="@+id/totalItems"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/viewFull"
             android:background="@drawable/bg_spinner_order_status"
@@ -185,7 +197,7 @@
             android:id="@+id/viewFull"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/address"
+            android:layout_below="@+id/totalItems"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"

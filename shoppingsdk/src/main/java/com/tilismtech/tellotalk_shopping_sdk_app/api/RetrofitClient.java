@@ -1,0 +1,52 @@
+package com.tilismtech.tellotalk_shopping_sdk_app.api;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.tilismtech.tellotalk_shopping_sdk_app.utils.Constant;
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
+public class RetrofitClient {
+
+    public static final String BASE_URL = Constant.BASE_URL;
+    public static Retrofit retrofit = null;
+
+    static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+
+    static OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(180, TimeUnit.SECONDS)
+            .readTimeout(180, TimeUnit.SECONDS)
+            .writeTimeout(180, TimeUnit.SECONDS)
+            .authenticator(new TokenRefreshAuthenthicator()) //this class will refresh token
+           // .addInterceptor(logging)
+            .build();
+
+
+    public static Retrofit getInstance() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .setPrettyPrinting()
+                .create();
+
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+        }
+        return retrofit;
+    }
+
+    public static Iapi getRetrofitClient() {
+        return getInstance().create(Iapi.class);
+    }
+
+}

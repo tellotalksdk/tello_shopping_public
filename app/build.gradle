@@ -9,18 +9,19 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.tilismtech.tellotalk_shopping_sdk"
-        minSdkVersion 21
+        applicationId "com.tilismtech.tellotalk_shopping_sdk_app"
+        minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
+        multiDexEnabled true
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -39,7 +40,7 @@ android {
 dependencies {
 
     api project(":shoppingsdk")
-    //implementation 'com.github.User:Repo:Tag'
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

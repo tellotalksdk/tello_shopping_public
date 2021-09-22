@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/shopRegistrationFragment"
-        android:name="com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shopregistration.ShopRegistrationFragment"
         android:label="ShopRegistrationFragment"
         tools:layout="@layout/fragment_shop_registration"
         >
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopSettingFragment"
-        android:name="com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopsetting.ShopSettingFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shopsetting.ShopSettingFragment"
         android:label="ShopSettingFragment"
         tools:layout="@layout/fragment_shop_setting"/>
 </navigation>

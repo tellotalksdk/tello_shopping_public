@@ -6,6 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_dispatched_orders"
         android:layout_width="match_parent"
@@ -13,13 +18,14 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/rv_orderlist_dispatched_items" />
 
+    </androidx.core.widget.NestedScrollView>
 
-    <com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress
+    <com.tilismtech.tellotalk_shopping_sdk_app.customviews.HorizontalDottedProgress
         android:id="@+id/horizontalProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
+        android:visibility="visible"></com.tilismtech.tellotalk_shopping_sdk_app.customviews.HorizontalDottedProgress>
 
 
 

@@ -44,10 +44,81 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="Shahbaz Jamote \n+923332263631"
+            android:text="Shahbaz Jamote  +923332263631"
             android:textColor="@android:color/black"
             android:textSize="13sp"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/totalItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/customerName"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <!--   <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+
+                   <TextView
+                       android:textColor="@android:color/black"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="Dairy Milk"/>
+
+
+                   <TextView
+                       android:textColor="@android:color/black"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginStart="10dp"
+                       android:text="x"/>
+
+
+                   <TextView
+                       android:textColor="@android:color/black"
+                       android:layout_marginStart="10dp"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="10"/>
+
+                   <TextView
+                       android:textColor="@android:color/black"
+                       android:layout_marginStart="20dp"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="10"/>
+
+
+               </LinearLayout>-->
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/horizontalLine"
+            android:layout_width="190dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/totalItems"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:id="@+id/totalCosttobeReceived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/horizontalLine"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="5dp"
+            android:text="21321312"
+            android:visibility="gone"
+            android:textColor="@android:color/black" />
+
 
         <TextView
             android:id="@+id/address"
@@ -59,20 +130,21 @@
             android:layout_marginTop="10dp"
             android:text="Unit 304 3rd Unit Floor\nParsa Tower,PECHS sharah e faisal "
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_locate"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp"
-            android:src="@drawable/ic_address"
-            android:visibility="gone"
             android:layout_alignTop="@+id/address"
-            android:layout_toLeftOf="@+id/lldetail"
             android:layout_alignBottom="@+id/address"
-            android:layout_toRightOf="@+id/address"/>
+            android:layout_toLeftOf="@+id/lldetail"
+            android:layout_toRightOf="@+id/address"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:src="@drawable/ic_address"
+            android:visibility="gone" />
 
 
         <LinearLayout
@@ -150,7 +222,7 @@
             android:id="@+id/viewFull"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/address"
+            android:layout_below="@+id/totalItems"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
