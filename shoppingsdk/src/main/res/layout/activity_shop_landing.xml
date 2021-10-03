@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@android:color/white"
-    tools:context=".ui_seller.shopregistration.ShopRegistrationActivity">
+    tools:context="com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity">
 
     <FrameLayout
         android:id="@+id/headerRL"
@@ -27,8 +27,9 @@
 
                 <ImageView
                     android:id="@+id/arrowback"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_alignParentStart="true"
                     android:src="@drawable/ic_baseline_arrow_back" />
 
@@ -40,14 +41,6 @@
                              android:layout_toRightOf="@+id/arrowback"
                              app:cardCornerRadius="360dp">-->
 
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profileImage"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:scaleType="fitXY"
-                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                    app:srcCompat="@drawable/ic_bbq" />
 
                 <!--       <ImageView
                            android:id="@+id/profileImage"
@@ -71,6 +64,15 @@
                                     android:src="@drawable/ic_shop"
                                     app:civ_border_color="#FF000000"
                                     app:civ_border_width="0.5dp" />-->
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="5dp"
+                    android:scaleType="fitXY"
+                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                    app:srcCompat="@drawable/ic_bbq" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -112,6 +114,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="end"
                 android:layout_marginRight="10dp"
+                android:layout_marginLeft="7dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="@android:color/black"
                 android:src="@drawable/ic_baseline_settings"
@@ -125,7 +128,6 @@
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/setting"
                 android:src="@drawable/ic_baseline_add_circle_outline"
                 android:visibility="visible"
@@ -250,8 +252,7 @@
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/notificationcircle"
-                 />
+                android:src="@drawable/notificationcircle" />
 
             <TextView
                 android:id="@+id/tvCounter"
@@ -260,7 +261,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:inputType="number"
-                android:text="22"
+                android:text=".."
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
@@ -322,7 +323,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 
@@ -361,7 +362,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
@@ -400,7 +401,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
@@ -439,7 +440,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
@@ -478,7 +479,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
@@ -517,7 +518,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
@@ -556,7 +557,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:paddingTop="0dp"
-                android:text="12"
+                android:text=".."
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 

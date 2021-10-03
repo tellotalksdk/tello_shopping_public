@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     android:elevation="8dp"
-    android:foreground="@drawable/bg_roundrect_ripple_light_border"
-    app:cardCornerRadius="23dp">
+    android:translationZ="5dp"    app:cardCornerRadius="23dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

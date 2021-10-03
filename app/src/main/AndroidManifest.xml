@@ -26,14 +26,14 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shopregistration.ShopRegistrationActivity"
+<!--        <activity
+            android:name="com.tilismtech.tellotalk_shopping_sdk_app.com.tilismtech.tellotalk_shopping_sdk.ui_seller.shopregistration.ShopRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.shoppingsdk.ui.shopRegistration.ShopRegistrationActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity>-->
 
 
     </application>

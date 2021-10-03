@@ -10,7 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui_seller.settingprofileediting.SettingProfileEditingActivity">
+    tools:context="com.tilismtech.tellotalk_shopping_sdk.ui_seller.settingprofileediting.SettingProfileEditingActivity">
 
 
     <RelativeLayout
@@ -92,6 +92,7 @@
 
             <LinearLayout
                 android:id="@+id/head"
+                android:layout_toLeftOf="@+id/iv_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"

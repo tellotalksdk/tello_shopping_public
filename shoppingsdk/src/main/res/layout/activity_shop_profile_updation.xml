@@ -304,7 +304,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.tilismtech.tellotalk_shopping_sdk_app.customviews.CustomMapView xmlns:android="http://schemas.android.com/apk/res/android"
+                    <com.tilismtech.tellotalk_shopping_sdk.customviews.CustomMapView xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/mapView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />

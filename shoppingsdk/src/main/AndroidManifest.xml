@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tilismtech.tellotalk_shopping_sdk_app">
+    package="com.tilismtech.tellotalk_shopping_sdk">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -14,40 +14,41 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
-        android:name="com.tilismtech.tellotalk_shopping_sdk_app.TelloApplication"
+        android:name=".TelloApplication"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.tilismtech.tellotalk_shopping_sdk_app.ImagePickerActivity"></activity>
+        <activity android:name=".ImagePickerActivity"></activity>
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shoprofileupdation.ShopProfileUpdationActivity"
+            android:name=".ui_seller.shoprofileupdation.ShopProfileUpdationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.WebViewActivity"
+            android:name=".WebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_client.homescreen.ClientHomeActivity"
+            android:name=".ui_client.homescreen.ClientHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.settingprofileediting.SettingProfileEditingActivity"
+            android:name=".ui_seller.settingprofileediting.SettingProfileEditingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shoplandingpage.ShopLandingActivity"
+            android:name=".ui_seller.shoplandingpage.ShopLandingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_seller.shopregistration.ShopRegistrationActivity"
+            android:name=".ui_seller.shopregistration.ShopRegistrationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.gallery.Gallery"
+            android:name=".gallery.Gallery"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.tilismtech.tellotalk_shopping_sdk_app.gallery.OpenGallery"
+            android:name=".gallery.OpenGallery"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
 

@@ -57,7 +57,7 @@
     </string-array>
 
     <string-array name="network_options">
-        <item>Select</item>
+        <item>Select Carrier</item>
         <item>Ufone</item>
         <item>Telenor</item>
         <item>Jazz</item>
@@ -150,6 +150,34 @@
     <string name="navigation_drawer_open">OPEN</string>
     <string name="navigation_drawer_close">CLOSE</string>
 
-    <string name="no_internet_connection">No Internet Connection... Please Try Again Later</string>
+    <string name="no_internet_connection">No internet connection! please try again later</string>
+    <string name="select_relevent_operator">Select your relevant operator</string>
+    <string name="not_found">"Not found"</string>
+    <string name="otp_verified">OTP verified</string>
+    <string name="profile_updated">Profile updated successfully</string>
+    <string name="url_not_available">Url not available</string>
+    <string name="otp_required">OTP required</string>
+
+    <string name="something_went_wrong">Some thing went wrong try again</string>
+    <string name="some_fields_are_missing">Some fields are missing</string>
+
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_not_granted">Permission not granted</string>
+
+    <string name="shop_closing_time_must_ahead_of">Shop closing time must be ahead of shop opening time</string>
+    <string name="select_shop_opening_timing_first">Select shop opening timing first</string>
+
+    <string name="discounted_price_must_be_less_than_original_price">Discounted price must be less than original price</string>
+    <string name="discounted_price_cannot_be_same_as_original_price">Discounted price can not be same as original price</string>
+
+    <string name="url_not_valid">URL is not valid</string>
+    <string name="proper_youtube_link">Only proper youTube link is allowed</string>
+
+    <string name="image_removed_successfully">Image removed successfully</string>
+    <string name="image_not_removed">Image not removed... Please try again</string>
+
+    <string name="select_either_wallet_bank">Select either wallet or bank</string>
+    <string name="successfully_deleted">Successfully deleted</string>
+
 
 </resources>

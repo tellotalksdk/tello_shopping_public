@@ -6,7 +6,7 @@
     app:startDestination="@id/subCategoryFragment">
     <fragment
         android:id="@+id/subCategoryFragment"
-        android:name="com.tilismtech.tellotalk_shopping_sdk_app.ui_client.homescreen.SubCategoryFragment"
+        android:name="com.tilismtech.tellotalk_shopping_sdk.ui_client.homescreen.SubCategoryFragment"
         android:label="SubCategoryFragment"
         tools:layout="@layout/fragment_subcategories"/>
 </navigation>

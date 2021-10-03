@@ -1,5 +1,6 @@
 package com.tilismtech.tellotalk_shopping_sdk_app;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -12,9 +13,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.tilismtech.tellotalk_shopping_sdk_app.managers.TelloApiClient;
-import com.tilismtech.tellotalk_shopping_sdk_app.ui_client.homescreen.ClientHomeActivity;
-import com.tilismtech.tellotalk_shopping_sdk_app.utils.LoadingDialog;
+import com.tilismtech.tellotalk_shopping_sdk.managers.TelloApiClient;
+import com.tilismtech.tellotalk_shopping_sdk.ui_client.homescreen.ClientHomeActivity;
+import com.tilismtech.tellotalk_shopping_sdk.utils.PinEntryEditText;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,16 +25,12 @@ public class MainActivity extends AppCompatActivity {
     EditText fN, mN, lN, cN, pI;
     com.google.android.material.switchmaterial.SwitchMaterial toggle;
     LoadingDialog loadingDialog;
-    com.tilismtech.tellotalk_shopping_sdk_app.utils.PinEntryEditText pinEntryEditText;
+    PinEntryEditText pinEntryEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-        //  Toast.makeText(this,"" + ApplicationUtils.deviceHasGooglePlayServices(MainActivity.this), Toast.LENGTH_SHORT).show();
 
         fN = findViewById(R.id.fName);
         mN = findViewById(R.id.mName);
@@ -42,20 +40,15 @@ public class MainActivity extends AppCompatActivity {
         toggle = findViewById(R.id.toggle);
         pinEntryEditText = findViewById(R.id.testPin);
         loadingDialog = new LoadingDialog(MainActivity.this);
-
-
         button = findViewById(R.id.button);
         client = findViewById(R.id.client);
-        //03152612485
-        //azan id  : 3F64D77CB1BA4A3CA6CF9B9D786D4A234567
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(MainActivity.this, "" + ApplicationUtils.changeNumberFormat(cN.getText().toString(), true), Toast.LENGTH_SHORT).show();
-
-                loadingDialog.showDialog();
+             loadingDialog.showDialog();
                 TelloApiClient.initializeShoppingSDK(MainActivity.this, cN.getText().toString(), fN.getText().toString(), mN.getText().toString(), lN.getText().toString(), cN.getText().toString(), "Faiz@gmail.com", loadingDialog);
             }
         });
@@ -79,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadingDialog.dismissDialog();
     }
 
     private void deviceHasGooglePlayServices() {

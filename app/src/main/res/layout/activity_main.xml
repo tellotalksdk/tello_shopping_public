@@ -10,10 +10,10 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
-    <com.tilismtech.tellotalk_shopping_sdk_app.customviews.HorizontalDottedProgress
+    <com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"></com.tilismtech.tellotalk_shopping_sdk_app.customviews.HorizontalDottedProgress>
+        android:visibility="gone"></com.tilismtech.tellotalk_shopping_sdk.customviews.HorizontalDottedProgress>
 
     <EditText
         android:id="@+id/fName"
@@ -57,7 +57,7 @@
         android:text=""
         android:visibility="gone" />
 
-    <com.tilismtech.tellotalk_shopping_sdk_app.utils.PinEntryEditText
+    <com.tilismtech.tellotalk_shopping_sdk.utils.PinEntryEditText
         android:id="@+id/testPin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

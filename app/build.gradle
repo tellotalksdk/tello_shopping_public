@@ -34,12 +34,24 @@ android {
         dataBinding true
     }
 
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
+        preDexLibraries true
+        dexInProcess = true
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
 
 }
 
 dependencies {
 
     api project(":shoppingsdk")
+    api "androidx.multidex:multidex:2.0.1"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'

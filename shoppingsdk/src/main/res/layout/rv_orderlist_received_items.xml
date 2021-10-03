@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     android:elevation="8dp"
-    android:foreground="@drawable/bg_roundrect_ripple_light_border"
+    android:translationZ="5dp"
     app:cardCornerRadius="23dp">
 
     <RelativeLayout
@@ -18,8 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:text="Order # AAB - 110"
             android:textColor="@android:color/black"
             android:textSize="12sp" />
@@ -30,7 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:text="Accept"
             android:textColor="#226EE8"
             android:textSize="15sp"
@@ -41,8 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/orderNumber"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="Shahbaz Jamote  +923332263631"
             android:textColor="@android:color/black"
@@ -54,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/customerName"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
@@ -103,21 +107,21 @@
             android:layout_width="190dp"
             android:layout_height="1dp"
             android:layout_below="@+id/totalItems"
-            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginTop="5dp"
-            android:visibility="gone"
-            android:background="@android:color/black" />
+            android:background="@android:color/black"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/totalCosttobeReceived"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/horizontalLine"
-            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
             android:layout_marginTop="5dp"
             android:text="21321312"
-            android:visibility="gone"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
 
 
         <TextView
@@ -125,8 +129,8 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/customerName"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="Unit 304 3rd Unit Floor\nParsa Tower,PECHS sharah e faisal "
             android:textColor="@android:color/black"
@@ -153,7 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/viewFull"
             android:layout_below="@+id/orderNumber"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:gravity="end|center"
             android:orientation="vertical">
 
@@ -163,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/customerName"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Items : 5"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
@@ -174,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/customerName"
                 android:layout_marginTop="2dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:text=" 5 jan , 2021 / 3:54 P.M "
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
@@ -185,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/customerName"
                 android:layout_marginTop="2dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
                 android:text="Rs : 750"
                 android:textColor="@android:color/black"
                 android:textSize="15sp" />
@@ -197,7 +201,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/address"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
@@ -214,7 +218,7 @@
             android:layout_below="@+id/address"
             android:layout_toLeftOf="@+id/viewFull"
             android:background="@drawable/custom_move_to_spinner"
-            android:paddingEnd="30dp"
+            android:paddingRight="30dp"
             android:visibility="gone" />
 
 
@@ -223,7 +227,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/totalItems"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
