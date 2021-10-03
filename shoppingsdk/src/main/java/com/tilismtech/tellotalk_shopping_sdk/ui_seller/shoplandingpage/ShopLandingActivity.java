@@ -756,6 +756,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                                                 true).build()
                         );
 
+
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
                 accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
                 dispatched.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
