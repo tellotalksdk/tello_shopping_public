@@ -22,7 +22,7 @@
         android:layout_marginTop="-150dp"
         android:hint="Enter Your Name Here..."
         android:maxLength="25"
-        android:text="Syed Basit Ali" />
+        android:text="Ali Ahmad Siddiqui" />
     <!-- Gaba International
  -->
     <EditText
@@ -46,8 +46,8 @@
         android:hint="Enter Your Contact Number Here..."
         android:inputType="number"
         android:maxLength="11"
-        android:text="03330347473" />
-    <!--
+        android:text="03332263631" />
+    <!--03332263631
         03350221182-->
     <EditText
         android:id="@+id/profileid"

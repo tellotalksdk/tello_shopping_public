@@ -1,11 +1,15 @@
 package com.tilismtech.tellotalk_shopping_sdk.ui_seller.banksetting;
 
+import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +39,7 @@ import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.GetUserBankDetai
 import com.tilismtech.tellotalk_shopping_sdk.pojos.responsebody.WalletListResponse;
 import com.tilismtech.tellotalk_shopping_sdk.utils.ApplicationUtils;
 import com.tilismtech.tellotalk_shopping_sdk.utils.Constant;
+import com.tilismtech.tellotalk_shopping_sdk.utils.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +47,7 @@ import java.util.List;
 public class BankSettingFragment extends Fragment {
     private Button btn_bank;
     private RelativeLayout RL1, RL2, RL4;
-    private LinearLayout RL3;
+    private LinearLayout RL3, RL5;
     private Button continue_btn_1, continue_btn_2, continue_btn_3, continue_btn_4, btn_wallet;
     private ImageView iv_back, iv_back1, iv_back_two;
     private boolean isbankClicked, iswalletClicked;
@@ -51,6 +56,7 @@ public class BankSettingFragment extends Fragment {
     private List<String> banks, wallets;
     private Spinner spinner_bank_names, spinner_wallet_names;
     private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableBanks, searchableWallets;
+    LoadingDialog loadingDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +72,12 @@ public class BankSettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         RL1 = view.findViewById(R.id.RL1); //this is the first screen having 2 option wallet and bank...
         RL2 = view.findViewById(R.id.RL2); // this is the  flow for bank selection...
         RL3 = view.findViewById(R.id.RL3); //this is the flow for add branch address...
         RL4 = view.findViewById(R.id.RL4); //this is the flow for wallet selection...
+        RL5 = view.findViewById(R.id.RL5);
+        loadingDialog = new LoadingDialog(getActivity());
         btn_wallet = view.findViewById(R.id.btn_wallet);
         account_title = view.findViewById(R.id.account_title);
         account_number = view.findViewById(R.id.account_number);
@@ -126,6 +133,7 @@ public class BankSettingFragment extends Fragment {
                 RL1.setVisibility(View.VISIBLE);
                 RL2.setVisibility(View.GONE);
                 RL3.setVisibility(View.GONE);
+                RL5.setVisibility(View.GONE);
                 RL4.setVisibility(View.GONE);
             }
         });
@@ -180,12 +188,14 @@ public class BankSettingFragment extends Fragment {
                     RL1.setVisibility(View.GONE);
                     RL2.setVisibility(View.VISIBLE);
                     RL3.setVisibility(View.GONE);
+                    RL5.setVisibility(View.GONE);
                 }
 
                 if (iswalletClicked) {
                     RL1.setVisibility(View.GONE);
                     RL2.setVisibility(View.GONE);
                     RL3.setVisibility(View.GONE);
+                    RL5.setVisibility(View.GONE);
                     RL4.setVisibility(View.VISIBLE);
                 }
 
@@ -230,6 +240,7 @@ public class BankSettingFragment extends Fragment {
                     RL1.setVisibility(View.GONE);
                     RL2.setVisibility(View.GONE);
                     RL3.setVisibility(View.VISIBLE);
+                    RL5.setVisibility(View.VISIBLE);
                     RL4.setVisibility(View.GONE);
                 }
 
@@ -250,6 +261,7 @@ public class BankSettingFragment extends Fragment {
                 RL1.setVisibility(View.VISIBLE);
                 RL2.setVisibility(View.GONE);
                 RL3.setVisibility(View.GONE);
+                RL5.setVisibility(View.GONE);
             }
         });
 
@@ -285,6 +297,7 @@ public class BankSettingFragment extends Fragment {
                     RL1.setVisibility(View.GONE);
                     RL2.setVisibility(View.GONE);
                     RL3.setVisibility(View.VISIBLE);
+                    RL5.setVisibility(View.VISIBLE);
                     RL4.setVisibility(View.GONE);
                 }
             }
@@ -293,17 +306,30 @@ public class BankSettingFragment extends Fragment {
     }
 
     private void populateBankWalletDetails() {
+
+        loadingDialog.showDialog();
+
         bankSettingViewModel.getUserBankList().removeObservers(getActivity());
         bankSettingViewModel.UserBankList(getActivity());
         bankSettingViewModel.getUserBankList().observe(getActivity(), new Observer<GetUserBankDetailResponse>() {
             @Override
             public void onChanged(GetUserBankDetailResponse getUserBankDetailResponse) {
                 if (getUserBankDetailResponse != null) {
+                    loadingDialog.dismissDialog();
                     if (getUserBankDetailResponse.getData().getRequestList() != null) {
+                        // loadingDialog.dismissDialog();
                         if (getUserBankDetailResponse.getData().getRequestList().size() > 0) {
+                            RL1.setVisibility(View.GONE);
+                            RL2.setVisibility(View.GONE);
+                            RL3.setVisibility(View.VISIBLE);
+                            RL5.setVisibility(View.VISIBLE);
+                            RL4.setVisibility(View.GONE);
+                            iv_back_two.setVisibility(View.VISIBLE);
+
                             if (RL3.getChildCount() > 0) {
                                 RL3.removeAllViews();
                             }
+
                             for (int i = 0; i < getUserBankDetailResponse.getData().getRequestList().size(); i++) {
                                 View inflater = getLayoutInflater().inflate(R.layout.bank_wallet_detail_layout, null);
 
@@ -321,20 +347,50 @@ public class BankSettingFragment extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         //here we call delete api
-                                        DeleteCardorWallet deleteCardorWallet = new DeleteCardorWallet();
-                                        deleteCardorWallet.setId(String.valueOf(getUserBankDetailResponse.getData().getRequestList().get(finalI).getId()));
-                                        deleteCardorWallet.setProfileId(Constant.PROFILE_ID);
 
-                                        bankSettingViewModel.deleteBankorWallet(deleteCardorWallet, getActivity());
-                                        bankSettingViewModel.getdeleteBankorWallet().observe(getActivity(), new Observer<DeleteBankResponse>() {
+                                        Dialog dialog = new Dialog(getActivity());
+                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+                                        dialog.setContentView(R.layout.dialog_confirm_delete_image);
+                                        dialog.show();
+
+                                        Button Yes = dialog.findViewById(R.id.Yes);
+                                        Button No = dialog.findViewById(R.id.No);
+                                        TextView cancelReason = dialog.findViewById(R.id.cancelReason);
+                                        cancelReason.setText("Do you want to remove this account?");
+
+
+                                        Yes.setOnClickListener(new View.OnClickListener() {
                                             @Override
-                                            public void onChanged(DeleteBankResponse deleteBankResponse) {
-                                                if (deleteBankResponse != null) {
-                                                    Toast.makeText(getActivity(), "successfully deleted...", Toast.LENGTH_SHORT).show();
-                                                    RL3.removeView(inflater);
-                                                }
+                                            public void onClick(View v) {
+                                                DeleteCardorWallet deleteCardorWallet = new DeleteCardorWallet();
+                                                deleteCardorWallet.setId(String.valueOf(getUserBankDetailResponse.getData().getRequestList().get(finalI).getId()));
+                                                deleteCardorWallet.setProfileId(Constant.PROFILE_ID);
+
+                                                bankSettingViewModel.deleteBankorWallet(deleteCardorWallet, getActivity());
+                                                bankSettingViewModel.getdeleteBankorWallet().observe(getActivity(), new Observer<DeleteBankResponse>() {
+                                                    @Override
+                                                    public void onChanged(DeleteBankResponse deleteBankResponse) {
+                                                        if (deleteBankResponse != null) {
+                                                            //Toast.makeText(getActivity(), "successfully deleted...", Toast.LENGTH_SHORT).show();
+                                                            RL3.removeView(inflater);
+                                                            dialog.dismiss();
+                                                        }
+                                                    }
+                                                });
+
+
                                             }
                                         });
+
+                                        No.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
                                     }
                                 });
 
@@ -342,17 +398,29 @@ public class BankSettingFragment extends Fragment {
                             }
                         }
                     }
+                } else {
+                    // loadingDialog.dismissDialog();
                 }
             }
         });
+
         bankSettingViewModel.getUserWalletList().removeObservers(getActivity());
         bankSettingViewModel.UserWalletList(getActivity());
         bankSettingViewModel.getUserWalletList().observe(getActivity(), new Observer<ClientWalletDetailResponse>() {
             @Override
             public void onChanged(ClientWalletDetailResponse clientWalletDetailResponse) {
                 if (clientWalletDetailResponse != null) {
+                    loadingDialog.dismissDialog();
                     if (clientWalletDetailResponse.getData().getRequestList() != null) {
+                        loadingDialog.dismissDialog();
                         if (clientWalletDetailResponse.getData().getRequestList().size() > 0) {
+                            RL1.setVisibility(View.GONE);
+                            RL2.setVisibility(View.GONE);
+                            RL3.setVisibility(View.VISIBLE);
+                            RL5.setVisibility(View.VISIBLE);
+                            RL4.setVisibility(View.GONE);
+                            iv_back_two.setVisibility(View.VISIBLE);
+
                             for (int i = 0; i < clientWalletDetailResponse.getData().getRequestList().size(); i++) {
                                 View inflater = getLayoutInflater().inflate(R.layout.bank_wallet_detail_layout, null);
 
@@ -370,20 +438,49 @@ public class BankSettingFragment extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         //here we call delete api
-                                        DeleteCardorWallet deleteCardorWallet = new DeleteCardorWallet();
-                                        deleteCardorWallet.setId(String.valueOf(clientWalletDetailResponse.getData().getRequestList().get(finalI).getId()));
-                                        deleteCardorWallet.setProfileId(Constant.PROFILE_ID);
 
-                                        bankSettingViewModel.deleteBankorWallet(deleteCardorWallet, getActivity());
-                                        bankSettingViewModel.getdeleteBankorWallet().observe(getActivity(), new Observer<DeleteBankResponse>() {
+                                        Dialog dialog = new Dialog(getActivity());
+                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+                                        dialog.setContentView(R.layout.dialog_confirm_delete_image);
+                                        dialog.show();
+
+                                        Button Yes = dialog.findViewById(R.id.Yes);
+                                        Button No = dialog.findViewById(R.id.No);
+                                        TextView cancelReason = dialog.findViewById(R.id.cancelReason);
+                                        cancelReason.setText("Do you want to remove this account?");
+
+
+                                        Yes.setOnClickListener(new View.OnClickListener() {
                                             @Override
-                                            public void onChanged(DeleteBankResponse deleteBankResponse) {
-                                                if (deleteBankResponse != null) {
-                                                    Toast.makeText(getActivity(), "successfully deleted...", Toast.LENGTH_SHORT).show();
-                                                    RL3.removeView(inflater);
-                                                }
+                                            public void onClick(View v) {
+                                                DeleteCardorWallet deleteCardorWallet = new DeleteCardorWallet();
+                                                deleteCardorWallet.setId(String.valueOf(clientWalletDetailResponse.getData().getRequestList().get(finalI).getId()));
+                                                deleteCardorWallet.setProfileId(Constant.PROFILE_ID);
+
+                                                bankSettingViewModel.deleteBankorWallet(deleteCardorWallet, getActivity());
+                                                bankSettingViewModel.getdeleteBankorWallet().observe(getActivity(), new Observer<DeleteBankResponse>() {
+                                                    @Override
+                                                    public void onChanged(DeleteBankResponse deleteBankResponse) {
+                                                        if (deleteBankResponse != null) {
+                                                            //Toast.makeText(getActivity(), "successfully deleted...", Toast.LENGTH_SHORT).show();
+                                                            RL3.removeView(inflater);
+                                                            dialog.dismiss();
+                                                        }
+                                                    }
+                                                });
                                             }
                                         });
+
+                                        No.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+
                                     }
                                 });
 
@@ -391,6 +488,8 @@ public class BankSettingFragment extends Fragment {
                             }
                         }
                     }
+                } else {
+                    loadingDialog.dismissDialog();
                 }
             }
         });

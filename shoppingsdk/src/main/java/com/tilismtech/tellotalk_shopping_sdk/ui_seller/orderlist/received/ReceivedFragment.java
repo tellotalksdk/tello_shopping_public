@@ -188,13 +188,6 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         initReceivedItems();
 
 
-        ((ShopLandingActivity)getActivity()).getShopLandingPageViewModel().getMessage().observe(getActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Toast.makeText(getActivity(), "message" + s, Toast.LENGTH_SHORT).show();
-            }
-        });;
-
     }
 
 
@@ -210,22 +203,38 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
             public void onChanged(GetOrderByStatusResponse getOrderByStatusResponse) {
                 if (getOrderByStatusResponse != null) {
                     receivedAdapter = new ReceivedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
-                    linearLayoutManager = new LinearLayoutManager(getActivity());
-                    recycler_received_orders.setLayoutManager(linearLayoutManager);
                     recycler_received_orders.setAdapter(receivedAdapter);
+
+                    count = receivedAdapter.getItemCount();
+
+                /*    if(receivedAdapter != null) {
+                        ((ShopLandingActivity) getActivity()).getShopLandingPageViewModel().getMessage().observe(getActivity(), new Observer<String>() {
+                            @Override
+                            public void onChanged(String s) {
+                                // Toast.makeText(getActivity(), "" + s, Toast.LENGTH_SHORT).show();
+                                if (receivedAdapter != null) {
+                                    receivedAdapter.getFilter().filter(s);
+                                    ((ShopLandingActivity) getActivity()).getShopLandingPageViewModel().getMessage().removeObservers(getActivity());
+                                   // Toast.makeText(getActivity(), "" +receivedAdapter.getItemCount(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }*/
 
 
                     if (getArguments() != null) {
                         if (receivedAdapter != null) {
-                            receivedAdapter.getFilter().filter(getArguments().getString("query"));
-                            //count = receivedAdapter.getItemCount();
 
-                           final Handler handler = new Handler(Looper.getMainLooper());
+                            receivedAdapter.getFilter().filter(getArguments().getString("query"));
+
+                            final Handler handler = new Handler(Looper.getMainLooper());
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     count = receivedAdapter.getItemCount();
-                                    Toast.makeText(getActivity(), "" +  count , Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getActivity(), "" + count, Toast.LENGTH_SHORT).show();
+
+
                                     if (getArguments().getString("isComingFromSearch") != null) {
                                         if (getArguments().getString("isComingFromSearch").equals("Y")) {
                                             //its mean a click tap on received button and search is not involves
@@ -238,7 +247,7 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                                         }
                                     }
 
-                                    if (getArguments().getString("isComingFromTapping") != null) {
+                                /*    if (getArguments().getString("isComingFromTapping") != null) {
                                         if (getArguments().getString("isComingFromTapping").equals("Y")) {
                                             //its mean a click tap on received button and search is not involves
                                             if (count == 0) {
@@ -247,11 +256,11 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                                                 nrf.setVisibility(View.GONE);
                                             }
                                         }
-                                    }
+                                    }*/
                                 }
-                            }, 100);
+                            }, 10);
 
-                            //  Toast.makeText(getActivity(), "" +   linearLayoutManager.findLastVisibleItemPosition() , Toast.LENGTH_SHORT).show();
+
                         } else {
                             Toast.makeText(getActivity(), "Received Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
@@ -260,6 +269,11 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
                     horizontalProgressBar.clearAnimation();
                     horizontalProgressBar.setVisibility(View.GONE);
 
+                    if (count == 0) {
+                        nrf.setVisibility(View.VISIBLE);
+                    } else {
+                        nrf.setVisibility(View.GONE);
+                    }
 
 
 /*
@@ -308,11 +322,11 @@ public class ReceivedFragment extends Fragment implements ReceivedAdapter.OnOrde
         EditText et_order, et_orderStatus, et_orderDate, et_ProductName, et_ProductPrice, et_ProductDiscountedPrice, et_qty, et_payableAmount, et_SellerName, et_SellerMobileNumber, et_SellerAddress, et_SellerIBAN, et_BuyerName, et_BuyerMobile, et_BuyerAddress, et_BuyerIBAN;
         LinearLayout flash, productDetailLL;
         // Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        //Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-/*        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT);*/
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT); //ye 11 par chale ga
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_product_detail_order_list);

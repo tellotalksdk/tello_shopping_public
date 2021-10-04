@@ -28,7 +28,7 @@
                     android:id="@+id/iv_top_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/edit_text_bg_color"
+                    android:background="@drawable/no_image_available"
                     android:scaleType="fitXY" />
 
                 <ImageView
@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     android:background="@drawable/ic_baseline_camera"
                     android:scaleType="fitXY" />
 

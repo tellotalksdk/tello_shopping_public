@@ -1281,7 +1281,7 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
                     try {
                         Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
                                 getActivity().getContentResolver(), imageUri);
-                        bannerImage.setImageBitmap(thumbnail);
+                       // bannerImage.setImageBitmap(thumbnail);
                         filePath = getRealPathFromURI(imageUri);
                         cropImage(imageUri, new File(filePath));
                     } catch (IOException e) {

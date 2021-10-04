@@ -18,6 +18,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -99,9 +101,9 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     Dialog dialogCongratulation;
     public HorizontalDottedProgress horizontalProgressBar;
     private int totalSumofAllOrderAmount = 0;
-
+    private TextView nrf;
     LoadingDialog loadingDialog;
-
+    int count = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,6 +120,8 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadingDialog = new LoadingDialog(getActivity());
+        nrf = view.findViewById(R.id.nrf);
+
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
@@ -163,19 +167,58 @@ public class DispatchedFragment extends Fragment implements DispatchedAdapter.On
                 if (getOrderByStatusResponse != null) {
                     dispatchedAdapter = new DispatchedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_dispatched_orders.setAdapter(dispatchedAdapter);
-
+                    count = dispatchedAdapter.getItemCount();
                     if (getArguments() != null) {
                         if (dispatchedAdapter != null) {
                             dispatchedAdapter.getFilter().filter(getArguments().getString("query"));
+
+                            final Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    count = dispatchedAdapter.getItemCount();
+                                    //Toast.makeText(getActivity(), "" + count, Toast.LENGTH_SHORT).show();
+
+
+                                    if (getArguments().getString("isComingFromSearch") != null) {
+                                        if (getArguments().getString("isComingFromSearch").equals("Y")) {
+                                            //its mean a click tap on received button and search is not involves
+                                            if (count == 0) {
+                                                nrf.setVisibility(View.VISIBLE);
+                                            } else {
+                                                nrf.setVisibility(View.GONE);
+                                            }
+
+                                        }
+                                    }
+
+                          /*          if (getArguments().getString("isComingFromTapping") != null) {
+                                        if (getArguments().getString("isComingFromTapping").equals("Y")) {
+                                            //its mean a click tap on received button and search is not involves
+                                            if (count == 0) {
+                                                nrf.setVisibility(View.VISIBLE);
+                                            } else {
+                                                nrf.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    }*/
+                                }
+                            }, 10);
+
                         } else {
                             Toast.makeText(getActivity(), "Dispatched Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    horizontalProgressBar.clearAnimation();
-                    horizontalProgressBar.setVisibility(View.GONE);
+;
                 }
                 horizontalProgressBar.clearAnimation();
                 horizontalProgressBar.setVisibility(View.GONE);
+
+                if (count == 0) {
+                    nrf.setVisibility(View.VISIBLE);
+                } else {
+                    nrf.setVisibility(View.GONE);
+                }
             }
         });
 

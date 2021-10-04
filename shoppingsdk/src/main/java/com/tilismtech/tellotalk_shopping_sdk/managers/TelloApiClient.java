@@ -82,7 +82,7 @@ public class TelloApiClient {
                         isShopExist(Constant.PROFILE_ID, context);
                         loadingDialog.dismissDialog();
                     }
-                   //  context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                    // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
                 }
             });
         } catch (Exception ex) {
@@ -152,7 +152,7 @@ public class TelloApiClient {
                         }
                     } else {
                         GTResponse message = new Gson().fromJson(response.errorBody().charStream(), GTResponse.class);
-                        Log.i("TAG", "onResponse: " + message.toString());
+                      //  Log.i("TAG", "onResponse: " + message.toString());
                         onSuccessListener.onSuccess(message);
                     }
                 }
@@ -175,14 +175,22 @@ public class TelloApiClient {
                 if (response != null) {
                     if (response.isSuccessful()) {
                         try {
-                            if (response.body().getData().get(0).getIsShopExist()) {
+                            if (response.body().getData().get(0).getIsShopExist() && response.body().getData().get(0).getSettingDone()) {
                                 isshopExist = true;
                                 TelloPreferenceManager.getInstance(getApplication()).savecongratsStatus(false);
                                 context.startActivity(new Intent(context, ShopLandingActivity.class).putExtra("congrats_dialog_to_show", false));
-                            } else {
+                            }else{
                                 isshopExist = false;
-                                context.startActivity(new Intent(context, ShopRegistrationActivity.class).putExtra("congrats_dialog_to_show", true));
+                                context.startActivity(new Intent(context, ShopRegistrationActivity.class).putExtra("congrats_dialog_to_show", response.body().getData().get(0).getSettingDone()).putExtra("settingDone",false).putExtra("shopExistance",response.body().getData().get(0).getIsShopExist()));
                             }
+                            /*else if (!response.body().getData().get(0).getIsShopExist() && !response.body().getData().get(0).getSettingDone()) {
+                                isshopExist = false;
+                                context.startActivity(new Intent(context, ShopRegistrationActivity.class).putExtra("congrats_dialog_to_show", true).putExtra("settingDone",false).putExtra("shopExistance",false));
+                            }
+                            else {
+                                isshopExist = false;
+                                context.startActivity(new Intent(context, ShopRegistrationActivity.class).putExtra("congrats_dialog_to_show", true).putExtra("settingDone",false));
+                            }*/
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

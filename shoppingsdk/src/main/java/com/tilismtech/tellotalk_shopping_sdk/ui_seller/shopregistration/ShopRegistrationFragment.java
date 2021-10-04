@@ -120,6 +120,8 @@ public class ShopRegistrationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initViews(view);
         shopRegistrationViewModel = new ViewModelProvider(this).get(ShopRegistrationViewModel.class);
@@ -189,7 +191,7 @@ public class ShopRegistrationFragment extends Fragment {
             public void onClick(View v) {
                 if (checkValidation()) {
 
-                    if (operator.equals("Select")) {
+                    if (operator.equals("Select Operator")) {
                         Toast.makeText(getActivity(), getResources().getString(R.string.select_relevent_operator), Toast.LENGTH_SHORT).show();
                         return;
                     }

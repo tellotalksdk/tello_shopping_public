@@ -18,6 +18,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -99,9 +101,9 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     public HorizontalDottedProgress horizontalProgressBar;
     Dialog dialogCongratulation;
     private int totalSumofAllOrderAmount = 0;
-
+    private TextView nrf;
     LoadingDialog loadingDialog;
-
+    int count = 0;
 
 
     @Override
@@ -119,6 +121,8 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadingDialog = new LoadingDialog(getActivity());
+        nrf = view.findViewById(R.id.nrf);
+
 
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
@@ -168,20 +172,55 @@ public class CancelledFragment extends Fragment implements CancelledAdapter.OnOr
                     //  Toast.makeText(getActivity(), "" + getOrderByStatusResponse.getStatusDetail(), Toast.LENGTH_SHORT).show();
                     cancelledAdapter = new CancelledAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_cancelled_orders.setAdapter(cancelledAdapter);
-
+                    count = cancelledAdapter.getItemCount();
                     if (getArguments() != null) {
                         if (cancelledAdapter != null) {
                             cancelledAdapter.getFilter().filter(getArguments().getString("query"));
-                            //  Toast.makeText(getActivity(), " cancelled fragment  : " + getArguments().getString("query"), Toast.LENGTH_SHORT).show();
+                            final Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    count = cancelledAdapter.getItemCount();
+
+                                    if (getArguments().getString("isComingFromSearch") != null) {
+                                        if (getArguments().getString("isComingFromSearch").equals("Y")) {
+                                            //its mean a click tap on received button and search is not involves
+                                            if (count == 0) {
+                                                nrf.setVisibility(View.VISIBLE);
+                                            } else {
+                                                nrf.setVisibility(View.GONE);
+                                            }
+
+                                        }
+                                    }
+
+                        /*            if (getArguments().getString("isComingFromTapping") != null) {
+                                        if (getArguments().getString("isComingFromTapping").equals("Y")) {
+                                            //its mean a click tap on received button and search is not involves
+                                            if (count == 0) {
+                                                nrf.setVisibility(View.VISIBLE);
+                                            } else {
+                                                nrf.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    }*/
+                                }
+                            }, 10);
+
                         } else {
                             Toast.makeText(getActivity(), "cancelled fragment is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    horizontalProgressBar.clearAnimation();
-                    horizontalProgressBar.setVisibility(View.GONE);
+
                 }
                 horizontalProgressBar.clearAnimation();
                 horizontalProgressBar.setVisibility(View.GONE);
+
+                if (count == 0) {
+                    nrf.setVisibility(View.VISIBLE);
+                } else {
+                    nrf.setVisibility(View.GONE);
+                }
             }
         });
 

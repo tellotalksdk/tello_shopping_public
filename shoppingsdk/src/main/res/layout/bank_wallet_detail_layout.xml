@@ -10,7 +10,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/edit_text_bg_color"
+        android:background="@drawable/rounded_corner_bank_wallet_layout"
         android:paddingTop="20dp"
         android:paddingBottom="20dp">
 

@@ -87,7 +87,7 @@ public class ShopLandingActivity extends AppCompatActivity {
 
     private static final int ALLOW_MULTIPLE_IMAGES = 1;
     private NavHostFragment navHostFragment;
-    private ImageView setting, addProduct, arrowback, chooseMultipleProductsIV, forwardIcon;
+    private ImageView setting, addProduct, arrowback, chooseMultipleProductsIV, forwardIcon, backwardIcon;
     private ImageView iv_close, iv_back_addproduct, menuDots;
     private Button getStarted_btn, uploadProduct;
     private Dialog dialogCongratulation, dialogAddProduct;
@@ -113,6 +113,7 @@ public class ShopLandingActivity extends AppCompatActivity {
     private List<String> filePaths;
     private List<ChildCategory> childCategoryList;
     private com.toptoche.searchablespinnerlibrary.SearchableSpinner searchableIndustry, searchableCategory;
+
 
     //these fields hide when onsearch is pressed
     ImageView profileImage;
@@ -361,6 +362,7 @@ public class ShopLandingActivity extends AppCompatActivity {
                 chooseMultipleProductsIV = dialogAddProduct.findViewById(R.id.chooseMultipleProductsIV);
                 LLimages = dialogAddProduct.findViewById(R.id.LLimages);
                 forwardIcon = dialogAddProduct.findViewById(R.id.forwardIcon);
+                backwardIcon = dialogAddProduct.findViewById(R.id.backwardIcon);
                 isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
                 isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
 
@@ -376,6 +378,32 @@ public class ShopLandingActivity extends AppCompatActivity {
                                         (int) horizontalScrollView.getScrollX()
                                                 + 250,
                                         (int) horizontalScrollView.getScrollY());
+
+                                if (horizontalScrollView.getScrollX() >= 250) {
+                                    backwardIcon.setVisibility(View.VISIBLE);
+                                } else {
+                                    backwardIcon.setVisibility(View.GONE);
+                                }
+                            }
+                        }, 100L);
+                    }
+                });
+
+                backwardIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                horizontalScrollView.smoothScrollTo(
+                                        (int) horizontalScrollView.getScrollX()
+                                                - 250,
+                                        (int) horizontalScrollView.getScrollY());
+
+                                if (horizontalScrollView.getScrollX() >= 250) {
+                                    backwardIcon.setVisibility(View.VISIBLE);
+                                } else {
+                                    backwardIcon.setVisibility(View.GONE);
+                                }
                             }
                         }, 100L);
                     }
@@ -726,23 +754,20 @@ public class ShopLandingActivity extends AppCompatActivity {
         received.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Bundle statusBundle1 = new Bundle();
+                statusBundle1.putString("isComingFromTapping", "Y");
+                navController.navigate(R.id.receivedFragment);
+
                 // Toast.makeText(ShopLandingActivity.this, "clicked", Toast.LENGTH_SHORT).show();
 
-               /* Bundle bundle = new Bundle();
-                bundle.putString("isComingFromTapping", "Y");*/
-                //navController.navigate(R.id.receivedFragment, bundle);
+         /*       Bundle bundle = new Bundle();
+                bundle.putString("isComingFromTapping", "Y");
+                navController.navigate(R.id.receivedFragment, bundle);*/
 
-                if(navController.getCurrentDestination().getId() == R.id.receivedFragment){
-                    Toast.makeText(ShopLandingActivity.this, "Already inside...", Toast.LENGTH_SHORT).show();
-                    /*ReceivedFragment receivedFragment = (ReceivedFragment) getSupportFragmentManager().findFragmentById(R.id.receivedFragment);
-                    if(receivedFragment == null){
-                        Toast.makeText(ShopLandingActivity.this, "received null", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(ShopLandingActivity.this, "not null", Toast.LENGTH_SHORT).show();
-                    }*/
-                    //receivedFragment.test();
-                    shopLandingPageViewModel.setMessage("Hello");
 
+            /*    if(navController.getCurrentDestination().getId() == R.id.receivedFragment){
+                    shopLandingPageViewModel.setMessage(null);
                     return;
                 }
 
@@ -754,7 +779,17 @@ public class ShopLandingActivity extends AppCompatActivity {
                                 new NavOptions.Builder()
                                         .setPopUpTo(R.id.shopLandingFragment,
                                                 true).build()
-                        );
+                        );*/
+
+                /*Bundle bundle = new Bundle();
+                bundle.putString("isComingFromTapping", "Y");
+                navController
+                        .navigate(R.id.receivedFragment,
+                                bundle,
+                                new NavOptions.Builder()
+                                        .setPopUpTo(R.id.shopLandingFragment,
+                                                true).build()
+                        );*/
 
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
@@ -790,9 +825,13 @@ public class ShopLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                navController.navigate(R.id.acceptedFragment, null, new NavOptions.Builder()
+                Bundle statusBundle2 = new Bundle();
+                statusBundle2.putString("isComingFromTapping", "Y");
+                navController.navigate(R.id.acceptedFragment);
+
+               /* navController.navigate(R.id.acceptedFragment, null, new NavOptions.Builder()
                         .setPopUpTo(R.id.received, true)
-                        .build());
+                        .build());*/
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
                 accepted.setBackground(getResources().getDrawable(R.drawable.order_list_tabs));
@@ -827,6 +866,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         dispatched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle statusBundle3 = new Bundle();
+                statusBundle3.putString("isComingFromTapping", "Y");
                 navController.navigate(R.id.dispatchedFragment);
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
@@ -862,6 +903,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         delivered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle statusBundle4 = new Bundle();
+                statusBundle4.putString("isComingFromTapping", "Y");
                 navController.navigate(R.id.deliveredFragment);
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
@@ -897,6 +940,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         paid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle statusBundle5 = new Bundle();
+                statusBundle5.putString("isComingFromTapping", "Y");
                 navController.navigate(R.id.paidFragment);
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
@@ -931,6 +976,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle statusBundle6 = new Bundle();
+                statusBundle6.putString("isComingFromTapping", "Y");
                 navController.navigate(R.id.cancelledFragment);
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
@@ -966,6 +1013,8 @@ public class ShopLandingActivity extends AppCompatActivity {
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             /*   Bundle statusBundle7 = new Bundle();
+                statusBundle7.putString("isComingFromTapping", "Y");*/
                 navController.navigate(R.id.allFragment);
 
                 received.setBackground(getResources().getDrawable(R.drawable.order_list_tabs_unselected));
@@ -1011,35 +1060,59 @@ public class ShopLandingActivity extends AppCompatActivity {
                         bundle.putString("query", query);
                         bundle.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.receivedFragment, bundle);
+
+
+                     /*   if(navController.getCurrentDestination().getId() == R.id.receivedFragment){
+                            shopLandingPageViewModel.setMessage(query);
+                        }*/
+
+                   /*     Bundle bundle = new Bundle();
+                        bundle.putString("isComingFromSearch", "Y");
+                        navController
+                                .navigate(R.id.receivedFragment,
+                                        bundle,
+                                        new NavOptions.Builder()
+                                                .setPopUpTo(R.id.shopLandingFragment,
+                                                        true).build()
+                                );
+*/
+
+
                         break;
                     case ACCEPTED:
                         Bundle bundle1 = new Bundle();
                         bundle1.putString("query", query);
+                        bundle1.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.acceptedFragment, bundle1);
                         break;
                     case DISPATCHED:
                         Bundle bundle2 = new Bundle();
                         bundle2.putString("query", query);
+                        bundle2.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.dispatchedFragment, bundle2);
                         break;
                     case DELIVERED:
                         Bundle bundle3 = new Bundle();
                         bundle3.putString("query", query);
+                        bundle3.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.deliveredFragment, bundle3);
                         break;
                     case PAID:
                         Bundle bundle4 = new Bundle();
                         bundle4.putString("query", query);
+                        bundle4.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.paidFragment, bundle4);
                         break;
                     case CANCEL:
                         Bundle bundle5 = new Bundle();
                         bundle5.putString("query", query);
+                        bundle5.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.cancelledFragment, bundle5);
                         break;
                     case ALL:
                         Bundle bundle6 = new Bundle();
                         bundle6.putString("query", query);
+                        bundle6.putString("isComingFromSearch", "Y");
                         navController.navigate(R.id.allFragment, bundle6);
                         break;
                     case CHAT:
@@ -1276,6 +1349,12 @@ public class ShopLandingActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setShopNameAndImage();
     }
 
     enum CurrentTab {
@@ -1636,7 +1715,7 @@ public class ShopLandingActivity extends AppCompatActivity {
         number6.setText(String.valueOf(requestList.get(0).getAll()));
     }
 
-    public ShopLandingPageViewModel getShopLandingPageViewModel(){
+    public ShopLandingPageViewModel getShopLandingPageViewModel() {
         return this.shopLandingPageViewModel;
     }
 

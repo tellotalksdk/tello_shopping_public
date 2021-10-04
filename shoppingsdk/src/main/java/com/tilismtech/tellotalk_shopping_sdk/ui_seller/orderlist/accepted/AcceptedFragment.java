@@ -18,6 +18,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -99,7 +101,8 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
     private int totalSumofAllOrderAmount = 0;
 
     LoadingDialog loadingDialog;
-
+    int count = 0;
+    private TextView nrf;
 
 
     @Override
@@ -121,7 +124,7 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
         shopLandingPageViewModel = new ViewModelProvider(this).get(ShopLandingPageViewModel.class);
         //this will update the order list all tabs status counts
         horizontalProgressBar = view.findViewById(R.id.horizontalProgressBar);
-
+        nrf = view.findViewById(R.id.nrf);
         if (!ApplicationUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), "" + getActivity().getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
             horizontalProgressBar.setVisibility(View.GONE);
@@ -161,19 +164,57 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                 if (getOrderByStatusResponse != null) {
                     acceptedAdapter = new AcceptedAdapter(getOrderByStatusResponse.getData().getRequestList(), getActivity(), getReference());
                     recycler_accepted_orders.setAdapter(acceptedAdapter);
-
+                    count = acceptedAdapter.getItemCount();
                     if (getArguments() != null) {
                         if (acceptedAdapter != null) {
                             acceptedAdapter.getFilter().filter(getArguments().getString("query"));
+
+                            final Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    count = acceptedAdapter.getItemCount();
+                                    //Toast.makeText(getActivity(), "" + count, Toast.LENGTH_SHORT).show();
+
+
+                                    if (getArguments().getString("isComingFromSearch") != null) {
+                                        if (getArguments().getString("isComingFromSearch").equals("Y")) {
+                                            //its mean a click tap on received button and search is not involves
+                                            if (count == 0) {
+                                                nrf.setVisibility(View.VISIBLE);
+                                            } else {
+                                                nrf.setVisibility(View.GONE);
+                                            }
+
+                                        }
+                                    }
+
+                          /*          if (getArguments().getString("isComingFromTapping") != null) {
+                                        if (getArguments().getString("isComingFromTapping").equals("Y")) {
+                                            //its mean a click tap on received button and search is not involves
+                                            if (count == 0) {
+                                                nrf.setVisibility(View.VISIBLE);
+                                            } else {
+                                                nrf.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    }*/
+                                }
+                            }, 10);
                         } else {
                             Toast.makeText(getActivity(), "Accepted Adapter is null ...", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    horizontalProgressBar.clearAnimation();
-                    horizontalProgressBar.setVisibility(View.GONE);
+
                 }
                 horizontalProgressBar.clearAnimation();
                 horizontalProgressBar.setVisibility(View.GONE);
+
+                if (count == 0) {
+                    nrf.setVisibility(View.VISIBLE);
+                } else {
+                    nrf.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -304,7 +345,6 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
             public void onClick(View v) {
 
 
-
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (mBluetoothAdapter == null) {
                     Toast.makeText(getActivity(), "Device Not Supported Bluetooth", Toast.LENGTH_SHORT).show();
@@ -401,7 +441,6 @@ public class AcceptedFragment extends Fragment implements AcceptedAdapter.OnOrde
                             "[L]\n" +
                             "[L]\n" +
                             "[L]\n";
-
 
 
                     if (connection.isConnected()) {

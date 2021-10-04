@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -227,6 +228,16 @@
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/forward"
                     android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/backwardIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="start|center"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/backward_image"
+                    android:visibility="gone"
+                    tools:ignore="RtlCompat" />
 
             </FrameLayout>
 

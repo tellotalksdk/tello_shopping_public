@@ -768,7 +768,7 @@ public class StoreSettingFragment extends Fragment {
                     try {
                         Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
                                 getActivity().getContentResolver(), imageUri);
-                        iv_top_image.setImageBitmap(thumbnail);
+                       // iv_top_image.setImageBitmap(thumbnail);
                         filePath = getRealPathFromURI(imageUri);
                         cropImage(imageUri, new File(filePath));
 

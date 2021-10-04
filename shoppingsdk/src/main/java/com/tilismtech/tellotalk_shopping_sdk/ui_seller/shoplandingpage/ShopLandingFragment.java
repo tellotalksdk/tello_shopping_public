@@ -99,7 +99,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private static final int ALLOW_MULTIPLE_IMAGES_EDIT = 2;
     private ProductListAdapter.OnProductEditorClickDialog onProductEditorClickDialog;
     private NavController navController;
-    private ImageView setting, open_edit_details, iv_back_addproduct, chooseMultipleProductsIV, forwardIcon;
+    private ImageView setting, open_edit_details, iv_back_addproduct, chooseMultipleProductsIV, forwardIcon, backwardIcon;
     private Dialog dialog_edit_details, dialogCongratulation;
     private LinearLayout outerRL;
     public Button addProduct_btn, uploadProduct, post_product_btn;
@@ -196,7 +196,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                 isActiveproduct = dialogAddProduct.findViewById(R.id.isActiveproduct);
                 isActiveproduct.setOnCheckedChangeListener(onCheckedChangeListener);
                 forwardIcon = dialogAddProduct.findViewById(R.id.forwardIcon);
-
+                backwardIcon = dialogAddProduct.findViewById(R.id.backwardIcon);
                 HorizontalScrollView horizontalScrollView = dialogAddProduct.findViewById(R.id.horizaontalLine);
 
                 forwardIcon.setOnClickListener(new View.OnClickListener() {
@@ -208,10 +208,37 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                         (int) horizontalScrollView.getScrollX()
                                                 + 250,
                                         (int) horizontalScrollView.getScrollY());
+
+                                if (horizontalScrollView.getScrollX() >= 250) {
+                                    backwardIcon.setVisibility(View.VISIBLE);
+                                } else {
+                                    backwardIcon.setVisibility(View.GONE);
+                                }
                             }
                         }, 100L);
                     }
                 });
+
+                backwardIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                horizontalScrollView.smoothScrollTo(
+                                        (int) horizontalScrollView.getScrollX()
+                                                - 250,
+                                        (int) horizontalScrollView.getScrollY());
+
+                                if (horizontalScrollView.getScrollX() >= 250) {
+                                    backwardIcon.setVisibility(View.VISIBLE);
+                                } else {
+                                    backwardIcon.setVisibility(View.GONE);
+                                }
+                            }
+                        }, 100L);
+                    }
+                });
+
 
                 chooseMultipleProductsIV.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -561,7 +588,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
     private void initRV() {
         ProductList productList = new ProductList();
         productList.setProfileId(Constant.PROFILE_ID);
-        LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+       // LoadingDialog loadingDialog = new LoadingDialog(getActivity());
+        loadingDialog.showDialog();
 
         shopLandingPageViewModel.productList(productList, lastProductId, getActivity()); //initially first set of product will be fecthed
         shopLandingPageViewModel.getProductList().observe(getViewLifecycleOwner(), new Observer<ProductListResponse>() {
@@ -569,7 +597,6 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             public void onChanged(ProductListResponse productListResponse) {
                 if (productListResponse != null) {
                     if (productListResponse.getData().getRequestList() != null) {
-
                         addProduct_btn.setVisibility(View.GONE);
                         productListAppend.addAll(productListResponse.getData().getRequestList());
                         productListAdapter = new ProductListAdapter(productListAppend, getActivity(), getReference());
@@ -580,43 +607,15 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         lastProductId = String.valueOf(productListResponse.getData().getRequestList().get(productListResponse.getData().getRequestList().size() - 1).getProductId());
                         loadingDialog.dismissDialog();
                         shopLandingPageViewModel.getProductList().removeObservers(getActivity());
-
+                        loadingDialog.dismissDialog();
                     } else {
-
-
-                           /* dialogCongratulation = new Dialog(getActivity());
-                            dialogCongratulation.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                            dialogCongratulation.setContentView(R.layout.dialog_congratulation);
-                            dialogCongratulation.show();
-
-                            ImageView iv_close = dialogCongratulation.findViewById(R.id.iv_close);
-                            Button getStarted_btn = dialogCongratulation.findViewById(R.id.getStarted_btn);
-
-                            iv_close.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogCongratulation.dismiss();
-                                }
-                            });
-
-                            getStarted_btn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogCongratulation.dismiss();
-                                }
-                            });
-
-                            loadingDialog.dismissDialog();*/
                         loadingDialog.dismissDialog();
                         addProduct_btn.setVisibility(View.VISIBLE);
-
                     }
                 }
                 loadingDialog.dismissDialog();
             }
         });
-
-
     }
 
     private void uploadParentCategory(Spinner parentSpinner, Spinner childSpinner) {
@@ -1321,6 +1320,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
+        loadingDialog.showDialog();
         getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(getActivity()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
             @Override
             public void onResponse(Call<ProductForEditResponse> call, Response<ProductForEditResponse> response) {
@@ -1328,6 +1328,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                     if (response.isSuccessful()) {
                         ProductForEditResponse productForEditResponse = response.body();
                         if (productForEditResponse != null) {
+                            loadingDialog.dismissDialog();
 
                             parentCategoryId = productForEditResponse.getData().getRequestList().getParentProductCategoryId();
                             childCategoryId = productForEditResponse.getData().getRequestList().getProductCategoryid();
@@ -1453,13 +1454,16 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                         }
                     }
                 } else { //incase response is null
-
+                    loadingDialog.dismissDialog();
+                    dialog.dismiss();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ProductForEditResponse> call, Throwable t) {
                 t.printStackTrace();
+                loadingDialog.dismissDialog();
             }
         });
 

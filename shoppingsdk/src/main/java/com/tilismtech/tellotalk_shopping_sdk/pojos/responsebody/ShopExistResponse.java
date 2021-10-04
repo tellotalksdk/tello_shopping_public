@@ -12,6 +12,17 @@ public class ShopExistResponse {
         @SerializedName("isShopExist")
         @Expose
         private Boolean isShopExist;
+        @SerializedName("IsSettingDone")
+        @Expose
+        private Boolean IsSettingDone;
+
+        public Boolean getSettingDone() {
+            return IsSettingDone;
+        }
+
+        public void setSettingDone(Boolean settingDone) {
+            IsSettingDone = settingDone;
+        }
 
         public Boolean getIsShopExist() {
             return isShopExist;

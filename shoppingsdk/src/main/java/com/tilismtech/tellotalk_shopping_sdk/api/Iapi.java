@@ -125,7 +125,7 @@ public interface Iapi {
     @Headers({"Accept: application/json",
             "Content-Type: application/json"}
     )
-    @GET("api/shop/ShopExist")
+    @GET("api/shop/ShopExistance")
     Call<ShopExistResponse> isShopExist(@Header("Authorization") String token,
                                         @Query("profileId") String profileid
     );
