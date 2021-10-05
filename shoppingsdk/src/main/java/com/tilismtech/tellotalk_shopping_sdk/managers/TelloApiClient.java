@@ -92,6 +92,48 @@ public class TelloApiClient {
         return isUserAvailable;
     }
 
+    public static boolean initializeShoppingSDK(Context context, String profileId, String firstName, String middleName, String lastName, String phone, String email) {
+        boolean isUserAvailable = false;
+
+        GenerateToken generateToken = new GenerateToken();
+
+        generateToken.setGrantUsername("Basit@tilismtech.com");
+        generateToken.setGrantPassword("basit@1234");
+        generateToken.setGrantType("password");
+        generateToken.setProfileId(profileId);
+        generateToken.setFirstname(firstName);
+        generateToken.setMiddlename(middleName);
+        generateToken.setLastname(lastName);
+        generateToken.setPhone(phone);
+        generateToken.setEmail(email);
+
+     /*   if (!ApplicationUtils.isNetworkConnected(context)) {
+            Toast.makeText(context, "" + context.getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+        }*/
+
+        try {//03350221182
+            generateTokenResponse(generateToken, context, new OnSuccessListener() {
+                @Override
+                public void onSuccess(Object object) {
+                    GTResponse gtResponseError = (GTResponse) object;
+                    if ("-6".equals(gtResponseError.getStatus().toString())) {
+                        Toast.makeText(context, "" + gtResponseError.getStatusDetail(), Toast.LENGTH_SHORT).show();
+                    } else if ("-1".equals(gtResponseError.getStatus().toString())) {
+                        Toast.makeText(context, "" + context.getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    } else {
+                        isShopExist(Constant.PROFILE_ID, context);
+                    }
+                    // context.startActivity(new Intent(context, ShopRegistrationActivity.class));
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return isUserAvailable;
+    }
+
+
     /*//old api fopr token
     public static boolean generateAccessToken(AccessTokenPojo accessTokenPojo, Context myCtx) {
         getRetrofitClient().generateToken(accessTokenPojo.getUsername(), accessTokenPojo.getPassword(), accessTokenPojo.getGrant_type(), accessTokenPojo.getprofileId(), accessTokenPojo.getFirstname(), accessTokenPojo.getMiddlename(), accessTokenPojo.getLastname(), accessTokenPojo.getPhone(), accessTokenPojo.getEmail()).enqueue(new Callback<GenerateTokenResponse>() {

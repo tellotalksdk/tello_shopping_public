@@ -1158,40 +1158,42 @@ public class ShopSettingFragment extends Fragment implements ColorChooserAdapter
             mMap.setMyLocationEnabled(true);
             Location myLocation = getLastKnownLocation();
 
-            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            if(myLocation != null) {
 
-                @Override
-                public void onMarkerDragStart(Marker marker) {
-                    Toast.makeText(getActivity(), " 1 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
 
-                }
+                    @Override
+                    public void onMarkerDragStart(Marker marker) {
+                        Toast.makeText(getActivity(), " 1 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
 
-                @Override
-                public void onMarkerDragEnd(Marker marker) {
-                    // TODO Auto-generated method stub
-                    // Toast.makeText(getActivity(), " 2 dasdasdas" + marker.getPosition().latitude, Toast.LENGTH_SHORT).show();
-                    Latitude = String.valueOf(marker.getPosition().latitude);
-                    Longitude = String.valueOf(marker.getPosition().longitude);
-                }
+                    }
 
-                @Override
-                public void onMarkerDrag(Marker marker) {
-                    // Toast.makeText(getActivity(), " 3 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onMarkerDragEnd(Marker marker) {
+                        // TODO Auto-generated method stub
+                        // Toast.makeText(getActivity(), " 2 dasdasdas" + marker.getPosition().latitude, Toast.LENGTH_SHORT).show();
+                        Latitude = String.valueOf(marker.getPosition().latitude);
+                        Longitude = String.valueOf(marker.getPosition().longitude);
+                    }
 
-                }
-            });
+                    @Override
+                    public void onMarkerDrag(Marker marker) {
+                        // Toast.makeText(getActivity(), " 3 dasdasdas" + marker.getTitle(), Toast.LENGTH_SHORT).show();
 
-            // For dropping a marker at a point on the Map
-            LatLng sydney = new LatLng(myLocation.getLatitude(), myLocation.getLatitude());
-            mMap.addMarker(new MarkerOptions().position(sydney).draggable(true));
+                    }
+                });
 
-            // For zooming automatically to the location of the marker
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                // For dropping a marker at a point on the Map
+                LatLng sydney = new LatLng(myLocation.getLatitude(), myLocation.getLatitude());
+                mMap.addMarker(new MarkerOptions().position(sydney).draggable(true));
 
-            Latitude = String.valueOf(myLocation.getLatitude());
-            Longitude = String.valueOf(myLocation.getLongitude());
+                // For zooming automatically to the location of the marker
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+                Latitude = String.valueOf(myLocation.getLatitude());
+                Longitude = String.valueOf(myLocation.getLongitude());
+            }
             mMap.getUiSettings();
 
         }

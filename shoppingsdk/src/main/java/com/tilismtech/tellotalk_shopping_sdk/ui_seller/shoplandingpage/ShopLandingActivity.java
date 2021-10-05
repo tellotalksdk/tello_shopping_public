@@ -515,11 +515,11 @@ public class ShopLandingActivity extends AppCompatActivity {
                                         setTotalProductOnActionBar();
                                         navController.navigate(R.id.shopLandingFragment);
 
-                                    } else {
+                                    } /*else {
                                         loadingDialog.dismissDialog();
                                         Toast.makeText(ShopLandingActivity.this, "Some thing went wrong...", Toast.LENGTH_SHORT).show();
                                     }
-                                    loadingDialog.dismissDialog();
+                                    loadingDialog.dismissDialog();*/
                                 }
                             });
 

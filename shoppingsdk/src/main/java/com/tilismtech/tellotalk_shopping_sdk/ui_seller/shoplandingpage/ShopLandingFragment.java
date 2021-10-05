@@ -272,7 +272,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
 
 
                 et_VideoUrl = dialogAddProduct.findViewById(R.id.et_VideoUrl);
-                et_VideoUrl.setText("https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore");
+               // et_VideoUrl.setText("https://www.youtube.com/watch?v=xsU14eHgmBg&t=1s&ab_channel=Electrostore");
 
 
                 //uploadParentCategory(parentSpinner, childSpinner);
@@ -362,10 +362,10 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
                                         navController.navigate(R.id.action_shopLandingFragment_to_shopLandingFragment2);
 
                                     } else {
-                                        loadingDialog.dismissDialog();
-                                        Toast.makeText(getActivity(), getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                        //loadingDialog.dismissDialog();
+                                       // Toast.makeText(getActivity(), getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                     }
-                                    loadingDialog.dismissDialog();
+                                    //loadingDialog.dismissDialog();
                                 }
                             });
 
@@ -1320,6 +1320,8 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
             }
         });
 
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
         loadingDialog.showDialog();
         getRetrofitClient().getProductForEdit("Bearer " + TelloPreferenceManager.getInstance(getActivity()).getAccessToken(), productForEdit.getProfileId(), productForEdit.getProductId()).enqueue(new Callback<ProductForEditResponse>() {
             @Override
@@ -1468,8 +1470,7 @@ public class ShopLandingFragment extends Fragment implements ProductListAdapter.
         });
 
 
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+
     }
 
     private void deleteProduct(int productID, Dialog dialog, int adapterPosition) {

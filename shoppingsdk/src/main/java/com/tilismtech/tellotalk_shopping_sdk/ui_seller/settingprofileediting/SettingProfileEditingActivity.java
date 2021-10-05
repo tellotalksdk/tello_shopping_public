@@ -433,8 +433,8 @@ public class SettingProfileEditingActivity extends AppCompatActivity implements 
                 if (getShopDetailResponse != null) {
                     // Toast.makeText(getActivity(), "" + getShopDetailResponse.getStatusDetail() + getShopDetailResponse.getData().getRequestList().getBranchAddress().size(), Toast.LENGTH_SHORT).show();
 
-                    //shopOwnername.setText(getShopDetailResponse.getData().getRequestList().getShopOwnerName());
-                    shopOwnername.setText(TelloPreferenceManager.getInstance(SettingProfileEditingActivity.this).getOwnerName());
+                     shopOwnername.setText(getShopDetailResponse.getData().getRequestList().getShopOwnerName());
+                    //shopOwnername.setText(TelloPreferenceManager.getInstance(SettingProfileEditingActivity.this).getOwnerName());
 
 
                     if (shopOwnername.getText().toString().equals(" ")) {
